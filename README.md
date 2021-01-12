@@ -1,8 +1,8 @@
-# Mesa Interface
+# Mesa Interface
 
 Mesa is an open market for Initial Decentralized Offering (IDO). Mesa Interface is the portal to create, manage, and participate in IDOs.
 
-## Build
+## Build
 
 Clone this repository. Make sure to clone the `main` branch. Install dependencies via NPM. Run the following in the repository
 
