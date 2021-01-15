@@ -1,6 +1,6 @@
 # Mesa Interface
 
-Mesa is an open market for Initial Decentralized Offering (IDO). Mesa Interface is the portal to create, manage and participate in IDOs.
+Mesa is an open market for Initial DEX Offerings (IDO). Mesa Interface is the portal to create, manage and participate in IDOs.
 
 ## Build
 
