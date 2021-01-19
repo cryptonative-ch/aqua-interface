@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "Mesa"
+  },
+  "pagesTitles": {
+    "home": "Home"
+  },
+  "texts": {
+    "bid": "Bid",
+    "bids": "Bids",
+    "graph": "Graph",
+    "active": "Active",
+    "closed": "Closed",
+    "loading": "Loading",
+    "upcoming": "Upcoming",
+    "notFound": "Not Found",
+    "yourBids": "Your Bids",
+    "runningAuctions": "Running Auctions",
+    "upcomingAuctions": "Upcoming Auctions"
+  },
+  "buttons": {
+    "back": "Back",
+    "goBack": "Go Back",
+    "placeBid": "Place Bid",
+    "addARandomBid": "Add A Random Bid",
+    "showClosedAuctions": "Show Closed Auctions",
+    "hideClosedAuctions": "Hide Closed Auctions"
+  }
+}
