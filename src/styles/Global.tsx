@@ -106,7 +106,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   input {
-    border-radius: 12px;
+    border-radius: 0x;
     display: block;
     width: 100%;
     height: calc(1.5em + .75rem + 2px);
@@ -117,9 +117,8 @@ export const GlobalStyle = createGlobalStyle`
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #ced4da;
+    border: 1px solid ${props => props.theme.black};
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    border-radius: 12px;
   }
 
   input:focus {

@@ -1,3 +1,5 @@
+// External
+import styled from 'styled-components'
 import {
   space,
   layout,
@@ -9,7 +11,6 @@ import {
   TextAlignProps,
   textAlign,
 } from 'styled-system'
-import styled from 'styled-components'
 
 export type FlexProps = SpaceProps & LayoutProps & FlexBaseProps & FlexboxProps & TextAlignProps
 
