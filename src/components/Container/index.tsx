@@ -15,7 +15,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.fluid ? '90vw' : '560px'};
+      max-width: ${props.fluid ? '90vw' : '800px'};
     }
   `,
   layout
