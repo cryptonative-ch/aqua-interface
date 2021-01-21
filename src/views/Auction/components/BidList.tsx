@@ -26,11 +26,13 @@ export const BidList: React.FC<BidListComponentProps> = ({
   }
 
   return (
-    <table>
+    <Table>
       <THead>
-        <th>Price {baseTokenSymbol}</th>
-        <th>Amount {quotetokenSmybol}</th>
-        <th>Total</th>
+        <tr>
+          <th>Price {baseTokenSymbol}</th>
+          <th>Amount {quotetokenSmybol}</th>
+          <th>Total</th>
+        </tr>
       </THead>
       <TBody>
         {bids.map(bid => {
@@ -43,12 +45,12 @@ export const BidList: React.FC<BidListComponentProps> = ({
             <TR key={bidId}>
               <td>{bid.sellAmount.toString()}</td>
               <td>{bid.buyAmount.toString()}</td>
-              <td>{totalPrice}</td>
+              <td>{totalPrice.toString()}</td>
             </TR>
           )
         })}
       </TBody>
-    </table>
+    </Table>
   )
 }
 
