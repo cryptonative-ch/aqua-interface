@@ -2,11 +2,11 @@
 import styled from 'styled-components'
 import React from 'react'
 
-// Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
-
 // Components
 import { DefaultNoBidsMessage } from './DefaultNoBidsMessage'
+
+// Interfaces
+import { AuctionBid } from 'src/interfaces/Auction'
 
 interface BidListComponentProps {
   noBidsMessage?: React.ReactNode

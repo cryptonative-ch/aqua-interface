@@ -6,7 +6,7 @@ import keccak from 'keccak'
 /**
  * Transform a private key into an address
  */
-const privateToAddress = (privateKey: any) => {
+const privateToAddress = (privateKey: Buffer) => {
   const publicKeyString = secp256k1.publicKeyCreate(privateKey, false).slice(1).toString()
 
   return keccak('keccak256').update(publicKeyString).digest().slice(-20).toString('hex')

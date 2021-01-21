@@ -8,9 +8,9 @@ type LinkProps = SizeProps & {
 }
 
 export const Link = styled(LinkBase)<LinkProps>(
-  props => ({
+  {
     fontWeight: 'bold',
-  }),
+  },
   size,
   space,
   variant({

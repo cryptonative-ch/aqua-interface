@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // Providers
-import { getInfuraProvider, getBlockNumber } from 'src/providers'
+import { getBlockNumber } from 'src/providers'
 
 export function useBlockNumber() {
   const [block, setBlock] = useState(0)

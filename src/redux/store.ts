@@ -6,6 +6,7 @@ import page from './page'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
+  // eslint-disable-next-line
   interface DefaultRootState extends RootState {}
 }
 
