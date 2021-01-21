@@ -23,27 +23,6 @@ export const isAuctionUpcoming = ({ startBlock, endBlock }: Auction, currentBloc
 export const isAuctionClosed = ({ startBlock, endBlock }: Auction, currentBlockNumber: number) =>
   currentBlockNumber > startBlock && currentBlockNumber >= endBlock
 
-export enum AuctionStatus {
-  CLOSED = 'closed',
-  OPEN = 'open',
-  UPCOMING = 'upcoming',
-}
-
-// export const getAuctionStatus = (auction: Auction): One AuctionStatus. =>
-
-/**
- * Retrieves an auction
- */
-export const getAuction = (auctionId: string) => {}
-
-// /**
-//  *
-//  * @param auctionBids sort
-//  */
-// export const sortBidsByPriceDesc = (auctionBids: AuctionBid[]) => {
-//   return auctionBids.sort((a, b) => b.tokenPrice - a.tokenPrice)
-// }
-
 /**
  *
  * @param auctionBids
@@ -61,17 +40,18 @@ export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): n
  * Calculates the clearing price using the auction bids
  * @param auctionBids
  */
-export function calculateClearingPrice(easyAuction: Auction) {
-  const sellOrders = easyAuction.bids
-  const sortedSellOrders = sellOrders.sort(hasLowerClearingPrice)
-  const initialOrder = sortedSellOrders[0]
+export function calculateClearingPrice(easyAuctionBids: AuctionBid[]) {
+  const sortedSellOrders = easyAuctionBids.sort(hasLowerClearingPrice)
+  const initialOrder = easyAuctionBids[0]
 
-  const clearingPriceOrder = findClearingPrice(sellOrders, initialOrder)
+  const clearingPriceOrder = findClearingPrice(sortedSellOrders, initialOrder)
   return clearingPriceOrder
 }
 
 export function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: AuctionBid): AuctionBid {
   let totalSellVolume = BigNumber.from(0)
+
+  console.log(initialAuctionOrder)
 
   for (const order of sellOrders) {
     // Increase total volume

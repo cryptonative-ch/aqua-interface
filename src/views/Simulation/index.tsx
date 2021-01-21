@@ -8,7 +8,7 @@ import { BigNumber } from 'ethers'
 import { useAuction } from 'src/hooks/useAuction'
 
 // Interfaces
-import { Auction, AuctionBid } from 'src/interfaces/Auction'
+import { AuctionBid } from 'src/interfaces/Auction'
 
 // Components
 import { PlaceBidForm } from '../Auction/components/PlaceBidForm'

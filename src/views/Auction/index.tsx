@@ -27,12 +27,6 @@ import { Center } from 'src/layouts/Center'
 // Views
 import { NotFoundView } from '../NotFound'
 
-// Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
-
-// Mesa Utils
-import { calculateClearingPrice } from 'src/mesa/utils'
-
 interface AuctionViewParams {
   auctionId: string
 }
@@ -40,17 +34,13 @@ interface AuctionViewParams {
 export function AuctionView() {
   const params = useParams<AuctionViewParams>()
   const auction = useAuction(params.auctionId)
-  const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const theme = useTheme()
 
   useEffect(() => {
     dispatch(setPageTitle(t(auction?.tokenName as string)))
   }, [auction])
-
-  if (!auction) {
-    return <NotFoundView />
-  }
 
   if (!auction) {
     return <NotFoundView />
@@ -64,7 +54,6 @@ export function AuctionView() {
           <CardBody>
             <CardTitle>{t('texts.bids')}</CardTitle>
           </CardBody>
-          <CardBody>{JSON.stringify(calculateClearingPrice(auction), null, 2)}</CardBody>
         </Card>
         <FlexGroupColumns>
           <Card mb={theme.space[4]}>
@@ -72,7 +61,11 @@ export function AuctionView() {
               <CardTitle>{t('texts.placeBid')}</CardTitle>
             </CardBody>
             <CardBody>
-              <PlaceBidForm onSubmit={({ tokenAmount, tokenPrice }) => {}} />
+              <PlaceBidForm
+                onSubmit={() => {
+                  console.log('Add to Auction')
+                }}
+              />
             </CardBody>
           </Card>
           <Card mb={theme.space[4]}>
