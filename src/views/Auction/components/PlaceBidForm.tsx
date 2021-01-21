@@ -1,8 +1,10 @@
 // External
 import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from 'src/components/Button'
+
+// Components
 import { FormGroup } from 'src/components/FormGroup'
+import { Button } from 'src/components/Button'
 
 interface BidData {
   tokenAmount: number
@@ -15,13 +17,22 @@ interface PlaceBidComponentProps {
 }
 
 export function PlaceBidForm({ onSubmit, reset }: PlaceBidComponentProps) {
+  const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
 
   // Change handlers
-  const onTokenPriceChange = (event: ChangeEvent<HTMLInputElement>) => setTokenPrice(parseInt(event.target.value))
-  const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => setTokenPrice(parseInt(event.target.value))
+  const onTokenPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTokenPrice(parseInt(event.target.value))
+    validateForm()
+  }
+  const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTokenAmount(parseInt(event.target.value))
+    validateForm()
+  }
+
+  const validateForm = () => setFormValid(tokenPrice > 0 && tokenAmount > 0)
 
   // Submission handler
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -43,7 +54,9 @@ export function PlaceBidForm({ onSubmit, reset }: PlaceBidComponentProps) {
         <input id="tokenPrice" type="number" value={tokenPrice} onChange={onTokenPriceChange} />
       </FormGroup>
       <FormGroup>
-        <Button title={t('buttons.placeBid')}>{t('buttons.placeBid')}</Button>
+        <Button disabled={!formValid} type="submit" title={t('buttons.placeBid')}>
+          {t('buttons.placeBid')}
+        </Button>
       </FormGroup>
     </form>
   )
