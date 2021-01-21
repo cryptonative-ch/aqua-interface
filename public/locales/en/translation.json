@@ -15,6 +15,8 @@
     "upcoming": "Upcoming",
     "notFound": "Not Found",
     "yourBids": "Your Bids",
+    "placeBid": "Place Bid",
+    "noBidsMessage": "There are no bids",
     "runningAuctions": "Running Auctions",
     "upcomingAuctions": "Upcoming Auctions"
   },
