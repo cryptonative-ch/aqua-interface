@@ -1,5 +1,6 @@
 // External
 import styled from 'styled-components'
+import numeral from 'numeral'
 import React from 'react'
 
 // Components
@@ -17,22 +18,22 @@ interface BidListComponentProps {
 
 export const BidList: React.FC<BidListComponentProps> = ({
   bids,
-  noBidsMessage = DefaultNoBidsMessage,
+  noBidsMessage: NoBids = DefaultNoBidsMessage,
   quotetokenSmybol,
   baseTokenSymbol,
 }) => {
   if (bids.length === 0) {
-    return <>{noBidsMessage}</>
+    return <DefaultNoBidsMessage />
   }
 
   return (
     <Table>
       <THead>
-        <tr>
+        <TR>
           <th>Price {baseTokenSymbol}</th>
           <th>Amount {quotetokenSmybol}</th>
           <th>Total</th>
-        </tr>
+        </TR>
       </THead>
       <TBody>
         {bids.map(bid => {
@@ -43,9 +44,9 @@ export const BidList: React.FC<BidListComponentProps> = ({
 
           return (
             <TR key={bidId}>
-              <td>{bid.sellAmount.toString()}</td>
-              <td>{bid.buyAmount.toString()}</td>
-              <td>{totalPrice.toString()}</td>
+              <td>{numeral(bid.sellAmount.toString()).format('0,0')}</td>
+              <td>{numeral(bid.buyAmount.toString()).format('0,0')}</td>
+              <td>{numeral(totalPrice.toString()).format('0,0')}</td>
             </TR>
           )
         })}
