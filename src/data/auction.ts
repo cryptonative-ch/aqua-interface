@@ -1,3 +1,7 @@
+// Externals
+import dayjs, { Dayjs } from 'dayjs'
+import { BigNumber } from 'ethers'
+
 // Icons
 import Simulation from 'src/assets/svg/Simulation.svg'
 import Compound from 'src/assets/svg/Compound.svg'
@@ -7,52 +11,93 @@ import Omen from 'src/assets/svg/Omen.svg'
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
-export function generateAuctionData(blockNumber: number): Auction[] {
+const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
+
+export function generateAuctionData(unixTimestamp: number): Auction[] {
+  const dateUTC = dayjs.unix(unixTimestamp)
+
   return [
+    // Open/running
     {
       id: '0x141',
-      startBlock: blockNumber - 6000,
-      endBlock: blockNumber + 18000,
+      startBlock: addHours(dateUTC, -24).unix(),
+      endBlock: addHours(dateUTC, +24).unix(),
       tokenAddress: '0x',
-      tokenAmount: 2000,
+      tokenAmount: 5000,
       tokenName: 'Omen',
       tokenSymbol: 'DXD',
       tokenIcon: Omen,
-      bids: [],
+      bids: [
+        {
+          address: '0xf1',
+          buyAmount: BigNumber.from(30),
+          sellAmount: BigNumber.from(100),
+        },
+      ],
     },
     {
       id: '0x142',
-      startBlock: blockNumber - 6000,
-      endBlock: blockNumber + 18000,
+      startBlock: addHours(dateUTC, -10).unix(),
+      endBlock: addHours(dateUTC, +100).unix(),
       tokenAddress: '0x',
-      tokenAmount: 2000,
+      tokenAmount: 2500,
       tokenName: 'Gelato',
       tokenSymbol: 'GEL',
       tokenIcon: Gelato,
-      bids: [],
+      bids: [
+        {
+          address: '0xf1',
+          buyAmount: BigNumber.from(30),
+          sellAmount: BigNumber.from(100),
+        },
+      ],
     },
     {
       id: 'simulation',
-      startBlock: blockNumber - 18000,
-      endBlock: blockNumber + 18000,
+      startBlock: addHours(dateUTC, -55).unix(),
+      endBlock: addHours(dateUTC, +2).unix(),
       tokenAddress: '0x',
-      tokenAmount: 2000,
+      tokenAmount: 10000,
       tokenName: 'Simulation',
       tokenSymbol: 'SIM',
       tokenIcon: Simulation,
-      bids: [],
+      bids: [
+        {
+          address: '0xf1',
+          buyAmount: BigNumber.from(30),
+          sellAmount: BigNumber.from(100),
+        },
+      ],
     },
     // Upcoming
     {
       id: '0x143',
-      startBlock: blockNumber + 144000, // Starts in 24 days and runs for 3 days
-      endBlock: blockNumber + 18000,
+      startBlock: addHours(dateUTC, 14).unix(),
+      endBlock: addHours(dateUTC, 114).unix(),
       tokenAddress: '0x',
       tokenAmount: 15000,
       tokenName: 'Compound',
       tokenSymbol: 'COMP',
       tokenIcon: Compound,
       bids: [],
+    },
+    // Closed
+    {
+      id: '0x143',
+      startBlock: addHours(dateUTC, -140).unix(),
+      endBlock: addHours(dateUTC, -14).unix(),
+      tokenAddress: '0x',
+      tokenAmount: 1500,
+      tokenName: 'Closed',
+      tokenSymbol: 'CLOSE',
+      tokenIcon: Compound,
+      bids: [
+        {
+          address: '0xf1',
+          buyAmount: BigNumber.from(30),
+          sellAmount: BigNumber.from(100),
+        },
+      ],
     },
   ]
 }

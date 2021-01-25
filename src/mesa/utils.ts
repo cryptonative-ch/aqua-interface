@@ -1,27 +1,42 @@
 // External
 import { BigNumber } from 'ethers'
 
+// Utils
+import { convetUtcTimestampToLocal } from 'src/utils/date'
+
 // Interfaces
 import { Auction, AuctionBid } from 'src/interfaces/Auction'
 
 /**
  * Determines if the auction is active
  */
-export const isAuctionOpen = ({ startBlock, endBlock }: Auction, currentBlockNumber: number) => {
-  return startBlock <= currentBlockNumber && currentBlockNumber < endBlock
+export const isAuctionOpen = ({ startBlock, endBlock }: Auction) => {
+  const currentTimestamp = Math.floor(Date.now() / 1000)
+  const endBlockLocal = convetUtcTimestampToLocal(endBlock)
+  const startBlockLocal = convetUtcTimestampToLocal(startBlock)
+
+  return startBlockLocal <= currentTimestamp && currentTimestamp < endBlockLocal
 }
 
 /**
  * Determines if the auction is upcoming
  */
-export const isAuctionUpcoming = ({ startBlock, endBlock }: Auction, currentBlockNumber: number) =>
-  currentBlockNumber < startBlock && currentBlockNumber < endBlock
+export const isAuctionUpcoming = ({ startBlock }: Auction) => {
+  const currentTimestamp = Math.floor(Date.now() / 1000)
+  const startBlockLocal = convetUtcTimestampToLocal(startBlock)
+
+  return currentTimestamp < startBlockLocal
+}
 
 /**
  * Determines if the auction is upcoming
  */
-export const isAuctionClosed = ({ startBlock, endBlock }: Auction, currentBlockNumber: number) =>
-  currentBlockNumber > startBlock && currentBlockNumber >= endBlock
+export const isAuctionClosed = ({ endBlock }: Auction) => {
+  const currentTimestamp = Math.floor(Date.now() / 1000)
+  const endBlockLocal = convetUtcTimestampToLocal(endBlock)
+
+  return currentTimestamp >= endBlockLocal
+}
 
 /**
  *
