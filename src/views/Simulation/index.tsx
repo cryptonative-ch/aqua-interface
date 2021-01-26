@@ -1,10 +1,12 @@
 // External
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BigNumber } from 'ethers'
+import numeral from 'numeral'
 
 // Hooks
+import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useAuction } from 'src/hooks/useAuction'
 
 // Interfaces
@@ -16,18 +18,16 @@ import { BidList } from '../Auction/components/BidList'
 import { Header } from '../Auction/components/Header'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
+import { Graph } from '../Auction/components/Graph'
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
-
-// Views
-import { NotFoundView } from '../NotFound'
 
 // Layout
 import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
-import { calculateClearingPrice } from 'src/mesa/utils'
+import { calculateClearingPrice, filterAuctionBidsByAddress } from 'src/mesa/utils'
 
 // Wallet Utils
 import { getRandomWallet } from 'src/utils/wallets'
@@ -49,6 +49,8 @@ export function SimulationView() {
   const [userAddress, setUserAddress] = useState<string>('')
 
   // Simulation data
+  const ref = useRef<HTMLElement>()
+  const containerWidth = useElementWidth(ref)
   const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
   const [bids, setBids] = useState<AuctionBid[]>([])
 
@@ -56,35 +58,41 @@ export function SimulationView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const addBid = (newAuctionBid: AuctionBid) => {
-    setBids([...bids, newAuctionBid])
-  }
+  const addBid = useCallback(
+    (newAuctionBid: AuctionBid) => {
+      setBids([...bids, newAuctionBid])
+    },
+    [bids]
+  )
 
   useEffect(() => {
     if (!userAddress) {
       setUserAddress(getRandomWallet().address)
     }
 
-    if (auction) {
-      setClearingPrice(calculateClearingPrice(auction))
-    }
+    // Calculate the virtual
+    setClearingPrice(calculateClearingPrice(bids))
 
     // Add 1 random bids every second
     const addRandomBidsInterval = setInterval(
       () =>
         addBid({
           address: getRandomWallet().address,
-          sellAmount: BigNumber.from(getRandomInteger(1, 30)),
-          buyAmount: BigNumber.from(getRandomInteger(1, 300)),
+          sellAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
+          buyAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
         }),
       2000
     )
 
     return () => clearInterval(addRandomBidsInterval)
-  }, [auction, bids])
+  }, [auction, bids, addBid, userAddress, t])
 
   if (!auction) {
-    return <NotFoundView />
+    return (
+      <Center minHeight="100%">
+        <Container>Loading</Container>
+      </Center>
+    )
   }
 
   return (
@@ -93,9 +101,21 @@ export function SimulationView() {
         <Header title="Simulation" />
         <Card mb={theme.space[4]}>
           <CardBody>
-            <CardTitle>{t('texts.bids')}</CardTitle>
+            <Flex>
+              <strong>
+                {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
+              </strong>
+            </Flex>
           </CardBody>
-          <CardBody>{JSON.stringify(clearingPrice, null, 2)}</CardBody>
+          <CardBody
+            ref={e => {
+              if (e) {
+                ref.current = e
+              }
+            }}
+          >
+            <Graph bids={bids} height={400} width={containerWidth} userAddress={userAddress} />
+          </CardBody>
         </Card>
         <FlexGroupColumns>
           <Card mb={theme.space[4]}>
@@ -126,6 +146,13 @@ export function SimulationView() {
         <Card mb={theme.space[4]}>
           <CardBody>
             <CardTitle>{t('texts.yourBids')}</CardTitle>
+          </CardBody>
+          <CardBody>
+            <BidList
+              baseTokenSymbol="DAI"
+              quotetokenSmybol={auction.tokenSymbol}
+              bids={filterAuctionBidsByAddress(bids, userAddress)}
+            />
           </CardBody>
         </Card>
       </Container>

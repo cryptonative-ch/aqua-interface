@@ -4,23 +4,18 @@ import numeral from 'numeral'
 import React from 'react'
 
 // Components
+import { AuctionFinalPrice } from './AuctionFinalPrice'
 import { CardBody } from 'src/components/CardBody'
+import { AuctionStatus } from './AuctionStatus'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
-// Mesa Utils
-import { AuctionStatus } from './AuctionStatus'
-
 interface AuctionSummaryProps {
   auction: Auction
 }
-
-const TokenIconFigure = styled.div(props => ({
-  marginRight: props.theme.space[3],
-}))
 
 export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
   return (
@@ -40,10 +35,14 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
           </Flex>
           <Flex flexDirection="column">
             <AuctionStatus auction={auction} />
-            <div>x {auction.tokenSymbol} = 1 DAI</div>
+            <AuctionFinalPrice auction={auction} />
           </Flex>
         </Flex>
       </CardBody>
     </Card>
   )
 }
+
+const TokenIconFigure = styled.div(props => ({
+  marginRight: props.theme.space[3],
+}))
