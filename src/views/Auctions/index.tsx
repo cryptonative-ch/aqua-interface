@@ -1,15 +1,14 @@
 // External
+import styled, { useTheme } from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/utils'
 
 // Hooks
-import { useBlockNumber } from 'src/hooks/useBlockNumber'
 import { useAuctions } from 'src/hooks/useAuctions'
 
 // Redux Actions
@@ -40,9 +39,9 @@ const Badge = styled.span(props => ({
 }))
 
 export function AuctionsView() {
+  const theme = useTheme()
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
-  const blockNumber = useBlockNumber()
   const dispatch = useDispatch()
   const auctions = useAuctions()
   const [t] = useTranslation()
@@ -60,14 +59,14 @@ export function AuctionsView() {
   }
 
   return (
-    <Center minHeight="100%">
+    <Center minHeight="100%" py={theme.space[4]}>
       <Container>
         <AuctionListSection>
           <Flex mb={20} justifyContent="center">
             <Badge>{t('texts.active')}</Badge>
           </Flex>
           {auctions
-            .filter(auction => isAuctionOpen(auction, blockNumber))
+            .filter(auction => isAuctionOpen(auction))
             .map(auction => (
               <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                 <AuctionSummaryCard auction={auction} />
@@ -79,7 +78,7 @@ export function AuctionsView() {
             <Badge>{t('texts.upcoming')}</Badge>
           </Flex>
           {auctions
-            .filter(auction => isAuctionUpcoming(auction, blockNumber))
+            .filter(auction => isAuctionUpcoming(auction))
             .map(auction => (
               <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                 <AuctionSummaryCard auction={auction} />
@@ -94,7 +93,7 @@ export function AuctionsView() {
           </Flex>
           {showClosedAuctions &&
             auctions
-              .filter(auction => isAuctionClosed(auction, blockNumber))
+              .filter(auction => isAuctionClosed(auction))
               .map(auction => (
                 <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                   <AuctionSummaryCard auction={auction} />
