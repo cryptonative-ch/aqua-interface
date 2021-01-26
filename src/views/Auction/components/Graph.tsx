@@ -63,7 +63,7 @@ export function Graph({ bids, userAddress }: GraphComponentProps) {
     }
 
     chart.update()
-  }, [bids])
+  }, [bids, userAddress])
 
   return (
     <canvas

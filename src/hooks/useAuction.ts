@@ -17,7 +17,7 @@ export function useAuction(auctionId: string) {
 
   useEffect(() => {
     setAuctions(auctions.find(auction => auction.id === auctionId))
-  }, [auctions])
+  }, [auctions, auctionId])
 
   return auction
 }
