@@ -16,7 +16,6 @@ export function useAuctionBids(auctionId: string) {
   const [auction, setAuctions] = useState<Auction>()
 
   useEffect(() => {
-    console.log(auctions)
     setAuctions(auctions.find(auction => auction.id === auctionId))
   }, [auctions])
 
