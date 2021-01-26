@@ -19,7 +19,7 @@ export function useElementWidth(elementRef: MutableRefObject<HTMLElement | undef
       window.removeEventListener('orientationchange', calculateWidth)
       window.removeEventListener('resize', calculateWidth)
     }
-  }, [elementRef])
+  }, [elementRef, calculateWidth])
 
   return width
 }
