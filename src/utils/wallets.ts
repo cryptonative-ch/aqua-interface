@@ -12,6 +12,11 @@ const privateToAddress = (privateKey: Buffer) => {
   return keccak('keccak256').update(publicKeyString).digest().slice(-20).toString('hex')
 }
 
+interface WalletResponse {
+  address: string
+  privKey: string
+}
+
 /**
  * Create a wallet from a random private key
  */
@@ -21,9 +26,4 @@ export const getRandomWallet = (): WalletResponse => {
     address: privateToAddress(randbytes).toString(),
     privKey: randbytes.toString('hex'),
   }
-}
-
-interface WalletResponse {
-  address: string
-  privKey: string
 }
