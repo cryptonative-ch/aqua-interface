@@ -1,11 +1,13 @@
 // External
+import React, { useEffect, useRef } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import React, { useEffect } from 'react'
+import numeral from 'numeral'
 
 // Hooks
+import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useAuction } from 'src/hooks/useAuction'
 
 // Actions
@@ -18,6 +20,7 @@ import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { BidList } from './components/BidList'
 import { Header } from './components/Header'
+import { Graph } from './components/Graph'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
@@ -26,14 +29,18 @@ import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
+
 // Views
-import { NotFoundView } from '../NotFound'
+import { NotFoundView } from 'src/views/NotFound'
 
 interface AuctionViewParams {
   auctionId: string
 }
 
 export function AuctionView() {
+  const ref = useRef<HTMLElement>()
+  const containerWidth = useElementWidth(ref)
+
   const params = useParams<AuctionViewParams>()
   const auction = useAuction(params.auctionId)
   const dispatch = useDispatch()
@@ -51,10 +58,23 @@ export function AuctionView() {
   return (
     <Center minHeight="100%">
       <Container>
-        <Header title="Simulation" />
+        <Header title={auction.tokenName} />
         <Card mb={theme.space[4]}>
           <CardBody>
-            <CardTitle>{t('texts.bids')}</CardTitle>
+            <Flex>
+              <strong>
+                {numeral(calculateClearingPrice(auction.bids)).format('0,0')} {auction.tokenSymbol} / DAI
+              </strong>
+            </Flex>
+          </CardBody>
+          <CardBody
+            ref={e => {
+              if (e) {
+                ref.current = e
+              }
+            }}
+          >
+            <Graph bids={auction.bids} height={400} width={containerWidth} userAddress="0x" />
           </CardBody>
         </Card>
         <FlexGroupColumns>

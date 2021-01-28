@@ -20,12 +20,16 @@ interface BidListComponentProps {
 
 export const BidList: React.FC<BidListComponentProps> = ({
   bids,
-  noBidsMessage = DefaultNoBidsMessage,
+  noBidsMessage,
   quotetokenSmybol,
   baseTokenSymbol,
+  userAddress,
 }) => {
   if (bids.length === 0) {
-    return <>{noBidsMessage}</>
+    if (noBidsMessage) {
+      return <>{noBidsMessage}</>
+    }
+    return <DefaultNoBidsMessage />
   }
 
   return (
