@@ -1,49 +1,18 @@
-// External
+// Externals
 import { BigNumber } from 'ethers'
 
-// Utils
-import { convetUtcTimestampToLocal } from 'src/utils/date'
-
 // Interfaces
-import { Auction, AuctionBid } from 'src/interfaces/Auction'
+import { AuctionBid } from 'src/interfaces/Auction'
 
 /**
- * Determines if the auction is active
+ * source: https://github.com/gnosis/ido-contracts/blob/main/src/priceCalculation.ts
  */
-export const isAuctionOpen = ({ startBlock, endBlock }: Auction) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endBlockLocal = convetUtcTimestampToLocal(endBlock)
-  const startBlockLocal = convetUtcTimestampToLocal(startBlock)
-
-  return startBlockLocal <= currentTimestamp && currentTimestamp < endBlockLocal
-}
-
-/**
- * Determines if the auction is upcoming
- */
-export const isAuctionUpcoming = ({ startBlock }: Auction) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  const startBlockLocal = convetUtcTimestampToLocal(startBlock)
-
-  return currentTimestamp < startBlockLocal
-}
-
-/**
- * Determines if the auction is upcoming
- */
-export const isAuctionClosed = ({ endBlock }: Auction) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endBlockLocal = convetUtcTimestampToLocal(endBlock)
-
-  return currentTimestamp >= endBlockLocal
-}
 
 /**
  *
  * @param auctionBids
  */
-
-export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
+function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
   if (order1.buyAmount.mul(order2.sellAmount).lt(order2.buyAmount.mul(order1.sellAmount))) return -1
   if (order1.buyAmount.mul(order2.sellAmount).eq(order2.buyAmount.mul(order1.sellAmount))) {
     if (order1.address < order2.address) return -1
@@ -55,7 +24,15 @@ export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): n
  * Calculates the clearing price using the auction bids
  * @param auctionBids
  */
-export function calculateClearingPrice(easyAuctionBids: AuctionBid[]) {
+export function calculateClearingPrice(easyAuctionBids: AuctionBid[]): AuctionBid {
+  if (!easyAuctionBids.length) {
+    return {
+      address: '0x',
+      buyAmount: BigNumber.from(0),
+      sellAmount: BigNumber.from(0),
+    }
+  }
+
   const sortedSellOrders = easyAuctionBids.sort(hasLowerClearingPrice)
   const initialOrder = easyAuctionBids[0]
 
@@ -63,10 +40,8 @@ export function calculateClearingPrice(easyAuctionBids: AuctionBid[]) {
   return clearingPriceOrder
 }
 
-export function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: AuctionBid): AuctionBid {
+function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: AuctionBid): AuctionBid {
   let totalSellVolume = BigNumber.from(0)
-
-  console.log(initialAuctionOrder)
 
   for (const order of sellOrders) {
     // Increase total volume
@@ -103,11 +78,3 @@ export function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder:
     }
   }
 }
-
-/**
- * Filters the list of bids by passed address
- * @param auctionBids
- * @param address
- */
-export const filterAuctionBidsByAddress = (auctionBids: AuctionBid[], address: string) =>
-  auctionBids.filter(auctionBid => auctionBid.address === address)

@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 // Mesa Utils
-import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/utils'
+import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 // Hooks
 import { useAuctions } from 'src/hooks/useAuctions'

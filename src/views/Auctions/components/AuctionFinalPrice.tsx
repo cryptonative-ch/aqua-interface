@@ -6,7 +6,8 @@ import React from 'react'
 import { Auction } from 'src/interfaces/Auction'
 
 // Mesa Utils
-import { calculateClearingPrice, isAuctionUpcoming } from 'src/mesa/utils'
+import { calculateClearingPrice } from 'src/mesa/price'
+import { isAuctionUpcoming } from 'src/mesa/auction'
 
 interface AuctionFinalPriceProps {
   auction: Auction
