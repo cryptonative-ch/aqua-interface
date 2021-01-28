@@ -1,5 +1,6 @@
 // External
 import styled from 'styled-components'
+import { Property } from 'csstype'
 import numeral from 'numeral'
 import React from 'react'
 
@@ -13,6 +14,7 @@ interface BidListComponentProps {
   noBidsMessage?: React.ReactNode
   quotetokenSmybol: string
   baseTokenSymbol: string
+  userAddress?: string
   bids: AuctionBid[]
 }
 
@@ -42,8 +44,11 @@ export const BidList: React.FC<BidListComponentProps> = ({
           // Compute total price
           const totalPrice = bid.sellAmount.mul(bid.buyAmount)
 
+          // highlight user's bids
+          const backgroundColor = bid.address === userAddress ? '#4895ef' : 'transparent'
+
           return (
-            <TR key={bidId}>
+            <TR backgroundColor={backgroundColor} key={bidId}>
               <td>{numeral(bid.sellAmount.toString()).format('0,0')}</td>
               <td>{numeral(bid.buyAmount.toString()).format('0,0')}</td>
               <td>{numeral(totalPrice.toString()).format('0,0')}</td>
@@ -71,7 +76,12 @@ const TBody = styled.tbody({
   maxHeight: 300,
 })
 
-const TR = styled.tr({
+interface TRProps {
+  backgroundColor?: Property.BackgroundColor
+}
+
+const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
+  backgroundColor,
   display: 'flex',
   justifyContent: 'space-between',
-})
+}))
