@@ -2,7 +2,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
-import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/utils'
+import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'

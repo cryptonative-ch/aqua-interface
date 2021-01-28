@@ -27,7 +27,8 @@ import { Flex } from 'src/components/Flex'
 import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
-import { calculateClearingPrice, filterAuctionBidsByAddress } from 'src/mesa/utils'
+import { filterAuctionBidsByAddress } from 'src/mesa/auction'
+import { calculateClearingPrice } from 'src/mesa/price'
 
 // Wallet Utils
 import { getRandomWallet } from 'src/utils/wallets'
