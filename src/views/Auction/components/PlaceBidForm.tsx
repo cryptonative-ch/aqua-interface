@@ -24,15 +24,18 @@ export function PlaceBidForm({ onSubmit, reset }: PlaceBidComponentProps) {
 
   // Change handlers
   const onTokenPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTokenPrice(parseInt(event.target.value))
-    validateForm()
-  }
-  const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTokenAmount(parseInt(event.target.value))
-    validateForm()
+    const tokenPrice = parseInt(event.target.value)
+    setTokenPrice(tokenPrice)
+    validateForm([tokenPrice, tokenAmount])
   }
 
-  const validateForm = () => setFormValid(tokenPrice > 0 && tokenAmount > 0)
+  const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const tokenAmount = parseInt(event.target.value)
+    setTokenAmount(tokenAmount)
+    validateForm([tokenAmount, tokenPrice])
+  }
+
+  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
   // Submission handler
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -41,6 +44,7 @@ export function PlaceBidForm({ onSubmit, reset }: PlaceBidComponentProps) {
       tokenAmount,
       tokenPrice,
     })
+    reset && reset()
   }
 
   return (
