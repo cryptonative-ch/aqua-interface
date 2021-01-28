@@ -140,7 +140,12 @@ export function SimulationView() {
               <CardTitle>{t('texts.bids')}</CardTitle>
             </CardBody>
             <CardBody>
-              <BidList baseTokenSymbol="DAI" quotetokenSmybol={auction.tokenSymbol} bids={bids} />
+              <BidList
+                baseTokenSymbol="DAI"
+                quotetokenSmybol={auction.tokenSymbol}
+                bids={bids}
+                userAddress={userAddress}
+              />
             </CardBody>
           </Card>
         </FlexGroupColumns>
