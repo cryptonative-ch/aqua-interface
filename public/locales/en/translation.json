@@ -18,7 +18,8 @@
     "placeBid": "Place Bid",
     "noBidsMessage": "There are no bids",
     "runningAuctions": "Running Auctions",
-    "upcomingAuctions": "Upcoming Auctions"
+    "upcomingAuctions": "Upcoming Auctions",
+    "calculatedVirtualPrice": "Virtual Settlement Price"
   },
   "buttons": {
     "back": "Back",
