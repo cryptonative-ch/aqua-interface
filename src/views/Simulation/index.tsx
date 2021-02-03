@@ -73,6 +73,7 @@ export function SimulationView() {
 
     // Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
+    
 
     // Add 1 random bids every second
     const addRandomBidsInterval = setInterval(
