@@ -20,6 +20,8 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
     }
   }, [time])
 
+  
+
   return (
     <div>
       Auction ends in: <strong>{format_time}</strong>
