@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-export const convetUtcTimestampToLocal = (utcTimestamp: number) => {
+export const convertUtcTimestampToLocal = (utcTimestamp: number) => {
   const utcMinutesOffset = dayjs(utcTimestamp).utcOffset()
   const dateUTC = dayjs.unix(utcTimestamp).add(utcMinutesOffset, 'minutes')
 

@@ -103,7 +103,7 @@ export function SimulationView() {
         <Header title="Simulation" />
         <Card mb={theme.space[4]}>
           <CardBody>
-            <Flex flexDirection="row" justifyContent="space-between" >
+            <Flex flexDirection="row" justifyContent="space-between">
               <strong>
                 {t('texts.calculatedVirtualPrice')}: {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
               </strong>
@@ -134,6 +134,7 @@ export function SimulationView() {
                     address: userAddress,
                   })
                 }
+                auction={auction}
               />
             </CardBody>
           </Card>

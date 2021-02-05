@@ -6,17 +6,24 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
 
+//utils
+import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
+
+//interfaces
+import { Auction } from 'src/interfaces/Auction'
+
 interface BidData {
   tokenAmount: number
   tokenPrice: number
 }
 
 interface PlaceBidComponentProps {
+  auction: Auction
   onSubmit: (bidData: BidData) => void
   reset?: () => void
 }
 
-export function PlaceBidForm({ onSubmit, reset }: PlaceBidComponentProps) {
+export function PlaceBidForm({ auction, onSubmit, reset }: PlaceBidComponentProps) {
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
@@ -58,7 +65,11 @@ export function PlaceBidForm({ onSubmit, reset }: PlaceBidComponentProps) {
         <input id="tokenPrice" type="number" value={tokenPrice} onChange={onTokenPriceChange} />
       </FormGroup>
       <FormGroup>
-        <Button disabled={!formValid} type="submit" title={t('buttons.placeBid')}>
+        <Button
+          disabled={!formValid || isAuctionClosed(auction) || isAuctionUpcoming(auction)}
+          type="submit"
+          title={t('buttons.placeBid')}
+        >
           {t('buttons.placeBid')}
         </Button>
       </FormGroup>

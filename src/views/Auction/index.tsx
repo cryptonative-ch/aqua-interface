@@ -87,6 +87,7 @@ export function AuctionView() {
                 onSubmit={() => {
                   console.log('Add to Auction')
                 }}
+                auction={auction}
               />
             </CardBody>
           </Card>

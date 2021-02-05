@@ -58,8 +58,8 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
     },
     {
       id: 'simulation',
-      startBlock: addHours(dateUTC, -55).unix(),
-      endBlock: addMinutes(dateUTC, +1).unix(),
+      startBlock: addMinutes(dateUTC, -59.8).unix(),
+      endBlock: addMinutes(dateUTC, -59.5).unix(),
       tokenAddress: '0x',
       tokenAmount: 10000,
       tokenName: 'Mesa',

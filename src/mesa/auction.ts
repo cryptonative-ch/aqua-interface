@@ -1,5 +1,5 @@
 // Utils
-import { convetUtcTimestampToLocal } from 'src/utils/date'
+import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 // Interfaces
 import { Auction, AuctionBid } from 'src/interfaces/Auction'
@@ -12,8 +12,8 @@ import { calculateClearingPrice } from './price'
  */
 export const isAuctionOpen = ({ startBlock, endBlock }: Auction) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endBlockLocal = convetUtcTimestampToLocal(endBlock)
-  const startBlockLocal = convetUtcTimestampToLocal(startBlock)
+  const endBlockLocal = convertUtcTimestampToLocal(endBlock)
+  const startBlockLocal = convertUtcTimestampToLocal(startBlock)
 
   return startBlockLocal <= currentTimestamp && currentTimestamp < endBlockLocal
 }
@@ -23,17 +23,17 @@ export const isAuctionOpen = ({ startBlock, endBlock }: Auction) => {
  */
 export const isAuctionUpcoming = ({ startBlock }: Auction) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const startBlockLocal = convetUtcTimestampToLocal(startBlock)
+  const startBlockLocal = convertUtcTimestampToLocal(startBlock)
 
   return currentTimestamp < startBlockLocal
 }
 
 /**
- * Determines if the auction is upcoming
+ * Determines if the auction is closed
  */
 export const isAuctionClosed = ({ endBlock }: Auction) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endBlockLocal = convetUtcTimestampToLocal(endBlock)
+  const endBlockLocal = convertUtcTimestampToLocal(endBlock)
 
   return currentTimestamp >= endBlockLocal
 }
