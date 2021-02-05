@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
 
+//utils
+import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
+
 interface BidData {
   tokenAmount: number
   tokenPrice: number
