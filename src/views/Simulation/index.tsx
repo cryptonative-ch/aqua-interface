@@ -22,6 +22,7 @@ import { Graph } from '../Auction/components/Graph'
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
+import { Timer } from 'src/views/Auction/components/Timer'
 
 // Layout
 import { Center } from 'src/layouts/Center'
@@ -102,10 +103,11 @@ export function SimulationView() {
         <Header title="Simulation" />
         <Card mb={theme.space[4]}>
           <CardBody>
-            <Flex>
+            <Flex flexDirection="row" justifyContent="space-between" >
               <strong>
                 {t('texts.calculatedVirtualPrice')}: {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
               </strong>
+              <Timer auction={auction} />
             </Flex>
           </CardBody>
           <CardBody

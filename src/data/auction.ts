@@ -14,6 +14,9 @@ import { Auction } from 'src/interfaces/Auction'
 
 const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 
+const addMinutes = (dayjsInstance: Dayjs, minutes: number) => dayjsInstance.clone().add(minutes, 'm')
+
+
 export function generateAuctionData(unixTimestamp: number): Auction[] {
   const dateUTC = dayjs.unix(unixTimestamp)
 
@@ -56,7 +59,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
     {
       id: 'simulation',
       startBlock: addHours(dateUTC, -55).unix(),
-      endBlock: addHours(dateUTC, +2).unix(),
+      endBlock: addMinutes(dateUTC, +1).unix(),
       tokenAddress: '0x',
       tokenAmount: 10000,
       tokenName: 'Mesa',

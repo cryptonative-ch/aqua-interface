@@ -52,7 +52,7 @@ export function AuctionsView() {
     if (auctions.length) {
       setLoading(false)
     }
-  }, [auctions])
+  }, [auctions, t, dispatch])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>

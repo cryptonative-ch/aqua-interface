@@ -49,7 +49,7 @@ export function AuctionView() {
 
   useEffect(() => {
     dispatch(setPageTitle(t(auction?.tokenName as string)))
-  }, [auction])
+  }, [auction, t, dispatch])
 
   if (!auction) {
     return <NotFoundView />
