@@ -48,11 +48,12 @@ export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice 
   // Submission handler
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (BidWarning(CurrentSettlementPrice) === false) {
+    if (BidWarning(CurrentSettlementPrice) === true) {
       onSubmit({
         tokenAmount,
         tokenPrice,
       })
+      reset && reset()
     }
     reset && reset()
   }
@@ -61,9 +62,9 @@ export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice 
     if (CurrentSettlementPrice) {
       if (tokenPrice <= CurrentSettlementPrice * 0.7) {
         if (window.confirm(t('Warning: Bid may be too low to be included'))) {
-          return false
-        } else {
           return true
+        } else {
+          return false
         }
       }
     }

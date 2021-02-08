@@ -72,8 +72,6 @@ export function SimulationView() {
       setUserAddress(getRandomWallet().address)
     }
 
-   
-
     // Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
 
@@ -138,7 +136,6 @@ export function SimulationView() {
                 }
                 auction={auction}
                 CurrentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
-              
               />
             </CardBody>
           </Card>
