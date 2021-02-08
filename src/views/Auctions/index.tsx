@@ -63,6 +63,9 @@ const ConnectButton = styled.button`
   position: absolute;
   top: 30px;
   right: 30px;
+  background-color: rgb(92, 107, 192);
+  border-color: rgb(92, 107, 192);
+  color: rgb(255, 255, 255);
 
   @media (min-width: 800px) {
     font-size: 14px;
