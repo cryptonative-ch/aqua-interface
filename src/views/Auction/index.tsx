@@ -23,6 +23,7 @@ import { Header } from './components/Header'
 import { Graph } from './components/Graph'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
+import { Timer } from "./components/Timer";
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -61,10 +62,11 @@ export function AuctionView() {
         <Header title={auction.tokenName} />
         <Card mb={theme.space[4]}>
           <CardBody>
-            <Flex>
+            <Flex flexDirection="row" justifyContent="space-between">
               <strong>
                 {numeral(calculateClearingPrice(auction.bids)).format('0,0')} {auction.tokenSymbol} / DAI
               </strong>
+              <Timer auction={auction}/>
             </Flex>
           </CardBody>
           <CardBody
