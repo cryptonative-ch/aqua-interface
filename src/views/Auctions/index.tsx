@@ -43,6 +43,7 @@ export function AuctionsView() {
   const theme = useTheme()
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
+  const [connectModal, setModalVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
   const {auctions} = useAuctions()
   const [t] = useTranslation()
@@ -103,6 +104,7 @@ export function AuctionsView() {
               ))}
         </AuctionListSection>
       </Container>
+      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)}></WalletConnector>
     </Center>
   )
 }
