@@ -12,7 +12,7 @@ import { Auction } from 'src/interfaces/Auction'
  * @param auctionId
  */
 export function useAuctionBids(auctionId: string) {
-  const auctions = useAuctions()
+  const {auctions} = useAuctions()
   const [auction, setAuctions] = useState<Auction>()
 
   useEffect(() => {

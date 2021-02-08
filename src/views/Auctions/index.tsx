@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import WalletConnector from 'cryptowalletconnector'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
@@ -43,7 +44,7 @@ export function AuctionsView() {
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
   const dispatch = useDispatch()
-  const auctions = useAuctions()
+  const {auctions} = useAuctions()
   const [t] = useTranslation()
 
   useEffect(() => {
@@ -60,6 +61,7 @@ export function AuctionsView() {
 
   return (
     <Center minHeight="100%" py={theme.space[4]}>
+
       <Container>
         <AuctionListSection>
           <Flex mb={20} justifyContent="center">
