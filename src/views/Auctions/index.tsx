@@ -39,6 +39,36 @@ const Badge = styled.span(props => ({
   borderRadius: 32,
 }))
 
+const ConnectButton = styled.button`
+  font-size: 12px;
+  align-items: center;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  display: flex;
+  line-height: 16px;
+  font-weight: 400;
+  height: 40px;
+  justify-content: center;
+  letter-spacing: 0.2px;
+  outline: none;
+  padding: 12px 17px;
+  pointer-events: 'none';
+  text-align: center;
+  transition: all 0.15s ease-out;
+  user-select: none;
+  white-space: nowrap;
+  font-family: Roboto;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  @media (min-width: 800px) {
+    font-size: 14px;
+  }
+`
+
 export function AuctionsView() {
   const theme = useTheme()
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
@@ -105,6 +135,9 @@ export function AuctionsView() {
         </AuctionListSection>
       </Container>
       <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)}></WalletConnector>
+      <ConnectButton disabled={connectModal} onClick={() => setModalVisible(true)}>
+        {connectModal ? 'Connecting...' : 'Connect'}
+      </ConnectButton>
     </Center>
   )
 }
