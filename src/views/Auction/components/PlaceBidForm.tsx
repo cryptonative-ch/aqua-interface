@@ -21,9 +21,10 @@ interface PlaceBidComponentProps {
   auction: Auction
   onSubmit: (bidData: BidData) => void
   reset?: () => void
+  CurrentSettlementPrice?: number
 }
 
-export function PlaceBidForm({ auction, onSubmit, reset }: PlaceBidComponentProps) {
+export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice }: PlaceBidComponentProps) {
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
@@ -47,12 +48,27 @@ export function PlaceBidForm({ auction, onSubmit, reset }: PlaceBidComponentProp
   // Submission handler
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onSubmit({
-      tokenAmount,
-      tokenPrice,
-    })
+    if (BidWarning(CurrentSettlementPrice) === false) {
+      onSubmit({
+        tokenAmount,
+        tokenPrice,
+      })
+    }
     reset && reset()
   }
+
+  const BidWarning = (CurrentSettlementPrice: number | undefined) => {
+    if (CurrentSettlementPrice) {
+      if (tokenPrice <= CurrentSettlementPrice * 0.7) {
+        if (window.confirm(t('Warning: Bid may be too low to be included'))) {
+          return false
+        } else {
+          return true
+        }
+      }
+    }
+  }
+
 
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>

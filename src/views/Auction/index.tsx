@@ -23,7 +23,7 @@ import { Header } from './components/Header'
 import { Graph } from './components/Graph'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
-import { Timer } from "./components/Timer";
+import { Timer } from './components/Timer'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -66,7 +66,7 @@ export function AuctionView() {
               <strong>
                 {numeral(calculateClearingPrice(auction.bids)).format('0,0')} {auction.tokenSymbol} / DAI
               </strong>
-              <Timer auction={auction}/>
+              <Timer auction={auction} />
             </Flex>
           </CardBody>
           <CardBody
@@ -90,6 +90,7 @@ export function AuctionView() {
                   console.log('Add to Auction')
                 }}
                 auction={auction}
+                CurrentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
               />
             </CardBody>
           </Card>
