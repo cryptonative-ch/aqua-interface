@@ -56,7 +56,7 @@ export function SimulationView() {
   const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
   const [bids, setBids] = useState<AuctionBid[]>([])
 
-  const auction = useAuction('simulation')
+  const {auction} = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
 
@@ -81,7 +81,7 @@ export function SimulationView() {
         addBid({
           address: getRandomWallet().address,
           sellAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
-          buyAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
+          buyAmount: BigNumber.from(getRandomInteger(1, 300)), // MESA/ERC20
         }),
       2000
     )
@@ -105,7 +105,7 @@ export function SimulationView() {
           <CardBody>
             <Flex flexDirection="row" justifyContent="space-between">
               <strong>
-                {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
+                {t('texts.calculatedVirtualPrice')}: {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
               </strong>
               <Timer auction={auction} />
             </Flex>

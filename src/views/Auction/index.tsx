@@ -43,7 +43,7 @@ export function AuctionView() {
   const containerWidth = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
-  const auction = useAuction(params.auctionId)
+  const {auction} = useAuction(params.auctionId)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()

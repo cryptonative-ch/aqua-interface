@@ -2,6 +2,7 @@
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
 import React, { Suspense } from 'react'
+import { UseWalletProvider } from 'use-wallet'
 
 // Styles
 import { GlobalStyle } from './styles/Global'
@@ -16,7 +17,19 @@ export const App = () => {
       <GlobalStyle />
       <Suspense fallback={<>loading</>}>
         <BrowserRouter>
-          <AppRouter />
+          <UseWalletProvider
+            chainId={42}
+            connectors={{
+              walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
+              walletlink: {
+                url: "https://mainnet.eth.aragon.network/",
+                appName: "Coinbase Wallet",
+                appLogoUrl: "",
+              },
+            }}
+          >
+            <AppRouter />
+          </UseWalletProvider>
         </BrowserRouter>
       </Suspense>
     </ThemeProvider>
