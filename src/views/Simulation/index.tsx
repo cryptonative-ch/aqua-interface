@@ -56,7 +56,7 @@ export function SimulationView() {
   const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
   const [bids, setBids] = useState<AuctionBid[]>([])
 
-  const auction = useAuction('simulation')
+  const {auction} = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
 
