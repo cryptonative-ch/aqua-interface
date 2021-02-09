@@ -7,7 +7,7 @@ import { Auction } from 'src/interfaces/Auction'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-import {  isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
+import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 interface TimerComponentProps {
   auction: Auction
@@ -43,7 +43,6 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
 
   if (isAuctionUpcoming(auction)) {
     const format_time = secondsTohms(time_diff_start)
-    console.log(time_diff_start)
 
     return (
       <div>
@@ -52,7 +51,6 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
     )
   } else if (isAuctionOpen(auction)) {
     const format_time = secondsTohms(time_diff_end)
-    console.log(time_diff_end)
 
     return (
       <div>
