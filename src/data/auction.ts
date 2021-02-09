@@ -87,7 +87,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
     },
     // Closed
     {
-      id: '0x143',
+      id: '0x1434',
       startBlock: addHours(dateUTC, -140).unix(),
       endBlock: addHours(dateUTC, -14).unix(),
       tokenAddress: '0x',
