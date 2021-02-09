@@ -3,7 +3,6 @@ import dayjs, { Dayjs } from 'dayjs'
 import { BigNumber } from 'ethers'
 
 // Icons
-import Simulation from 'src/assets/svg/Simulation.svg'
 import Compound from 'src/assets/svg/Compound.svg'
 import Gelato from 'src/assets/svg/Gelato.svg'
 import Omen from 'src/assets/svg/Omen.svg'

@@ -58,6 +58,7 @@ export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice 
     reset && reset()
   }
 
+  //  TODO: bidwarning price 
   const BidWarning = (CurrentSettlementPrice: number | undefined) => {
     if (CurrentSettlementPrice) {
       if (tokenPrice <= CurrentSettlementPrice * 0.7) {
@@ -67,6 +68,7 @@ export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice 
           return false
         }
       }
+      return true
     }
   }
 

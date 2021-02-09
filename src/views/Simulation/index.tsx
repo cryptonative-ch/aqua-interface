@@ -58,7 +58,7 @@ export function SimulationView() {
   const [count, setCount] = useState(0)
   const [updateAuction, setUpdateAuction] = useState(false)
 
-  const {auction} = useAuction('simulation')
+  const { auction } = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
 
@@ -71,8 +71,8 @@ export function SimulationView() {
 
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
-
-    if (typeof auction !== 'undefined') {
+    
+    if (typeof auction !== 'undefined' && auction != null) {
       setUpdateAuction(isAuctionOpen(auction))
     }
     return () => {
@@ -88,8 +88,10 @@ export function SimulationView() {
     //Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
 
-    if (typeof auction !== 'undefined') {
+    if (typeof auction !== 'undefined' && auction != null) {
+      
       if (isAuctionOpen(auction)) {
+        console.log(isAuctionOpen(auction))
         //Add 1 random bids every second
         const addRandomBidsInterval = setInterval(
           () =>
@@ -124,7 +126,8 @@ export function SimulationView() {
           <CardBody>
             <Flex flexDirection="row" justifyContent="space-between">
               <strong>
-                {t('texts.calculatedVirtualPrice')}: {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
+                {t('texts.calculatedVirtualPrice')}: {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')}{' '}
+                {auction.tokenSymbol} / DAI
               </strong>
               <Timer auction={auction} />
             </Flex>
