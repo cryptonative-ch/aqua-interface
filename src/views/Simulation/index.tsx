@@ -28,7 +28,7 @@ import { Timer } from 'src/views/Auction/components/Timer'
 import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
-import { filterAuctionBidsByAddress } from 'src/mesa/auction'
+import { filterAuctionBidsByAddress, isAuctionOpen } from 'src/mesa/auction'
 import { calculateClearingPrice } from 'src/mesa/price'
 
 // Wallet Utils
@@ -55,8 +55,10 @@ export function SimulationView() {
   const containerWidth = useElementWidth(ref)
   const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
   const [bids, setBids] = useState<AuctionBid[]>([])
+  const [count, setCount] = useState(0)
+  const [updateAuction, setUpdateAuction] = useState(false)
 
-  const auction = useAuction('simulation')
+  const {auction} = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
 
@@ -68,26 +70,43 @@ export function SimulationView() {
   )
 
   useEffect(() => {
+    const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
+
+    if (typeof auction !== 'undefined') {
+      setUpdateAuction(isAuctionOpen(auction))
+    }
+    return () => {
+      clearInterval(interval)
+    }
+  }, [count, auction])
+
+  useEffect(() => {
     if (!userAddress) {
       setUserAddress(getRandomWallet().address)
     }
 
-    // Calculate the virtual
+    //Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
 
-    // Add 1 random bids every second
-    const addRandomBidsInterval = setInterval(
-      () =>
-        addBid({
-          address: getRandomWallet().address,
-          sellAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
-          buyAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
-        }),
-      2000
-    )
+    if (typeof auction !== 'undefined') {
+      if (isAuctionOpen(auction)) {
+        //Add 1 random bids every second
+        const addRandomBidsInterval = setInterval(
+          () =>
+            addBid({
+              address: getRandomWallet().address,
+              sellAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
+              buyAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
+            }),
+          2000
+        )
 
-    return () => clearInterval(addRandomBidsInterval)
-  }, [auction, bids, addBid, userAddress, t])
+        return () => {
+          clearInterval(addRandomBidsInterval)
+        }
+      }
+    }
+  }, [addBid, auction, userAddress, bids, updateAuction])
 
   if (!auction) {
     return (
@@ -105,7 +124,7 @@ export function SimulationView() {
           <CardBody>
             <Flex flexDirection="row" justifyContent="space-between">
               <strong>
-                {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
+                {t('texts.calculatedVirtualPrice')}: {numeral(clearingPrice?.sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} / DAI
               </strong>
               <Timer auction={auction} />
             </Flex>
@@ -135,6 +154,7 @@ export function SimulationView() {
                   })
                 }
                 auction={auction}
+                CurrentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
               />
             </CardBody>
           </Card>

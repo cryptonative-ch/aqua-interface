@@ -7,6 +7,7 @@ import Simulation from 'src/assets/svg/Simulation.svg'
 import Compound from 'src/assets/svg/Compound.svg'
 import Gelato from 'src/assets/svg/Gelato.svg'
 import Omen from 'src/assets/svg/Omen.svg'
+import Mesa from 'src/assets/svg/Mesa.svg'
 
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
@@ -61,9 +62,9 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
       endBlock: addMinutes(dateUTC, -59.5).unix(),
       tokenAddress: '0x',
       tokenAmount: 10000,
-      tokenName: 'Simulation',
-      tokenSymbol: 'SIM',
-      tokenIcon: Simulation,
+      tokenName: 'Mesa',
+      tokenSymbol: 'MESA',
+      tokenIcon: Mesa,
       bids: [
         {
           address: '0xf1',
@@ -78,7 +79,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
       startBlock: addHours(dateUTC, 14).unix(),
       endBlock: addHours(dateUTC, 114).unix(),
       tokenAddress: '0x',
-      tokenAmount: 15000,
+      tokenAmount: 150000,
       tokenName: 'Compound',
       tokenSymbol: 'COMP',
       tokenIcon: Compound,
@@ -86,7 +87,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
     },
     // Closed
     {
-      id: '0x143',
+      id: '0x1434',
       startBlock: addHours(dateUTC, -140).unix(),
       endBlock: addHours(dateUTC, -14).unix(),
       tokenAddress: '0x',

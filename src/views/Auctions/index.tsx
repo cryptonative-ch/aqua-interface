@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import WalletConnector from 'cryptowalletconnector'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
@@ -38,12 +39,46 @@ const Badge = styled.span(props => ({
   borderRadius: 32,
 }))
 
+const ConnectButton = styled.button`
+  font-size: 12px;
+  align-items: center;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  display: flex;
+  line-height: 16px;
+  font-weight: 400;
+  height: 40px;
+  justify-content: center;
+  letter-spacing: 0.2px;
+  outline: none;
+  padding: 12px 17px;
+  pointer-events: 'none';
+  text-align: center;
+  transition: all 0.15s ease-out;
+  user-select: none;
+  white-space: nowrap;
+  font-family: Roboto;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background-color: rgb(92, 107, 192);
+  border-color: rgb(92, 107, 192);
+  color: rgb(255, 255, 255);
+
+  @media (min-width: 800px) {
+    font-size: 14px;
+  }
+`
+
 export function AuctionsView() {
   const theme = useTheme()
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
+  const [connectModal, setModalVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
-  const auctions = useAuctions()
+  const {auctions} = useAuctions()
   const [t] = useTranslation()
 
   useEffect(() => {
@@ -60,6 +95,7 @@ export function AuctionsView() {
 
   return (
     <Center minHeight="100%" py={theme.space[4]}>
+
       <Container>
         <AuctionListSection>
           <Flex mb={20} justifyContent="center">
@@ -101,6 +137,10 @@ export function AuctionsView() {
               ))}
         </AuctionListSection>
       </Container>
+      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)}></WalletConnector>
+      <ConnectButton disabled={connectModal} onClick={() => setModalVisible(true)}>
+        {connectModal ? 'Connecting...' : 'Connect'}
+      </ConnectButton>
     </Center>
   )
 }
