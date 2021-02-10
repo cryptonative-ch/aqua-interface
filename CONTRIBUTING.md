@@ -2,7 +2,7 @@
 
 # Abstract
 
-Mesa is an open-source project, including but not limited to the Front End interface and Solidity Smart Contracts. As such, a Contritubtion Guideline shall facilitate the foundation for a collaborative ground for every contributor working on Mesa codebase(s).
+Mesa is an open-source project, including but not limited to the Front End interface and Solidity Smart Contracts. As such, a Contribution Guideline shall facilitate the foundation for a collaborative ground for every contributor working on Mesa codebase(s).
 
 # Style Project Structure
 
