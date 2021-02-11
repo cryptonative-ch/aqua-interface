@@ -11,11 +11,9 @@ import { DefaultNoBidsMessage } from './DefaultNoBidsMessage'
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
 
-//TODO: CHANGE THE FONTS
-//TODO: CREATE FILTER FUNCTION FOR TITLES
-//TODO: CHANGE CSS OF BIDLIST
+
 //TODO: SORT FUNCTION ON DAI PER TOKEN
-//TODO: ONCLICK BUTTON SHOULD REMOVE bid
+
 
 interface BidListComponentProps {
   noBidsMessage?: React.ReactNode
@@ -46,6 +44,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
   const deleteRow = (btn: any) => {
     while (document.getElementById(btn)) {
       document.getElementById(btn)?.remove()
+
     }
   }
 
