@@ -1,3 +1,12 @@
+---
+name: Pull Request
+about: Create a pull request for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 <!--- Provide a general summary of your changes in the Title above -->
 
 ## Description
