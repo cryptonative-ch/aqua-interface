@@ -80,7 +80,7 @@ export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice 
         <input id="tokenAmount" type="number" value={tokenAmount} onChange={onTokenAmountChange} />
       </FormGroup>
       <FormGroup>
-        <label>Price</label>
+        <label>Price Per Token</label>
         <input id="tokenPrice" type="number" value={tokenPrice} onChange={onTokenPriceChange} />
       </FormGroup>
       <FormGroup>

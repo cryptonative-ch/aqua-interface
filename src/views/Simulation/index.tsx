@@ -68,6 +68,7 @@ export function SimulationView() {
     },
     [bids]
   )
+  
 
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
@@ -171,6 +172,9 @@ export function SimulationView() {
                 quotetokenSmybol={auction.tokenSymbol}
                 bids={bids}
                 userAddress={userAddress}
+                currentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
+                fullWidth={false}
+              
               />
             </CardBody>
           </Card>
@@ -184,6 +188,8 @@ export function SimulationView() {
               baseTokenSymbol="DAI"
               quotetokenSmybol={auction.tokenSymbol}
               bids={filterAuctionBidsByAddress(bids, userAddress)}
+              currentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
+              fullWidth={true}
             />
           </CardBody>
         </Card>
