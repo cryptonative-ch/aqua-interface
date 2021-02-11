@@ -76,7 +76,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
         </TR>
       </THead>
       <TBody>
-        {bids.map((bid, i) => {
+        {bids.sort().map((bid, i) => {
           // Compute a the key
           const bidId = `${bid.address}-${bid.sellAmount.toString()}-${bid.buyAmount.toString()}`
           // Compute total price
