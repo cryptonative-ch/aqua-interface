@@ -43,8 +43,14 @@ export const BidList: React.FC<BidListComponentProps> = ({
     return <DefaultNoBidsMessage />
   }
 
+  const deleteRow = (btn: any) => {
+    while (document.getElementById(btn)) {
+      document.getElementById(btn)?.remove()
+    }
+  }
+
   return (
-    <Table>
+    <Table id="myTable">
       <THead>
         <TR>
           <th id="priority-1">
@@ -71,7 +77,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
         </TR>
       </THead>
       <TBody>
-        {bids.map(bid => {
+        {bids.map((bid, i) => {
           // Compute a the key
           const bidId = `${bid.address}-${bid.sellAmount.toString()}-${bid.buyAmount.toString()}`
           // Compute total price
@@ -85,7 +91,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
               : 'none'
 
           const cancel = (
-            <Button padding border>
+            <Button padding border onClick={() => deleteRow(i)}>
               {' '}
               X{' '}
             </Button>
@@ -95,17 +101,17 @@ export const BidList: React.FC<BidListComponentProps> = ({
           const backgroundColor = bid.address === userAddress && status === 'Active' ? '#4895ef' : 'transparent'
 
           return (
-            <TR backgroundColor={backgroundColor} key={bidId}>
+            <TR id={i.toString()} backgroundColor={backgroundColor} key={bidId}>
               <td id="priority-1" style={{ color: 'gray' }}>
                 {numeral(bid.sellAmount.toString()).format('0,0')}
               </td>
               <td id="priority-2" style={{ color: 'gray' }}>
                 {numeral(bid.buyAmount.toString()).format('0,0')}
               </td>
-              <td id="priority-3" style={{ color: 'gray'}}>
+              <td id="priority-3" style={{ color: 'gray' }}>
                 {numeral(totalPrice.toString()).format('0,0')}
               </td>
-              <td id="priority-4" style={{ display: fullWidth ? 'block' : 'none'}}>
+              <td id="priority-4" style={{ display: fullWidth ? 'block' : 'none' }}>
                 {status}
               </td>
               <td id="priority-5" style={{ display: fullWidth ? 'block' : 'none' }}>
@@ -121,21 +127,17 @@ export const BidList: React.FC<BidListComponentProps> = ({
 
 const Table = styled.table`
   width: 100%;
-  
 `
 
 const THead = styled.thead({
   width: '100%',
   display: 'table-header-group',
   textAlign: 'center',
-  
-  
 })
 
 const TBody = styled.tbody({
   display: 'block',
   overflowY: 'auto',
-  
 
   maxHeight: 300,
 })
@@ -148,12 +150,10 @@ const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
   backgroundColor,
   display: 'flex',
   justifyContent: 'space-around',
-  
 }))
 
 const FlexDiv = styled.div`
-display: flex;
-flex-direction: column;
-text-align: right;
-
+  display: flex;
+  flex-direction: column;
+  text-align: right;
 `
