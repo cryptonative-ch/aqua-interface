@@ -38,7 +38,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const checkBidPrice = (currentSettlementPrice: number | undefined) => {
     // Request user's confirmation if there is a bid already
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      return window.confirm(`${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}?`)
+      return window.confirm(`${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`)
     }
     // Proceed to continue
     return true
