@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
 
-//utils
+// Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
-//interfaces
+// Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
 interface BidData {
@@ -20,15 +20,29 @@ interface BidData {
 interface PlaceBidComponentProps {
   auction: Auction
   onSubmit: (bidData: BidData) => void
-  reset?: () => void
-  CurrentSettlementPrice?: number
+  currentSettlementPrice?: number
 }
 
-export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice }: PlaceBidComponentProps) {
+export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: PlaceBidComponentProps) {
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
+
+  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
+
+  /**
+   * Checks the bids place and warns the user if their bid is below
+   * @todo repalce `window.confirm` with a modal
+   */
+  const checkBidPrice = (currentSettlementPrice: number | undefined) => {
+    // Request user's confirmation if there is a bid already
+    if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
+      return window.confirm(`${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`)
+    }
+    // Proceed to continue
+    return true
+  }
 
   // Change handlers
   const onTokenPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -43,33 +57,16 @@ export function PlaceBidForm({ auction, onSubmit, reset, CurrentSettlementPrice 
     validateForm([tokenAmount, tokenPrice])
   }
 
-  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
-
   // Submission handler
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (BidWarning(CurrentSettlementPrice) === true) {
+    if (checkBidPrice(currentSettlementPrice) === true) {
       onSubmit({
         tokenAmount,
         tokenPrice,
       })
-      reset && reset()
-    }
-    reset && reset()
-  }
-
-  const BidWarning = (CurrentSettlementPrice: number | undefined) => {
-    if (CurrentSettlementPrice) {
-      if (tokenPrice <= CurrentSettlementPrice * 0.7) {
-        if (window.confirm(t('Warning: Bid may be too low to be included'))) {
-          return true
-        } else {
-          return false
-        }
-      }
     }
   }
-
 
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>
