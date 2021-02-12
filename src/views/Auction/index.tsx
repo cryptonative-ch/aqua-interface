@@ -90,7 +90,7 @@ export function AuctionView() {
                   console.log('Add to Auction')
                 }}
                 auction={auction}
-                CurrentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
+                currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
               />
             </CardBody>
           </Card>

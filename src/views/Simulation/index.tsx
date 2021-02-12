@@ -158,7 +158,7 @@ export function SimulationView() {
                   })
                 }
                 auction={auction}
-                CurrentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
+                currentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
               />
             </CardBody>
           </Card>
