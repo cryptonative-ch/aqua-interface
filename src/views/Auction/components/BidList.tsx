@@ -6,6 +6,7 @@ import React from 'react'
 
 // Components
 import { DefaultNoBidsMessage } from './DefaultNoBidsMessage'
+import { hasLowerClearingPrice } from "src/mesa/price";
 
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
@@ -48,6 +49,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
     }
   }
 
+  console.log(bids.sort(hasLowerClearingPrice))
   return (
     <Table id="myTable">
       <THead>
@@ -76,7 +78,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
         </TR>
       </THead>
       <TBody>
-        {bids.sort().map((bid, i) => {
+        {bids.sort(hasLowerClearingPrice).map((bid, i) => {
           // Compute a the key
           const bidId = `${bid.address}-${bid.sellAmount.toString()}-${bid.buyAmount.toString()}`
           // Compute total price

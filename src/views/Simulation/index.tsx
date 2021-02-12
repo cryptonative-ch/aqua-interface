@@ -68,11 +68,10 @@ export function SimulationView() {
     },
     [bids]
   )
-  
 
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
-    
+
     if (typeof auction !== 'undefined' && auction != null) {
       setUpdateAuction(isAuctionOpen(auction))
     }
@@ -90,9 +89,7 @@ export function SimulationView() {
     setClearingPrice(calculateClearingPrice(bids))
 
     if (typeof auction !== 'undefined' && auction != null) {
-      
       if (isAuctionOpen(auction)) {
-        console.log(isAuctionOpen(auction))
         //Add 1 random bids every second
         const addRandomBidsInterval = setInterval(
           () =>
@@ -174,7 +171,6 @@ export function SimulationView() {
                 userAddress={userAddress}
                 currentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
                 fullWidth={false}
-              
               />
             </CardBody>
           </Card>

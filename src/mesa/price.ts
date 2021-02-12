@@ -12,7 +12,7 @@ import { AuctionBid } from 'src/interfaces/Auction'
  *
  * @param auctionBids
  */
-function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
+export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
   if (order1.buyAmount.mul(order2.sellAmount).lt(order2.buyAmount.mul(order1.sellAmount))) return -1
   if (order1.buyAmount.mul(order2.sellAmount).eq(order2.buyAmount.mul(order1.sellAmount))) {
     if (order1.address < order2.address) return -1
