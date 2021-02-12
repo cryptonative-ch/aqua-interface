@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
 
-//utils
+// Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
-//interfaces
+// Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
 interface BidData {
