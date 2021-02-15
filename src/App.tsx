@@ -12,11 +12,15 @@ import { theme } from './styles/theme'
 // App Router
 import { AppRouter } from './router'
 import { useModal, Modal } from 'src/components/Modal'
+import { ConfirmButton } from 'src/components/Button'
 
 export const App = () => {
   const { isShown, toggle } = useModal()
 
-  const content = <Fragment>This is the test</Fragment>
+  const content = <Fragment>
+    <div>You agree to the Terms and Conditions of sale by pressing the Continue</div>
+    <ConfirmButton onClick={() => toggle(true)}>Continue</ConfirmButton>
+  </Fragment>
 
   return (
     <CookiesProvider>
@@ -36,7 +40,7 @@ export const App = () => {
               }}
             >
               <AppRouter />
-              <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="confirmation" />
+              <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
             </UseWalletProvider>
           </BrowserRouter>
         </Suspense>

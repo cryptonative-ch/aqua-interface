@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie'
 
 // Components
 // import { Button } from 'src/components/Button'
+import CloseIcon from 'src/assets/svg/Close.svg'
 
 //Internal
 import { Wrapper, Header, StyledModal, HeaderText, CloseButton, Content, Backdrop } from './style'
@@ -24,7 +25,9 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
         <StyledModal>
           <Header>
             <HeaderText>{headerText}</HeaderText>
-            <CloseButton onClick={hide}>X</CloseButton>
+            <CloseButton onClick={hide}>
+              <img src={CloseIcon} alt="close icon" />
+            </CloseButton>
           </Header>
           <Content>{modalContent}</Content>
         </StyledModal>
@@ -37,10 +40,12 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
 
 export const useModal = () => {
   const [cookies, setCookie] = useCookies(['termsofsale'])
-  const [isShown, setShown] = useState<boolean>(cookies.termsofsale === "true")
+  const [isShown, setShown] = useState<boolean>(cookies.termsofsale !== "true")
 
-  const toggle = () => {
-    setCookie('termsofsale', "true", { path: '/' });
+  const toggle = (flag: boolean = false) => {
+    if (flag) {
+      setCookie('termsofsale', "true", { path: '/' });
+    }
     setShown(!isShown)
   }
 
