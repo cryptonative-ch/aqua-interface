@@ -150,11 +150,28 @@ export function IndexView() {
 
 ## Naming Convention
 
-1. Component must be `CapitalCase`
-2. Functions must be `camelCase`
-3. Variable names must be `camelCase`
-4. Constants must be `CAPITAL_CASE`
+### React Components
+
+Use `TitleCase` for Components.
+
+### Functions/Variables
+
+Use `camelCase` for variables and functions
+
+### Constants
+
+Use `CAPITAL_CASE` for constants.
 
 # Tests
 
-Mesa uses [Jest](https://jestjs.io/)
+The code base uses [Jest](https://jestjs.io/)
+
+Each Component/function/file must be accompanied with approriate tests.
+
+# Git Branches
+
+Avoid working on the `main` branch unless absolutely necessary. Branch names should be named after what they do.
+
+## Branch name
+
+Please refer to [Phil Hord's answer on Stack Overflow](https://stackoverflow.com/a/6065944/2151050).
