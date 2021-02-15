@@ -1,5 +1,5 @@
 // External
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, Fragment } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { BigNumber } from 'ethers'
@@ -23,6 +23,7 @@ import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
+import { useModal, Modal } from 'src/components/Modal'
 
 // Layout
 import { Center } from 'src/layouts/Center'
@@ -61,6 +62,14 @@ export function SimulationView() {
   const { auction } = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
+  const { isShown, toggle } = useModal()
+
+  const content = (
+    <Fragment>
+      `${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`
+    </Fragment>
+  )
+
 
   const addBid = useCallback(
     (newAuctionBid: AuctionBid) => {
@@ -118,6 +127,11 @@ export function SimulationView() {
 
   return (
     <Center minHeight="100%">
+      <button onClick={toggle}>open modal</button>
+      <Fragment>
+        
+          <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="confirmation" />
+        </Fragment>
       <Container>
         <Header title="Simulation" />
         <Card mb={theme.space[4]}>

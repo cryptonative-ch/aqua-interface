@@ -11,9 +11,9 @@ import { hasLowerClearingPrice } from "src/mesa/price";
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
+import { Center } from 'src/layouts/Center'
 
 
-//TODO: SORT FUNCTION ON DAI PER TOKEN
 
 
 interface BidListComponentProps {
@@ -49,32 +49,32 @@ export const BidList: React.FC<BidListComponentProps> = ({
     }
   }
 
-  console.log(bids.sort(hasLowerClearingPrice))
+  
   return (
     <Table id="myTable">
       <THead>
         <TR>
-          <th id="priority-1">
+          <TH id="priority-1">
             <FlexDiv>
-              <span style={{ color: 'gray' }}>Price </span> ${baseTokenSymbol}
+              <div style={{ color: 'gray'}}>Price</div> <div>&nbsp;${baseTokenSymbol}</div> 
             </FlexDiv>
-          </th>
-          <th id="priority-2">
+          </TH>
+          <TH id="priority-2">
             <FlexDiv>
-              <span style={{ color: 'gray' }}>Amount</span> ${quotetokenSmybol}
+              <div style={{ color: 'gray' }}>Amount</div> <div>&nbsp;${quotetokenSmybol}</div>
             </FlexDiv>
-          </th>
-          <th id="priority-3">
+          </TH>
+          <TH id="priority-3">
             <FlexDiv>
-              <span style={{ color: 'gray' }}>Total</span> ${baseTokenSymbol}
+              <div style={{ color: 'gray' }}>Total</div> <div>&nbsp;${baseTokenSymbol}</div> 
             </FlexDiv>
-          </th>
-          <th id="priority-4" style={{ display: fullWidth ? 'block' : 'none' }}>
+          </TH>
+          <TH id="priority-4" style={{ display: fullWidth ? 'block' : 'none' }}>
             Status
-          </th>
-          <th id="priority-5" style={{ display: fullWidth ? 'block' : 'none' }}>
+          </TH>
+          <TH id="priority-5" style={{ display: fullWidth ? 'block' : 'none' }}>
             Cancel
-          </th>
+          </TH>
         </TR>
       </THead>
       <TBody>
@@ -103,21 +103,21 @@ export const BidList: React.FC<BidListComponentProps> = ({
 
           return (
             <TR id={i.toString()} backgroundColor={backgroundColor} key={bidId}>
-              <td id="priority-1" style={{ color: 'gray' }}>
+              <TD id="priority-1" style={{ color: 'gray' }}>
                 {numeral(bid.sellAmount.toString()).format('0,0')}
-              </td>
-              <td id="priority-2" style={{ color: 'gray' }}>
+              </TD>
+              <TD id="priority-2" style={{ color: 'gray' }}>
                 {numeral(bid.buyAmount.toString()).format('0,0')}
-              </td>
-              <td id="priority-3" style={{ color: 'gray' }}>
+              </TD>
+              <TD id="priority-3" style={{ color: 'gray' }}>
                 {numeral(totalPrice.toString()).format('0,0')}
-              </td>
-              <td id="priority-4" style={{ display: fullWidth ? 'block' : 'none' }}>
+              </TD>
+              <TD id="priority-4" style={{ display: fullWidth ? 'block' : 'none' }}>
                 {status}
-              </td>
-              <td id="priority-5" style={{ display: fullWidth ? 'block' : 'none' }}>
+              </TD>
+              <TD id="priority-5" style={{ display: fullWidth ? 'block' : 'none' }}>
                 {cancel}
-              </td>
+              </TD>
             </TR>
           )
         })}
@@ -128,18 +128,25 @@ export const BidList: React.FC<BidListComponentProps> = ({
 
 const Table = styled.table`
   width: 100%;
+  
 `
+
+const FlexDiv = styled.div`
+display: flex;
+  text-align: center;
+  margin: 0 auto;
+`
+
+
+
 
 const THead = styled.thead({
   width: '100%',
-  display: 'table-header-group',
-  textAlign: 'center',
 })
 
 const TBody = styled.tbody({
   display: 'block',
   overflowY: 'auto',
-
   maxHeight: 300,
 })
 
@@ -150,11 +157,22 @@ interface TRProps {
 const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
   backgroundColor,
   display: 'flex',
-  justifyContent: 'space-around',
-}))
+  // textAlign: 'center',
+  // justifyContent: 'stretch',
+  // wordWrap: 'break-word'
+}));
 
-const FlexDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: right;
+const TH = styled.th`
+text-align: center;
+display: flex;
+flex: 1;
 `
+
+
+
+const TD = styled.td` 
+flex: 1;
+text-align: center;
+`
+
+

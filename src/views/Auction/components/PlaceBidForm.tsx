@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
-import { useModal, Modal } from 'src/components/Modal'
+import { useModal } from 'src/components/Modal'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
@@ -29,25 +29,28 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
-  const { isShown, toggle } = useModal()
+  const { toggle, isShown } = useModal()
 
-  const content = <Fragment>`${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`</Fragment>
+  const content = (
+    <Fragment>
+      `${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`
+    </Fragment>
+  )
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
+
   /**
    * Checks the bids place and warns the user if their bid is below
-   * @todo repalce `window.confirm` with a modal
+   * @todo replace `window.confirm` with a modal
+   * @todo check how to transfer react states across components
+   * @todo check how to trigger a modal from one component to another
    */
   const checkBidPrice = (currentSettlementPrice: number | undefined) => {
     // Request user's confirmation if there is a bid already
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      console.log('bid warning')
-      return (
-        <Fragment>
-          <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="confirmation" />
-        </Fragment>
-      )
+     toggle()
+     console.log(isShown)
 
       // return window.confirm(`${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`)
     }

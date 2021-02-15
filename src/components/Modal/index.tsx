@@ -40,5 +40,6 @@ export const useModal = () => {
   return {
     isShown,
     toggle,
+    setShown,
   }
 }
