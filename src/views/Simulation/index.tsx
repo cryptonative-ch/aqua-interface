@@ -64,11 +64,15 @@ export function SimulationView() {
   const theme = useTheme()
   const { isShown, toggle } = useModal()
 
+  console.log(isShown)
+
+
   const content = (
     <Fragment>
-      `${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`
+      {t('texts.bidMaybeTooLow')}.  {t('texts.doYouWishToContinue')}
     </Fragment>
   )
+ 
 
 
   const addBid = useCallback(
@@ -127,11 +131,9 @@ export function SimulationView() {
 
   return (
     <Center minHeight="100%">
-      <button onClick={toggle}>open modal</button>
       <Fragment>
-        
-          <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="confirmation" />
-        </Fragment>
+        <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="confirmation" />
+      </Fragment>
       <Container>
         <Header title="Simulation" />
         <Card mb={theme.space[4]}>
@@ -170,6 +172,7 @@ export function SimulationView() {
                 }
                 auction={auction}
                 currentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
+                modalAdd={toggle}
               />
             </CardBody>
           </Card>

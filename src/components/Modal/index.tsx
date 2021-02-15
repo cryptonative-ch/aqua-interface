@@ -2,8 +2,6 @@
 import React, { Fragment, useState } from 'react'
 import ReactDOM from 'react-dom'
 
-// Components
-// import { Button } from 'src/components/Button'
 
 //Internal
 import { Wrapper, Header, StyledModal, HeaderText, CloseButton, Content, Backdrop } from './style'

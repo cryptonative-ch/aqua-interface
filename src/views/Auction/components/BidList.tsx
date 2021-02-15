@@ -11,8 +11,6 @@ import { hasLowerClearingPrice } from "src/mesa/price";
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
-import { Center } from 'src/layouts/Center'
-
 
 
 
@@ -157,9 +155,6 @@ interface TRProps {
 const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
   backgroundColor,
   display: 'flex',
-  // textAlign: 'center',
-  // justifyContent: 'stretch',
-  // wordWrap: 'break-word'
 }));
 
 const TH = styled.th`

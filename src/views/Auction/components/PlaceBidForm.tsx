@@ -1,11 +1,11 @@
 // External
-import React, { useState, ChangeEvent, FormEvent, Fragment } from 'react'
+import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
-import { useModal } from 'src/components/Modal'
+import {  useModal } from 'src/components/Modal'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
@@ -22,37 +22,30 @@ interface PlaceBidComponentProps {
   auction: Auction
   onSubmit: (bidData: BidData) => void
   currentSettlementPrice?: number
+  modalAdd?: (input: any) => void
 }
 
-export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: PlaceBidComponentProps) {
+export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalAdd }: PlaceBidComponentProps) {
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
-  const { toggle, isShown } = useModal()
+  const { isShown, toggle } = useModal()
 
-  const content = (
-    <Fragment>
-      `${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`
-    </Fragment>
-  )
+  console.log(modalAdd, isShown)
+
+ 
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
-
   /**
    * Checks the bids place and warns the user if their bid is below
-   * @todo replace `window.confirm` with a modal
-   * @todo check how to transfer react states across components
-   * @todo check how to trigger a modal from one component to another
+   * 
    */
   const checkBidPrice = (currentSettlementPrice: number | undefined) => {
     // Request user's confirmation if there is a bid already
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-     toggle()
-     console.log(isShown)
-
-      // return window.confirm(`${t('texts.bidMaybeTooLow')}. ${t('texts.doYouWishToContinue')}`)
+     modalAdd ?  modalAdd(toggle) : console.log('failed');
     }
     // Proceed to continue
     return true
@@ -75,9 +68,11 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (checkBidPrice(currentSettlementPrice) === true) {
+      
       onSubmit({
         tokenAmount,
         tokenPrice,
+        
       })
     }
   }
