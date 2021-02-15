@@ -1,7 +1,6 @@
 // External
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
-import { useCookies } from 'react-cookie'
 
 // Components
 // import { Button } from 'src/components/Button'
@@ -36,21 +35,4 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
   )
 
   return isShown ? ReactDOM.createPortal(modal, document.body) : null
-}
-
-export const useModal = () => {
-  const [cookies, setCookie] = useCookies(['termsofsale'])
-  const [isShown, setShown] = useState<boolean>(cookies.termsofsale !== "true")
-
-  const toggle = (flag: boolean = false) => {
-    if (flag) {
-      setCookie('termsofsale', "true", { path: '/' });
-    }
-    setShown(!isShown)
-  }
-
-  return {
-    isShown,
-    toggle,
-  }
 }

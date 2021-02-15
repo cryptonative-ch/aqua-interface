@@ -11,8 +11,9 @@ import { theme } from './styles/theme'
 
 // App Router
 import { AppRouter } from './router'
-import { useModal, Modal } from 'src/components/Modal'
-import { ConfirmButton } from 'src/components/Button'
+import { useModal } from 'src/hooks/useModal'
+import { Modal } from 'src/components/Modal'
+import { ConfirmButton } from 'src/components/ConfirmButton'
 
 export const App = () => {
   const { isShown, toggle } = useModal()
