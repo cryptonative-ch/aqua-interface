@@ -72,7 +72,7 @@ export function SimulationView() {
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
 
-    if (typeof auction !== 'undefined') {
+    if (auction) {
       setUpdateAuction(isAuctionOpen(auction))
     }
     return () => {
@@ -88,7 +88,7 @@ export function SimulationView() {
     //Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
 
-    if (typeof auction !== 'undefined') {
+    if (auction) {
       if (isAuctionOpen(auction)) {
         //Add 1 random bids every second
         const addRandomBidsInterval = setInterval(
