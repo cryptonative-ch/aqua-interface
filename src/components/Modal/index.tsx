@@ -7,18 +7,7 @@ import { Button } from 'src/components/Button'
 import CloseIcon from 'src/assets/svg/Close.svg'
 
 //Internal
-import {
-  Wrapper,
-  Header,
-  StyledModal,
-  HeaderText,
-  CloseButton,
-  Content,
-  Backdrop,
-  ConfirmationButton,
-  CancelButton,
-  ConfirmButton,
-} from './style'
+import { Wrapper, Header, StyledModal, HeaderText, CloseButton, Content, Backdrop, ConfirmationButton } from './style'
 
 export interface ModalProps {
   isShown: boolean
@@ -46,7 +35,7 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
               <Button margin onClick={hide}>
                 Cancel
               </Button>
-              <Button margin onClick={onConfirm}>
+              <Button margin onClick={hide}>
                 Confirm
               </Button>
             </ConfirmationButton>

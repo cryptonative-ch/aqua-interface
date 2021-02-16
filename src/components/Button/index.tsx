@@ -25,7 +25,7 @@ export const Button = styled.button<ButtonProps>(
   props => ({
     appearance: 'none',
     padding: props.padding ? '0px' : '12px 16px',
-    margin: props.margin ? '5px' : '0px',
+    margin: props.margin ? '5px' : 'auto',
     textAlign: 'center',
     display: 'inline-block',
     verticalAlign: 'middle',
