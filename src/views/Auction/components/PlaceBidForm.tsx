@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
-import {  useGenericModal } from 'src/components/Modal'
+import { useGenericModal } from 'src/components/Modal'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
@@ -31,32 +31,27 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalA
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
   const { toggle } = useGenericModal()
- 
-  
-  
-
- 
- 
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
   /**
    * Checks the bids place and warns the user if their bid is below
-   * @steps user submits bid, 
-   * bid is checked if under VSP,  
-   * toggles state in parent component, 
-   * modal window pops up, 
+   * @steps user submits bid,
+   * bid is checked if under VSP,
+   * toggles state in parent component,
+   * modal window pops up,
    * send a state back down to child to
    */
 
-   
-  const checkBidPrice =  async (currentSettlementPrice: number | undefined) => {
+  const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
     // Request user's confirmation if there is a bid already
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      modalAdd ?  modalAdd(toggle) : console.log('modalAdd is not needed');
-      
+      // triggers modal component to appear
+      modalAdd ? modalAdd(toggle) : console.log('modalAdd is not needed')
+      return false
+      // await for onclick button
     }
-    
+
     // Proceed to continue
     return true
   }
@@ -77,7 +72,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalA
   // Submission handler
   const onFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if ( await checkBidPrice(currentSettlementPrice) === true) {
+    if ((await checkBidPrice(currentSettlementPrice)) === true) {
       onSubmit({
         tokenAmount,
         tokenPrice,

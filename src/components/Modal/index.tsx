@@ -18,6 +18,13 @@ export interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, headerText, onConfirm }) => {
+
+  const passBid =() => {
+    
+    hide();
+  }
+
+
   const modal = (
     <Fragment>
       <Backdrop />
@@ -35,7 +42,7 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
               <Button margin onClick={hide}>
                 Cancel
               </Button>
-              <Button margin onClick={hide}>
+              <Button margin onClick={passBid}>
                 Confirm
               </Button>
             </ConfirmationButton>
