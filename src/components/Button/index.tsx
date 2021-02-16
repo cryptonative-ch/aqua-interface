@@ -18,12 +18,14 @@ export type ButtonProps = SizeProps &
     rounded?: boolean
     padding?: boolean
     border?: boolean
+    margin?: boolean
   }
 
 export const Button = styled.button<ButtonProps>(
   props => ({
     appearance: 'none',
     padding: props.padding ? '0px' : '12px 16px',
+    margin: props.margin ? '5px' : '0px',
     textAlign: 'center',
     display: 'inline-block',
     verticalAlign: 'middle',

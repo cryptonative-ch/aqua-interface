@@ -23,7 +23,7 @@ import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
-import { useModal, Modal } from 'src/components/Modal'
+import { useGenericModal, Modal } from 'src/components/Modal'
 
 // Layout
 import { Center } from 'src/layouts/Center'
@@ -62,18 +62,15 @@ export function SimulationView() {
   const { auction } = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
-  const { isShown, toggle } = useModal()
-
-  console.log(isShown)
+  const { isShown, toggle } = useGenericModal()
+  const onConfirm = () => true
 
 
   const content = (
     <Fragment>
-      {t('texts.bidMaybeTooLow')}.  {t('texts.doYouWishToContinue')}
+      {t('texts.bidMaybeTooLow')}. {t('texts.doYouWishToContinue')}
     </Fragment>
   )
- 
-
 
   const addBid = useCallback(
     (newAuctionBid: AuctionBid) => {
@@ -85,7 +82,7 @@ export function SimulationView() {
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
 
-    if (typeof auction !== 'undefined' && auction != null) {
+    if (auction) {
       setUpdateAuction(isAuctionOpen(auction))
     }
     return () => {
@@ -101,7 +98,7 @@ export function SimulationView() {
     //Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
 
-    if (typeof auction !== 'undefined' && auction != null) {
+    if (auction) {
       if (isAuctionOpen(auction)) {
         //Add 1 random bids every second
         const addRandomBidsInterval = setInterval(
@@ -132,7 +129,14 @@ export function SimulationView() {
   return (
     <Center minHeight="100%">
       <Fragment>
-        <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="confirmation" />
+        <Modal
+          isShown={isShown}
+          hide={toggle}
+          modalContent={content}
+          headerText="Warning"
+          onConfirm={onConfirm}
+          
+        />
       </Fragment>
       <Container>
         <Header title="Simulation" />

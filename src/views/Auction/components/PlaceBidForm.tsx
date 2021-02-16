@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
-import {  useModal } from 'src/components/Modal'
+import {  useGenericModal } from 'src/components/Modal'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
@@ -30,23 +30,30 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalA
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
-  const { isShown, toggle } = useModal()
+  const { toggle } = useGenericModal()
+  
+  
 
-  console.log(modalAdd, isShown)
-
+ 
  
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
   /**
    * Checks the bids place and warns the user if their bid is below
-   * 
+   * @steps user submits bid, 
+   * bid is checked if under VSP,  
+   * toggles state in parent component, 
+   * modal window pops up, 
+   * send a state back down to child to
    */
   const checkBidPrice = (currentSettlementPrice: number | undefined) => {
     // Request user's confirmation if there is a bid already
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-     modalAdd ?  modalAdd(toggle) : console.log('failed');
+     modalAdd ?  modalAdd(toggle) : console.log('modalAdd is not needed');
+    
     }
+    
     // Proceed to continue
     return true
   }

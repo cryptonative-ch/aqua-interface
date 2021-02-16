@@ -20,7 +20,7 @@
     "runningAuctions": "Running Auctions",
     "upcomingAuctions": "Upcoming Auctions",
     "calculatedVirtualPrice": "Virtual Settlement Price",
-    "bidMaybeTooLow": "Warning: Bid may be too low to be included",
+    "bidMaybeTooLow": "Bid may be too low to be included",
     "doYouWishToContinue": "Do you wish to continue?"
   },
   "buttons": {
