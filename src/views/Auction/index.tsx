@@ -43,7 +43,7 @@ export function AuctionView() {
   const containerWidth = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
-  const {auction} = useAuction(params.auctionId)
+  const { auction } = useAuction(params.auctionId)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
@@ -99,7 +99,13 @@ export function AuctionView() {
               <CardTitle>{t('texts.bids')}</CardTitle>
             </CardBody>
             <CardBody>
-              <BidList baseTokenSymbol="DAI" quotetokenSmybol={auction.tokenSymbol} bids={auction.bids} />
+              <BidList
+                baseTokenSymbol="DAI"
+                quotetokenSmybol={auction.tokenSymbol}
+                bids={auction.bids}
+                fullWidth={false}
+                currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
+              />
             </CardBody>
           </Card>
         </FlexGroupColumns>

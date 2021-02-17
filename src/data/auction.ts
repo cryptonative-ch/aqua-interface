@@ -3,7 +3,6 @@ import dayjs, { Dayjs } from 'dayjs'
 import { BigNumber } from 'ethers'
 
 // Icons
-import Simulation from 'src/assets/svg/Simulation.svg'
 import Compound from 'src/assets/svg/Compound.svg'
 import Gelato from 'src/assets/svg/Gelato.svg'
 import Omen from 'src/assets/svg/Omen.svg'
@@ -15,7 +14,6 @@ import { Auction } from 'src/interfaces/Auction'
 const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 
 const addMinutes = (dayjsInstance: Dayjs, minutes: number) => dayjsInstance.clone().add(minutes, 'm')
-
 
 export function generateAuctionData(unixTimestamp: number): Auction[] {
   const dateUTC = dayjs.unix(unixTimestamp)
@@ -58,8 +56,8 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
     },
     {
       id: 'simulation',
-      startBlock: addMinutes(dateUTC, -59.8).unix(),
-      endBlock: addMinutes(dateUTC, -59.5).unix(),
+      startBlock: addMinutes(dateUTC, -59.95).unix(),
+      endBlock: addMinutes(dateUTC, +5).unix(),
       tokenAddress: '0x',
       tokenAmount: 10000,
       tokenName: 'Mesa',

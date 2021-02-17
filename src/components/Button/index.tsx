@@ -16,18 +16,22 @@ export type ButtonProps = SizeProps &
   FontWeightProps & {
     variant?: string
     rounded?: boolean
+    padding?: boolean
+    border?: boolean
+    margin?: boolean
   }
 
 export const Button = styled.button<ButtonProps>(
   props => ({
     appearance: 'none',
-    padding: '12px 16px',
+    padding: props.padding ? '0px' : '12px 16px',
+    margin: props.margin ? '5px' : 'auto',
     textAlign: 'center',
     display: 'inline-block',
     verticalAlign: 'middle',
     userSelect: 'none',
     backgroundColor: 'transparent',
-    border: `1px solid ${props.theme.colors.primary}`,
+    border: props.border ? 'none' : `1px solid ${props.theme.colors.primary}`,
     // @TODO: Move radis to Theme
     borderRadius: props.rounded ? '32px' : props.theme.radii.base,
     fontSize: '1rem',

@@ -1,7 +1,5 @@
-
 //External
 import styled from 'styled-components'
-
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -26,7 +24,8 @@ export const StyledModal = styled.div`
   background: white;
   position: relative;
   margin: auto;
-  border-radius: 8px;
+  border-style: solid;
+  border-width: 2px;
 `
 export const Header = styled.div`
   border-radius: 8px 8px 0 0;
@@ -57,4 +56,19 @@ export const Content = styled.div`
   max-height: 30rem;
   overflow-x: hidden;
   overflow-y: auto;
+  text-align: center;
+`
+
+export const ConfirmationButton = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+export const ConfirmButton = styled.button`
+  width: 6rem;
+`
+
+export const CancelButton = styled.button`
+  width: 6rem;
+  margin-left: 10px;
 `

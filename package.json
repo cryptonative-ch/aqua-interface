@@ -36,6 +36,7 @@
     "i18next-http-backend": "^1.0.21",
     "keccak": "^3.0.1",
     "numeral": "^2.0.6",
+    "prettier": "^2.2.1",
     "randombytes": "^2.1.0",
     "react": "^16.14.0",
     "react-cookie": "^4.0.3",

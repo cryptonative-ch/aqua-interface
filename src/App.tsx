@@ -23,25 +23,29 @@ export const App = () => {
   const [sanction, setSanction] = useState<string>('false')
 
   const getGeoInfo = useCallback(() => {
-    axios.get('https://ipapi.co/json/').then((response) => {
-      let data = response.data
-      if (SANCTION_LIST.indexOf(data.country_code) >= 0) {
-        setSanction('true')
-      } else {
-        setSanction('false')
-      }
-    }).catch(() => {
-    })
+    axios
+      .get('https://ipapi.co/json/')
+      .then(response => {
+        let data = response.data
+        if (SANCTION_LIST.indexOf(data.country_code) >= 0) {
+          setSanction('true')
+        } else {
+          setSanction('false')
+        }
+      })
+      .catch(() => {})
   }, [])
 
   useEffect(() => {
     getGeoInfo()
   }, [])
 
-  const content = <Fragment>
-    <div>You agree to the Terms and Conditions of sale by pressing the Continue</div>
-    <ConfirmButton onClick={() => toggle(true)}>Continue</ConfirmButton>
-  </Fragment>
+  const content = (
+    <Fragment>
+      <div>You agree to the Terms and Conditions of sale by pressing the Continue</div>
+      <ConfirmButton onClick={() => toggle(true)}>Continue</ConfirmButton>
+    </Fragment>
+  )
 
   return (
     <CookiesProvider>
@@ -53,11 +57,11 @@ export const App = () => {
               <UseWalletProvider
                 chainId={42}
                 connectors={{
-                  walletconnect: { rpcUrl: "https://mainnet.eth.aragon.network/" },
+                  walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
                   walletlink: {
-                    url: "https://mainnet.eth.aragon.network/",
-                    appName: "Coinbase Wallet",
-                    appLogoUrl: "",
+                    url: 'https://mainnet.eth.aragon.network/',
+                    appName: 'Coinbase Wallet',
+                    appLogoUrl: '',
                   },
                 }}
               >
