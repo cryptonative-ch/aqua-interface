@@ -6,13 +6,11 @@ import React from 'react'
 
 // Components
 import { DefaultNoBidsMessage } from './DefaultNoBidsMessage'
-import { hasLowerClearingPrice } from "src/mesa/price";
+import { hasLowerClearingPrice } from 'src/mesa/price'
 
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
-
-
 
 interface BidListComponentProps {
   noBidsMessage?: React.ReactNode
@@ -40,21 +38,15 @@ export const BidList: React.FC<BidListComponentProps> = ({
     return <DefaultNoBidsMessage />
   }
 
-  const deleteRow = (btn: any) => {
-    while (document.getElementById(btn)) {
-      // document.getElementById(btn)?.remove()
+ 
 
-    }
-  }
-
-  
   return (
     <Table id="myTable">
       <THead>
         <TR>
           <TH id="priority-1">
             <FlexDiv>
-              <div style={{ color: 'gray'}}>Price</div> <div>&nbsp;${baseTokenSymbol}</div> 
+              <div style={{ color: 'gray' }}>Price</div> <div>&nbsp;${baseTokenSymbol}</div>
             </FlexDiv>
           </TH>
           <TH id="priority-2">
@@ -64,7 +56,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
           </TH>
           <TH id="priority-3">
             <FlexDiv>
-              <div style={{ color: 'gray' }}>Total</div> <div>&nbsp;${baseTokenSymbol}</div> 
+              <div style={{ color: 'gray' }}>Total</div> <div>&nbsp;${baseTokenSymbol}</div>
             </FlexDiv>
           </TH>
           <TH id="priority-4" style={{ display: fullWidth ? 'block' : 'none' }}>
@@ -90,14 +82,14 @@ export const BidList: React.FC<BidListComponentProps> = ({
               : 'none'
 
           const cancel = (
-            <Button padding border onClick={() => deleteRow(i)}>
+            <Button padding border>
               {' '}
               X{' '}
             </Button>
           )
 
           // highlight user's bids
-          const backgroundColor = bid.address === userAddress && status === 'Active' ? '#4895ef' : 'transparent'
+          const backgroundColor = bid.address === userAddress ? (status === 'Active' ? '#99FF99' : '#FF99AA') : 'transparent'
 
           return (
             <TR id={i.toString()} backgroundColor={backgroundColor} key={bidId}>
@@ -126,17 +118,13 @@ export const BidList: React.FC<BidListComponentProps> = ({
 
 const Table = styled.table`
   width: 100%;
-  
 `
 
 const FlexDiv = styled.div`
-display: flex;
+  display: flex;
   text-align: center;
   margin: 0 auto;
 `
-
-
-
 
 const THead = styled.thead({
   width: '100%',
@@ -155,19 +143,15 @@ interface TRProps {
 const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
   backgroundColor,
   display: 'flex',
-}));
+}))
 
 const TH = styled.th`
-text-align: center;
-display: flex;
-flex: 1;
+  text-align: center;
+  display: flex;
+  flex: 1;
 `
 
-
-
-const TD = styled.td` 
-flex: 1;
-text-align: center;
+const TD = styled.td`
+  flex: 1;
+  text-align: center;
 `
-
-

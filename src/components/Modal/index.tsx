@@ -1,5 +1,5 @@
 // External
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
 
 // Components

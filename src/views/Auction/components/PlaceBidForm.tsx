@@ -6,9 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
 
-// Hooks
-import { useGenericModal } from 'src/hooks/useGenericModal'
-
 // Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
@@ -37,17 +34,11 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
-  /**
-   * Checks the bids place and warns the user if their bid is below
-   * @steps user submits bid,
-   * bid is checked if under VSP,
-   * toggles state in parent component,
-   * modal window pops up,
-   * send a state back down to child to
-   */
+
 
   const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
+      
       toggleModal()
       return false
     }
