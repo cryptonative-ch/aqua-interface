@@ -42,7 +42,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
 
   const deleteRow = (btn: any) => {
     while (document.getElementById(btn)) {
-      document.getElementById(btn)?.remove()
+      // document.getElementById(btn)?.remove()
 
     }
   }

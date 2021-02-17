@@ -19,12 +19,6 @@ export interface ModalProps {
 
 export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, headerText, onConfirm }) => {
 
-  const passBid =() => {
-    
-    hide();
-  }
-
-
   const modal = (
     <Fragment>
       <Backdrop />
@@ -42,7 +36,7 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
               <Button margin onClick={hide}>
                 Cancel
               </Button>
-              <Button margin onClick={passBid}>
+              <Button margin onClick={onConfirm}>
                 Confirm
               </Button>
             </ConfirmationButton>
@@ -53,14 +47,4 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
   )
 
   return isShown ? ReactDOM.createPortal(modal, document.body) : null
-}
-
-export const useGenericModal = () => {
-  const [isShown, setShown] = useState<boolean>(false)
-  const toggle = () => setShown(!isShown)
-  return {
-    isShown,
-    toggle,
-    setShown,
-  }
 }

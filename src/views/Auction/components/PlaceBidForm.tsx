@@ -1,17 +1,20 @@
 // External
-import React, { useState, ChangeEvent, FormEvent } from 'react'
+import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
-import { useGenericModal } from 'src/components/Modal'
+
+// Hooks
+import { useGenericModal } from 'src/hooks/useGenericModal'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
+import { BidModalContext } from 'src/contexts'
 
 interface BidData {
   tokenAmount: number
@@ -22,15 +25,15 @@ interface PlaceBidComponentProps {
   auction: Auction
   onSubmit: (bidData: BidData) => void
   currentSettlementPrice?: number
-  modalAdd?: (input: any) => void
 }
 
-export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalAdd }: PlaceBidComponentProps) {
+export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: PlaceBidComponentProps) {
+  const {isShown, result, toggleModal, setResult} = useContext(BidModalContext)
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
-  const { toggle } = useGenericModal()
+
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
@@ -44,12 +47,9 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalA
    */
 
   const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
-    // Request user's confirmation if there is a bid already
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      // triggers modal component to appear
-      modalAdd ? modalAdd(toggle) : console.log('modalAdd is not needed')
+      toggleModal()
       return false
-      // await for onclick button
     }
 
     // Proceed to continue
@@ -79,6 +79,16 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice, modalA
       })
     }
   }
+  // Listen to the Context value changes to get the modal response
+  useEffect(() => {
+    if (!isShown && result === true) {
+      setResult(false)
+      onSubmit({
+        tokenAmount,
+        tokenPrice,
+      })
+    }
+  }, [isShown])
 
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>
