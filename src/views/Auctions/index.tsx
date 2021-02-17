@@ -78,7 +78,7 @@ export function AuctionsView() {
   const [loading, setLoading] = useState<boolean>(true)
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
-  const {auctions} = useAuctions()
+  const { auctions } = useAuctions()
   const [t] = useTranslation()
 
   useEffect(() => {
@@ -95,7 +95,6 @@ export function AuctionsView() {
 
   return (
     <Center minHeight="100%" py={theme.space[4]}>
-
       <Container>
         <AuctionListSection>
           <Flex mb={20} justifyContent="center">

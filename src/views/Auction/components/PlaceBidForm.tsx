@@ -25,20 +25,16 @@ interface PlaceBidComponentProps {
 }
 
 export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: PlaceBidComponentProps) {
-  const {isShown, result, toggleModal, setResult} = useContext(BidModalContext)
+  const { isShown, result, toggleModal, setResult } = useContext(BidModalContext)
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [t] = useTranslation()
 
-
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
-
-
 
   const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
     if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      
       toggleModal()
       return false
     }

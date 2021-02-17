@@ -15,7 +15,6 @@ const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().
 
 const addMinutes = (dayjsInstance: Dayjs, minutes: number) => dayjsInstance.clone().add(minutes, 'm')
 
-
 export function generateAuctionData(unixTimestamp: number): Auction[] {
   const dateUTC = dayjs.unix(unixTimestamp)
 

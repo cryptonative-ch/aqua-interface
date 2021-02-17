@@ -18,7 +18,6 @@ export interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, headerText, onConfirm }) => {
-
   const modal = (
     <Fragment>
       <Backdrop />

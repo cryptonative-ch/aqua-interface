@@ -62,7 +62,6 @@ export const Content = styled.div`
 export const ConfirmationButton = styled.div`
   display: flex;
   justify-content: center;
-
 `
 
 export const ConfirmButton = styled.button`

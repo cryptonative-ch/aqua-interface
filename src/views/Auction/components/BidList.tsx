@@ -38,8 +38,6 @@ export const BidList: React.FC<BidListComponentProps> = ({
     return <DefaultNoBidsMessage />
   }
 
- 
-
   return (
     <Table id="myTable">
       <THead>
@@ -89,7 +87,8 @@ export const BidList: React.FC<BidListComponentProps> = ({
           )
 
           // highlight user's bids
-          const backgroundColor = bid.address === userAddress ? (status === 'Active' ? '#99FF99' : '#FF99AA') : 'transparent'
+          const backgroundColor =
+            bid.address === userAddress ? (status === 'Active' ? '#99FF99' : '#FF99AA') : 'transparent'
 
           return (
             <TR id={i.toString()} backgroundColor={backgroundColor} key={bidId}>

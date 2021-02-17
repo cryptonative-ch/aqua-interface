@@ -65,5 +65,4 @@ export const Button = styled.button<ButtonProps>(
 Button.defaultProps = {
   rounded: false,
   variant: 'primary',
-  
 }

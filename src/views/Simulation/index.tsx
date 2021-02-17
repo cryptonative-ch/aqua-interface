@@ -138,16 +138,12 @@ export function SimulationView() {
   }
 
   return (
-    <BidModalContext.Provider value={{toggleModal: toggle, isShown: isShown, result: confirmResult, setResult: setConfirmResult}}>
+    <BidModalContext.Provider
+      value={{ toggleModal: toggle, isShown: isShown, result: confirmResult, setResult: setConfirmResult }}
+    >
       <Center minHeight="100%">
         <Fragment>
-          <Modal
-            isShown={isShown}
-            hide={onCancel}
-            modalContent={content}
-            headerText="Warning"
-            onConfirm={onConfirm}
-          />
+          <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
         </Fragment>
         <Container>
           <Header title="Simulation" />
