@@ -12,6 +12,47 @@ import { hasLowerClearingPrice } from 'src/mesa/price'
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
 
+
+const Table = styled.table`
+  width: 100%;
+`
+
+const FlexDiv = styled.div`
+  display: flex;
+  text-align: center;
+  margin: 0 auto;
+`
+
+const THead = styled.thead({
+  width: '100%',
+})
+
+const TBody = styled.tbody({
+  display: 'block',
+  overflowY: 'auto',
+  maxHeight: 300,
+})
+
+interface TRProps {
+  backgroundColor?: Property.BackgroundColor
+}
+
+const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
+  backgroundColor,
+  display: 'flex',
+}))
+
+const TH = styled.th`
+  text-align: center;
+  display: flex;
+  flex: 1;
+`
+
+const TD = styled.td`
+  flex: 1;
+  text-align: center;
+`
+
 interface BidListComponentProps {
   noBidsMessage?: React.ReactNode
   quotetokenSmybol: string
@@ -114,43 +155,3 @@ export const BidList: React.FC<BidListComponentProps> = ({
     </Table>
   )
 }
-
-const Table = styled.table`
-  width: 100%;
-`
-
-const FlexDiv = styled.div`
-  display: flex;
-  text-align: center;
-  margin: 0 auto;
-`
-
-const THead = styled.thead({
-  width: '100%',
-})
-
-const TBody = styled.tbody({
-  display: 'block',
-  overflowY: 'auto',
-  maxHeight: 300,
-})
-
-interface TRProps {
-  backgroundColor?: Property.BackgroundColor
-}
-
-const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
-  backgroundColor,
-  display: 'flex',
-}))
-
-const TH = styled.th`
-  text-align: center;
-  display: flex;
-  flex: 1;
-`
-
-const TD = styled.td`
-  flex: 1;
-  text-align: center;
-`
