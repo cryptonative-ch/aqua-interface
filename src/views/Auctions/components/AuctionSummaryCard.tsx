@@ -13,6 +13,10 @@ import { Flex } from 'src/components/Flex'
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
+const TokenIconFigure = styled.div(props => ({
+  marginRight: props.theme.space[3],
+}))
+
 interface AuctionSummaryProps {
   auction: Auction
 }
@@ -42,7 +46,3 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
     </Card>
   )
 }
-
-const TokenIconFigure = styled.div(props => ({
-  marginRight: props.theme.space[3],
-}))

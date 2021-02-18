@@ -7,6 +7,10 @@ import React from 'react'
 import { Flex } from 'src/components/Flex'
 import { BackButton } from './BackButton'
 
+const PageHeading = styled.h1({
+  margin: 0,
+})
+
 interface HeaderComponentProps {
   title: string
 }
@@ -29,7 +33,3 @@ export function Header({ title }: HeaderComponentProps) {
     </Flex>
   )
 }
-
-const PageHeading = styled.h1({
-  margin: 0,
-})

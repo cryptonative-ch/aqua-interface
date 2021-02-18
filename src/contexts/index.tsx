@@ -5,6 +5,11 @@ export const SanctionContext = React.createContext('false')
 export const BidModalContext = React.createContext({
   isShown: false,
   result: false,
-  setResult: (value: boolean) => {},
-  toggleModal: () => {},
+  setResult: (value: boolean) => {
+    //
+    console.log(value)
+  },
+  toggleModal: () => {
+    //
+  },
 })
