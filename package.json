@@ -26,6 +26,7 @@
     "@web3-react/core": "^6.1.1",
     "@web3-react/injected-connector": "^6.0.7",
     "axios": "^0.21.1",
+    "babel-preset-react-app": "^10.0.0",
     "chart.js": "^2.9.4",
     "cryptowalletconnector": "^1.0.7",
     "csstype": "^3.0.5",
@@ -77,5 +78,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "nohoist": [
+    "**/babel-preset-react-app/@babel/runtime"
+  ]
 }
