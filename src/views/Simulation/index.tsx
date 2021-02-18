@@ -137,6 +137,8 @@ export function SimulationView() {
     )
   }
 
+  
+
   return (
     <BidModalContext.Provider
       value={{ toggleModal: toggle, isShown: isShown, result: confirmResult, setResult: setConfirmResult }}

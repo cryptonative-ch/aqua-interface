@@ -38,8 +38,25 @@ export const BidList: React.FC<BidListComponentProps> = ({
     return <DefaultNoBidsMessage />
   }
 
+  const deleteBid = (element: any) => {
+    const table_row_id = element.currentTarget.parentNode?.parentNode.id
+    const userAddress = table_row_id.split('-')[0]
+    const userPrice = Number(table_row_id.split('-')[1])
+    const userAmount = Number(table_row_id.split('-')[2])
+    const findObject = bids.findIndex(
+      bid =>
+        bid.address === userAddress && Number(bid.sellAmount) === userPrice && Number(bid.buyAmount) === userAmount
+    )
+    bids.splice(findObject)
+    
+    
+    
+  }
+
+ 
+
   return (
-    <Table id="myTable">
+    <Table id="myTable">  
       <THead>
         <TR>
           <TH id="priority-1">
@@ -66,7 +83,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
         </TR>
       </THead>
       <TBody>
-        {bids.sort(hasLowerClearingPrice).map((bid, i) => {
+        {bids.sort(hasLowerClearingPrice).map(bid => {
           // Compute a the key
           const bidId = `${bid.address}-${bid.sellAmount.toString()}-${bid.buyAmount.toString()}`
           // Compute total price
@@ -80,7 +97,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
               : 'none'
 
           const cancel = (
-            <Button padding border>
+            <Button padding border onClick={deleteBid}>
               {' '}
               X{' '}
             </Button>
@@ -91,7 +108,7 @@ export const BidList: React.FC<BidListComponentProps> = ({
             bid.address === userAddress ? (status === 'Active' ? '#99FF99' : '#FF99AA') : 'transparent'
 
           return (
-            <TR id={i.toString()} backgroundColor={backgroundColor} key={bidId}>
+            <TR id={bidId} backgroundColor={backgroundColor} key={bidId}>
               <TD id="priority-1" style={{ color: 'gray' }}>
                 {numeral(bid.sellAmount.toString()).format('0,0')}
               </TD>
@@ -114,7 +131,6 @@ export const BidList: React.FC<BidListComponentProps> = ({
     </Table>
   )
 }
-
 const Table = styled.table`
   width: 100%;
 `
