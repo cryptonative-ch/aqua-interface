@@ -8,38 +8,6 @@ import { AuctionBid } from 'src/interfaces/Auction'
  * source: https://github.com/gnosis/ido-contracts/blob/main/src/priceCalculation.ts
  */
 
-/**
- *
- * @param auctionBids
- */
-export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
-  if (order1.buyAmount.mul(order2.sellAmount).lt(order2.buyAmount.mul(order1.sellAmount))) return -1
-  if (order1.buyAmount.mul(order2.sellAmount).eq(order2.buyAmount.mul(order1.sellAmount))) {
-    if (order1.address < order2.address) return -1
-  }
-  return 1
-}
-
-/**
- * Calculates the clearing price using the auction bids
- * @param auctionBids
- */
-export function calculateClearingPrice(easyAuctionBids: AuctionBid[]): AuctionBid {
-  if (!easyAuctionBids.length) {
-    return {
-      address: '0x',
-      buyAmount: BigNumber.from(0),
-      sellAmount: BigNumber.from(0),
-    }
-  }
-
-  const sortedSellOrders = easyAuctionBids.sort(hasLowerClearingPrice)
-  const initialOrder = easyAuctionBids[0]
-
-  const clearingPriceOrder = findClearingPrice(sortedSellOrders, initialOrder)
-  return clearingPriceOrder
-}
-
 function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: AuctionBid): AuctionBid {
   let totalSellVolume = BigNumber.from(0)
 
@@ -77,4 +45,36 @@ function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: Auctio
       sellAmount: initialAuctionOrder.buyAmount,
     }
   }
+}
+
+/**
+ *
+ * @param auctionBids
+ */
+export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
+  if (order1.buyAmount.mul(order2.sellAmount).lt(order2.buyAmount.mul(order1.sellAmount))) return -1
+  if (order1.buyAmount.mul(order2.sellAmount).eq(order2.buyAmount.mul(order1.sellAmount))) {
+    if (order1.address < order2.address) return -1
+  }
+  return 1
+}
+
+/**
+ * Calculates the clearing price using the auction bids
+ * @param auctionBids
+ */
+export function calculateClearingPrice(easyAuctionBids: AuctionBid[]): AuctionBid {
+  if (!easyAuctionBids.length) {
+    return {
+      address: '0x',
+      buyAmount: BigNumber.from(0),
+      sellAmount: BigNumber.from(0),
+    }
+  }
+
+  const sortedSellOrders = easyAuctionBids.sort(hasLowerClearingPrice)
+  const initialOrder = easyAuctionBids[0]
+
+  const clearingPriceOrder = findClearingPrice(sortedSellOrders, initialOrder)
+  return clearingPriceOrder
 }

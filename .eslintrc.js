@@ -18,9 +18,9 @@ module.exports = {
   plugins: ['react'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 0,
-    '@typescript-eslint/no-use-before-define': ['error'],
     'react/jsx-filename-extension': 0,
-    'no-use-before-define': 'off',
+    "no-use-before-define": 'off',
+    "@typescript-eslint/no-use-before-define": ['error'],
     'react/prop-types': 0,
     'linebreak-style': 0,
   },

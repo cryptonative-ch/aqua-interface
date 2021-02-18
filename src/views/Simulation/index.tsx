@@ -39,6 +39,13 @@ import { getRandomWallet } from 'src/utils/wallets'
 // Contexts
 import { BidModalContext } from 'src/contexts'
 
+const FlexGroupColumns = styled(Flex)(props => ({
+  gap: props.theme.space[4],
+  '& > *': {
+    flex: 1,
+  },
+}))
+
 /**
  * Generates a random integer between two numbers (inclusive)
  * @param min
@@ -221,10 +228,3 @@ export function SimulationView() {
     </BidModalContext.Provider>
   )
 }
-
-const FlexGroupColumns = styled(Flex)(props => ({
-  gap: props.theme.space[4],
-  '& > *': {
-    flex: 1,
-  },
-}))

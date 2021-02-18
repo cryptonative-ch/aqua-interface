@@ -75,7 +75,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         tokenPrice,
       })
     }
-  }, [isShown])
+  }, [isShown, onSubmit, result, setResult, tokenAmount, tokenPrice])
 
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>

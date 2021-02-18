@@ -16,7 +16,7 @@ interface UseAuctionsReturn {
 
 export function useAuctions(): UseAuctionsReturn {
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | null>(null)
+  const [error] = useState<Error | null>(null)
   const [auctions, setAuctions] = useState<Auction[]>([])
 
   useEffect(() => {
