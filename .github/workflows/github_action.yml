@@ -3,7 +3,6 @@ name: Develop CI/CD
 on:
   push:
     branches:
-      - github_action
       - main
   pull_request:
     branches:
