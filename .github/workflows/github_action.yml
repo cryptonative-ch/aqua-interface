@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - github_action
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   develop-ci:
     runs-on: ubuntu-latest
@@ -33,7 +37,7 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1
         with:
-          publish-dir: './build'
+          publish-dir: './dist'
           production-branch: master
           github-token: ${{ secrets.LEE_MESA_INTERFACE }}
           deploy-message: "Deploy from GitHub Actions"
