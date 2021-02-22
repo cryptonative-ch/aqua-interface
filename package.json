@@ -30,6 +30,7 @@
     "chart.js": "^2.9.4",
     "cryptowalletconnector": "^1.0.7",
     "csstype": "^3.0.5",
+    "d3": "^6.5.0",
     "dayjs": "^1.10.3",
     "ethers": "^5.0.24",
     "i18next": "^19.8.4",
@@ -81,5 +82,8 @@
   },
   "nohoist": [
     "**/babel-preset-react-app/@babel/runtime"
-  ]
+  ],
+  "devDependencies": {
+    "@types/d3": "^6.3.0"
+  }
 }
