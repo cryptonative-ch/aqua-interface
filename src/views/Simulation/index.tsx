@@ -4,6 +4,7 @@ import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { BigNumber } from 'ethers'
 import numeral from 'numeral'
+import { useDispatch, useSelector } from 'react-redux'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
@@ -40,6 +41,11 @@ import { getRandomWallet } from 'src/utils/wallets'
 // Contexts
 import { BidModalContext } from 'src/contexts'
 
+//redux
+
+import { GenerateBid, StartBid } from 'src/redux/BidData'
+import { RootState } from 'src/redux/store'
+
 // Data
 import { initialBid } from 'src/data/initialbids'
 
@@ -70,10 +76,13 @@ export function SimulationView() {
   const ref = useRef<HTMLElement>()
   const { width: containerWidth, setWidth } = useElementWidth(ref)
   const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
-  const [bids, setBids] = useState<AuctionBid[]>(initialBid)
   const [count, setCount] = useState(0)
   const [updateAuction, setUpdateAuction] = useState(false)
   const [confirmResult, setConfirmResult] = useState(false)
+  const dispatch = useDispatch()
+  const bids = useSelector<RootState, AuctionBid[]>(state => {
+    return state.BidReducer.bids
+  })
 
   const { auction } = useAuction('simulation')
   const [t] = useTranslation()
@@ -98,9 +107,9 @@ export function SimulationView() {
 
   const addBid = useCallback(
     (newAuctionBid: AuctionBid) => {
-      setBids([...bids, newAuctionBid])
+      dispatch(GenerateBid(newAuctionBid))
     },
-    [bids]
+    [dispatch]
   )
 
   useEffect(() => {
@@ -121,9 +130,14 @@ export function SimulationView() {
 
     //Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
-    // if (auction) {
-    //   if (isAuctionOpen(auction)) {
-        //Add 1 random bids every second
+    if (auction) {
+      if (isAuctionOpen(auction)) {
+        // Add 1 random bids every second
+
+        if (bids.length == 0) {
+          dispatch(StartBid(initialBid))
+        }
+
         if (bids.length >= 30) {
           return
         }
@@ -140,8 +154,8 @@ export function SimulationView() {
         return () => {
           clearInterval(addRandomBidsInterval)
         }
-    //   }
-    // }
+      }
+    }
   }, [addBid, auction, userAddress, bids, updateAuction])
 
   if (!auction) {
@@ -180,7 +194,13 @@ export function SimulationView() {
                 }
               }}
             >
-              <BarChart width={containerWidth} height={400} data={bids} userAddress={userAddress} vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5} />
+              <BarChart
+                width={containerWidth}
+                height={400}
+                data={bids}
+                userAddress={userAddress}
+                vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5}
+              />
               {/* <Graph bids={bids} height={400} width={containerWidth} userAddress={userAddress} /> */}
             </CardBody>
           </Card>
@@ -227,9 +247,9 @@ export function SimulationView() {
               <BidList
                 baseTokenSymbol="DAI"
                 quotetokenSmybol={auction.tokenSymbol}
-                bids={filterAuctionBidsByAddress(bids, userAddress)}
                 currentSettlementPrice={clearingPrice?.sellAmount.toNumber()}
                 fullWidth={true}
+                bids={filterAuctionBidsByAddress(bids, userAddress)}
               />
             </CardBody>
           </Card>

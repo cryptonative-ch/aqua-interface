@@ -16,7 +16,7 @@
     "@types/randombytes": "^2.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.8",
-    "@types/react-redux": "^7.1.9",
+    "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.6",
     "@types/secp256k1": "^4.0.1",
     "@types/styled-components": "^5.1.4",
