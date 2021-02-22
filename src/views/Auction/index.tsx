@@ -100,9 +100,9 @@ export function AuctionView() {
             </CardBody>
             <CardBody>
               <BidList
+                bids={auction.bids}
                 baseTokenSymbol="DAI"
                 quotetokenSmybol={auction.tokenSymbol}
-                bids={auction.bids}
                 fullWidth={false}
                 currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
               />

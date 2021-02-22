@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Property } from 'csstype'
 import numeral from 'numeral'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+
 
 // Components
 import { DefaultNoBidsMessage } from './DefaultNoBidsMessage'
@@ -11,6 +13,10 @@ import { hasLowerClearingPrice } from 'src/mesa/price'
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
+
+
+import { RemoveBid } from "src/redux/BidData";
+import { BigNumber } from 'ethers'
 
 interface BidListComponentProps {
   noBidsMessage?: React.ReactNode
@@ -31,7 +37,9 @@ export const BidList: React.FC<BidListComponentProps> = ({
   currentSettlementPrice,
   fullWidth,
 }) => {
-  if (bids.length === 0) {
+  const dispatch = useDispatch()
+
+  if (typeof bids == 'undefined' || bids.length === 0) {
     if (noBidsMessage) {
       return <>{noBidsMessage}</>
     }
@@ -41,22 +49,24 @@ export const BidList: React.FC<BidListComponentProps> = ({
   const deleteBid = (element: any) => {
     const table_row_id = element.currentTarget.parentNode?.parentNode.id
     const userAddress = table_row_id.split('-')[0]
-    const userPrice = Number(table_row_id.split('-')[1])
-    const userAmount = Number(table_row_id.split('-')[2])
-    const findObject = bids.findIndex(
-      bid =>
-        bid.address === userAddress && Number(bid.sellAmount) === userPrice && Number(bid.buyAmount) === userAmount
-    )
-    bids.splice(findObject)
+    const userPrice = BigNumber.from(table_row_id.split('-')[1])
+    const userAmount = BigNumber.from(table_row_id.split('-')[2])
+
+    const payload: AuctionBid = {
+      address: userAddress,
+      buyAmount: userAmount,
+      sellAmount: userPrice,
+    }
     
-    
-    
+    dispatch(RemoveBid(payload))
+    console.log('pressed delete button')
+
   }
 
- 
+  
 
   return (
-    <Table id="myTable">  
+    <Table id="myTable">
       <THead>
         <TR>
           <TH id="priority-1">
