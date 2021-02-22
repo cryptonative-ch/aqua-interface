@@ -3,15 +3,13 @@ import Thunk, { ThunkAction } from 'redux-thunk'
 
 // Reducers
 import page from './page'
-import { BidReducer } from "./BidData";
+import { BidReducer } from './BidData'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
   // eslint-disable-next-line
   interface DefaultRootState extends RootState {}
 }
-
-
 
 const rootReducer = combineReducers({
   page,

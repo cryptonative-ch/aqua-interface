@@ -6,7 +6,6 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { BigNumber } from 'ethers'
 
-
 // Components
 import { DefaultNoBidsMessage } from './DefaultNoBidsMessage'
 import { hasLowerClearingPrice } from 'src/mesa/price'
@@ -15,8 +14,7 @@ import { hasLowerClearingPrice } from 'src/mesa/price'
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
 
-import { RemoveBid } from "src/redux/BidData";
-
+import { RemoveBid } from 'src/redux/BidData'
 
 const Table = styled.table`
   width: 100%;
@@ -97,13 +95,10 @@ export const BidList: React.FC<BidListComponentProps> = ({
       buyAmount: userAmount,
       sellAmount: userPrice,
     }
-    
+
     dispatch(RemoveBid(payload))
     console.log('pressed delete button')
-
   }
-
-  
 
   return (
     <Table id="myTable">

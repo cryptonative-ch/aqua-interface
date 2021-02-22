@@ -4,7 +4,7 @@ import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { BigNumber } from 'ethers'
 import numeral from 'numeral'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
@@ -43,7 +43,7 @@ import { BidModalContext } from 'src/contexts'
 
 //redux
 
-import { GenerateBid, StartBid } from "src/redux/BidData";
+import { GenerateBid, StartBid } from 'src/redux/BidData'
 import { RootState } from 'src/redux/store'
 
 // Data
@@ -84,7 +84,6 @@ export function SimulationView() {
     return state.BidReducer.bids
   })
 
-
   const { auction } = useAuction('simulation')
   const [t] = useTranslation()
   const theme = useTheme()
@@ -106,13 +105,12 @@ export function SimulationView() {
     </Fragment>
   )
 
-  const addBid= useCallback(
+  const addBid = useCallback(
     (newAuctionBid: AuctionBid) => {
       dispatch(GenerateBid(newAuctionBid))
     },
     [dispatch]
   )
-
 
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
@@ -136,7 +134,7 @@ export function SimulationView() {
       if (isAuctionOpen(auction)) {
         // Add 1 random bids every second
 
-        if (bids.length == 0){
+        if (bids.length == 0) {
           dispatch(StartBid(initialBid))
         }
 
@@ -152,7 +150,6 @@ export function SimulationView() {
             }),
           1000
         )
-       
 
         return () => {
           clearInterval(addRandomBidsInterval)
@@ -161,9 +158,6 @@ export function SimulationView() {
     }
   }, [addBid, auction, userAddress, bids, updateAuction])
 
- 
-
-
   if (!auction) {
     return (
       <Center minHeight="100%">
@@ -171,8 +165,6 @@ export function SimulationView() {
       </Center>
     )
   }
-
-  
 
   return (
     <BidModalContext.Provider
@@ -202,7 +194,13 @@ export function SimulationView() {
                 }
               }}
             >
-              <BarChart width={containerWidth} height={400} data={bids} userAddress={userAddress} vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5} />
+              <BarChart
+                width={containerWidth}
+                height={400}
+                data={bids}
+                userAddress={userAddress}
+                vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5}
+              />
               {/* <Graph bids={bids} height={400} width={containerWidth} userAddress={userAddress} /> */}
             </CardBody>
           </Card>
