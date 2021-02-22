@@ -32,9 +32,6 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
         }
         const svg = d3.select(ref.current)
         const sortedData = data.sort((first, second) => (second.sellAmount.toNumber() - first.sellAmount.toNumber()))
-        console.log(vsp)
-        // const activeBids = sortedData.filter(item => item.sellAmount.toNumber() >= vsp)
-        // const inactiveBids = sortedData.filter(item => item.sellAmount.toNumber() < vsp)
         const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
         const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
         const activeChartData: any[] = activeBids.map(item => item.buyAmount.toNumber())
