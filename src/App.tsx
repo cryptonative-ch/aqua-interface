@@ -26,19 +26,21 @@ export const App = () => {
     axios
       .get('https://ipapi.co/json/')
       .then(response => {
-        let data = response.data
+        const data = response.data
         if (SANCTION_LIST.indexOf(data.country_code) >= 0) {
           setSanction('true')
         } else {
           setSanction('false')
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        //
+      })
   }, [])
 
   useEffect(() => {
     getGeoInfo()
-  }, [])
+  }, [getGeoInfo])
 
   const content = (
     <Fragment>

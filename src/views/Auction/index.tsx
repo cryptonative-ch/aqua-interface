@@ -34,13 +34,20 @@ import { calculateClearingPrice } from 'src/mesa/price'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 
+const FlexGroupColumns = styled(Flex)(props => ({
+  gap: props.theme.space[4],
+  '& > *': {
+    flex: 1,
+  },
+}))
+
 interface AuctionViewParams {
   auctionId: string
 }
 
 export function AuctionView() {
   const ref = useRef<HTMLElement>()
-  const containerWidth = useElementWidth(ref)
+  const { width: containerWidth } = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
   const { auction } = useAuction(params.auctionId)
@@ -118,10 +125,3 @@ export function AuctionView() {
     </Center>
   )
 }
-
-const FlexGroupColumns = styled(Flex)(props => ({
-  gap: props.theme.space[4],
-  '& > *': {
-    flex: 1,
-  },
-}))

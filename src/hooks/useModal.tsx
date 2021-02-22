@@ -5,7 +5,7 @@ export const useModal = () => {
   const [cookies, setCookie] = useCookies(['termsofsale'])
   const [isShown, setShown] = useState<boolean>(cookies.termsofsale !== 'true')
 
-  const toggle = (flag: boolean = false) => {
+  const toggle = (flag = false) => {
     if (flag) {
       setCookie('termsofsale', 'true', { path: '/' })
     }

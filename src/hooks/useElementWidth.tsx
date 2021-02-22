@@ -7,7 +7,7 @@ export function useElementWidth(elementRef: MutableRefObject<HTMLElement | undef
     if (elementRef.current) {
       setWidth(elementRef.current.clientWidth)
     }
-  }, [elementRef])
+  }, [elementRef, elementRef.current])
 
   useEffect(() => {
     window.addEventListener('resize', calculateWidth)
@@ -19,7 +19,10 @@ export function useElementWidth(elementRef: MutableRefObject<HTMLElement | undef
       window.removeEventListener('orientationchange', calculateWidth)
       window.removeEventListener('resize', calculateWidth)
     }
-  }, [elementRef, calculateWidth])
+  }, [elementRef, elementRef.current, calculateWidth])
 
-  return width
+  return {
+    width,
+    setWidth,
+  }
 }

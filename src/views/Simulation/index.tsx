@@ -20,11 +20,12 @@ import { BidList } from '../Auction/components/BidList'
 import { Header } from '../Auction/components/Header'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
-import { Graph } from '../Auction/components/Graph'
+// import { Graph } from '../Auction/components/Graph'
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
+import { BarChart } from 'src/views/Auction/components/BarChart'
 import { Modal } from 'src/components/Modal'
 
 // Layout
@@ -40,12 +41,20 @@ import { getRandomWallet } from 'src/utils/wallets'
 // Contexts
 import { BidModalContext } from 'src/contexts'
 
-
 //redux
 
-import { GenerateBid } from "src/redux/BidData";
+import { GenerateBid, StartBid } from "src/redux/BidData";
 import { RootState } from 'src/redux/store'
 
+// Data
+import { initialBid } from 'src/data/initialbids'
+
+const FlexGroupColumns = styled(Flex)(props => ({
+  gap: props.theme.space[4],
+  '& > *': {
+    flex: 1,
+  },
+}))
 
 /**
  * Generates a random integer between two numbers (inclusive)
@@ -65,7 +74,7 @@ export function SimulationView() {
 
   // Simulation data
   const ref = useRef<HTMLElement>()
-  const containerWidth = useElementWidth(ref)
+  const { width: containerWidth, setWidth } = useElementWidth(ref)
   const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
   const [count, setCount] = useState(0)
   const [updateAuction, setUpdateAuction] = useState(false)
@@ -80,6 +89,7 @@ export function SimulationView() {
   const [t] = useTranslation()
   const theme = useTheme()
   const { isShown, toggle } = useGenericModal()
+
   const onConfirm = () => {
     setConfirmResult(true)
     toggle()
@@ -103,9 +113,6 @@ export function SimulationView() {
     [dispatch]
   )
 
-  // const addBid = (newAuctionBid: AuctionBid) => {
-  //   dispatch(GenerateBid(newAuctionBid))
-  // }
 
   useEffect(() => {
     const interval = setInterval(() => setCount(PrevCount => PrevCount + 1), 1000)
@@ -127,15 +134,23 @@ export function SimulationView() {
     setClearingPrice(calculateClearingPrice(bids))
     if (auction) {
       if (isAuctionOpen(auction)) {
-        //Add 1 random bids every second
-        const addRandomBidsInterval = setInterval(
+        // Add 1 random bids every second
+
+        if (bids.length == 0){
+          dispatch(StartBid(initialBid))
+        }
+
+        if (bids.length >= 30) {
+          return
+        }
+        const addRandomBidsInterval = setTimeout(
           () =>
             addBid({
               address: getRandomWallet().address,
               sellAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
               buyAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
             }),
-          2000
+          1000
         )
        
 
@@ -183,10 +198,12 @@ export function SimulationView() {
               ref={e => {
                 if (e) {
                   ref.current = e
+                  setWidth(e.clientWidth)
                 }
               }}
             >
-              <Graph bids={bids} height={400} width={containerWidth} userAddress={userAddress} />
+              <BarChart width={containerWidth} height={400} data={bids} userAddress={userAddress} vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5} />
+              {/* <Graph bids={bids} height={400} width={containerWidth} userAddress={userAddress} /> */}
             </CardBody>
           </Card>
           <FlexGroupColumns>
@@ -243,10 +260,3 @@ export function SimulationView() {
     </BidModalContext.Provider>
   )
 }
-
-const FlexGroupColumns = styled(Flex)(props => ({
-  gap: props.theme.space[4],
-  '& > *': {
-    flex: 1,
-  },
-}))

@@ -4,6 +4,7 @@ import { Property } from 'csstype'
 import numeral from 'numeral'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { BigNumber } from 'ethers'
 
 
 // Components
@@ -14,9 +15,48 @@ import { hasLowerClearingPrice } from 'src/mesa/price'
 import { AuctionBid } from 'src/interfaces/Auction'
 import { Button } from 'src/components/Button'
 
-
 import { RemoveBid } from "src/redux/BidData";
-import { BigNumber } from 'ethers'
+
+
+const Table = styled.table`
+  width: 100%;
+`
+
+const FlexDiv = styled.div`
+  display: flex;
+  text-align: center;
+  margin: 0 auto;
+`
+
+const THead = styled.thead({
+  width: '100%',
+})
+
+const TBody = styled.tbody({
+  display: 'block',
+  overflowY: 'auto',
+  maxHeight: 300,
+})
+
+interface TRProps {
+  backgroundColor?: Property.BackgroundColor
+}
+
+const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
+  backgroundColor,
+  display: 'flex',
+}))
+
+const TH = styled.th`
+  text-align: center;
+  display: flex;
+  flex: 1;
+`
+
+const TD = styled.td`
+  flex: 1;
+  text-align: center;
+`
 
 interface BidListComponentProps {
   noBidsMessage?: React.ReactNode
@@ -39,19 +79,19 @@ export const BidList: React.FC<BidListComponentProps> = ({
 }) => {
   const dispatch = useDispatch()
 
-  if (typeof bids == 'undefined' || bids.length === 0) {
+  if (bids.length === 0) {
     if (noBidsMessage) {
       return <>{noBidsMessage}</>
     }
     return <DefaultNoBidsMessage />
   }
 
+  // eslint-disable-next-line
   const deleteBid = (element: any) => {
     const table_row_id = element.currentTarget.parentNode?.parentNode.id
     const userAddress = table_row_id.split('-')[0]
     const userPrice = BigNumber.from(table_row_id.split('-')[1])
     const userAmount = BigNumber.from(table_row_id.split('-')[2])
-
     const payload: AuctionBid = {
       address: userAddress,
       buyAmount: userAmount,
@@ -141,42 +181,3 @@ export const BidList: React.FC<BidListComponentProps> = ({
     </Table>
   )
 }
-const Table = styled.table`
-  width: 100%;
-`
-
-const FlexDiv = styled.div`
-  display: flex;
-  text-align: center;
-  margin: 0 auto;
-`
-
-const THead = styled.thead({
-  width: '100%',
-})
-
-const TBody = styled.tbody({
-  display: 'block',
-  overflowY: 'auto',
-  maxHeight: 300,
-})
-
-interface TRProps {
-  backgroundColor?: Property.BackgroundColor
-}
-
-const TR = styled.tr<TRProps>(({ backgroundColor }) => ({
-  backgroundColor,
-  display: 'flex',
-}))
-
-const TH = styled.th`
-  text-align: center;
-  display: flex;
-  flex: 1;
-`
-
-const TD = styled.td`
-  flex: 1;
-  text-align: center;
-`

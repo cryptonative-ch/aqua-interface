@@ -1,25 +1,11 @@
-
-
-
-
 // interface
 import { AuctionBid } from 'src/interfaces/Auction'
 
-
-
 // ACTION
 
-/**
- * @todo Create generate bid function with dispatch
- * @todo Create remove bid function with dispatch
- * @todo create a file with a list of pre-written bids
- *      OR use a map + random generator
- */
-
-
- const GENERATE_BID = 'GENERATE_BID'
- const REMOVE_BID = 'REMOVE_BID'
- const INITIAL_BID_SEED = 'INITIAL_BID_SEED'
+const GENERATE_BID = 'GENERATE_BID'
+const REMOVE_BID = 'REMOVE_BID'
+const INITIAL_BID_SEED = 'INITIAL_BID_SEED'
 
 export interface BidState {
   bids: AuctionBid[]
@@ -52,39 +38,33 @@ export const RemoveBid = (payload: AuctionBid) => ({
   type: REMOVE_BID,
 })
 
-export const InitialBid = (payload: AuctionBid[]) => ({
+export const StartBid = (payload: AuctionBid[]) => ({
   payload,
   type: INITIAL_BID_SEED,
 })
 
-
-
-const defaultState: BidState  = {
+const defaultState: BidState = {
   bids: [],
 }
 
-
-
 //REDUCER
-
 
 export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
     case GENERATE_BID:
       return {
         ...state,
-        bids: [...state.bids, action.payload]
+        bids: [...state.bids, action.payload],
       }
     case REMOVE_BID:
       return {
         ...state,
-        bids: 
-          state.bids.filter(
-            bid =>
-              bid.address !== action.payload.address &&
-              bid.sellAmount !== action.payload.sellAmount &&
-              bid.buyAmount !== action.payload.buyAmount
-          ),
+        bids: state.bids.filter(
+          bid =>
+            bid.address !== action.payload.address &&
+            bid.sellAmount !== action.payload.sellAmount &&
+            bid.buyAmount !== action.payload.buyAmount
+        ),
       }
     case INITIAL_BID_SEED:
       return {
@@ -95,5 +75,3 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
       return state
   }
 }
-
-

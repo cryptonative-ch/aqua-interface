@@ -18,7 +18,6 @@ export function AuctionStatus({ auction }: AuctionStatusComponentProps) {
   if (isAuctionOpen(auction)) {
     return <div>Ends {dayjs().to(dayjs.unix(convertUtcTimestampToLocal(auction.endBlock)))}</div>
   } else if (isAuctionUpcoming(auction)) {
-    console.log(auction)
     return <div>Starts {dayjs().to(dayjs.unix(convertUtcTimestampToLocal(auction.startBlock)))}</div>
   } else if (isAuctionClosed(auction)) {
     return <div>Ended {dayjs().to(dayjs.unix(convertUtcTimestampToLocal(auction.endBlock)))}</div>
