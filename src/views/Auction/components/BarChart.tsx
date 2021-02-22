@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as d3 from 'd3'
-import { NumberValue } from 'd3'
 import React, { useRef, useEffect } from 'react'
 
 // Interfaces
@@ -14,6 +15,7 @@ interface BarChartComponentProps {
 }
 
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp }) => {
+    console.log(userAddress)
     const ref = useRef<SVGSVGElement>(null)
 
     const getBidPricePerShare = (bid: AuctionBid) => bid.sellAmount.toNumber() / bid.buyAmount.toNumber()
@@ -55,53 +57,53 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
         activeSelection
             .enter()
             .append("rect")
-            .attr("y", (d: any, i: number) => barHeight * i)
+            .attr("y", (d: number, i: number) => barHeight * i)
             .attr("height", barHeight - 5)
             .attr("fill", "#4B9E985A")
-            .attr("width", (d: any) => xScale(d) + 50)
-            .attr("x", (d: any) => 150)
+            .attr("width", (d: number) => xScale(d) + 50)
+            .attr("x", (d: number) => 150)
         
         activeSelection
             .enter()
             .append("text")
-            .attr("x", (d: any) => 155)
-            .attr("y", (d: any, i: number) => barHeight * (i) - 1 + (barHeight - fontSize) / 2)
-            .attr("font-size", (d: any, i: number) => fontSize)
+            .attr("x", (d: number) => 155)
+            .attr("y", (d: number, i: number) => barHeight * (i) - 1 + (barHeight - fontSize) / 2)
+            .attr("font-size", (d: number, i: number) => fontSize)
             .attr("dy", ".71em")
             .attr("text-anchor", "start")
-            .text((d: any, i: number) => getBidPriceText(activeBids[i], fontSize))
+            .text((d: number, i: number) => getBidPriceText(activeBids[i], fontSize))
 
         activeSelection
             .enter()
             .append("text")
-            .attr("x", (d: any) => xScale(d) + 195)
-            .attr("y", (d: any, i: number) => barHeight * (i) - 1 + (barHeight - fontSize) / 2)
-            .attr("font-size", (d: any, i: number) => fontSize)
+            .attr("x", (d: number) => xScale(d) + 195)
+            .attr("y", (d: number, i: number) => barHeight * (i) - 1 + (barHeight - fontSize) / 2)
+            .attr("font-size", (d: number, i: number) => fontSize)
             .attr("dy", ".71em")
             .attr("text-anchor", "end")
-            .text((d: any, i: number) => getBidAmountText(activeBids[i], fontSize))
+            .text((d: number, i: number) => getBidAmountText(activeBids[i], fontSize))
 
         const lineContainer = svg.append("g")
         lineContainer.attr("class", "line")
             .append("rect")
-            .attr("y", (d: any) => activeHeight - 6)
+            .attr("y", activeHeight - 6)
             .attr("height", 1)
             .attr("fill", "#304FFE")
-            .attr("width", (d: any) => width - 130)
-            .attr("x", (d: any) => 130)
+            .attr("width", width - 130)
+            .attr("x", 130)
 
         lineContainer.append("rect")
-            .attr("y", (d: any) => activeHeight - 5.5 - fontSize * 0.9)
+            .attr("y", activeHeight - 5.5 - fontSize * 0.9)
             .attr("height", fontSize * 1.8)
             .attr("fill", "#304FFE")
-            .attr("width", (d: any) => 90)
-            .attr("x", (d: any) => 40)
+            .attr("width", 90)
+            .attr("x", 40)
 
         lineContainer.append("text")
-            .attr("y", (d: any) => activeHeight - 5.5 - fontSize * 0.4)
+            .attr("y", activeHeight - 5.5 - fontSize * 0.4)
             .attr("fill", "#FFF")
-            .attr("x", (d: any) => 85)
-            .attr("font-size", (d: any, i: number) => fontSize)
+            .attr("x", 85)
+            .attr("font-size", fontSize)
             .attr("dy", ".71em")
             .attr("text-anchor", "middle")
             .text(() => `CP ${vsp.toFixed(2)} DAI`)
@@ -113,31 +115,31 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
             inactiveSelection
                 .enter()
                 .append("rect")
-                .attr("y", (d: any, i: number) => (barHeight * i) + activeHeight)
+                .attr("y", (d: number, i: number) => (barHeight * i) + activeHeight)
                 .attr("height", barHeight - 5)
                 .attr("fill", "#DDDDE3")
-                .attr("width", (d: any) => xScale(d) + 50)
-                .attr("x", (d: any) => 150)
+                .attr("width", (d: number) => xScale(d) + 50)
+                .attr("x", (d: number) => 150)
             
             inactiveSelection
                 .enter()
                 .append("text")
-                .attr("x", (d: any) => 155)
-                .attr("y", (d: any, i: number) => barHeight * (i) + activeHeight - 1 + (barHeight - fontSize) / 2)
-                .attr("font-size", (d: any, i: number) => fontSize)
+                .attr("x", (d: number) => 155)
+                .attr("y", (d: number, i: number) => barHeight * (i) + activeHeight - 1 + (barHeight - fontSize) / 2)
+                .attr("font-size", (d: number, i: number) => fontSize)
                 .attr("dy", ".71em")
                 .attr("text-anchor", "start")
-                .text((d: any, i: number) => getBidPriceText(inactiveBids[i], fontSize))
+                .text((d: number, i: number) => getBidPriceText(inactiveBids[i], fontSize))
 
             inactiveSelection
                 .enter()
                 .append("text")
-                .attr("x", (d: any) => xScale(d) + 195)
-                .attr("y", (d: any, i: number) => barHeight * (i) + activeHeight - 1 + (barHeight - fontSize) / 2)
-                .attr("font-size", (d: any, i: number) => fontSize)
+                .attr("x", (d: number) => xScale(d) + 195)
+                .attr("y", (d: number, i: number) => barHeight * (i) + activeHeight - 1 + (barHeight - fontSize) / 2)
+                .attr("font-size", (d: number, i: number) => fontSize)
                 .attr("dy", ".71em")
                 .attr("text-anchor", "end")
-                .text((d: any, i: number) => getBidAmountText(inactiveBids[i], fontSize))
+                .text((d: number, i: number) => getBidAmountText(inactiveBids[i], fontSize))
         }
     }
 
