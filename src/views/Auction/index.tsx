@@ -47,7 +47,7 @@ interface AuctionViewParams {
 
 export function AuctionView() {
   const ref = useRef<HTMLElement>()
-  const containerWidth = useElementWidth(ref)
+  const { width: containerWidth } = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
   const { auction } = useAuction(params.auctionId)
