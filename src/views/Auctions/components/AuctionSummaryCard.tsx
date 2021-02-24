@@ -5,9 +5,9 @@ import React from 'react'
 
 // Components
 import { AuctionFinalPrice } from './AuctionFinalPrice'
-import { CardBody } from 'src/components/CardBody'
+import { CardBody } from 'src/components/CardSaleBody'
 import { AuctionStatus } from './AuctionStatus'
-import { Card } from 'src/components/Card'
+import { Card } from 'src/components/CardSale'
 import { Flex } from 'src/components/Flex'
 
 // Interface
