@@ -25,12 +25,20 @@ import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
+  /**
+   * @todo change this to conform to card layout
+   */
   display: 'block',
   marginBottom: props.theme.space[3],
 }))
 
 const AuctionListSection = styled.div(props => ({
   marginBottom: props.theme.space[4],
+  display:'grid',
+  maxWidth: '1200px',
+  justifyContent:'center',
+  gridTemplateColumns: '500px 500px'
+  
 }))
 
 const Badge = styled.span(props => ({
@@ -96,10 +104,10 @@ export function AuctionsView() {
   return (
     <Center minHeight="100%" py={theme.space[4]}>
       <Container>
+        <Flex mb={20} justifyContent="center">
+          <Badge>{t('texts.active')}</Badge>
+        </Flex>
         <AuctionListSection>
-          <Flex mb={20} justifyContent="center">
-            <Badge>{t('texts.active')}</Badge>
-          </Flex>
           {auctions
             .filter(auction => isAuctionOpen(auction))
             .map(auction => (
@@ -108,10 +116,10 @@ export function AuctionsView() {
               </AuctionSummaryWrapper>
             ))}
         </AuctionListSection>
+        <Flex mb={20} justifyContent="center">
+          <Badge>{t('texts.upcoming')}</Badge>
+        </Flex>
         <AuctionListSection>
-          <Flex mb={20} justifyContent="center">
-            <Badge>{t('texts.upcoming')}</Badge>
-          </Flex>
           {auctions
             .filter(auction => isAuctionUpcoming(auction))
             .map(auction => (
@@ -120,12 +128,12 @@ export function AuctionsView() {
               </AuctionSummaryWrapper>
             ))}
         </AuctionListSection>
+        <Flex mb={20} justifyContent="center">
+          <Button rounded onClick={() => setShowClosedAuctions(prevState => !prevState)}>
+            {showClosedAuctions ? t('buttons.hideClosedAuctions') : t('buttons.showClosedAuctions')}
+          </Button>
+        </Flex>
         <AuctionListSection>
-          <Flex mb={20} justifyContent="center">
-            <Button rounded onClick={() => setShowClosedAuctions(prevState => !prevState)}>
-              {showClosedAuctions ? t('buttons.hideClosedAuctions') : t('buttons.showClosedAuctions')}
-            </Button>
-          </Flex>
           {showClosedAuctions &&
             auctions
               .filter(auction => isAuctionClosed(auction))

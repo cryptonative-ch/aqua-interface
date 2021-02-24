@@ -12,8 +12,6 @@ export const Card = styled.div<CardProps>(
     backgroundColor: 'white',
     height: '247px',
     width: '478px',
-    left: '0px',
-    top: '0px',
     borderRadius: '0px',
 
   }),
