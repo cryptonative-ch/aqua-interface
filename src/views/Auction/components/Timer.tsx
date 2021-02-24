@@ -22,14 +22,16 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   const [time, setTime] = useState(0)
 
   const secondsTohms = (seconds: number) => {
-    const h = Math.floor(seconds / 3600)
-    const m = Math.floor((seconds % 3600) / 60)
-    const s = Math.floor(seconds % 60)
+    const d = Math.floor(seconds / 86400)
+    const h = Math.floor(seconds % 86400 / 3600)
+    const m = Math.floor(((seconds % 86400) % 3600) / 60)
+    const s = Math.floor((seconds % 86400) % 3600) % 60
 
-    const hDisplay = String(h).padStart(2, '0') + ':'
-    const mDisplay = String(m).padStart(2, '0') + ':'
-    const sDisplay = String(s).padStart(2, '0')
-    return hDisplay + mDisplay + sDisplay
+    const dDisplay = d > 0 ? d + 'd ' : ' '
+    const hDisplay =  h > 0 ? h + 'h ' : ' ' 
+    const mDisplay = m > 0 ? m + 'm ': ' ' 
+    const sDisplay = s > 0 ? s + 's ': ' ' 
+    return dDisplay + hDisplay + mDisplay + sDisplay
   }
 
   // re-renders component every second
@@ -46,7 +48,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
 
     return (
       <div>
-        Auction starts in: <strong>{format_time}</strong>
+         <strong>{format_time}</strong>
       </div>
     )
   } else if (isAuctionOpen(auction)) {
@@ -54,7 +56,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
 
     return (
       <div>
-        Auction ends in: <strong>{format_time}</strong>
+        <strong>{format_time}</strong>
       </div>
     )
   } else {
