@@ -2,6 +2,11 @@
 import numeral from 'numeral'
 import React from 'react'
 
+// Components
+
+import { CardText } from 'src/components/CardSaleBody'
+import { Flex } from 'src/components/Flex'
+
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
@@ -18,9 +23,14 @@ export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
     return null
   }
 
+  const pricePerDAI: number = calculateClearingPrice(auction.bids).sellAmount.toNumber()
+
+  const pricePerToken: number = 1 / pricePerDAI
+
   return (
-    <div>
-      {numeral(calculateClearingPrice(auction.bids).sellAmount.toNumber()).format('0,0')} {auction.tokenSymbol} = 1 DAI
-    </div>
+    <Flex>
+      <CardText>{pricePerToken}</CardText>
+      <CardText fontWeight="light">&nbsp;DAI/{auction.tokenSymbol}</CardText>
+    </Flex>
   )
 }
