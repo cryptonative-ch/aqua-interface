@@ -2,6 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
+
+// Components 
+import { CardText } from "src/components/CardSaleBody";
+
 //Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
@@ -48,7 +52,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
 
     return (
       <div>
-         <strong>{format_time}</strong>
+         <CardText>{format_time}</CardText>
       </div>
     )
   } else if (isAuctionOpen(auction)) {
@@ -56,10 +60,10 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
 
     return (
       <div>
-        <strong>{format_time}</strong>
+        <CardText>{format_time}</CardText>
       </div>
     )
   } else {
-    return <strong>Auction closed</strong>
+    return <CardText>Auction closed</CardText>
   }
 }

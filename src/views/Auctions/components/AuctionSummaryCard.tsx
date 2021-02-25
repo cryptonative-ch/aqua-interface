@@ -5,7 +5,7 @@ import React from 'react'
 
 // Components
 import { AuctionFinalPrice } from './AuctionFinalPrice'
-import { CardBody } from 'src/components/CardSaleBody'
+import { CardBody, CardText } from 'src/components/CardSaleBody'
 import { Card } from 'src/components/CardSale'
 import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
@@ -30,29 +30,33 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
             <TokenIconFigure>
               <img src={auction.tokenIcon} alt={auction.tokenName} />
             </TokenIconFigure>
-            <div>
-              <strong>{auction.tokenName}</strong>
-            </div>
+            <CardText fontSize='title' lineHeight='title'>
+              {auction.tokenName}
+            </CardText>
         </Flex>
+        <Flex>
           <BadgeCard saleType='private'/>
+          <BadgeCard saleType='presale'/>
+        </Flex>
+          
         </Flex>
           <Flex flexDirection="column" justifyContent='space-evenly' height='153px'>
             <Flex flexDirection='row' justifyContent='space-between'>
-              <div>
+              <CardText lineHeight='title' color='grey'>
                 Current Price
-              </div>
+              </CardText>
               <AuctionFinalPrice auction={auction} />
             </Flex>
             <Flex  flexDirection='row' justifyContent='space-between'>
-              <div>
+              <CardText color='grey'>
                 Time Remaining
-              </div>
+              </CardText>
               <Timer auction={auction}/>
             </Flex>
             <Flex flexDirection='row' justifyContent='space-between'>
-              <div>
+              <CardText color='grey'>
                 Amount for Sale
-              </div>
+              </CardText>
             <div>
                 {numeral(auction.tokenAmount).format('0,0')} {auction.tokenSymbol}
             </div>

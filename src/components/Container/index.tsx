@@ -12,6 +12,9 @@ export const Container = styled.div<ContainerProps>(
     paddingRight: props.theme.space[3],
     marginLeft: 'auto',
     marginRight: 'auto',
+    position: 'absolute',
+    top: '285px',
+    // bottom: '445px',
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {

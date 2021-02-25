@@ -41,6 +41,10 @@ const AuctionListSection = styled.div(props => ({
   
 }))
 
+
+/**
+ * @todo replace this with redesign from bert, (new component)
+ */
 const Badge = styled.span(props => ({
   border: `1px solid ${props.theme.black}`,
   padding: '6px 12px',
