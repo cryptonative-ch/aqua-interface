@@ -25,6 +25,10 @@ import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
+// Svg
+import MetamaskImage from 'src/assets/svg/metamask.svg'
+// Svg
+import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
   display: 'block',
@@ -109,7 +113,7 @@ export function AuctionsView() {
               ))}
         </AuctionListSection>
       </Container>
-      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)}></WalletConnector>
+      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)} metamaskImage={MetamaskImage} walletImage={WalletImage}></WalletConnector>
       <Footer />
     </Container>
   )
