@@ -9,7 +9,7 @@ import { CardBody } from 'src/components/CardSaleBody'
 import { Card } from 'src/components/CardSale'
 import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
-
+import { BadgeCard } from "src/views/Auction/components/BadgeCard";
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
@@ -26,7 +26,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
     <Card>
       <CardBody>
         <Flex justifyContent="space-between" alignItems="center" >
-          <Flex alignItems="center">
+          <Flex width='100%' alignItems="center" >
             <TokenIconFigure>
               <img src={auction.tokenIcon} alt={auction.tokenName} />
             </TokenIconFigure>
@@ -34,6 +34,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
               <strong>{auction.tokenName}</strong>
             </div>
         </Flex>
+          <BadgeCard saleType='private'/>
         </Flex>
           <Flex flexDirection="column" justifyContent='space-evenly' height='153px'>
             <Flex flexDirection='row' justifyContent='space-between'>
@@ -56,8 +57,6 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
                 {numeral(auction.tokenAmount).format('0,0')} {auction.tokenSymbol}
             </div>
             </Flex>
-           
-            
           </Flex>
       </CardBody>
     </Card>
