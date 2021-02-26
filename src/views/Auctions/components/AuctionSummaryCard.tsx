@@ -7,10 +7,10 @@ import { AuctionFinalPrice } from './AuctionFinalPrice'
 import { CardBody, CardText } from 'src/components/CardSaleBody'
 import { Card } from 'src/components/CardSale'
 import { Flex } from 'src/components/Flex'
-import { Timer } from 'src/views/Auction/components/Timer'
 import { BadgeCard } from 'src/views/Auction/components/BadgeCard'
 import { AuctionAmount } from './AuctionAmount'
 import { Divider } from 'src/components/Divider'
+import { AuctionClock } from './AuctionClock'
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
@@ -55,7 +55,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">Time Remaining</CardText>
-            <Timer auction={auction} />
+            <AuctionClock auction={auction} />
           </Flex>
         </Flex>
       </CardBody>

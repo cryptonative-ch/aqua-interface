@@ -27,8 +27,12 @@ interface TimerComponentProps {
  */
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
   // calculating time difference between local persons time and the start and end block times
-  const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
-  const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
+  
+  const EndDate =  new Date(convertUtcTimestampToLocal((auction.endBlock))).toLocaleString()
+  const localTimeStamp = dayjs(Date.now()).unix()
+  
+  const timeDiffStart = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.startBlock))
+  const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endBlock))
 
   // setting state to update the timer more frequently than the bids
   const [time, setTime] = useState(0)
@@ -56,7 +60,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   }, [time])
 
   if (isAuctionUpcoming(auction)) {
-    const format_time = secondsTohms(time_diff_start)
+    const format_time = secondsTohms(timeDiffStart)
 
     return (
       <div>
@@ -64,7 +68,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
       </div>
     )
   } else if (isAuctionOpen(auction)) {
-    const format_time = secondsTohms(time_diff_end)
+    const format_time = secondsTohms(timeDiffEnd)
 
     return (
       <div>
@@ -72,6 +76,6 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
       </div>
     )
   } else {
-    return <CardText>Auction closed</CardText>
+    return <CardText>{EndDate}</CardText>
   }
 }
