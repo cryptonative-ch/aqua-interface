@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
   bottom: 0px;
   height: 72px;
   width: 100%;
-  left: 0;
   padding: 0 20px;
   outline: 0;
   display: flex;

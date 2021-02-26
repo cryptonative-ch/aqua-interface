@@ -1,9 +1,10 @@
 // External
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import WalletConnector from 'cryptowalletconnector'
 import numeral from 'numeral'
 
 // Hooks
@@ -14,19 +15,22 @@ import { useAuction } from 'src/hooks/useAuction'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
+import { Header } from 'src/components/Header'
+import { Footer } from 'src/components/Footer'
+import { BackComponent } from './components/BackComponent'
+import { AuctionHeader } from './components/AuctionHeader'
 import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { BidList } from './components/BidList'
-import { Header } from './components/Header'
 import { Graph } from './components/Graph'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { Timer } from './components/Timer'
-
-// Layouts
-import { Center } from 'src/layouts/Center'
+// Svg
+import MetamaskImage from 'src/assets/svg/metamask.svg'
+import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
@@ -46,6 +50,7 @@ interface AuctionViewParams {
 }
 
 export function AuctionView() {
+  const [connectModal, setModalVisible] = useState<boolean>(false)
   const ref = useRef<HTMLElement>()
   const { width: containerWidth } = useElementWidth(ref)
 
@@ -54,6 +59,10 @@ export function AuctionView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
+
+  const toggleModal = () => {
+    setModalVisible(true)
+  }
 
   useEffect(() => {
     dispatch(setPageTitle(t(auction?.tokenName as string)))
@@ -64,9 +73,11 @@ export function AuctionView() {
   }
 
   return (
-    <Center minHeight="100%">
+    <Container minHeight="100%" inner={false} noPadding={true} >
+      <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container>
-        <Header title={auction.tokenName} />
+        <BackComponent />
+        <AuctionHeader />
         <Card mb={theme.space[4]}>
           <CardBody>
             <Flex flexDirection="row" justifyContent="space-between">
@@ -122,6 +133,8 @@ export function AuctionView() {
           </CardBody>
         </Card>
       </Container>
-    </Center>
+      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)} metamaskImage={MetamaskImage} walletImage={WalletImage}></WalletConnector>
+      <Footer />
+    </Container>
   )
 }

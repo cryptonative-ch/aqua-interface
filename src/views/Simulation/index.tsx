@@ -17,7 +17,7 @@ import { AuctionBid } from 'src/interfaces/Auction'
 // Components
 import { PlaceBidForm } from '../Auction/components/PlaceBidForm'
 import { BidList } from '../Auction/components/BidList'
-import { Header } from '../Auction/components/Header'
+import { AuctionHeader } from '../Auction/components/AuctionHeader'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 // import { Graph } from '../Auction/components/Graph'
@@ -175,7 +175,7 @@ export function SimulationView() {
           <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
         </Fragment>
         <Container>
-          <Header title="Simulation" />
+          <AuctionHeader />
           <Card mb={theme.space[4]}>
             <CardBody>
               <Flex flexDirection="row" justifyContent="space-between">
