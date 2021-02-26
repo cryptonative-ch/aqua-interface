@@ -9,7 +9,7 @@ export const CardBody = styled.div<CardBodyProps>(
     flexDirection: 'column',
     height: '100%',
     justifyContent: 'space-between',
-    padding: '32px 24px 4px 24px',
+    padding: '32px 24px 0px 24px',
     borderBottom: '1px solid #000',
     '&:last-child': {
       borderBottom: 'none',
@@ -29,5 +29,6 @@ export const CardText = styled.text<LineHeightProps>(props => ({
   lineHeight: props.lineHeight === 'title' ?  '29.05px' : '19px',
   letterSpacing: '0em',
   color: props.color === 'grey' ? '#7B7F93' : '#000629',
+  height: '19px',
 
 }))

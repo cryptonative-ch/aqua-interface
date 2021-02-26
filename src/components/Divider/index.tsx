@@ -10,4 +10,5 @@ export const Divider = styled.hr`
   border: none;
   border-top: 1px dashed #dddde3;
   box-sizing: border-box;
+  margin: 0px;
 `
