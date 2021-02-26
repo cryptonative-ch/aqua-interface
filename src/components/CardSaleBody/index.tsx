@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
 
 export const CardBody = styled.div<CardBodyProps>(
-  props => ({
+ ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

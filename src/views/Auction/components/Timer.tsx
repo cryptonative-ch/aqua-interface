@@ -17,6 +17,14 @@ interface TimerComponentProps {
   auction: Auction
 }
 
+
+
+/**
+ * 
+ * @todo change auction closed to show local time
+ * @todo show timer as proportion of circle completed
+ * 
+ */
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
   // calculating time difference between local persons time and the start and end block times
   const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))

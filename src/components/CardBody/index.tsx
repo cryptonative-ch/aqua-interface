@@ -10,6 +10,7 @@ export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProp
    */
 export const CardBody = styled.div<CardBodyProps>(
   props => ({
+    padding: props.theme.space[3],
     borderBottom: '1px solid #000',
     '&:last-child': {
       borderBottom: 'none',

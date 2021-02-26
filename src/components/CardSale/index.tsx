@@ -9,7 +9,7 @@ export type CardProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
  */
 export const Card = styled.div<CardProps>(
   props => ({
-    padding: props.theme.space[0],
+    // padding: props.theme.space[0],
     backgroundColor: 'white',
     // height: props.height ? '247px' : '290px',
     height: '247px',

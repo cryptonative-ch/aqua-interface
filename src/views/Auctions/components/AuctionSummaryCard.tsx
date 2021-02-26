@@ -10,6 +10,7 @@ import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
 import { BadgeCard } from 'src/views/Auction/components/BadgeCard'
 import { AuctionAmount } from './AuctionAmount'
+import { Divider } from "src/components/Divider";
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
@@ -25,7 +26,9 @@ interface AuctionSummaryProps {
 export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
   return (
     <Card>
+      <Divider/>
       <CardBody>
+        
         <Flex justifyContent="space-between" alignItems="center">
           <Flex width="100%" alignItems="center">
             <TokenIconFigure>

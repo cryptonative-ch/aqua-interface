@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
 export const Divider = styled.hr`
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 37.65%;
-  bottom: 61.94%;
-  border: 1px dashed #dddde3;
+  position: relative;
+  left: 0px;
+  height: 1px;
+  width: 478px;
+  top: 93px;
+  border-radius: 0px;
+  border: none;
+  border-top: 1px dashed #dddde3;
   box-sizing: border-box;
 `
