@@ -53,10 +53,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
             <CardText color="grey">Amount for Sale</CardText>
             <AuctionAmount auction={auction} />
           </Flex>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">Time Remaining</CardText>
-            <AuctionClock auction={auction} />
-          </Flex>
+          <AuctionClock auction={auction} />
         </Flex>
       </CardBody>
     </Card>

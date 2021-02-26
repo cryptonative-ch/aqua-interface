@@ -8,6 +8,8 @@ import { Timer } from 'src/views/Auction/components/Timer'
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
+import { CardText } from 'src/components/CardSaleBody'
+import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
 interface AuctionClockProps {
   auction: Auction
@@ -17,18 +19,43 @@ interface AuctionClockProps {
  *
  * @todo Dark circle reduces in size as time goes on revealing light circle
  * @todo find a way to reduce the size of the circle
+ * @todo rename component
+ * @todo clock changes faster than auction update??
  */
-
 export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) => {
   console.log(auction)
   // logic in reducing size of circle according to time
 
+  if (isAuctionClosed(auction)) {
+    return (
+      <Flex flexDirection="row" justifyContent="space-between">
+        <CardText color="grey">Closed</CardText>
+        <Flex>
+          <Timer auction={auction} />
+          <DarkCircle>
+            <LightCircle />
+          </DarkCircle>
+        </Flex>
+      </Flex>
+    )
+  } else if (isAuctionUpcoming(auction)) {
+    return (
+      <Flex flexDirection="row" justifyContent="space-between">
+        <CardText color="grey">Timeframe</CardText>
+        <Timer auction={auction} />
+      </Flex>
+    )
+  }
+
   return (
-    <Flex justifyContent='center'>
-      <Timer auction={auction} />
-      <DarkCircle>
-        <LightCircle />
-      </DarkCircle>
+    <Flex flexDirection="row" justifyContent="space-between">
+      <CardText color="grey">Time Remaining</CardText>
+      <Flex>
+        <Timer auction={auction} />
+        <DarkCircle>
+          <LightCircle />
+        </DarkCircle>
+      </Flex>
     </Flex>
   )
 }
