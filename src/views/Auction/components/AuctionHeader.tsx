@@ -1,6 +1,14 @@
 // External
 import styled from 'styled-components'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+
+//Interfaces
+import { Auction } from 'src/interfaces/Auction'
+
+// Utils
+import { convertUtcTimestampToLocal } from 'src/utils/date'
+import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 const HeaderText = styled.div`
   font-style: normal;
@@ -47,14 +55,50 @@ const TokenIconContainer = styled.div`
   background-color: #304FFE;
 `
 
-export function AuctionHeader() {
+interface AuctionHeaderProps {
+  auction: Auction
+}
+
+export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
+  // calculating time difference between local persons time and the start and end block times
+  const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
+  const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
+
+  // setting state to update the timer more frequently than the bids
+  const [, setTime] = useState(0)
+
+  const secondsTohms = (seconds: number) => {
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    const s = Math.floor(seconds % 60)
+
+    const hDisplay = String(h).padStart(2, '0') + 'h '
+    const mDisplay = String(m).padStart(2, '0') + 'm '
+    const sDisplay = String(s).padStart(2, '0') + 's'
+    return hDisplay + mDisplay + sDisplay
+  }
+
+  // re-renders component every second
+  useEffect(() => {
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+  let format_time = '';
+  if (isAuctionUpcoming(auction)) {
+    format_time = secondsTohms(time_diff_start)
+  } else if (isAuctionOpen(auction)) {
+    format_time = secondsTohms(time_diff_end)
+  }
 
   return (
     <HeaderContainer>
       <TokenIconContainer />
       <HeaderText>XYZ Initial Auction</HeaderText>
       <StatusText>Private</StatusText>
-      <TimeText>9h 23m 45s</TimeText>
+      <TimeText>{format_time}</TimeText>
     </HeaderContainer>
   )
 }

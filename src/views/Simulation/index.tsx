@@ -175,7 +175,7 @@ export function SimulationView() {
           <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
         </Fragment>
         <Container>
-          <AuctionHeader />
+          <AuctionHeader auction={auction} />
           <Card mb={theme.space[4]}>
             <CardBody>
               <Flex flexDirection="row" justifyContent="space-between">
