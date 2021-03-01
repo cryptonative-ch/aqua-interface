@@ -15,16 +15,9 @@ interface AuctionClockProps {
   auction: Auction
 }
 
-/**
- *
- * @todo Dark circle reduces in size as time goes on revealing light circle
- * @todo find a way to reduce the size of the circle
- * @todo rename component
- * @todo clock changes faster than auction update??
- */
+
 export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) => {
-  console.log(auction)
-  // logic in reducing size of circle according to time
+
 
   if (isAuctionClosed(auction)) {
     return (

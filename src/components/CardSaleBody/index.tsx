@@ -29,6 +29,7 @@ export const CardText = styled.text<LineHeightProps>(props => ({
   lineHeight: props.lineHeight === 'title' ?  '29.05px' : '19px',
   letterSpacing: '0em',
   color: props.color === 'grey' ? '#7B7F93' : '#000629',
-  height: '19px',
+  height: props.fontSize === 'title' ? '24px' : '19px',
+
 
 }))

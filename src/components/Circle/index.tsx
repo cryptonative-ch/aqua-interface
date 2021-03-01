@@ -6,8 +6,7 @@ export const DarkCircle = styled.div`
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  margin-left: 8px;
-  margin-top: 4px;
+  margin: 2px 0px 0px 8px;
 `
 
 export const LightCircle = styled.div`

@@ -15,6 +15,7 @@ import { AuctionClock } from './AuctionClock'
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
+
 const TokenIconFigure = styled.div(props => ({
   marginRight: props.theme.space[3],
 }))
@@ -31,7 +32,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
         <Flex justifyContent="space-between" alignItems="center">
           <Flex width="100%" alignItems="center">
             <TokenIconFigure>
-              <img src={auction.tokenIcon} alt={auction.tokenName} />
+              <img style={{height:'45px'}} src={auction.tokenIcon} alt={auction.tokenName} />
             </TokenIconFigure>
             <CardText fontSize="title" lineHeight="title">
               {auction.tokenName}

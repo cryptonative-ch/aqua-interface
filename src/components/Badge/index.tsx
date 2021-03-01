@@ -30,5 +30,5 @@ text-align: center;
 color: white;
 justify-content: center;
 margin: 0px;
-/* padding: 4px 2px; */
+padding: 2px 4px;
 `

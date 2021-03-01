@@ -25,9 +25,7 @@ import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
-  /**
-   * @todo change this to conform to card layout
-   */
+ 
   display: 'block',
   marginBottom: props.theme.space[3],
 }))
@@ -92,6 +90,7 @@ export function AuctionsView() {
   const dispatch = useDispatch()
   const { auctions } = useAuctions()
   const [t] = useTranslation()
+  const [time, setTime] = useState(0)
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
@@ -99,7 +98,15 @@ export function AuctionsView() {
     if (auctions.length) {
       setLoading(false)
     }
-  }, [auctions, t, dispatch])
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+
+    console.log('changed')
+    return () => {
+      clearInterval(interval)
+    }
+   
+  }, [auctions, t, dispatch, showClosedAuctions, time])
+
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
