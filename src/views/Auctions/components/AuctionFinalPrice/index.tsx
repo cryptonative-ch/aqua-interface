@@ -1,5 +1,5 @@
 // External
-// import numeral from 'numeral'
+
 import React from 'react'
 
 // Components
