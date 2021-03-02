@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export type CardProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
 
 /**
- * 
+ *
  * @todo allow change in height for personal bids
  */
 export const Card = styled.div<CardProps>(
@@ -14,7 +14,6 @@ export const Card = styled.div<CardProps>(
     height: '247px',
     width: '478px',
     borderRadius: '0px',
-
   }),
   space,
   layout,

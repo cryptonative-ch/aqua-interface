@@ -20,7 +20,13 @@ interface AuctionFinalPriceProps {
 
 export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
   if (isAuctionUpcoming(auction)) {
-    return null
+    // or some other minimum reserve price
+    return (
+      <Flex>
+        <CardText>N/A</CardText>
+        <CardText fontWeight="light">&nbsp;DAI/{auction.tokenSymbol}</CardText>
+      </Flex>
+    )
   }
 
   const pricePerDAI: number = calculateClearingPrice(auction.bids).sellAmount.toNumber()
@@ -29,7 +35,7 @@ export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
 
   return (
     <Flex>
-      <CardText>{pricePerToken}</CardText>
+      <CardText data-testid="openprice">{pricePerToken}</CardText>
       <CardText fontWeight="light">&nbsp;DAI/{auction.tokenSymbol}</CardText>
     </Flex>
   )

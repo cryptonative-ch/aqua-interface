@@ -4,20 +4,18 @@ import dayjs from 'dayjs'
 
 // Components
 import { CardText } from 'src/components/CardSaleBody'
-import { Flex } from "src/components/Flex";
+import { Flex } from 'src/components/Flex'
 
 //Interfaces
 import { Auction } from 'src/interfaces/Auction'
+import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 interface TimerComponentProps {
   auction: Auction
 }
-
-
 
 export const secondsTohms = (seconds: number) => {
   const d = Math.floor(seconds / 86400)
@@ -25,19 +23,29 @@ export const secondsTohms = (seconds: number) => {
   const m = Math.floor(((seconds % 86400) % 3600) / 60)
   const s = Math.floor((seconds % 86400) % 3600) % 60
 
-  const dDisplay = d > 0 ? d + 'd ' : ' '
-  const hDisplay = h > 0 ? h + 'h ' : ' '
-  const mDisplay = m > 0 ? m + 'm ' : ' '
-  const sDisplay = s > 0 ? s + 's ' : ' '
+  const dDisplay = d > 0 ? d + 'd ' : ''
+  const hDisplay = h > 0 ? h + 'h ' : ''
+  const mDisplay = m > 0 ? m + 'm ' : ''
+  const sDisplay = s > 0 ? s + 's' : ''
+
+  if (seconds < 0) {
+    throw Error('seconds cannot be negative')
+  }
+
   return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
-export const timeFrame = (seconds: number) => {
-  const endBlockDateTime = new Date(seconds * 1000).toString()
-  const endDate = endBlockDateTime.slice(3, 10)
+export const timeFrame = (unixSeconds: number) => {
+  const endBlockDateTime = new Date(unixSeconds * 1000).toString()
+  const endDate = endBlockDateTime.slice(4, 10)
   const endTime = endBlockDateTime.slice(15, 21)
   const timeZoneStamp = endBlockDateTime.slice(25, 28)
-  return endDate + ', ' + endTime + ' ' + timeZoneStamp
+
+  if (unixSeconds < 0) {
+    throw Error('seconds cannot be negative')
+  }
+
+  return `${endDate}, ${endTime} ${timeZoneStamp}`
 }
 
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
@@ -47,7 +55,6 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
 
   // const timeDiffStart = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.startBlock))
   const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endBlock))
-
 
   if (isAuctionUpcoming(auction)) {
     return (
@@ -68,7 +75,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   } else {
     return (
       <Flex>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
+        <CardText data-testid="closed">{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
       </Flex>
     )
   }

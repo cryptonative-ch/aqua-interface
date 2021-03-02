@@ -15,10 +15,7 @@ interface AuctionClockProps {
   auction: Auction
 }
 
-
 export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) => {
-
-
   if (isAuctionClosed(auction)) {
     return (
       <Flex flexDirection="row" justifyContent="space-between">

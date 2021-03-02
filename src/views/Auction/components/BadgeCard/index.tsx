@@ -11,7 +11,7 @@ interface BadgeCardProps {
 export const BadgeCard: FunctionComponent<BadgeCardProps> = ({ saleType }) => {
   if (saleType == 'presale') {
     return (
-      <Badge width='presale'>
+      <Badge width="presale">
         <Content>Pre-sale</Content>
       </Badge>
     )

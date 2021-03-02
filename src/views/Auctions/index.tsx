@@ -25,20 +25,17 @@ import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
- 
   display: 'block',
   marginBottom: props.theme.space[3],
 }))
 
 const AuctionListSection = styled.div(props => ({
   marginBottom: props.theme.space[4],
-  display:'grid',
+  display: 'grid',
   maxWidth: '1200px',
-  justifyContent:'center',
-  gridTemplateColumns: '500px 500px'
-  
+  justifyContent: 'center',
+  gridTemplateColumns: '500px 500px',
 }))
-
 
 /**
  * @todo replace this with redesign from bert, (new component)
@@ -104,9 +101,7 @@ export function AuctionsView() {
     return () => {
       clearInterval(interval)
     }
-   
   }, [auctions, t, dispatch, showClosedAuctions, time])
-
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
