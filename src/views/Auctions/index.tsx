@@ -22,8 +22,7 @@ import { AuctionSummaryCard } from './components/AuctionSummaryCard'
 import { Container } from 'src/components/Container'
 import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
-
-
+import { AuctionNavBar } from './components/AuctionNavBar'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
   display: 'block',
@@ -31,6 +30,7 @@ const AuctionSummaryWrapper = styled(NavLink)(props => ({
 }))
 
 const AuctionListSection = styled.div(props => ({
+  position:'relative',
   marginBottom: props.theme.space[4],
   display: 'grid',
   maxWidth: '1200px',
@@ -47,7 +47,19 @@ const Badge = styled.span(props => ({
   borderRadius: 32,
 }))
 
-
+const Title = styled.p`
+  position: relative;
+  margin-bottom: 48px;
+  height: 44px;
+  width: 210px;
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: 0em;
+  color: #000629;
+`
 
 export function AuctionsView() {
   const theme = useTheme()
@@ -79,31 +91,17 @@ export function AuctionsView() {
   return (
     <Center minHeight="100%" py={theme.space[4]}>
       <Container>
-        <Flex mb={20} justifyContent="center">
-          <Badge>{t('texts.active')}</Badge>
-        </Flex>
+        <Title>Token Sales</Title>
+        <AuctionNavBar />
         <AuctionListSection>
-          {auctions
-            .filter(auction => isAuctionOpen(auction))
-            .map(auction => (
-              <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                <AuctionSummaryCard auction={auction} />
-              </AuctionSummaryWrapper>
-            ))}
+          {auctions.map(auction => (
+            <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+              <AuctionSummaryCard auction={auction} />
+            </AuctionSummaryWrapper>
+          ))}
         </AuctionListSection>
-        <Flex mb={20} justifyContent="center">
-          <Badge>{t('texts.upcoming')}</Badge>
-        </Flex>
-        <AuctionListSection>
-          {auctions
-            .filter(auction => isAuctionUpcoming(auction))
-            .map(auction => (
-              <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                <AuctionSummaryCard auction={auction} />
-              </AuctionSummaryWrapper>
-            ))}
-        </AuctionListSection>
-        <Flex mb={20} justifyContent="center">
+
+        {/* <Flex mb={20} justifyContent="center">
           <Button rounded onClick={() => setShowClosedAuctions(prevState => !prevState)}>
             {showClosedAuctions ? t('buttons.hideClosedAuctions') : t('buttons.showClosedAuctions')}
           </Button>
@@ -117,7 +115,7 @@ export function AuctionsView() {
                   <AuctionSummaryCard auction={auction} />
                 </AuctionSummaryWrapper>
               ))}
-        </AuctionListSection>
+        </AuctionListSection> */}
       </Container>
     </Center>
   )
