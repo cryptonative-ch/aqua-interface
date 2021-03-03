@@ -59,9 +59,9 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   if (isAuctionUpcoming(auction)) {
     return (
       <Flex>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
+        <CardText>{timeFrame(auction.startBlock)}</CardText>
         <CardText color="grey">&nbsp;to&nbsp;</CardText>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
+        <CardText>{timeFrame(auction.endBlock)}</CardText>
       </Flex>
     )
   } else if (isAuctionOpen(auction)) {
@@ -75,7 +75,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   } else {
     return (
       <Flex>
-        <CardText data-testid="closed">{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
+        <CardText data-testid="closed">{timeFrame(auction.endBlock)}</CardText>
       </Flex>
     )
   }

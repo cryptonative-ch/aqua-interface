@@ -31,7 +31,7 @@ describe('seconds to HMS function', () => {
 
 describe('converts unix seconds into local Date time format function', () => {
   test('convert seconds into local time', () => {
-    expect(timeFrame(1000)).toBe('Jan 01,  01:16 GMT')
+    expect(timeFrame(1614766339)).toBe('Mar 03,  10:12 GMT')
   }),
     test('test negative input', () => {
       expect(() => {
