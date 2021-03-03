@@ -76,11 +76,11 @@ export function AuctionView() {
   return (
     <Container minHeight="100%" inner={false} noPadding={true} >
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
-      <Container>
+      <Container noPadding>
         <BackComponent />
         <AuctionHeader auction={auction} />
         <Flex flexDirection="row" justifyContent="space-between">
-          <Flex flexDirection="column" width="578px" marginRight="24px">
+          <Flex flexDirection="column" flex={1}>
             <Card mb={theme.space[4]} border="none">
               <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                 <Flex flexDirection="row" alignItems="center" flex={1}>
@@ -107,13 +107,13 @@ export function AuctionView() {
                   <CardTitle>{t('texts.placeBid')}</CardTitle>
                 </CardBody>
                 <CardBody>
-                  <PlaceBidForm
+                  {/* <PlaceBidForm
                     onSubmit={() => {
                       console.log('Add to Auction')
                     }}
                     auction={auction}
                     currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
-                  />
+                  /> */}
                 </CardBody>
               </Card>
               <Card mb={theme.space[4]}>
@@ -137,7 +137,24 @@ export function AuctionView() {
               </CardBody>
             </Card>
           </Flex>
-          <Flex flexDirection="column" flex={1} marginRight="24px"></Flex>
+          <Flex flexDirection="column" width="377px" marginLeft="24px">
+            <Card border="none">
+              <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
+                <Flex flexDirection="row" alignItems="center" flex={1}>
+                  <HeaderItem title="Place a Bid" description="" color="#000629" />
+                </Flex>
+              </CardBody>
+              <CardBody display="flex" padding={theme.space[4]}>
+                <PlaceBidForm
+                  onSubmit={() => {
+                    console.log('Add to Auction')
+                  }}
+                  auction={auction}
+                  currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
+                />
+              </CardBody>
+            </Card>
+          </Flex>
         </Flex>
       </Container>
       <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)} metamaskImage={MetamaskImage} walletImage={WalletImage}></WalletConnector>

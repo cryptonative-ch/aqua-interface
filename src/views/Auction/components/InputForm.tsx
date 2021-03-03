@@ -29,13 +29,13 @@ const HeaderDescription = styled.div`
   color: #000629;
 `
 
-interface HeaderItemProps {
+interface InputFormProps {
   title: string
   description: string
   color: string
 }
 
-export function HeaderItem({ title, description, color }: HeaderItemProps) {
+export function InputForm({ title, description, color }: InputFormProps) {
   return (
     <Flex flexDirection="column" marginRight="100px">
       <HeaderTitle color={color}>{title}</HeaderTitle>
@@ -44,6 +44,6 @@ export function HeaderItem({ title, description, color }: HeaderItemProps) {
   )
 }
 
-HeaderItem.defaultProps = {
+InputForm.defaultProps = {
   color: '#7B7F93'
 }

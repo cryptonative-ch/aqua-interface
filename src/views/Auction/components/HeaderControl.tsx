@@ -52,7 +52,7 @@ export function HeaderControl({ status, showGraph }: HeaderControlProps) {
           <LogoImg src={LogoSVG} />
         )}
       </Flex>
-      <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
+      <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" style={{cursor: 'pointer'}} >
         <ControlButton>View Live Graph</ControlButton>
         {status === 'active' && (
           <ArrowImg src={showGraph ? DownSVG : UpSVG} />

@@ -1,5 +1,6 @@
 // External
 import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 // Components
@@ -12,6 +13,34 @@ import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
 import { BidModalContext } from 'src/contexts'
+import { Flex } from 'src/components/Flex'
+
+const FormLabel = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 48px;
+  color: #000629;
+  margin-right: 24px;
+  width: 80px;
+`
+
+const FormDescription = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 140%;
+  color: #7B7F93;
+  margin-top: 8px;
+`
+
+const FormInput = styled.input({
+  height: '48px',
+  width: '100%',
+  background: '#F2F2F2',
+  border: 'none',
+  padding: '0 16px'
+})
 
 interface BidData {
   tokenAmount: number
@@ -80,22 +109,36 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>
       <FormGroup>
-        <label>Amount</label>
-        <input id="tokenAmount" type="number" value={tokenAmount} onChange={onTokenAmountChange} />
+        <FormLabel>Token Price</FormLabel>
+        <Flex flexDirection="column" flex={1}>
+          <FormInput id="tokenAmount" type="number" value={tokenAmount} onChange={onTokenAmountChange} />
+          <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
+        </Flex>
       </FormGroup>
       <FormGroup>
-        <label>Price Per Token</label>
-        <input id="tokenPrice" type="number" value={tokenPrice} onChange={onTokenPriceChange} />
+        <FormLabel>Amount</FormLabel>
+        <Flex flexDirection="column" flex={1}>
+          <FormInput id="tokenPrice" type="number" value={tokenPrice} onChange={onTokenPriceChange} />
+          <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>
+        </Flex>
       </FormGroup>
-      <FormGroup>
-        <Button
-          disabled={!formValid || isAuctionClosed(auction) || isAuctionUpcoming(auction)}
-          type="submit"
-          title={t('buttons.placeBid')}
-        >
-          {t('buttons.placeBid')}
-        </Button>
-      </FormGroup>
+      <Button
+        disabled={!formValid || isAuctionClosed(auction) || isAuctionUpcoming(auction)}
+        type="submit"
+        title={t('buttons.placeBid')}
+        formButton
+        width="100%"
+        height="48px"
+        fontWeight="500"
+        padding={false}
+        fontSize="14px"
+        lineHeight="21px"
+        border={true}
+        background="#DDDDE3"
+        color="#7B7F93"
+      >
+        {t('buttons.placeBid')}
+      </Button>
     </form>
   )
 }
