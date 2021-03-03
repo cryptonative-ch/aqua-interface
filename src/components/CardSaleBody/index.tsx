@@ -8,10 +8,15 @@ import {
   textAlign,
   TextAlignProps,
   LineHeightProps,
+  FontSizeProps,
+  FontWeightProps
 } from 'styled-system'
 import styled from 'styled-components'
 
 export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
+
+export type CardTextProps =  FontSizeProps & FontWeightProps & LineHeightProps
+
 
 export const CardBody = styled.div<CardBodyProps>(
   {
@@ -31,7 +36,7 @@ export const CardBody = styled.div<CardBodyProps>(
   textAlign
 )
 
-export const CardText = styled.text<LineHeightProps>(props => ({
+export const CardText = styled.p<CardTextProps>(props => ({
   fontFamily: 'Inter',
   fontSize: props.fontSize === 'title' ? '24px' : '16px',
   fontStyle: 'normal',
