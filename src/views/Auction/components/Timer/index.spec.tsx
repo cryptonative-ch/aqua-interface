@@ -64,9 +64,9 @@ describe('tests Timer react component', () => {
         },
       ],
     }
-    const { findByText } = render(<Timer auction={auction} />)
+    const { getByTestId } = render(<Timer auction={auction} />)
 
-    expect(await findByText('1d 1h')).toBeInTheDocument()
+    expect(await getByTestId('open')).toHaveTextContent('1d')
   }),
     test('when auction is upcoming, it displays the correct return', () => {
       const auction = {
