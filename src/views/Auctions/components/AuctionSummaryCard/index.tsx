@@ -4,7 +4,8 @@ import React from 'react'
 
 // Components
 import { AuctionFinalPrice } from '../AuctionFinalPrice'
-import { CardBody, CardText } from 'src/components/CardSaleBody'
+import { CardBody } from 'src/components/CardSaleBody'
+import { CardText } from 'src/components/CardText'
 import { Card } from 'src/components/CardSale'
 import { Flex } from 'src/components/Flex'
 import { BadgeCard } from 'src/views/Auction/components/BadgeCard'

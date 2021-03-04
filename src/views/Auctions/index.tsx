@@ -66,7 +66,6 @@ export function AuctionsView() {
     }
     const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
 
-    console.log('changed')
     return () => {
       clearInterval(interval)
     }

@@ -1,22 +1,7 @@
-import {
-  space,
-  layout,
-  flexbox,
-  SpaceProps,
-  LayoutProps,
-  FlexProps,
-  textAlign,
-  TextAlignProps,
-  LineHeightProps,
-  FontSizeProps,
-  FontWeightProps
-} from 'styled-system'
+import { space, layout, flexbox, SpaceProps, LayoutProps, FlexProps, textAlign, TextAlignProps } from 'styled-system'
 import styled from 'styled-components'
 
 export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
-
-export type CardTextProps =  FontSizeProps & FontWeightProps & LineHeightProps
-
 
 export const CardBody = styled.div<CardBodyProps>(
   {
@@ -35,14 +20,3 @@ export const CardBody = styled.div<CardBodyProps>(
   flexbox,
   textAlign
 )
-
-export const CardText = styled.p<CardTextProps>(props => ({
-  fontFamily: 'Inter',
-  fontSize: props.fontSize === 'title' ? '24px' : '16px',
-  fontStyle: 'normal',
-  fontWeight: props.fontWeight === 'light' ? 400 : 500,
-  lineHeight: props.lineHeight === 'title' ? '29.05px' : '19px',
-  letterSpacing: '0em',
-  color: props.color === 'grey' ? '#7B7F93' : '#000629',
-  height: props.fontSize === 'title' ? '24px' : '19px',
-}))

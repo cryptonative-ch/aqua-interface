@@ -3,7 +3,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 
 // Components
-import { CardText } from 'src/components/CardSaleBody'
+import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 
 //Interfaces
