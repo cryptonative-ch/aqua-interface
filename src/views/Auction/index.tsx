@@ -1,5 +1,6 @@
 // External
 import React, { useEffect, useRef, useState } from 'react'
+import { useWallet } from 'use-wallet'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -23,7 +24,7 @@ import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
-import { Graph } from './components/Graph'
+import { BarChart } from './components/BarChart'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { HeaderItem } from './components/HeaderItem'
@@ -37,18 +38,29 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
 
+// Wallet Utils
+import { getRandomWallet } from 'src/utils/wallets'
+
 // Views
 import { NotFoundView } from 'src/views/NotFound'
+
+// Interfaces
+import { AuctionBid } from 'src/interfaces/Auction'
 
 interface AuctionViewParams {
   auctionId: string
 }
 
 export function AuctionView() {
+  const wallet = useWallet()
+
+  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
+  const [userAddress, setUserAddress] = useState<string>('')
+  const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
   const ref = useRef<HTMLElement>()
-  const { width: containerWidth } = useElementWidth(ref)
+  const { width: containerWidth, setWidth } = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
   const { auction } = useAuction(params.auctionId)
@@ -65,6 +77,14 @@ export function AuctionView() {
   }
 
   useEffect(() => {
+    if (!userAddress) {
+      setUserAddress(walletAddress || getRandomWallet().address)
+    }
+
+    //Calculate the virtual
+    if (auction) {
+      setClearingPrice(calculateClearingPrice(auction.bids))
+    }
     dispatch(setPageTitle(t(auction?.tokenName as string)))
   }, [auction, t, dispatch])
 
@@ -91,50 +111,27 @@ export function AuctionView() {
                 <HeaderControl showGraph={showGraph} toggleGraph={toggleGraph} />
               </CardBody>
               {showGraph && (
-                <CardBody display="flex" padding="8px 24px 24px" border="none">
-                  <Graph bids={auction.bids} height={400} width={containerWidth} userAddress="0x" />
+                <CardBody
+                  display="flex"
+                  padding="8px 24px 24px"
+                  border="none"
+                  ref={e => {
+                    if (e) {
+                      ref.current = e
+                      setWidth(e.clientWidth)
+                    }
+                  }}
+                >
+                  <BarChart
+                    width={containerWidth}
+                    height={400}
+                    data={auction.bids}
+                    userAddress={userAddress}
+                    vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5}
+                  />
                 </CardBody>
               )}
             </Card>
-            {/* <CardBody
-              ref={e => {
-                if (e) {
-                  ref.current = e
-                }
-              }}
-            >
-              <Graph bids={auction.bids} height={400} width={containerWidth} userAddress="0x" />
-            </CardBody> */}
-            {/* <FlexGroupColumns>
-              <Card mb={theme.space[4]}>
-                <CardBody>
-                  <CardTitle>{t('texts.placeBid')}</CardTitle>
-                </CardBody>
-                <CardBody>
-                  <PlaceBidForm
-                    onSubmit={() => {
-                      console.log('Add to Auction')
-                    }}
-                    auction={auction}
-                    currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
-                  />
-                </CardBody>
-              </Card>
-              <Card mb={theme.space[4]}>
-                <CardBody>
-                  <CardTitle>{t('texts.bids')}</CardTitle>
-                </CardBody>
-                <CardBody>
-                  <BidList
-                    bids={auction.bids}
-                    baseTokenSymbol="DAI"
-                    quotetokenSmybol={auction.tokenSymbol}
-                    fullWidth={false}
-                    currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
-                  />
-                </CardBody>
-              </Card>
-            </FlexGroupColumns> */}
             <Card mb={theme.space[4]} border="none">
               <CardBody display="flex" padding={theme.space[4]} border="none">
                 <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourBids')}</CardTitle>
