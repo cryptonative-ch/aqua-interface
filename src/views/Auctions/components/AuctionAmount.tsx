@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react'
 import numeral from 'numeral'
 
 // Components
-import { CardText } from 'src/components/CardSaleBody'
+import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 // Interface
 import { Auction } from 'src/interfaces/Auction'

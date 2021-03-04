@@ -3,11 +3,6 @@ import styled from 'styled-components'
 
 export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
 
-/**
- *
- * @todo refactor this
- *
- */
 export const CardBody = styled.div<CardBodyProps>(
   props => ({
     padding: props.theme.space[3],

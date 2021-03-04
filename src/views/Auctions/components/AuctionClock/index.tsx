@@ -8,7 +8,7 @@ import { Timer } from 'src/views/Auction/components/Timer'
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
-import { CardText } from 'src/components/CardSaleBody'
+import { CardText } from 'src/components/CardText'
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
 interface AuctionClockProps {
