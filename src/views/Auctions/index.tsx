@@ -38,14 +38,11 @@ const AuctionSummaryWrapper = styled(NavLink)(props => ({
 const AuctionListSection = styled.div(props => ({
   marginBottom: props.theme.space[4],
   display: 'grid',
-  maxWidth: '1200px',
-  justifyContent: 'center',
+  maxWidth: '1000px',
+  margin: 'auto',
   gridTemplateColumns: '500px 500px',
 }))
 
-/**
- * @todo replace this with redesign from bert, (new component)
- */
 const Badge = styled.span(props => ({
   border: `1px solid ${props.theme.black}`,
   padding: '6px 12px',
@@ -83,7 +80,7 @@ export function AuctionsView() {
   }
 
   return (
-    <Container minHeight="100%" inner={false} noPadding={true}>
+    <Container minHeight="200%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container>
         <Flex mb={20} justifyContent="center">

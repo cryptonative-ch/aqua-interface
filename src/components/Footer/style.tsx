@@ -2,11 +2,10 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  height: 72px;
-  z-index: 700;
-  width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
+  height: 72px;
+  width: 100%;
   left: 0;
   padding: 0 20px;
   outline: 0;
