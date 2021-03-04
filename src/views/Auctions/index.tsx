@@ -6,9 +6,6 @@ import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 
-// Mesa Utils
-import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
-
 // Hooks
 import { useAuctions } from 'src/hooks/useAuctions'
 
@@ -23,8 +20,8 @@ import { AuctionSummaryCard } from './components/AuctionSummaryCard'
 import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { Button } from 'src/components/Button'
-import { Flex } from 'src/components/Flex'
+
+import { AuctionNavBar } from './components/AuctionNavBar'
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
@@ -43,14 +40,25 @@ const AuctionListSection = styled.div(props => ({
   gridTemplateColumns: '500px 500px',
 }))
 
-const Badge = styled.span(props => ({
-  border: `1px solid ${props.theme.black}`,
-  padding: '6px 12px',
-  borderRadius: 32,
-}))
+const Title = styled.p`
+height: 44px;
+width: 210px;
+font-family: Inter;
+font-size: 36px;
+font-style: normal;
+font-weight: 600;
+line-height: 44px;
+letter-spacing: 0em;
+text-align: left;
+color: #000629;
+margin-bottom: 32px;
+`
+
+
+
+
 
 export function AuctionsView() {
-  const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
@@ -73,54 +81,24 @@ export function AuctionsView() {
     return () => {
       clearInterval(interval)
     }
-  }, [auctions, t, dispatch, showClosedAuctions, time])
+  }, [auctions, t, dispatch, time])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
   }
 
   return (
-    <Container minHeight="200%" inner={false} noPadding={true}>
+    <Container minHeight="200%" inner={false} noPadding={true} position="absolute">
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container>
-        <Flex mb={20} justifyContent="center">
-          <Badge>{t('texts.active')}</Badge>
-        </Flex>
+        <Title>Token Sales</Title>
+        <AuctionNavBar />
         <AuctionListSection>
-          {auctions
-            .filter(auction => isAuctionOpen(auction))
-            .map(auction => (
-              <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                <AuctionSummaryCard auction={auction} />
-              </AuctionSummaryWrapper>
-            ))}
-        </AuctionListSection>
-        <Flex mb={20} justifyContent="center">
-          <Badge>{t('texts.upcoming')}</Badge>
-        </Flex>
-        <AuctionListSection>
-          {auctions
-            .filter(auction => isAuctionUpcoming(auction))
-            .map(auction => (
-              <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                <AuctionSummaryCard auction={auction} />
-              </AuctionSummaryWrapper>
-            ))}
-        </AuctionListSection>
-        <Flex mb={20} justifyContent="center">
-          <Button rounded onClick={() => setShowClosedAuctions(prevState => !prevState)}>
-            {showClosedAuctions ? t('buttons.hideClosedAuctions') : t('buttons.showClosedAuctions')}
-          </Button>
-        </Flex>
-        <AuctionListSection>
-          {showClosedAuctions &&
-            auctions
-              .filter(auction => isAuctionClosed(auction))
-              .map(auction => (
-                <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                  <AuctionSummaryCard auction={auction} />
-                </AuctionSummaryWrapper>
-              ))}
+          {auctions.map(auction => (
+            <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+              <AuctionSummaryCard auction={auction} />
+            </AuctionSummaryWrapper>
+          ))}
         </AuctionListSection>
       </Container>
       <WalletConnector

@@ -1,15 +1,22 @@
-import { layout, LayoutProps } from 'styled-system'
+import { layout, LayoutProps, PositionProps } from 'styled-system'
 import styled from 'styled-components'
 
-export interface ContainerProps extends LayoutProps {
+
+export type ContainerProps = LayoutProps & PositionProps & {
   fluid?: boolean
   inner?: boolean
   noPadding?: boolean
+
 }
+// export interface ContainerProps extends LayoutProps {
+//   fluid?: boolean
+//   inner?: boolean
+//   noPadding?: boolean
+// }
 
 export const Container = styled.div<ContainerProps>(
   props => ({
-    position: 'absolute',
+    position: props.position === 'absolute' ? 'absolute': 'unset',
     Height: '100%',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
@@ -22,7 +29,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.inner ? (props.fluid ? '90vw' : '2000px') : '100%'};
+      max-width: ${props.inner ? (props.fluid ? '90vw' : '1000px') : '100%'};
     }
   `,
   layout
