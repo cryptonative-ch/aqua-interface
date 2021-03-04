@@ -2,11 +2,10 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  height: 72px;
-  z-index: 700;
-  width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
+  height: 72px;
+  width: 100%;
   left: 0;
   padding: 0 20px;
   outline: 0;
@@ -29,7 +28,7 @@ export const Title = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
-  color: #7B7F93;
+  color: #7b7f93;
   padding: 0 12px;
   cursor: pointer;
 `

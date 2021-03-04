@@ -25,9 +25,10 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
         <Button
           onClick={connectWallet}
           backgroundColor={!wallet.account ? '#304FFE' : '#DDDDE3'}
-          textColor={!wallet.account ? 'white' : '#000629'}>
+          textColor={!wallet.account ? 'white' : '#000629'}
+        >
           <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect Wallet' : walletAddress}</ButtonText>
-          {wallet.account && (<ButtonImage />)}
+          {wallet.account && <ButtonImage />}
         </Button>
       </Wrapper>
     </Fragment>

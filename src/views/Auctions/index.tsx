@@ -25,9 +25,9 @@ import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
+
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
-// Svg
 import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
@@ -37,6 +37,10 @@ const AuctionSummaryWrapper = styled(NavLink)(props => ({
 
 const AuctionListSection = styled.div(props => ({
   marginBottom: props.theme.space[4],
+  display: 'grid',
+  maxWidth: '1000px',
+  margin: 'auto',
+  gridTemplateColumns: '500px 500px',
 }))
 
 const Badge = styled.span(props => ({
@@ -52,6 +56,7 @@ export function AuctionsView() {
   const dispatch = useDispatch()
   const { auctions } = useAuctions()
   const [t] = useTranslation()
+  const [time, setTime] = useState(0)
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -63,20 +68,25 @@ export function AuctionsView() {
     if (auctions.length) {
       setLoading(false)
     }
-  }, [auctions, t, dispatch])
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [auctions, t, dispatch, showClosedAuctions, time])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
   }
 
   return (
-    <Container minHeight="100%" inner={false} noPadding={true} >
+    <Container minHeight="200%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container>
+        <Flex mb={20} justifyContent="center">
+          <Badge>{t('texts.active')}</Badge>
+        </Flex>
         <AuctionListSection>
-          <Flex mb={20} justifyContent="center">
-            <Badge>{t('texts.active')}</Badge>
-          </Flex>
           {auctions
             .filter(auction => isAuctionOpen(auction))
             .map(auction => (
@@ -85,10 +95,10 @@ export function AuctionsView() {
               </AuctionSummaryWrapper>
             ))}
         </AuctionListSection>
+        <Flex mb={20} justifyContent="center">
+          <Badge>{t('texts.upcoming')}</Badge>
+        </Flex>
         <AuctionListSection>
-          <Flex mb={20} justifyContent="center">
-            <Badge>{t('texts.upcoming')}</Badge>
-          </Flex>
           {auctions
             .filter(auction => isAuctionUpcoming(auction))
             .map(auction => (
@@ -97,12 +107,12 @@ export function AuctionsView() {
               </AuctionSummaryWrapper>
             ))}
         </AuctionListSection>
+        <Flex mb={20} justifyContent="center">
+          <Button rounded onClick={() => setShowClosedAuctions(prevState => !prevState)}>
+            {showClosedAuctions ? t('buttons.hideClosedAuctions') : t('buttons.showClosedAuctions')}
+          </Button>
+        </Flex>
         <AuctionListSection>
-          <Flex mb={20} justifyContent="center">
-            <Button rounded onClick={() => setShowClosedAuctions(prevState => !prevState)}>
-              {showClosedAuctions ? t('buttons.hideClosedAuctions') : t('buttons.showClosedAuctions')}
-            </Button>
-          </Flex>
           {showClosedAuctions &&
             auctions
               .filter(auction => isAuctionClosed(auction))
@@ -113,7 +123,12 @@ export function AuctionsView() {
               ))}
         </AuctionListSection>
       </Container>
-      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)} metamaskImage={MetamaskImage} walletImage={WalletImage}></WalletConnector>
+      <WalletConnector
+        isOpen={connectModal}
+        onClose={() => setModalVisible(false)}
+        metamaskImage={MetamaskImage}
+        walletImage={WalletImage}
+      ></WalletConnector>
       <Footer />
     </Container>
   )

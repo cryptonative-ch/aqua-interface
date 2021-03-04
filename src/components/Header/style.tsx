@@ -36,7 +36,7 @@ export const Description = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  color: #7B7F93;
+  color: #7b7f93;
   margin-left: 5px;
 `
 
@@ -44,7 +44,6 @@ export type ButtonProps = {
   backgroundColor: string
   textColor?: string
 }
-
 
 export const Button = styled.div<ButtonProps>(({ backgroundColor, textColor = 'white' }) => ({
   backgroundColor,
@@ -76,5 +75,5 @@ export const ButtonImage = styled.img`
 `
 
 ButtonImage.defaultProps = {
-  src: DownArrowUrl
+  src: DownArrowUrl,
 }
