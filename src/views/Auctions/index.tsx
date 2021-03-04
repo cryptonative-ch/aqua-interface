@@ -49,7 +49,7 @@ const Badge = styled.span(props => ({
 
 const Title = styled.p`
   position: relative;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   height: 44px;
   width: 210px;
   font-family: Inter;
@@ -61,6 +61,8 @@ const Title = styled.p`
   color: #000629;
 `
 
+
+
 export function AuctionsView() {
   const theme = useTheme()
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
@@ -69,6 +71,7 @@ export function AuctionsView() {
   const { auctions } = useAuctions()
   const [t] = useTranslation()
   const [time, setTime] = useState(0)
+  const [showAuction, setShowAuction] = useState(false)
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
@@ -78,7 +81,7 @@ export function AuctionsView() {
     }
     const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
 
-    console.log('changed')
+    
     return () => {
       clearInterval(interval)
     }

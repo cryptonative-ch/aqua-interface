@@ -14,7 +14,9 @@ export const BackgroundBadge = styled.div`
   background: #dddde3;
 `
 
-export const UnactiveTextBadge = styled.p`
+export const UnactiveTextBadge = styled.button`
+  border: none;
+  background: none;
   margin: 8px 16px;
   height: 17px;
   width: 69px;
@@ -34,21 +36,20 @@ export const ActiveBadge = styled.div`
   display: flex;
   justify-content: center;
   height: 27px;
-  width: 54px;
   border-radius: 33px;
   background: #ffffff;
 `
 
-export const ActiveBadgeText = styled.p`
+export const ActiveBadgeText = styled.button`
+  border: none;
+  background: none;
   margin: 2px 0px 0px 0px;
   height: 17px;
-  width: 28px;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 17px;
   letter-spacing: 0em;
-  text-align: left;
   color: #304ffe;
 `
