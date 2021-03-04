@@ -1,7 +1,7 @@
 // External
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
-import React from 'react'
+import React, { useState } from 'react'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -44,6 +44,37 @@ const InfoImg = styled.img`
   margin-left: 4px;
 `
 
+type ModalContainerProps = {
+  itemIndex: number
+}
+
+const ModalContainer = styled.div<ModalContainerProps>(props => ({
+  width: '147px',
+  height: '90px',
+  padding: '8px 16px',
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'absolute',
+  right: '24px',
+  top: `${props.itemIndex * 50 + 58}px`,
+  background: '#FFFFFF',
+  boxShadow: '0px 4px 12px rgba(0, 6, 41, 0.1)',
+  zIndex: 200,
+}))
+
+const ModalMenu = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  color: #7B7F93;
+  padding: 8px 0;
+  cursor: pointer;
+  &:hover {
+    color: #304FFE;
+  }
+`
+
 type IconImgProps = SpaceProps & {
   isButton?: boolean
 }
@@ -63,8 +94,18 @@ interface SelfBidListProps {
 }
 
 export function SelfBidList({}: SelfBidListProps) {
+  const [bidMenu, setBidMenu] = useState<number>(-1)
+
+  const toggleBidMenu = (index: number) => {
+    if (bidMenu === index) {
+      setBidMenu(-1)
+      return
+    }
+    setBidMenu(index)
+  }
+
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" style={{ position: 'relative' }}>
       <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding="0 16px">
         <Flex flex={3}>
           <ColumnLabel>Token Price</ColumnLabel>
@@ -88,7 +129,7 @@ export function SelfBidList({}: SelfBidListProps) {
         <Flex flex={5} flexDirection="row" alignItems="center">
           <TokenPriceLabel>568.18 XYZ</TokenPriceLabel>
           <Flex flex={1} />
-          <IconImg src={MoreSVG} marginRight="8px" isButton={true} />
+          <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(0)} />
         </Flex>
       </Flex>
 
@@ -102,7 +143,7 @@ export function SelfBidList({}: SelfBidListProps) {
         <Flex flex={5} flexDirection="row" alignItems="center">
           <TokenPriceLabel>568.18 XYZ</TokenPriceLabel>
           <Flex flex={1} />
-          <IconImg src={MoreSVG} marginRight="8px" isButton={true} />
+          <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(1)} />
         </Flex>
       </Flex>
 
@@ -117,9 +158,15 @@ export function SelfBidList({}: SelfBidListProps) {
           <IconImg src={WarningSVG} margin="0 4px 0 8px" />
           <TokenPriceLabel color="#7B7F93" padding="4px 0">Below Current Price</TokenPriceLabel>
           <Flex flex={1} />
-          <IconImg src={MoreSVG} marginRight="8px" isButton={true} />
+          <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(2)} />
         </Flex>
       </Flex>
+      {bidMenu !== -1 && (
+        <ModalContainer itemIndex={bidMenu}>
+          <ModalMenu>Change Bid Price</ModalMenu>
+          <ModalMenu>Withdraw Bid</ModalMenu>
+        </ModalContainer>
+      )}
     </Flex>
   )
 }
