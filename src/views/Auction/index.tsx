@@ -1,6 +1,6 @@
 // External
 import React, { useEffect, useRef, useState } from 'react'
-import styled, { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -23,12 +23,13 @@ import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
-import { BidList } from './components/BidList'
 import { Graph } from './components/Graph'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { HeaderItem } from './components/HeaderItem'
 import { HeaderControl } from './components/HeaderControl'
+import { SelfBidList } from './components/SelfBidList'
+import { TokenFooter } from './components/TokenFooter'
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
 import WalletImage from 'src/assets/svg/wallet_connect.svg'
@@ -39,19 +40,13 @@ import { calculateClearingPrice } from 'src/mesa/price'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 
-const FlexGroupColumns = styled(Flex)(props => ({
-  gap: props.theme.space[4],
-  '& > *': {
-    flex: 1,
-  },
-}))
-
 interface AuctionViewParams {
   auctionId: string
 }
 
 export function AuctionView() {
   const [connectModal, setModalVisible] = useState<boolean>(false)
+  const [showGraph, setShowGraph] = useState<boolean>(false)
   const ref = useRef<HTMLElement>()
   const { width: containerWidth } = useElementWidth(ref)
 
@@ -63,6 +58,10 @@ export function AuctionView() {
 
   const toggleModal = () => {
     setModalVisible(true)
+  }
+
+  const toggleGraph = () => {
+    setShowGraph(!showGraph)
   }
 
   useEffect(() => {
@@ -88,9 +87,14 @@ export function AuctionView() {
                   <HeaderItem title="Amount for Sale" description="2,800 XYZ" />
                 </Flex>
               </CardBody>
-              <CardBody display="flex" padding={theme.space[4]}>
-                <HeaderControl />
+              <CardBody display="flex" padding={theme.space[4]} border="none">
+                <HeaderControl showGraph={showGraph} toggleGraph={toggleGraph} />
               </CardBody>
+              {showGraph && (
+                <CardBody display="flex" padding="8px 24px 24px" border="none">
+                  <Graph bids={auction.bids} height={400} width={containerWidth} userAddress="0x" />
+                </CardBody>
+              )}
             </Card>
             {/* <CardBody
               ref={e => {
@@ -101,19 +105,19 @@ export function AuctionView() {
             >
               <Graph bids={auction.bids} height={400} width={containerWidth} userAddress="0x" />
             </CardBody> */}
-            <FlexGroupColumns>
+            {/* <FlexGroupColumns>
               <Card mb={theme.space[4]}>
                 <CardBody>
                   <CardTitle>{t('texts.placeBid')}</CardTitle>
                 </CardBody>
                 <CardBody>
-                  {/* <PlaceBidForm
+                  <PlaceBidForm
                     onSubmit={() => {
                       console.log('Add to Auction')
                     }}
                     auction={auction}
                     currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
-                  /> */}
+                  />
                 </CardBody>
               </Card>
               <Card mb={theme.space[4]}>
@@ -130,12 +134,14 @@ export function AuctionView() {
                   />
                 </CardBody>
               </Card>
-            </FlexGroupColumns>
-            <Card mb={theme.space[4]}>
-              <CardBody>
-                <CardTitle>{t('texts.yourBids')}</CardTitle>
+            </FlexGroupColumns> */}
+            <Card mb={theme.space[4]} border="none">
+              <CardBody display="flex" padding={theme.space[4]} border="none">
+                <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourBids')}</CardTitle>
               </CardBody>
+              <SelfBidList />
             </Card>
+            <TokenFooter />
           </Flex>
           <Flex flexDirection="column" width="377px" marginLeft="24px">
             <Card border="none">

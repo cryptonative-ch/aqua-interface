@@ -41,9 +41,10 @@ const ArrowImg = styled.img`
 interface HeaderControlProps {
   status: string
   showGraph: boolean
+  toggleGraph: () => void
 }
 
-export function HeaderControl({ status, showGraph }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlProps) {
   return (
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" flex={1}>
       <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
@@ -52,10 +53,10 @@ export function HeaderControl({ status, showGraph }: HeaderControlProps) {
           <LogoImg src={LogoSVG} />
         )}
       </Flex>
-      <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" style={{cursor: 'pointer'}} >
+      <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" style={{cursor: 'pointer'}} onClick={toggleGraph} >
         <ControlButton>View Live Graph</ControlButton>
         {status === 'active' && (
-          <ArrowImg src={showGraph ? DownSVG : UpSVG} />
+          <ArrowImg src={showGraph ? UpSVG : DownSVG} />
         )}
       </Flex>
     </Flex>
@@ -64,5 +65,6 @@ export function HeaderControl({ status, showGraph }: HeaderControlProps) {
 
 HeaderControl.defaultProps = {
   status: 'active',
-  showGraph: false
+  showGraph: false,
+  toggleGraph: () => {return}
 }

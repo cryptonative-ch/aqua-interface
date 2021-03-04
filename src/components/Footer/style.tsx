@@ -30,4 +30,5 @@ export const Title = styled.div`
   color: #7b7f93;
   padding: 0 12px;
   cursor: pointer;
+  user-select: none;
 `

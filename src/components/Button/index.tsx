@@ -46,16 +46,17 @@ export const Button = styled.button<ButtonProps>(
     verticalAlign: 'middle',
     userSelect: 'none',
     backgroundColor: 'transparent',
-    border: props.border ? 'none' : `1px solid ${props.theme.colors.primary}`,
+    border: (props.border || props.formButton) ? 'none' : `1px solid ${props.theme.colors.primary}`,
     // @TODO: Move radis to Theme
-    borderRadius: props.rounded ? '32px' : props.theme.radii.base,
+    borderRadius: props.formButton ? 0 : props.rounded ? '32px' : props.theme.radii.base,
     fontSize: '1rem',
     fontWeight: 400,
     fontFamily: 'inherit',
     lineHeight: 1.5,
+    outline: props.formButton ? 'none' : 'unset',
     color: 'black',
     ':disabled': {
-      opacity: 0.5,
+      opacity: props.formButton ? 1 : 0.5
     },
     ':hover': {
       textDecoration: 'underline',
