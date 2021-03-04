@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 export const BackgroundBadge = styled.div`
   // temp needs to change the margin for something else
+  // notes
   position: relative;
   margin-bottom: 48px;
   display: flex;

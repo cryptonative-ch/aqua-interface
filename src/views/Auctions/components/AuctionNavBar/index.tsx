@@ -7,6 +7,7 @@ import { ActiveBadge, UnactiveTextBadge, ActiveBadgeText, BackgroundBadge } from
  * button is clicked
  * components are revealed and disrevealed
  * use states that filters different components
+ * checking
  */
 
 export enum AuctionStatus {
