@@ -28,7 +28,7 @@
     "axios": "^0.21.1",
     "babel-preset-react-app": "^10.0.0",
     "chart.js": "^2.9.4",
-    "cryptowalletconnector": "^1.0.7",
+    "cryptowalletconnector": "^1.0.14",
     "csstype": "^3.0.5",
     "d3": "^6.5.0",
     "dayjs": "^1.10.3",

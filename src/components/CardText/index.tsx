@@ -3,7 +3,6 @@
 import styled from 'styled-components'
 import { LineHeightProps, FontSizeProps, FontWeightProps } from 'styled-system'
 
-
 export type CardTextProps = FontSizeProps & FontWeightProps & LineHeightProps
 
 export const CardText = styled.p<CardTextProps>(props => ({

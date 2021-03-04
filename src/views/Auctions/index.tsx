@@ -1,9 +1,10 @@
 // External
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import WalletConnector from 'cryptowalletconnector'
 
 // Mesa Utils
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
@@ -20,10 +21,14 @@ import { Center } from 'src/layouts/Center'
 // Components
 import { AuctionSummaryCard } from './components/AuctionSummaryCard'
 import { Container } from 'src/components/Container'
+import { Header } from 'src/components/Header'
+import { Footer } from 'src/components/Footer'
 import { Button } from 'src/components/Button'
 import { Flex } from 'src/components/Flex'
 
-
+// Svg
+import MetamaskImage from 'src/assets/svg/metamask.svg'
+import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 const AuctionSummaryWrapper = styled(NavLink)(props => ({
   display: 'block',
@@ -47,16 +52,18 @@ const Badge = styled.span(props => ({
   borderRadius: 32,
 }))
 
-
-
 export function AuctionsView() {
-  const theme = useTheme()
   const [showClosedAuctions, setShowClosedAuctions] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
+  const [connectModal, setModalVisible] = useState<boolean>(false)
   const dispatch = useDispatch()
   const { auctions } = useAuctions()
   const [t] = useTranslation()
   const [time, setTime] = useState(0)
+
+  const toggleModal = () => {
+    setModalVisible(true)
+  }
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
@@ -76,7 +83,8 @@ export function AuctionsView() {
   }
 
   return (
-    <Center minHeight="100%" py={theme.space[4]}>
+    <Container minHeight="100%" inner={false} noPadding={true}>
+      <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container>
         <Flex mb={20} justifyContent="center">
           <Badge>{t('texts.active')}</Badge>
@@ -118,6 +126,13 @@ export function AuctionsView() {
               ))}
         </AuctionListSection>
       </Container>
-    </Center>
+      <WalletConnector
+        isOpen={connectModal}
+        onClose={() => setModalVisible(false)}
+        metamaskImage={MetamaskImage}
+        walletImage={WalletImage}
+      ></WalletConnector>
+      <Footer />
+    </Container>
   )
 }

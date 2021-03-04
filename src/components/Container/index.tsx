@@ -3,13 +3,15 @@ import styled from 'styled-components'
 
 export interface ContainerProps extends LayoutProps {
   fluid?: boolean
+  inner?: boolean
+  noPadding?: boolean
 }
 
 export const Container = styled.div<ContainerProps>(
   props => ({
     width: '100%',
-    paddingLeft: props.theme.space[3],
-    paddingRight: props.theme.space[3],
+    paddingLeft: props.noPadding ? 0 : props.theme.space[3],
+    paddingRight: props.noPadding ? 0 : props.theme.space[3],
     marginLeft: 'auto',
     marginRight: 'auto',
     position: 'absolute',
@@ -18,7 +20,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.fluid ? '90vw' : '1200px'};
+      max-width: ${props.inner ? (props.fluid ? '90vw' : '800px') : '100%'};
     }
   `,
   layout
@@ -26,4 +28,6 @@ export const Container = styled.div<ContainerProps>(
 
 Container.defaultProps = {
   fluid: false,
+  inner: true,
+  noPadding: false,
 }

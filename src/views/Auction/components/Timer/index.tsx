@@ -54,7 +54,9 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   const localTimeStamp = dayjs(Date.now()).unix()
 
   // const timeDiffStart = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.startBlock))
-  const timeDiffEnd = Math.abs(convertUtcTimestampToLocal(localTimeStamp) - convertUtcTimestampToLocal(auction.endBlock))
+  const timeDiffEnd = Math.abs(
+    convertUtcTimestampToLocal(localTimeStamp) - convertUtcTimestampToLocal(auction.endBlock)
+  )
 
   if (isAuctionUpcoming(auction)) {
     return (
