@@ -171,9 +171,7 @@ export function SimulationView() {
       value={{ toggleModal: toggle, isShown: isShown, result: confirmResult, setResult: setConfirmResult }}
     >
       <Center minHeight="100%">
-        <Fragment>
-          <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
-        </Fragment>
+        <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
         <Container>
           <AuctionHeader auction={auction} />
           <Card mb={theme.space[4]}>

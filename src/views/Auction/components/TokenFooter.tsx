@@ -1,5 +1,5 @@
 // External
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -46,17 +46,15 @@ interface TokenFooterProps {
 
 export const TokenFooter: React.FC<TokenFooterProps> = ({}) => {
   return (
-    <Fragment>
-      <Wrapper>
-        <FooterTitle>Learn more about XYZ</FooterTitle>
-        <Row>
-          <Title>Website</Title>
-          <Title>Whitepaper</Title>
-          <Title>Twitter</Title>
-          <Title>Discord</Title>
-          <Title>Etherscan</Title>
-        </Row>
-      </Wrapper>
-    </Fragment>
+    <Wrapper>
+      <FooterTitle>Learn more about XYZ</FooterTitle>
+      <Row>
+        <Title>Website</Title>
+        <Title>Whitepaper</Title>
+        <Title>Twitter</Title>
+        <Title>Discord</Title>
+        <Title>Etherscan</Title>
+      </Row>
+    </Wrapper>
   )
 }
