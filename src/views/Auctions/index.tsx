@@ -80,9 +80,9 @@ export function AuctionsView() {
   }
 
   return (
-    <Container minHeight="200%" inner={false} noPadding={true}>
+    <Container minHeight="100%" inner={false} noPadding={true} >
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
-      <Container>
+      <Container noPadding>
         <Flex mb={20} justifyContent="center">
           <Badge>{t('texts.active')}</Badge>
         </Flex>

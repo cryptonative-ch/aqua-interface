@@ -9,8 +9,6 @@ export interface ContainerProps extends LayoutProps {
 
 export const Container = styled.div<ContainerProps>(
   props => ({
-    position: 'absolute',
-    Height: '100%',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
     paddingRight: props.noPadding ? 0 : props.theme.space[3],

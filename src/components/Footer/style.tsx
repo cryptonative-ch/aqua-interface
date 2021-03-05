@@ -2,8 +2,6 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  position: absolute;
-  bottom: 0px;
   height: 72px;
   width: 100%;
   padding: 0 20px;
