@@ -142,8 +142,8 @@ export function SimulationView() {
 
     //Calculate the virtual
     setClearingPrice(calculateClearingPrice(bids))
-    // if (auction) {
-    //   if (isAuctionOpen(auction)) {
+    if (auction) {
+      if (isAuctionOpen(auction)) {
         // Add 1 random bids every second
 
         if (bids.length == 0) {
@@ -166,8 +166,8 @@ export function SimulationView() {
         return () => {
           clearInterval(addRandomBidsInterval)
         }
-    //   }
-    // }
+      }
+    }
   }, [addBid, auction, userAddress, bids, updateAuction])
 
   if (!auction) {
