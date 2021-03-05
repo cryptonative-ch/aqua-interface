@@ -1,9 +1,9 @@
 // External
 
 import styled from 'styled-components'
-import { SpaceProps, TypographyProps, LayoutProps, TextColorProps } from 'styled-system'
+import { SpaceProps, TypographyProps, LayoutProps, TextColorProps, FontWeightProps } from 'styled-system'
 
-export type UnactiveTextBadgeProps = SpaceProps & TypographyProps & LayoutProps & TextColorProps
+export type UnactiveTextBadgeProps = SpaceProps & TypographyProps & LayoutProps & TextColorProps & FontWeightProps
 
 export const BackgroundBadge = styled.div`
   padding: 3px 3px 3px 3px;
@@ -24,14 +24,13 @@ export const UnactiveTextBadge = styled.p<UnactiveTextBadgeProps>(
     fontFamily: 'Inter',
     fontSize: '14px',
     fontStyle: 'normal',
-    // fontWeight: '500',
+    fontWeight: 500,
     lineHeight: '17px',
     letterSpacing: '0em',
     textAlign: props.textAlign === 'right' ? 'right' : 'center',
     color: '#7b7f93',
     cursor: 'pointer',
   })
-  // props for different letter positioning
 )
 
 export const ActiveBadge = styled.div`
