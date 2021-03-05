@@ -94,7 +94,7 @@ export function AuctionsView() {
         <Title>Token Sales</Title>
         <AuctionNavBar />
         <AuctionListSection>
-          {auctions.map(auction => (
+          {auctions.map(auction =>(
             <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
               <AuctionSummaryCard auction={auction} />
             </AuctionSummaryWrapper>

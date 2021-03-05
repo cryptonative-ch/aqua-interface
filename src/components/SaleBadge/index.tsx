@@ -1,39 +1,43 @@
 // External
 
 import styled from 'styled-components'
+import { SpaceProps, TypographyProps, LayoutProps, TextColorProps } from 'styled-system'
+
+export type UnactiveTextBadgeProps = SpaceProps & TypographyProps & LayoutProps & TextColorProps
 
 export const BackgroundBadge = styled.div`
-  // temp needs to change the margin for something else
-  // notes
+  padding: 3px 3px 3px 3px;
   position: relative;
   margin-bottom: 48px;
   display: flex;
-  justify-content: space-around;
   height: 33px;
   width: 240px;
   border-radius: 33px;
   background: #dddde3;
 `
 
-export const UnactiveTextBadge = styled.button`
-  border: none;
-  background: none;
-  margin: 8px 16px;
-  height: 17px;
-  width: 69px;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #7b7f93;
-`
+export const UnactiveTextBadge = styled.p<UnactiveTextBadgeProps>(
+  props => ({
+    margin: '5px 13px',
+    height: '17px',
+    width: '69px',
+    fontFamily: 'Inter',
+    fontSize: '14px',
+    fontStyle: 'normal',
+    // fontWeight: '500',
+    lineHeight: '17px',
+    letterSpacing: '0em',
+    textAlign: props.textAlign === 'right' ? 'right' : 'center',
+    color: '#7b7f93',
+    cursor: 'pointer',
+  })
+  // props for different letter positioning
+)
 
 export const ActiveBadge = styled.div`
-  margin: 3px 0px 3px 3px;
-  padding: 3px 0px 3px 0px;
+  width: 95px;
+  height: 27px;
+  padding: 5px 13px;
   display: flex;
   justify-content: center;
   height: 27px;
@@ -41,10 +45,7 @@ export const ActiveBadge = styled.div`
   background: #ffffff;
 `
 
-export const ActiveBadgeText = styled.button`
-  border: none;
-  background: none;
-  margin: 2px 0px 0px 0px;
+export const ActiveBadgeText = styled.p`
   height: 17px;
   font-family: Inter;
   font-size: 14px;
@@ -53,4 +54,5 @@ export const ActiveBadgeText = styled.button`
   line-height: 17px;
   letter-spacing: 0em;
   color: #304ffe;
+  cursor: pointer;
 `

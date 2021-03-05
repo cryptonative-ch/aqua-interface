@@ -6,13 +6,9 @@ export type ContainerProps = LayoutProps & PositionProps & {
   fluid?: boolean
   inner?: boolean
   noPadding?: boolean
-
 }
-// export interface ContainerProps extends LayoutProps {
-//   fluid?: boolean
-//   inner?: boolean
-//   noPadding?: boolean
-// }
+
+
 
 export const Container = styled.div<ContainerProps>(
   props => ({
@@ -24,8 +20,6 @@ export const Container = styled.div<ContainerProps>(
     marginLeft: 'auto',
     marginRight: 'auto',
     justifyContent: 'center',
-    // top: '285px',
-    // bottom: '445px',
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
