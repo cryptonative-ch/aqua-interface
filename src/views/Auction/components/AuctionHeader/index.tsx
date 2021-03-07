@@ -55,6 +55,24 @@ const TokenIconContainer = styled.div`
   background-color: #304FFE;
 `
 
+export const secondsTohms = (seconds: number) => {
+  if (seconds < 0) {
+    throw Error('seconds cannot be negative')
+  }
+
+  const d = Math.floor(seconds / 86400)
+  const h = Math.floor((seconds % 86400) / 3600)
+  const m = Math.floor(((seconds % 86400) % 3600) / 60)
+  const s = Math.floor((seconds % 86400) % 3600) % 60
+
+  const dDisplay = d > 0 ? d + 'd ' : ''
+  const hDisplay = h > 0 ? h + 'h ' : ''
+  const mDisplay = m > 0 ? m + 'm ' : ''
+  const sDisplay = s > 0 ? s + 's' : ''
+
+  return dDisplay + hDisplay + mDisplay + sDisplay
+}
+
 interface AuctionHeaderProps {
   auction: Auction
 }
@@ -67,17 +85,6 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState(0)
 
-  const secondsTohms = (seconds: number) => {
-    const h = Math.floor(seconds / 3600)
-    const m = Math.floor((seconds % 3600) / 60)
-    const s = Math.floor(seconds % 60)
-
-    const hDisplay = String(h).padStart(2, '0') + 'h '
-    const mDisplay = String(m).padStart(2, '0') + 'm '
-    const sDisplay = String(s).padStart(2, '0') + 's'
-    return hDisplay + mDisplay + sDisplay
-  }
-
   // re-renders component every second
   useEffect(() => {
     const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
@@ -86,6 +93,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
       clearInterval(interval)
     }
   }, [])
+
   let format_time = '';
   if (isAuctionUpcoming(auction)) {
     format_time = secondsTohms(time_diff_start)
@@ -98,7 +106,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
       <TokenIconContainer />
       <HeaderText>XYZ Initial Auction</HeaderText>
       <StatusText>Private</StatusText>
-      <TimeText>{format_time}</TimeText>
+      <TimeText data-testid="format_time">{format_time}</TimeText>
     </HeaderContainer>
   )
 }
