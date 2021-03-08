@@ -5,7 +5,6 @@ import React, { FunctionComponent, useContext } from 'react'
 import { ActiveBadge, UnactiveTextBadge, ActiveBadgeText, BackgroundBadge } from 'src/components/SaleBadge'
 
 // context
-
 import { AuctionContext, AuctionStatus } from "src/views/Auctions";
 
 
@@ -19,7 +18,7 @@ export const AuctionNavBar: FunctionComponent = () => {
       <BackgroundBadge>
         <UnactiveTextBadge textAlign='left' onClick={() => setAuctionShow(AuctionStatus.LIVE)}>Live</UnactiveTextBadge>
         <ActiveBadge>
-          <ActiveBadgeText>Upcoming</ActiveBadgeText>
+          <ActiveBadgeText data-testid='Upcoming'>Upcoming</ActiveBadgeText>
         </ActiveBadge>
         <UnactiveTextBadge  textAlign='right' onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>Closed</UnactiveTextBadge>
       </BackgroundBadge>
@@ -32,7 +31,7 @@ export const AuctionNavBar: FunctionComponent = () => {
         <UnactiveTextBadge textAlign='left' onClick={() => setAuctionShow(AuctionStatus.LIVE)}>Live</UnactiveTextBadge>
         <UnactiveTextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</UnactiveTextBadge>
         <ActiveBadge>
-          <ActiveBadgeText>Closed</ActiveBadgeText>
+          <ActiveBadgeText data-testid='Closed' >Closed</ActiveBadgeText>
         </ActiveBadge>
       </BackgroundBadge>
     )
@@ -40,7 +39,7 @@ export const AuctionNavBar: FunctionComponent = () => {
   return (
     <BackgroundBadge>
       <ActiveBadge>
-        <ActiveBadgeText>Live</ActiveBadgeText>
+        <ActiveBadgeText data-testid='Live' >Live</ActiveBadgeText>
       </ActiveBadge>
       <UnactiveTextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</UnactiveTextBadge>
       <UnactiveTextBadge textAlign='right' onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>Closed</UnactiveTextBadge>

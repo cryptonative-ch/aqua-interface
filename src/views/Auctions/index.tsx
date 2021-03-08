@@ -29,17 +29,18 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
-const AuctionSummaryWrapper = styled(NavLink)(props => ({
-  display: 'block',
-  marginBottom: props.theme.space[3],
-}))
+const AuctionSummaryWrapper = styled(NavLink)`
+  display: 'block'
+`
+
+
 
 const AuctionListSection = styled.div(props => ({
-  marginBottom: props.theme.space[4],
+  margin: '0px',
   display: 'grid',
   maxWidth: '1000px',
-  margin: 'auto',
-  gridTemplateColumns: '500px 500px',
+  gridTemplateColumns: '478px 478px',
+  gap: '24px 24px',
 }))
 
 const Title = styled.p`
