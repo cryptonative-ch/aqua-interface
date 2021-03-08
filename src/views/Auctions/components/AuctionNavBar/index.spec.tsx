@@ -8,12 +8,6 @@ import '@testing-library/jest-dom/extend-expect'
 import { AuctionNavBar } from './index'
 import { AuctionContext, AuctionStatus, AuctionContextType } from '../../index'
 
-
-/**
- * test when context changes [x]
- * test  if button changes context []
- */
-
 //clean up
 
 afterEach(cleanup)

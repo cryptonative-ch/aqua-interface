@@ -35,7 +35,7 @@ const AuctionSummaryWrapper = styled(NavLink)`
 
 
 
-const AuctionListSection = styled.div(props => ({
+const AuctionListSection = styled.div(({
   margin: '0px',
   display: 'grid',
   maxWidth: '1000px',
