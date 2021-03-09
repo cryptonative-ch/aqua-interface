@@ -2,11 +2,8 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  position: absolute;
-  bottom: 0px;
   height: 72px;
   width: 100%;
-  left: 0;
   padding: 0 20px;
   outline: 0;
   display: flex;
@@ -31,4 +28,5 @@ export const Title = styled.div`
   color: #7b7f93;
   padding: 0 12px;
   cursor: pointer;
+  user-select: none;
 `

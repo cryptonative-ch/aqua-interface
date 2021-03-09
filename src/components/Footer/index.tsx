@@ -1,5 +1,5 @@
 // External
-import React, { Fragment } from 'react'
+import React from 'react'
 
 //Internal
 import { Wrapper, Row, Title } from './style'
@@ -10,19 +10,17 @@ export interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({}) => {
   return (
-    <Fragment>
-      <Wrapper>
-        <Row>
-          <Title>About</Title>
-          <Title>Contact</Title>
-          <Title>Twitter</Title>
-          <Title>Keybase</Title>
-        </Row>
-        <Row>
-          <Title>Docs</Title>
-          <Title>Version 0.0.1</Title>
-        </Row>
-      </Wrapper>
-    </Fragment>
+    <Wrapper>
+      <Row>
+        <Title>About</Title>
+        <Title>Contact</Title>
+        <Title>Twitter</Title>
+        <Title>Keybase</Title>
+      </Row>
+      <Row>
+        <Title>Docs</Title>
+        <Title>Version 0.0.1</Title>
+      </Row>
+    </Wrapper>
   )
 }

@@ -36,7 +36,8 @@ export const secondsTohms = (seconds: number) => {
 }
 
 export const timeFrame = (unixSeconds: number) => {
-  const endBlockDateTime = new Date(unixSeconds * 1000).toString()
+  const diff = new Date().getTimezoneOffset()
+  const endBlockDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
   const endDate = endBlockDateTime.slice(4, 10)
   const endTime = endBlockDateTime.slice(15, 21)
   const timeZoneStamp = endBlockDateTime.slice(25, 28)

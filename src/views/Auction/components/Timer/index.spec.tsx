@@ -45,7 +45,7 @@ const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().
 const utcDate = dayjs(new Date().toUTCString())
 const dateUTC = dayjs.unix(utcDate.unix())
 
-describe('tests Timer react component', () => {
+describe('Timer', () => {
   test('when auction is open it should render the correct display', async () => {
     const auction = {
       id: '0x141',
