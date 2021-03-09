@@ -23,7 +23,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.inner ? (props.fluid ? '90vw' : '1000px') : '100%'};
+      max-width: ${props.inner ? props.fluid ? '90vw' : '980px' : '100%'};
     }
   `,
   layout

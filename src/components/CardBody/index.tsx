@@ -1,7 +1,7 @@
-import { space, layout, flexbox, SpaceProps, LayoutProps, FlexProps, textAlign, TextAlignProps } from 'styled-system'
+import { space, layout, flexbox, SpaceProps, LayoutProps, FlexProps, textAlign, TextAlignProps, border, BorderProps } from 'styled-system'
 import styled from 'styled-components'
 
-export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
+export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps & BorderProps
 
 export const CardBody = styled.div<CardBodyProps>(
   props => ({
@@ -14,5 +14,6 @@ export const CardBody = styled.div<CardBodyProps>(
   space,
   layout,
   flexbox,
-  textAlign
+  textAlign,
+  border
 )

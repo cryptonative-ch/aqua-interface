@@ -1,5 +1,5 @@
 // External
-import React, { Fragment } from 'react'
+import React from 'react'
 import { useWallet } from 'use-wallet'
 
 //Internal
@@ -16,21 +16,18 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
   const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
 
   return (
-    <Fragment>
-      <Wrapper>
-        <Row>
-          <Title>Mesa</Title>
-          <Description>from DXdao</Description>
-        </Row>
-        <Button
-          onClick={connectWallet}
-          backgroundColor={!wallet.account ? '#304FFE' : '#DDDDE3'}
-          textColor={!wallet.account ? 'white' : '#000629'}
-        >
-          <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect Wallet' : walletAddress}</ButtonText>
-          {wallet.account && <ButtonImage />}
-        </Button>
-      </Wrapper>
-    </Fragment>
+    <Wrapper>
+      <Row>
+        <Title>Mesa</Title>
+        <Description>from DXdao</Description>
+      </Row>
+      <Button
+        onClick={connectWallet}
+        backgroundColor={!wallet.account ? '#304FFE' : '#DDDDE3'}
+        textColor={!wallet.account ? 'white' : '#000629'}>
+        <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect Wallet' : walletAddress}</ButtonText>
+        {wallet.account && (<ButtonImage />)}
+      </Button>
+    </Wrapper>
   )
 }
