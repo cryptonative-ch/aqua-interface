@@ -48,10 +48,12 @@ export const timeFrame = (unixSeconds: number) => {
   return `${endDate}, ${endTime} ${timeZoneStamp}`
 }
 
+
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
   // calculating time difference between local persons time and the start and end block times
 
   const localTimeStamp = dayjs(Date.now()).unix()
+  
 
 
   const timeDiffEnd = Math.abs(
