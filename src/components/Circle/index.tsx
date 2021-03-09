@@ -1,18 +1,21 @@
 // External
 import styled from 'styled-components'
+import { LayoutProps, OpacityProps, PositionProps} from 'styled-system'
 
-export const DarkCircle = styled.div`
-  background: #304ffe;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  margin: 2px 0px 0px 8px;
-`
 
-export const LightCircle = styled.div`
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: #304ffe;
-  opacity: 15%;
-`
+export type CircleProps = LayoutProps & OpacityProps & PositionProps
+
+export const Circle = styled.svg<CircleProps>(
+  props => ({
+    background: '#304ffe',
+    opacity: props.opacity === 'light' ? '15%' : '100%',
+    height: '16px',
+    width: '16px',
+    borderRadius: '50%',
+    margin: '2px 0px 0px 8px',
+  })
+)
+
+
+
+

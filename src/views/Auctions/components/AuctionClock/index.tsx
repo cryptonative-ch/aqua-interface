@@ -2,7 +2,7 @@
 import React, { FunctionComponent } from 'react'
 
 // Components
-import { DarkCircle, LightCircle } from 'src/components/Circle'
+import { Circle } from 'src/components/Circle'
 import { Flex } from 'src/components/Flex'
 import { Timer } from 'src/views/Auction/components/Timer'
 
@@ -16,15 +16,16 @@ interface AuctionClockProps {
 }
 
 export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) => {
+  const radius = 16;
+  const circumference = 2 * Math.PI * radius;
+
+
   if (isAuctionClosed(auction)) {
     return (
       <Flex flexDirection="row" justifyContent="space-between">
         <CardText color="grey">Closed</CardText>
         <Flex>
           <Timer auction={auction} />
-          <DarkCircle>
-            <LightCircle />
-          </DarkCircle>
         </Flex>
       </Flex>
     )
@@ -42,10 +43,11 @@ export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) 
       <CardText color="grey">Time Remaining</CardText>
       <Flex>
         <Timer auction={auction} />
-        <DarkCircle>
-          <LightCircle />
-        </DarkCircle>
+        <Circle strokeDashoffset={circumference / 2} strokeDasharray={circumference}>
+          <Circle opacity='light' />
+        </Circle>
       </Flex>
     </Flex>
   )
 }
+
