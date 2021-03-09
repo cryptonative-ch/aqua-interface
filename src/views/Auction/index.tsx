@@ -18,7 +18,7 @@ import { setPageTitle } from 'src/redux/page'
 // Components
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { BackComponent } from './components/BackComponent'
+import { BackButton } from './components/BackButton'
 import { AuctionHeader } from './components/AuctionHeader'
 import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
@@ -96,7 +96,7 @@ export function AuctionView() {
     <Container minHeight="100%" inner={false} noPadding={true} >
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container noPadding>
-        <BackComponent />
+        <BackButton />
         <AuctionHeader auction={auction} />
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="column" flex={1}>

@@ -18,7 +18,7 @@ import { AuctionBid } from 'src/interfaces/Auction'
 // Components
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { BackComponent } from '../Auction/components/BackComponent'
+import { BackButton } from '../Auction/components/BackButton'
 import { AuctionHeader } from '../Auction/components/AuctionHeader'
 import { PlaceBidForm } from '../Auction/components/PlaceBidForm'
 import { Container } from 'src/components/Container'
@@ -186,7 +186,7 @@ export function SimulationView() {
         <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
         <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
         <Container noPadding>
-          <BackComponent />
+          <BackButton />
           <AuctionHeader auction={auction} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="column" width={'579px'}>

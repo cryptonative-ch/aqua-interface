@@ -7,7 +7,7 @@ import '@testing-library/jest-dom/extend-expect'
 // Component
 import { TokenFooter } from './index'
 
-describe('tests TokenFooter component', () => {
+describe('TokenFooter', () => {
   test('should display multiple texts on Footer component', () => {
     const { getByText } = render(<TokenFooter />)
     expect(getByText('Learn more about XYZ')).toBeInTheDocument()

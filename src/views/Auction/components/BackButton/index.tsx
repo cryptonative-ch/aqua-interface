@@ -17,7 +17,7 @@ const ButtonText = styled.div`
   color: #7B7F93;
 `
 
-const BackButton = styled(Link)({
+const BackLink = styled(Link)({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -32,13 +32,13 @@ const ArrowImg = styled.img`
   margin-right: 4px;
 `
 
-export function BackComponent() {
+export function BackButton() {
   const [t] = useTranslation()
 
   return (
-    <BackButton to="/auctions">
+    <BackLink to="/auctions" data-testid="back-ref">
       <ArrowImg src={LeftArrowSVG} />
-      <ButtonText>{t('buttons.backToSales')}</ButtonText>
-    </BackButton>
+      <ButtonText data-testid="back-button" >{t('buttons.backToSales')}</ButtonText>
+    </BackLink>
   )
 }

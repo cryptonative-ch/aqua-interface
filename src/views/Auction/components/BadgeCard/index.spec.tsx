@@ -7,7 +7,7 @@ import '@testing-library/jest-dom/extend-expect'
 // Component
 import { BadgeCard } from './index'
 
-describe('tests badgeCard component', () => {
+describe('BadgeCard', () => {
   test('should display presale when presale props is input', () => {
     const { getByText } = render(<BadgeCard saleType="presale" />)
     expect(getByText('Pre-sale')).toBeInTheDocument()
