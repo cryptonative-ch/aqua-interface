@@ -1,6 +1,6 @@
 // External
 import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 // Components
@@ -102,6 +102,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
+  const theme = useTheme()
   const [t] = useTranslation()
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
@@ -154,7 +155,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
 
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>
-      <FormGroup>
+      <FormGroup theme={theme}>
         <FormLabel>Token Price</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
@@ -164,7 +165,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
           <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
       </FormGroup>
-      <FormGroup>
+      <FormGroup theme={theme}>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
