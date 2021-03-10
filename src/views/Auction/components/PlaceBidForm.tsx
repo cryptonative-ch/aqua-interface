@@ -15,59 +15,60 @@ import { Auction } from 'src/interfaces/Auction'
 import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
 
-const FormLabel = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 48px;
-  color: #000629;
-  margin-right: 24px;
-  width: 80px;
-`
+const FormLabel = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '48px',
+  marginRight: '24px',
+  width: '80px',
+  color: '#000629'
+})
 
-const FormDescription = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 140%;
-  color: #7B7F93;
-  margin-top: 8px;
-`
+const FormDescription = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  lineHeight: '17px',
+  marginTop: '8px',
+  color: '#7B7F93'
+})
 
-const FormContainer = styled.div`
-  height: 48px;
-  width: 100%;
-  background: #F2F2F2;
-  border: none;
-  display: flex;
-`
+const FormContainer = styled.div({
+  height: '48px',
+  width: '100%',
+  background: '#F2F2F2',
+  border: 'none',
+  display: 'flex',
+})
 
-const FormText = styled.div`
-  position: absolute;
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #7B7F93;
-  font-size: 14px;
-  line-height: 48px;
-  margin: 0 16px;
-  user-select: none;
-`
+const FormText = styled.div({
+  position: 'absolute',
+  flex: 1,
+  background: 'transparent',
+  border: 'none',
+  color: '#7B7F93',
+  fontSize: '14px',
+  lineHeight: '48px',
+  margin: '0 16px',
+  userSelect: 'none',
+})
 
-const MaxButton = styled.div`
-  border: 1px solid #DDDDE3;
-  padding: 0 4px;font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  text-align: center;
-  color: #7B7F93;
-  position: absolute;
-  right: 16px;
-  top: 13px;
-  cursor: pointer;
-  z-index: 200;
-`
+const MaxButton = styled.div({
+  border: '1px solid #DDDDE3',
+  padding: '0 4px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '21px',
+  textAlign: 'center',
+  color: '#7B7F93',
+  position: 'absolute',
+  right: '16px',
+  top: '13px',
+  cursor: 'pointer',
+  zIndex: 200,
+})
 
 const FormInput = styled.input({
   flex: 1,

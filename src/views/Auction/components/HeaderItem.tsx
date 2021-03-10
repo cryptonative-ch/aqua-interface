@@ -19,15 +19,15 @@ const HeaderTitle = styled.div<HeaderTitleProps>(
   })
 )
 
-const HeaderDescription = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 29px;
-  margin-top: 7px;
-  font-feature-settings: 'ss01' on;
-  color: #000629;
-`
+const HeaderDescription = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fontSize: '24px',
+  lineHeight: '29px',
+  marginTop: '7px',
+  fontFeatureSettings: 'ss01 on',
+  color: '#000629'
+})
 
 interface HeaderItemProps {
   title: string
