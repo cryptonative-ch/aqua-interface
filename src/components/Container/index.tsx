@@ -12,7 +12,6 @@ export type ContainerProps = LayoutProps & PositionProps & {
 
 export const Container = styled.div<ContainerProps>(
   props => ({
-    position: props.position === 'absolute' ? 'absolute': 'unset',
     Height: '100%',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
@@ -23,7 +22,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.inner ? (props.fluid ? '90vw' : '1000px') : '100%'};
+      max-width: ${props.inner ? props.fluid ? '90vw' : '980px' : '100%'};
     }
   `,
   layout

@@ -29,6 +29,7 @@
     "placeBid": "Place Bid",
     "addARandomBid": "Add A Random Bid",
     "showClosedAuctions": "Show Closed Auctions",
-    "hideClosedAuctions": "Hide Closed Auctions"
+    "hideClosedAuctions": "Hide Closed Auctions",
+    "backToSales": "Back to all sales"
   }
 }

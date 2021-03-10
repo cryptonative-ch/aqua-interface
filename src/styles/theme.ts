@@ -1,6 +1,20 @@
 import { defaultRebootTheme } from 'styled-reboot'
 import * as CSS from 'csstype'
 
+
+
+export type ThemeGrid = {
+  display: CSS.Property.Grid
+  gridTemplateColumns: CSS.Property.GridTemplateColumns
+  gap: CSS.Property.Gap
+}
+
+export const grid: ThemeGrid = {
+  display: 'grid',
+  gridTemplateColumns: '478px 478px',
+  gap: '24px 24px',
+}
+
 export type ThemeRadii = {
   base: CSS.Property.BorderRadius
   circle: CSS.Property.BorderRadius
@@ -51,7 +65,7 @@ export const breakpoints: ThemeBreakpoints = [`480px`, `576px`, `768px`, `992px`
 
 export type ThemeSpacing = number[]
 
-export const space: ThemeSpacing = [0, 4, 8, 16, 32, 64, 128, 256]
+export const space: ThemeSpacing = [0, 4, 8, 16, 24, 32, 64, 128, 256]
 
 export type ThemeFonts = {
   [key: string]: string
@@ -105,6 +119,7 @@ export const theme = {
   fontSizes,
   buttons,
   radii,
+  grid,
 
   // components
   header,

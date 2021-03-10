@@ -1,5 +1,5 @@
 // Externals
-import React, { FunctionComponent } from 'react'
+import React  from 'react'
 import dayjs from 'dayjs'
 
 // Components
@@ -23,7 +23,7 @@ interface AuctionClockProps {
 
 
 
-export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) => {
+export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   const localTimeStamp = dayjs(Date.now()).unix()
   const startTime = convertUtcTimestampToLocal(auction.startBlock)
   const endTime = convertUtcTimestampToLocal(auction.endBlock)
@@ -54,9 +54,9 @@ export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) 
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <CardText color="grey">Time Remaining</CardText>
-      <Flex>
-        <Timer auction={auction} />
-        <svg height='16' width='16'>
+      <Flex >
+        <Timer auction={auction}/>
+        <svg height='16' width='16' style={{ marginLeft: '8px'}} >
           <circle r="8" cx="8" cy="8" fill={color} fillOpacity='0.1' transform="rotate(-90) translate(-16)" />
           <circle r="4" cx="8" cy="8" fill="transparent"
             stroke={color}

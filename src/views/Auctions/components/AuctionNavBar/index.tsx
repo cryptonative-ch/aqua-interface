@@ -1,8 +1,8 @@
 // Externals
-import React, { FunctionComponent, useContext } from 'react'
+import React, { useContext } from 'react'
 
 // Components
-import { ActiveBadge, UnactiveTextBadge, ActiveBadgeText, BackgroundBadge } from 'src/components/SaleBadge'
+import { ActiveBadge, TextBadge, BackgroundBadge } from 'src/components/SaleBadge'
 
 // context
 import { AuctionContext, AuctionStatus } from "src/views/Auctions";
@@ -10,17 +10,17 @@ import { AuctionContext, AuctionStatus } from "src/views/Auctions";
 
 
 
-export const AuctionNavBar: FunctionComponent = () => {
+export const AuctionNavBar: React.FC = () => {
   const {AuctionShow, setAuctionShow} = useContext(AuctionContext);
 
   if (AuctionShow === AuctionStatus.UPCOMING) {
     return (
       <BackgroundBadge>
-        <UnactiveTextBadge textAlign='left' onClick={() => setAuctionShow(AuctionStatus.LIVE)}>Live</UnactiveTextBadge>
+        <TextBadge textAlign='left' onClick={() => setAuctionShow(AuctionStatus.LIVE)}>Live</TextBadge>
         <ActiveBadge>
-          <ActiveBadgeText data-testid='Upcoming'>Upcoming</ActiveBadgeText>
+          <TextBadge color='active' data-testid='Upcoming'>Upcoming</TextBadge>
         </ActiveBadge>
-        <UnactiveTextBadge  textAlign='right' onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>Closed</UnactiveTextBadge>
+        <TextBadge  textAlign='right' onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>Closed</TextBadge>
       </BackgroundBadge>
     )
   }
@@ -28,10 +28,10 @@ export const AuctionNavBar: FunctionComponent = () => {
   if (AuctionShow === AuctionStatus.CLOSED) {
     return (
       <BackgroundBadge>
-        <UnactiveTextBadge textAlign='left' onClick={() => setAuctionShow(AuctionStatus.LIVE)}>Live</UnactiveTextBadge>
-        <UnactiveTextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</UnactiveTextBadge>
+        <TextBadge textAlign='left' onClick={() => setAuctionShow(AuctionStatus.LIVE)}>Live</TextBadge>
+        <TextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</TextBadge>
         <ActiveBadge>
-          <ActiveBadgeText data-testid='Closed' >Closed</ActiveBadgeText>
+          <TextBadge color='active' data-testid='Closed' >Closed</TextBadge>
         </ActiveBadge>
       </BackgroundBadge>
     )
@@ -39,10 +39,10 @@ export const AuctionNavBar: FunctionComponent = () => {
   return (
     <BackgroundBadge>
       <ActiveBadge>
-        <ActiveBadgeText data-testid='Live' >Live</ActiveBadgeText>
+        <TextBadge color='active' data-testid='Live' >Live</TextBadge>
       </ActiveBadge>
-      <UnactiveTextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</UnactiveTextBadge>
-      <UnactiveTextBadge textAlign='right' onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>Closed</UnactiveTextBadge>
+      <TextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</TextBadge>
+      <TextBadge textAlign='right' onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>Closed</TextBadge>
     </BackgroundBadge>
   )
 }

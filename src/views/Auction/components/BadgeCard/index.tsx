@@ -1,5 +1,5 @@
 // External
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 
 //Components
 import { Badge, Content } from 'src/components/Badge'
@@ -8,7 +8,7 @@ interface BadgeCardProps {
   saleType: 'private' | 'presale'
 }
 
-export const BadgeCard: FunctionComponent<BadgeCardProps> = ({ saleType }) => {
+export const BadgeCard: React.FC<BadgeCardProps> = ({ saleType }) => {
   if (saleType == 'presale') {
     return (
       <Badge width="presale">

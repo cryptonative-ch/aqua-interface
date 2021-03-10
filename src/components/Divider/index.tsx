@@ -1,14 +1,16 @@
+// Externals
+import {  LayoutProps, PositionProps, BorderProps } from 'styled-system'
 import styled from 'styled-components'
 
-export const Divider = styled.hr`
-  position: relative;
-  left: 0px;
-  height: 1px;
-  width: 478px;
-  top: 93px;
-  border-radius: 0px;
-  border: none;
-  border-top: 1px dashed #dddde3;
-  box-sizing: border-box;
-  margin: 0px;
-`
+
+export type DividerProps = LayoutProps & PositionProps & BorderProps
+
+
+export const Divider = styled.hr<DividerProps>({
+  position: 'relative',
+  width: '100%',
+  top: '93px',
+  border: 'none',
+  borderTop: '1px dashed #dddde3',
+  margin: '0',
+})

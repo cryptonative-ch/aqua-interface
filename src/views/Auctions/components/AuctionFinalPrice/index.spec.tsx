@@ -19,7 +19,7 @@ const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().
 const utcDate = dayjs(new Date().toUTCString())
 const dateUTC = dayjs.unix(utcDate.unix())
 
-describe('testing price display', () => {
+describe('testing AuctionFinalPrice', () => {
   test('should display 0 is auction is upcoming', () => {
     const auction = {
       id: '0x143',

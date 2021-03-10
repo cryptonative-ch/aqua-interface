@@ -157,7 +157,7 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       .select(ref.current)
       .attr('width', width <= 32 ? 0 : width - 32)
       .attr('height', height)
-      .style('border', '1px solid black')
+      .style('border', 'none')
   }, [width])
 
   useEffect(() => {
