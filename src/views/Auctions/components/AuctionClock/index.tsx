@@ -21,14 +21,19 @@ interface AuctionClockProps {
 }
 
 
-
-
-export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
+export const timerPercentage = (auction: Auction)  => {
   const localTimeStamp = dayjs(Date.now()).unix()
   const startTime = convertUtcTimestampToLocal(auction.startBlock)
   const endTime = convertUtcTimestampToLocal(auction.endBlock)
   const totalTime = Math.abs(startTime - endTime)
   const percentage = (1 - Math.abs(localTimeStamp - endTime) / totalTime) * 100
+  return percentage
+}
+
+
+
+export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
+  
   const color = '#304ffe';
 
 
@@ -62,7 +67,7 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
             stroke={color}
             strokeOpacity='1'
             strokeWidth="8"
-            strokeDasharray={`calc(${percentage} * 25 / 100) 25`}
+            strokeDasharray={`calc(${timerPercentage(auction)} * 25 / 100) 25`}
             transform="rotate(-90) translate(-16)" />
         </svg>
       </Flex>
