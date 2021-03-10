@@ -3,24 +3,36 @@
 import styled from 'styled-components'
 import { SpaceProps, TypographyProps, LayoutProps, TextColorProps, FontWeightProps } from 'styled-system'
 
-export type UnactiveTextBadgeProps = SpaceProps & TypographyProps & LayoutProps & TextColorProps & FontWeightProps
+export type TextBadgeProps = SpaceProps & TypographyProps & LayoutProps & TextColorProps & FontWeightProps
 
-export const BackgroundBadge = styled.div`
-  padding: 3px 3px 3px 3px;
-  position: relative;
-  margin-bottom: 48px;
-  display: flex;
-  height: 33px;
-  width: 240px;
-  border-radius: 33px;
-  background: #dddde3;
-`
+export const BackgroundBadge = styled.div({
+  padding: '3px 3px 3px 3px',
+  position: 'relative',
+  marginBottom: '48px',
+  display: 'flex',
+  height: '33px',
+  width: '240px',
+  borderRadius: '33px',
+  background: '#dddde3',
+})
 
-export const UnactiveTextBadge = styled.p<UnactiveTextBadgeProps>(
+
+export const ActiveBadge = styled.div({
+  height: '27px',
+  width: '95px',
+  borderRadius: '33px',
+  padding: '5px 13px',
+  display: 'flex',
+  justifyContent: 'center',
+  background: '#ffffff',
+})
+  
+
+export const TextBadge = styled.p<TextBadgeProps>(
   props => ({
-    margin: '5px 13px',
+    margin: props.color === 'active' ?  '0': '5px 13px',
     height: '17px',
-    width: '69px',
+    width: props.color === 'active' ?  'auto': '69px',
     fontFamily: 'Inter',
     fontSize: '14px',
     fontStyle: 'normal',
@@ -28,30 +40,9 @@ export const UnactiveTextBadge = styled.p<UnactiveTextBadgeProps>(
     lineHeight: '17px',
     letterSpacing: '0em',
     textAlign: props.textAlign === 'right' ? 'right' : 'center',
-    color: '#7b7f93',
+    color: props.color === 'active' ? '#304ffe':  '#7b7f93',
     cursor: 'pointer',
   })
 )
 
-export const ActiveBadge = styled.div`
-  width: 95px;
-  height: 27px;
-  padding: 5px 13px;
-  display: flex;
-  justify-content: center;
-  height: 27px;
-  border-radius: 33px;
-  background: #ffffff;
-`
-
-export const ActiveBadgeText = styled.p`
-  height: 17px;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 17px;
-  letter-spacing: 0em;
-  color: #304ffe;
-  cursor: pointer;
-`
+ 

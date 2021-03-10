@@ -15,25 +15,27 @@ import { Auction } from 'src/interfaces/Auction'
 import { theme } from 'src/styles/theme'
 import { ThemeProvider } from 'styled-components'
 
+// defaults
+import { getAuctionDefault } from "src/utils/Defaults";
+
 //clean up
 
 afterEach(cleanup)
 
 // tests
 
+
+
+// tests
+
+
+
 describe('testing Auction Summary Card', () => {
   test('should display the correct styling', () => {
-    const auction: Auction = {
-      id: jest.fn(),
+    const auction = getAuctionDefault({
       startBlock: 1646500442,
       endBlock: 1678036442,
-      tokenIcon: jest.fn(),
-      tokenAddress: jest.fn(),
-      tokenSymbol: jest.fn(),
-      tokenAmount: jest.fn(),
-      tokenName: jest.fn(),
-      bids: jest.fn(),
-    }
+    })
     const AST = create(
       <ThemeProvider theme={theme}>
         <AuctionSummaryCard auction={auction} />

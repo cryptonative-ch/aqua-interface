@@ -21,6 +21,8 @@ import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { AuctionNavBar } from './components/AuctionNavBar'
+import { AbsoluteContainer } from "src/components/AbsoluteContainer";
+
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
@@ -29,19 +31,20 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
+
 const AuctionSummaryWrapper = styled(NavLink)`
   display: 'block'
 `
 
-
-
-const AuctionListSection = styled.div(({
-  margin: '0px',
-  display: 'grid',
-  maxWidth: '1000px',
-  gridTemplateColumns: '478px 478px',
-  gap: '24px 24px',
-}))
+const AuctionListSection = styled.div(
+  props => ({
+    margin: '0',
+    display: props.theme.grid.display,
+    maxWidth: '1000px',
+    gridTemplateColumns: props.theme.grid.gridTemplateColumns,
+    gap: props.theme.grid.gap,
+  })
+)
 
 const Title = styled.p`
   height: 44px;
@@ -101,7 +104,7 @@ export function AuctionsView() {
 
   return (
     <AuctionContext.Provider value={{ AuctionShow, setAuctionShow }}>
-      <Container minHeight="200%" inner={false} noPadding={true} position="absolute">
+      <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
         <Header connectWallet={toggleModal} isConnecting={connectModal} />
         <Container>
           <Title>Token Sales</Title>
@@ -139,7 +142,7 @@ export function AuctionsView() {
           walletImage={WalletImage}
         ></WalletConnector>
         <Footer />
-      </Container>
+      </AbsoluteContainer>
     </AuctionContext.Provider>
   )
 }

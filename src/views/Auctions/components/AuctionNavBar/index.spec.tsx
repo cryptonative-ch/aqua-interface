@@ -21,7 +21,7 @@ const wrapper = (auction: AuctionContextType) => {
   )
 }
 
-describe('testing Auction Navigation Menu', () => {
+describe('testing AuctionNavBar', () => {
   test('should display the correct style when AuctionStatus is Live', () => {
     const test: AuctionContextType = {
       AuctionShow: AuctionStatus.LIVE,

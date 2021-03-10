@@ -1,5 +1,5 @@
 // Externals
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 
 // Components
 import { DarkCircle, LightCircle } from 'src/components/Circle'
@@ -15,7 +15,7 @@ interface AuctionClockProps {
   auction: Auction
 }
 
-export const AuctionClock: FunctionComponent<AuctionClockProps> = ({ auction }) => {
+export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   if (isAuctionClosed(auction)) {
     return (
       <Flex flexDirection="row" justifyContent="space-between">

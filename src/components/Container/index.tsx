@@ -12,7 +12,6 @@ export type ContainerProps = LayoutProps & PositionProps & {
 
 export const Container = styled.div<ContainerProps>(
   props => ({
-    position: props.position === 'absolute' ? 'absolute': 'unset',
     Height: '100%',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
