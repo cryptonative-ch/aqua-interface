@@ -51,7 +51,7 @@ describe('Timer', () => {
 
     const { getByTestId } = render(<Timer auction={auction} />)
 
-    expect(await getByTestId('open')).toHaveTextContent('1d')
+    expect(await getByTestId('open')).toHaveTextContent('3m')
   }),
     test('when auction is upcoming, it displays the correct return', () => {
       const auction = getAuctionDefault({
