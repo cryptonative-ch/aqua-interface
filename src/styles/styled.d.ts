@@ -9,6 +9,7 @@ import {
   ThemeRadii,
   ThemeFonts,
   ThemeSpacing,
+  ThemeGrid,
 } from './theme'
 
 declare module 'styled-components' {
@@ -21,5 +22,6 @@ declare module 'styled-components' {
     fontSizes: ThemeFontSizes
     colors: ThemeColors
     radii: ThemeRadii
+    grid: ThemeGrid
   }
 }

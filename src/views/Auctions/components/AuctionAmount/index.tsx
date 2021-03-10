@@ -1,5 +1,5 @@
 // Externals
-import React, { FunctionComponent } from 'react'
+import React  from 'react'
 import numeral from 'numeral'
 
 // Components
@@ -12,7 +12,7 @@ interface AuctionAmountprops {
   auction: Auction
 }
 
-export const AuctionAmount: FunctionComponent<AuctionAmountprops> = ({ auction }) => {
+export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {
   return (
     <Flex>
       <CardText>{numeral(auction.tokenAmount).format('0,0')}</CardText>

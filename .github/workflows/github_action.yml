@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Run the tests and generate coverage report
-        run: npm test -- --coverage --passWithNoTests
+        run: npm test -- --coverage --passWithNoTests -u
 
       - name: Build
         run: npm run build
