@@ -124,10 +124,10 @@ export function SelfBidList({}: SelfBidListProps) {
           <TokenPriceLabel backgroundColor="#4B9E985A">0.92 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={2}>
-          <TokenPriceLabel>500 DAI</TokenPriceLabel>
+          <TokenPriceLabel>501 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={5} flexDirection="row" alignItems="center">
-          <TokenPriceLabel>568.18 XYZ</TokenPriceLabel>
+          <TokenPriceLabel>562.18 XYZ</TokenPriceLabel>
           <Flex flex={1} />
           <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(0)} />
         </Flex>
@@ -138,10 +138,10 @@ export function SelfBidList({}: SelfBidListProps) {
           <TokenPriceLabel backgroundColor="#4B9E985A">0.9 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={2}>
-          <TokenPriceLabel>500 DAI</TokenPriceLabel>
+          <TokenPriceLabel>502 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={5} flexDirection="row" alignItems="center">
-          <TokenPriceLabel>568.18 XYZ</TokenPriceLabel>
+          <TokenPriceLabel>561.18 XYZ</TokenPriceLabel>
           <Flex flex={1} />
           <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(1)} />
         </Flex>
