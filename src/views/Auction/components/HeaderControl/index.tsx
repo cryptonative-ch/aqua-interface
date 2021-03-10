@@ -50,13 +50,13 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
       <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
         <ControlTitle>How is the Current Price (CP) calculated?</ControlTitle>
         {status === 'closed' && (
-          <LogoImg src={LogoSVG} />
+          <LogoImg data-testid="logo-img" src={LogoSVG} />
         )}
       </Flex>
       <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" style={{cursor: 'pointer'}} onClick={toggleGraph} >
         <ControlButton>View Live Graph</ControlButton>
         {status === 'active' && (
-          <ArrowImg src={showGraph ? UpSVG : DownSVG} />
+          <ArrowImg data-testid="graph-img" src={showGraph ? UpSVG : DownSVG} />
         )}
       </Flex>
     </Flex>
