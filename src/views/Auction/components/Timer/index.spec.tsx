@@ -60,11 +60,11 @@ describe('Timer', () => {
     }),
     test('when auction is closed, it should return the correct display', async () => {
       const auction = getAuctionDefault({
-        startBlock: addHours(dateUTC, -140).unix(),
-        endBlock: addHours(dateUTC, -14).unix(),
+        startBlock: 1520798525,
+        endBlock: 1552334525,
       })
 
       const { getByTestId } = render(<Timer auction={auction} />)
-      expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 05:06 GMT')
+      expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 20:02 GMT')
     })
 })
