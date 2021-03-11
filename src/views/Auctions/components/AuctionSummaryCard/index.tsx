@@ -43,9 +43,17 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
             <BadgeCard saleType="presale" />
           </Flex>
         </Flex>
-        <Flex flexDirection="column" justifyContent="space-evenly" height="153px">
+        <Flex flexDirection="column" justifyContent="space-evenly" height="70%">
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText lineHeight="title" color="grey">
+            <CardText color="grey">
+              Auction Type
+            </CardText>
+            <CardText>
+              Point Dutch
+            </CardText>
+          </Flex>
+          <Flex flexDirection="row" justifyContent="space-between">
+            <CardText color="grey">
               Current Price
             </CardText>
             <AuctionFinalPrice auction={auction} />

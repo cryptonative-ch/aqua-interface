@@ -10,13 +10,19 @@ export const CardBody = styled.div<CardBodyProps>(
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     padding: '32px 24px 0px 24px',
     borderBottom: '1px solid #000',
     '&:last-child': {
       borderBottom: 'none',
     },
   },
+  props =>
+    `
+  @media (max-width: ${props.theme.breakpoints[2]}) {
+    padding: 8px 6px 0px 6px
+  }
+  `,
   space,
   layout,
   flexbox,

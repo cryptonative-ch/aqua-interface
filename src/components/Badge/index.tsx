@@ -7,6 +7,7 @@ type BadgeProps = LayoutProps &
     width?: string
   }
 
+
 export const Badge = styled.div<BadgeProps>(
   props => ({
     height: '27px',
@@ -16,19 +17,38 @@ export const Badge = styled.div<BadgeProps>(
     justifyContent: 'center',
     margin: '0px 4px',
   }),
+  props =>
+    `
+@media (max-width: ${props.theme.breakpoints[2]}) {
+  height: 25px;
+  width: 63px;  
+  padding: 4px, 8px, 4px, 8px
+}
+`,
   layout,
   color
 )
 
-export const Content = styled.h3`
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0em;
-  text-align: center;
-  color: white;
-  justify-content: center;
-  margin: 0px;
-  padding: 2px 4px;
+export const Content = styled.h3({
+  fontFamily: 'Inter',
+  fontSize: '16px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  letterSpacing: '0em',
+  textAlign: 'center',
+  color: 'white',
+  justifyContent: 'center',
+  margin: '0px',
+  padding: '2px 4px',
+}
+  ,
+  props =>
+    `
+@media (max-width: ${props.theme.breakpoints[2]}) {
+  font-size: 13px;
+  line-height: 17px;
+}
 `
+)
+
+

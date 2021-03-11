@@ -51,19 +51,19 @@ describe('Testing AuctionClock', () => {
         startBlock: addHours(dateUTC, -1).unix(),
         endBlock: addHours(dateUTC, 24).unix(),
       })
-      const { asFragment } = render(<AuctionClock auction={auction}/>)
+      const { asFragment } = render(<AuctionClock auction={auction} />)
       expect(asFragment()).toMatchSnapshot()
     }),
 
     test('should calculate percentage of slice according to timer', () => {
-      const auction =  getAuctionDefault({
+      const auction = getAuctionDefault({
         startBlock: addHours(dateUTC, -1).unix(),
         endBlock: addHours(dateUTC, 24).unix(),
       })
       expect(timerPercentage(auction)).toBe(4.0000000000000036)
     })
-    
-    
+
+
 
 
 

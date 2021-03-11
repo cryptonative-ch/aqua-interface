@@ -42,6 +42,7 @@ describe('converts unix seconds into local Date time format function', () => {
 
 
 
+
 describe('Timer', () => {
   test('when auction is open it should render the correct display', async () => {
     const auction = getAuctionDefault({

@@ -11,6 +11,13 @@ export const Card = styled.div<CardProps>(
     width: '478px',
     borderRadius: '0px',
   }),
+  props =>
+    `
+    @media (max-width: ${props.theme.breakpoints[2]}) {
+      height: 213px;
+      width: 359px;
+    }
+  `,
   space,
   layout,
   flexbox,
