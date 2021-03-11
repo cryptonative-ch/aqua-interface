@@ -22,7 +22,7 @@ const FormLabel = styled.div({
   lineHeight: '48px',
   marginRight: '24px',
   width: '80px',
-  color: '#000629'
+  color: '#000629',
 })
 
 const FormDescription = styled.div({
@@ -31,7 +31,7 @@ const FormDescription = styled.div({
   fontSize: '12px',
   lineHeight: '17px',
   marginTop: '8px',
-  color: '#7B7F93'
+  color: '#7B7F93',
 })
 
 const FormContainer = styled.div({
@@ -160,7 +160,13 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
             <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
-            <FormInput aria-label="tokenAmount" id="tokenAmount" type="number" value={Number(tokenAmount).toString()} onChange={onTokenAmountChange} />
+            <FormInput
+              aria-label="tokenAmount"
+              id="tokenAmount"
+              type="number"
+              value={Number(tokenAmount).toString()}
+              onChange={onTokenAmountChange}
+            />
           </FormContainer>
           <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
@@ -170,7 +176,13 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
             <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
-            <FormInput aria-label="tokenPrice" id="tokenPrice" type="number" value={Number(tokenPrice).toString()} onChange={onTokenPriceChange} />
+            <FormInput
+              aria-label="tokenPrice"
+              id="tokenPrice"
+              type="number"
+              value={Number(tokenPrice).toString()}
+              onChange={onTokenPriceChange}
+            />
             <MaxButton>Max</MaxButton>
           </FormContainer>
           <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>

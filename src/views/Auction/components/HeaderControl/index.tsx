@@ -15,7 +15,7 @@ const ControlTitle = styled.div({
   fontWeight: 500,
   fontSize: '14px',
   lineHeight: '17px',
-  color: '#000629'
+  color: '#000629',
 })
 
 const ControlButton = styled.div({
@@ -23,19 +23,19 @@ const ControlButton = styled.div({
   fontWeight: 500,
   fontSize: '14px',
   lineHeight: '17px',
-  color: '#7B7F93'
+  color: '#7B7F93',
 })
 
 const LogoImg = styled.img({
   width: '60px',
   height: '18px',
-  marginLeft: '4px'
+  marginLeft: '4px',
 })
 
 const ArrowImg = styled.img({
   width: '16px',
   height: '16px',
-  marginLeft: '4px'
+  marginLeft: '4px',
 })
 
 interface HeaderControlProps {
@@ -49,9 +49,7 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" flex={1}>
       <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
         <ControlTitle>How is the Current Price (CP) calculated?</ControlTitle>
-        {status === 'closed' && (
-          <LogoImg data-testid="logo-img" src={LogoSVG} />
-        )}
+        {status === 'closed' && <LogoImg data-testid="logo-img" src={LogoSVG} />}
       </Flex>
       <Flex
         flexDirection="row"
@@ -61,9 +59,7 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
         onClick={toggleGraph}
       >
         <ControlButton>View Live Graph</ControlButton>
-        {status === 'active' && (
-          <ArrowImg data-testid="graph-img" src={showGraph ? UpSVG : DownSVG} />
-        )}
+        {status === 'active' && <ArrowImg data-testid="graph-img" src={showGraph ? UpSVG : DownSVG} />}
       </Flex>
     </Flex>
   )

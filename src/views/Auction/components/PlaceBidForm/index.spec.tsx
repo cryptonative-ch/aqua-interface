@@ -24,13 +24,12 @@ const dateUTC = dayjs.unix(utcDate.unix())
 
 describe('PlaceBidForm', () => {
   test('should display texts', () => {
-    i18n
-      .init({
-        fallbackLng: 'en',
-        react: {
-          useSuspense: false
-        }
-      })
+    i18n.init({
+      fallbackLng: 'en',
+      react: {
+        useSuspense: false,
+      },
+    })
     const auction = {
       id: '0x143',
       startBlock: addHours(dateUTC, 14).unix(),
@@ -57,7 +56,7 @@ describe('PlaceBidForm', () => {
     expect(getByText('Enter the price you would pay per XYZ token.')).toBeInTheDocument()
     expect(getByText('Amount')).toBeInTheDocument()
     expect(getByText('Enter the amount of DAI you would like to trade. You have 123,456 DAI.')).toBeInTheDocument()
-    expect(getByTestId('submit-button')).toHaveAttribute('disabled', "")
+    expect(getByTestId('submit-button')).toHaveAttribute('disabled', '')
 
     const amountInput = getByLabelText('tokenAmount') as HTMLInputElement
     fireEvent.change(amountInput, { target: { value: 23 } })

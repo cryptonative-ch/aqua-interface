@@ -24,7 +24,7 @@ const HeaderDescription = styled.div({
   lineHeight: '29px',
   marginTop: '7px',
   fontFeatureSettings: 'ss01 on',
-  color: '#000629'
+  color: '#000629',
 })
 
 interface HeaderItemProps {
