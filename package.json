@@ -87,5 +87,8 @@
   "devDependencies": {
     "@types/d3": "^6.3.0",
     "@types/testing-library__dom": "^7.5.0"
-  }
+  },
+  "sideEffects": [
+    "./src/i18n.ts"
+  ]
 }
