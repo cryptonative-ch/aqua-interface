@@ -159,8 +159,8 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <FormLabel>Token Price</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText>{`${tokenAmount.toString()} DAI`}</FormText>
-            <FormInput id="tokenAmount" type="number" value={Number(tokenAmount).toString()} onChange={onTokenAmountChange} />
+            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+            <FormInput aria-label="tokenAmount" id="tokenAmount" type="number" value={Number(tokenAmount).toString()} onChange={onTokenAmountChange} />
           </FormContainer>
           <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
@@ -169,8 +169,8 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText>{`${tokenPrice.toString()} DAI`}</FormText>
-            <FormInput id="tokenPrice" type="number" value={Number(tokenPrice).toString()} onChange={onTokenPriceChange} />
+            <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
+            <FormInput aria-label="tokenPrice" id="tokenPrice" type="number" value={Number(tokenPrice).toString()} onChange={onTokenPriceChange} />
             <MaxButton>Max</MaxButton>
           </FormContainer>
           <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>
@@ -178,6 +178,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
       </FormGroup>
       <Button
         disabled={isDisabled}
+        data-testid="submit-button"
         type="submit"
         title={t('buttons.placeBid')}
         formButton
