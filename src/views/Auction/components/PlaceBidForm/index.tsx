@@ -103,7 +103,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const theme = useTheme()
-  const { t, i18n, ready } = useTranslation()
+  const [t] = useTranslation()
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
