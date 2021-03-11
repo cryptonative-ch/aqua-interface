@@ -20,15 +20,15 @@ export const Badge = styled.div<BadgeProps>(
   color
 )
 
-export const Content = styled.h3`
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0em;
-  text-align: center;
-  color: white;
-  justify-content: center;
-  margin: 0px;
-  padding: 2px 4px;
-`
+export const Content = styled.h3({
+  fontFamily: 'Inter',
+  fontSize: '16px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  letterSpacing: '0em',
+  textAlign: 'center',
+  color: 'white',
+  justifyContent: 'center',
+  margin: '0px',
+  padding: '2px 4px',
+})

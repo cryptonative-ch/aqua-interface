@@ -16,14 +16,13 @@ import { theme } from 'src/styles/theme'
 import { ThemeProvider } from 'styled-components'
 
 // defaults
-import { getAuctionDefault } from "src/utils/Defaults";
+import { getAuctionDefault } from 'src/utils/Defaults'
 
 //clean up
 
 afterEach(cleanup)
 
 // tests
-
 
 describe('testing Auction Summary Card', () => {
   test('should display the correct styling', () => {

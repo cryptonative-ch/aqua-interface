@@ -14,7 +14,7 @@ const ButtonText = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 150%;
-  color: #7B7F93;
+  color: #7b7f93;
 `
 
 const BackLink = styled(Link)({
@@ -23,7 +23,7 @@ const BackLink = styled(Link)({
   alignItems: 'center',
   justifyContent: 'flex-start',
   textDecoration: 'none !important',
-  padding: '8px 0'
+  padding: '8px 0',
 })
 
 const ArrowImg = styled.img`
@@ -38,7 +38,7 @@ export function BackButton() {
   return (
     <BackLink to="/auctions" data-testid="back-ref">
       <ArrowImg src={LeftArrowSVG} />
-      <ButtonText data-testid="back-button" >{t('buttons.backToSales')}</ButtonText>
+      <ButtonText data-testid="back-button">{t('buttons.backToSales')}</ButtonText>
     </BackLink>
   )
 }

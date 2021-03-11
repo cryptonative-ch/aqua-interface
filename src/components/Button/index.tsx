@@ -17,7 +17,7 @@ import {
   LayoutProps,
   background,
   color,
-  ColorProps
+  ColorProps,
 } from 'styled-system'
 
 export type ButtonProps = SizeProps &
@@ -46,7 +46,7 @@ export const Button = styled.button<ButtonProps>(
     verticalAlign: 'middle',
     userSelect: 'none',
     backgroundColor: 'transparent',
-    border: (props.border || props.formButton) ? 'none' : `1px solid ${props.theme.colors.primary}`,
+    border: props.border || props.formButton ? 'none' : `1px solid ${props.theme.colors.primary}`,
     // @TODO: Move radis to Theme
     borderRadius: props.formButton ? 0 : props.rounded ? '32px' : props.theme.radii.base,
     fontSize: '1rem',
@@ -56,12 +56,12 @@ export const Button = styled.button<ButtonProps>(
     outline: props.formButton ? 'none' : 'unset',
     color: 'black',
     ':disabled': {
-      opacity: props.formButton ? 1 : 0.5
+      opacity: props.formButton ? 1 : 0.5,
     },
     ':hover': {
       textDecoration: 'underline',
     },
-    textDecoration: 'none'
+    textDecoration: 'none',
   }),
   fontSize,
   fontWeight,
@@ -80,7 +80,7 @@ export const Button = styled.button<ButtonProps>(
       },
     },
   }),
-  background,
+  background
 )
 
 Button.defaultProps = {

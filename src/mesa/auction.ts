@@ -15,7 +15,6 @@ export const isAuctionOpen = ({ startBlock, endBlock }: Auction) => {
   const endBlockLocal = convertUtcTimestampToLocal(endBlock)
   const startBlockLocal = convertUtcTimestampToLocal(startBlock)
   return startBlockLocal <= currentTimestamp && currentTimestamp < endBlockLocal
-  
 }
 
 /**

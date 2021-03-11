@@ -30,14 +30,14 @@ const FormDescription = styled.div`
   font-weight: normal;
   font-size: 12px;
   line-height: 140%;
-  color: #7B7F93;
+  color: #7b7f93;
   margin-top: 8px;
 `
 
 const FormContainer = styled.div`
   height: 48px;
   width: 100%;
-  background: #F2F2F2;
+  background: #f2f2f2;
   border: none;
   display: flex;
 `
@@ -47,7 +47,7 @@ const FormText = styled.div`
   flex: 1;
   background: transparent;
   border: none;
-  color: #7B7F93;
+  color: #7b7f93;
   font-size: 14px;
   line-height: 48px;
   margin: 0 16px;
@@ -55,13 +55,14 @@ const FormText = styled.div`
 `
 
 const MaxButton = styled.div`
-  border: 1px solid #DDDDE3;
-  padding: 0 4px;font-style: normal;
+  border: 1px solid #dddde3;
+  padding: 0 4px;
+  font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   text-align: center;
-  color: #7B7F93;
+  color: #7b7f93;
   position: absolute;
   right: 16px;
   top: 13px;
@@ -158,7 +159,12 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
             <FormText>{`${tokenAmount.toString()} DAI`}</FormText>
-            <FormInput id="tokenAmount" type="number" value={Number(tokenAmount).toString()} onChange={onTokenAmountChange} />
+            <FormInput
+              id="tokenAmount"
+              type="number"
+              value={Number(tokenAmount).toString()}
+              onChange={onTokenAmountChange}
+            />
           </FormContainer>
           <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
@@ -168,7 +174,12 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
             <FormText>{`${tokenPrice.toString()} DAI`}</FormText>
-            <FormInput id="tokenPrice" type="number" value={Number(tokenPrice).toString()} onChange={onTokenPriceChange} />
+            <FormInput
+              id="tokenPrice"
+              type="number"
+              value={Number(tokenPrice).toString()}
+              onChange={onTokenPriceChange}
+            />
             <MaxButton>Max</MaxButton>
           </FormContainer>
           <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>
@@ -186,8 +197,8 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         fontSize="14px"
         lineHeight="21px"
         border={true}
-        background={isDisabled ? "#DDDDE3" : "#304FFE"}
-        color={isDisabled ? "#7B7F93" : "#fff"}
+        background={isDisabled ? '#DDDDE3' : '#304FFE'}
+        color={isDisabled ? '#7B7F93' : '#fff'}
       >
         {t('buttons.placeBid')}
       </Button>

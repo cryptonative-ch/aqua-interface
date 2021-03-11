@@ -20,7 +20,7 @@ const ColumnLabel = styled.div<ColumnLabelProps>(
     fontSize: '12px',
     lineHeight: '140%',
     color: '#7B7F93',
-    marginLeft: '8px'
+    marginLeft: '8px',
   }),
   space
 )
@@ -67,11 +67,11 @@ const ModalMenu = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
-  color: #7B7F93;
+  color: #7b7f93;
   padding: 8px 0;
   cursor: pointer;
   &:hover {
-    color: #304FFE;
+    color: #304ffe;
   }
 `
 
@@ -83,7 +83,7 @@ const IconImg = styled.img<IconImgProps>(
   props => ({
     width: '16px',
     height: '16px',
-    cursor: props.isButton ? 'pointer' : 'auto'
+    cursor: props.isButton ? 'pointer' : 'auto',
   }),
   space
 )
@@ -156,7 +156,9 @@ export function SelfBidList({}: SelfBidListProps) {
         </Flex>
         <Flex flex={5} flexDirection="row" alignItems="center">
           <IconImg src={WarningSVG} margin="0 4px 0 8px" />
-          <TokenPriceLabel color="#7B7F93" padding="4px 0">Below Current Price</TokenPriceLabel>
+          <TokenPriceLabel color="#7B7F93" padding="4px 0">
+            Below Current Price
+          </TokenPriceLabel>
           <Flex flex={1} />
           <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(2)} />
         </Flex>
@@ -173,5 +175,5 @@ export function SelfBidList({}: SelfBidListProps) {
 
 SelfBidList.defaultProps = {
   status: 'active',
-  showGraph: false
+  showGraph: false,
 }

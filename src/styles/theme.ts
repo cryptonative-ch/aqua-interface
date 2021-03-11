@@ -1,8 +1,6 @@
 import { defaultRebootTheme } from 'styled-reboot'
 import * as CSS from 'csstype'
 
-
-
 export type ThemeGrid = {
   display: CSS.Property.Grid
   gridTemplateColumns: CSS.Property.GridTemplateColumns
