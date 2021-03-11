@@ -38,11 +38,11 @@ const TokenPriceLabel = styled.div<ColorProps & SpaceProps>(
   space
 )
 
-const InfoImg = styled.img`
-  width: 14px;
-  height: 14px;
-  margin-left: 4px;
-`
+const InfoImg = styled.img({
+  width: '14px',
+  height: '14px',
+  marginLeft: '4px'
+})
 
 type ModalContainerProps = {
   itemIndex: number
@@ -62,18 +62,18 @@ const ModalContainer = styled.div<ModalContainerProps>(props => ({
   zIndex: 200,
 }))
 
-const ModalMenu = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  color: #7B7F93;
-  padding: 8px 0;
-  cursor: pointer;
-  &:hover {
-    color: #304FFE;
-  }
-`
+const ModalMenu = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '21px',
+  color: '#7B7F93',
+  padding: '8px 0',
+  cursor: 'pointer',
+  ':hover': {
+    color: '#304FFE',
+  },
+})
 
 type IconImgProps = SpaceProps & {
   isButton?: boolean
@@ -124,10 +124,10 @@ export function SelfBidList({}: SelfBidListProps) {
           <TokenPriceLabel backgroundColor="#4B9E985A">0.92 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={2}>
-          <TokenPriceLabel>500 DAI</TokenPriceLabel>
+          <TokenPriceLabel>501 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={5} flexDirection="row" alignItems="center">
-          <TokenPriceLabel>568.18 XYZ</TokenPriceLabel>
+          <TokenPriceLabel>562.18 XYZ</TokenPriceLabel>
           <Flex flex={1} />
           <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(0)} />
         </Flex>
@@ -138,10 +138,10 @@ export function SelfBidList({}: SelfBidListProps) {
           <TokenPriceLabel backgroundColor="#4B9E985A">0.9 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={2}>
-          <TokenPriceLabel>500 DAI</TokenPriceLabel>
+          <TokenPriceLabel>502 DAI</TokenPriceLabel>
         </Flex>
         <Flex flex={5} flexDirection="row" alignItems="center">
-          <TokenPriceLabel>568.18 XYZ</TokenPriceLabel>
+          <TokenPriceLabel>561.18 XYZ</TokenPriceLabel>
           <Flex flex={1} />
           <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(1)} />
         </Flex>
