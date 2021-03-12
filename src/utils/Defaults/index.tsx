@@ -4,9 +4,8 @@ import dayjs, { Dayjs } from 'dayjs'
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
-//svg 
+//svg
 import Omen from 'src/assets/svg/Omen.svg'
-
 
 export const getDefaults = (): Auction => ({
   id: '0x141',
@@ -22,9 +21,8 @@ export const getDefaults = (): Auction => ({
 
 export const getAuctionDefault = (a?: Partial<Auction>): Auction => ({
   ...getDefaults(),
-  ...a
-});
-
+  ...a,
+})
 
 // variables
 export const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')

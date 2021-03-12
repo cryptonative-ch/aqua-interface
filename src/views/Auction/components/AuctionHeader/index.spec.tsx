@@ -5,16 +5,13 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import dayjs from 'dayjs'
 
-
 // Component
 import { secondsTohms, AuctionHeader } from './index'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
-import { getAuctionDefault, addHours, dateUTC, utcDate } from "src/utils/Defaults";
-
-
+import { getAuctionDefault, addHours, dateUTC, utcDate } from 'src/utils/Defaults'
 
 describe('seconds to HMS function', () => {
   describe('convert seconds into different formats', () => {
@@ -32,23 +29,23 @@ describe('seconds to HMS function', () => {
   })
 })
 
-
-
 describe('AuctionHeader', () => {
   test('it should render the correct auction header', async () => {
-    const auction = getAuctionDefault({startBlock: addHours(dateUTC, -24).unix(),
-      endBlock: addHours(dateUTC, +24).unix()})
-  
+    const auction = getAuctionDefault({
+      startBlock: addHours(dateUTC, -24).unix(),
+      endBlock: addHours(dateUTC, +24).unix(),
+    })
+
     const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
     const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
-    let format_time = '';
+    let format_time = ''
     if (isAuctionUpcoming(auction)) {
       format_time = secondsTohms(time_diff_start)
     } else if (isAuctionOpen(auction)) {
       format_time = secondsTohms(time_diff_end)
     }
     const { getByText, getByTestId } = render(<AuctionHeader auction={auction} />)
-    expect(await getByTestId('format_time')).toHaveTextContent(format_time, {normalizeWhitespace: false})
+    expect(await getByTestId('format_time')).toHaveTextContent(format_time, { normalizeWhitespace: false })
     expect(getByText('XYZ Initial Auction')).toBeInTheDocument()
     expect(getByText('Private')).toBeInTheDocument()
   })

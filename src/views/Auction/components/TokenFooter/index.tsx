@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   outline: 0;
   display: flex;
   flex-direction: column;
-  border: 1px dashed #DDDDE3;
+  border: 1px dashed #dddde3;
   border-width: 1px 0 0 0;
 `
 
@@ -34,7 +34,7 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
-  color: #7B7F93;
+  color: #7b7f93;
   padding: 16px 24px 16px 0;
   cursor: pointer;
   user-select: none;

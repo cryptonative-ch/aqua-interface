@@ -99,7 +99,8 @@
   "lint-staged": {
     "src/**/*.{ts, tsx, css}": [
       "yarn lint --fix",
-      "yarn format"
+      "yarn format",
+      "git add ."
     ]
   }
 }

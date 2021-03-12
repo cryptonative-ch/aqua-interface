@@ -23,7 +23,7 @@ const ControlButton = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  color: #7B7F93;
+  color: #7b7f93;
 `
 
 const LogoImg = styled.img`
@@ -49,15 +49,17 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" flex={1}>
       <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
         <ControlTitle>How is the Current Price (CP) calculated?</ControlTitle>
-        {status === 'closed' && (
-          <LogoImg src={LogoSVG} />
-        )}
+        {status === 'closed' && <LogoImg src={LogoSVG} />}
       </Flex>
-      <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" style={{cursor: 'pointer'}} onClick={toggleGraph} >
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        style={{ cursor: 'pointer' }}
+        onClick={toggleGraph}
+      >
         <ControlButton>View Live Graph</ControlButton>
-        {status === 'active' && (
-          <ArrowImg src={showGraph ? UpSVG : DownSVG} />
-        )}
+        {status === 'active' && <ArrowImg src={showGraph ? UpSVG : DownSVG} />}
       </Flex>
     </Flex>
   )
@@ -66,5 +68,7 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
 HeaderControl.defaultProps = {
   status: 'active',
   showGraph: false,
-  toggleGraph: () => {return}
+  toggleGraph: () => {
+    return
+  },
 }

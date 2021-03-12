@@ -15,7 +15,6 @@ interface BarChartComponentProps {
 }
 
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp }) => {
- 
   const ref = useRef<SVGSVGElement>(null)
 
   const getBidPricePerShare = (bid: AuctionBid) => bid.sellAmount.toNumber() / bid.buyAmount.toNumber()

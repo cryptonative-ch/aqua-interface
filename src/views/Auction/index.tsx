@@ -93,7 +93,7 @@ export function AuctionView() {
   }
 
   return (
-    <Container minHeight="100%" inner={false} noPadding={true} >
+    <Container minHeight="100%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container noPadding>
         <BackButton />
@@ -134,7 +134,9 @@ export function AuctionView() {
             </Card>
             <Card mb={theme.space[4]} border="none">
               <CardBody display="flex" padding={theme.space[4]} border="none">
-                <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourBids')}</CardTitle>
+                <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">
+                  {t('texts.yourBids')}
+                </CardTitle>
               </CardBody>
               <SelfBidList />
             </Card>
@@ -160,7 +162,12 @@ export function AuctionView() {
           </Flex>
         </Flex>
       </Container>
-      <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)} metamaskImage={MetamaskImage} walletImage={WalletImage}></WalletConnector>
+      <WalletConnector
+        isOpen={connectModal}
+        onClose={() => setModalVisible(false)}
+        metamaskImage={MetamaskImage}
+        walletImage={WalletImage}
+      ></WalletConnector>
       <Footer />
     </Container>
   )

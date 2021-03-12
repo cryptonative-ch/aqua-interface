@@ -28,6 +28,5 @@ export const CardText = styled.p<CardTextProps>(
   width: ${props.fontSize === 'title' ? '67px' : 'auto'};
 
 }
-`,
-
+`
 )

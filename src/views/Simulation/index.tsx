@@ -182,7 +182,7 @@ export function SimulationView() {
     <BidModalContext.Provider
       value={{ toggleModal: toggle, isShown: isShown, result: confirmResult, setResult: setConfirmResult }}
     >
-      <Container minHeight="100%" inner={false} noPadding={true} >
+      <Container minHeight="100%" inner={false} noPadding={true}>
         <Modal isShown={isShown} hide={onCancel} modalContent={content} headerText="Warning" onConfirm={onConfirm} />
         <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
         <Container noPadding>
@@ -223,7 +223,9 @@ export function SimulationView() {
               </Card>
               <Card mb={theme.space[4]} border="none">
                 <CardBody display="flex" padding={theme.space[4]} border="none">
-                  <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourBids')}</CardTitle>
+                  <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">
+                    {t('texts.yourBids')}
+                  </CardTitle>
                 </CardBody>
                 <SelfBidList />
               </Card>
@@ -249,7 +251,12 @@ export function SimulationView() {
             </Flex>
           </Flex>
         </Container>
-        <WalletConnector isOpen={connectModal} onClose={() => setModalVisible(false)} metamaskImage={MetamaskImage} walletImage={WalletImage}></WalletConnector>
+        <WalletConnector
+          isOpen={connectModal}
+          onClose={() => setModalVisible(false)}
+          metamaskImage={MetamaskImage}
+          walletImage={WalletImage}
+        ></WalletConnector>
         <Footer />
       </Container>
     </BidModalContext.Provider>

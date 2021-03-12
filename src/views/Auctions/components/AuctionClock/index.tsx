@@ -1,5 +1,5 @@
 // Externals
-import React  from 'react'
+import React from 'react'
 import dayjs from 'dayjs'
 
 // Components
@@ -11,17 +11,14 @@ import { Auction } from 'src/interfaces/Auction'
 import { CardText } from 'src/components/CardText'
 import { isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
-
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-
 
 interface AuctionClockProps {
   auction: Auction
 }
 
-
-export const timerPercentage = (auction: Auction)  => {
+export const timerPercentage = (auction: Auction) => {
   const localTimeStamp = dayjs(Date.now()).unix()
   const startTime = convertUtcTimestampToLocal(auction.startBlock)
   const endTime = convertUtcTimestampToLocal(auction.endBlock)
@@ -30,13 +27,8 @@ export const timerPercentage = (auction: Auction)  => {
   return percentage
 }
 
-
-
 export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
-  
-  const color = '#304ffe';
-
-
+  const color = '#304ffe'
 
   if (isAuctionClosed(auction)) {
     return (
@@ -59,19 +51,23 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <CardText color="grey">Time Remaining</CardText>
-      <Flex >
-        <Timer auction={auction}/>
-        <svg height='16' width='16' style={{ marginLeft: '8px'}} >
-          <circle r="8" cx="8" cy="8" fill={color} fillOpacity='0.1' transform="rotate(-90) translate(-16)" />
-          <circle r="4" cx="8" cy="8" fill="transparent"
+      <Flex>
+        <Timer auction={auction} />
+        <svg height="16" width="16" style={{ marginLeft: '8px' }}>
+          <circle r="8" cx="8" cy="8" fill={color} fillOpacity="0.1" transform="rotate(-90) translate(-16)" />
+          <circle
+            r="4"
+            cx="8"
+            cy="8"
+            fill="transparent"
             stroke={color}
-            strokeOpacity='1'
+            strokeOpacity="1"
             strokeWidth="8"
             strokeDasharray={`calc(${timerPercentage(auction)} * 25 / 100) 25`}
-            transform="rotate(-90) translate(-16)" />
+            transform="rotate(-90) translate(-16)"
+          />
         </svg>
       </Flex>
     </Flex>
   )
 }
-

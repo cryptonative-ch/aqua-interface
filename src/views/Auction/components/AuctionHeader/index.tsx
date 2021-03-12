@@ -26,7 +26,7 @@ const StatusText = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  color: #FFFFFF;
+  color: #ffffff;
 `
 
 const TimeText = styled.div`
@@ -35,7 +35,7 @@ const TimeText = styled.div`
   font-size: 36px;
   line-height: 44px;
   text-align: right;
-  color: #7B7F93;
+  color: #7b7f93;
   margin-left: auto;
 `
 
@@ -52,7 +52,7 @@ const TokenIconContainer = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 60px;
-  background-color: #304FFE;
+  background-color: #304ffe;
 `
 
 export const secondsTohms = (seconds: number) => {
@@ -94,7 +94,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
     }
   }, [])
 
-  let format_time = '';
+  let format_time = ''
   if (isAuctionUpcoming(auction)) {
     format_time = secondsTohms(time_diff_start)
   } else if (isAuctionOpen(auction)) {
