@@ -48,11 +48,10 @@ const HeaderContainer = styled.div`
   margin: 24px 0;
 `
 
-const TokenIconContainer = styled.div`
+const TokenIconContainer = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 60px;
-  background-color: #304ffe;
 `
 
 export const secondsTohms = (seconds: number) => {
@@ -103,8 +102,8 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
 
   return (
     <HeaderContainer>
-      <TokenIconContainer />
-      <HeaderText>XYZ Initial Auction</HeaderText>
+      <TokenIconContainer src={auction.tokenIcon} />
+      <HeaderText>{`${auction.tokenName} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>
       <TimeText data-testid="format_time">{format_time}</TimeText>
     </HeaderContainer>

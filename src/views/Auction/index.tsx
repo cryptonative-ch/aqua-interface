@@ -91,7 +91,7 @@ export function AuctionView() {
   if (!auction) {
     return <NotFoundView />
   }
-
+  console.log(auction)
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
@@ -103,8 +103,14 @@ export function AuctionView() {
             <Card mb={theme.space[4]} border="none">
               <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                 <Flex flexDirection="row" alignItems="center" flex={1}>
-                  <HeaderItem title="Current Price" description="0.88 DAI/XYZ" />
-                  <HeaderItem title="Amount for Sale" description="2,800 XYZ" />
+                  <HeaderItem
+                    title="Current Price"
+                    description={`${(1 / (clearingPrice?.sellAmount.toNumber() || 0)).toFixed(2)} DAI/${auction.tokenSymbol}`}
+                  />
+                  <HeaderItem
+                    title="Amount for Sale"
+                    description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
+                  />
                 </Flex>
               </CardBody>
               <CardBody display="flex" padding={theme.space[4]} border="none">
@@ -127,7 +133,7 @@ export function AuctionView() {
                     height={400}
                     data={auction.bids}
                     userAddress={userAddress}
-                    vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5}
+                    vsp={(clearingPrice?.sellAmount.toNumber() || 0)}
                   />
                 </CardBody>
               )}
@@ -138,7 +144,7 @@ export function AuctionView() {
                   {t('texts.yourBids')}
                 </CardTitle>
               </CardBody>
-              <SelfBidList />
+              <SelfBidList auction={auction} clearingPrice={clearingPrice} />
             </Card>
             <TokenFooter />
           </Flex>

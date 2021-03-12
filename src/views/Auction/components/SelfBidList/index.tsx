@@ -2,6 +2,7 @@
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
+import numeral from 'numeral'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -10,6 +11,9 @@ import { Flex } from 'src/components/Flex'
 import InfoSVG from 'src/assets/svg/Info-Icon.svg'
 import MoreSVG from 'src/assets/svg/More-Icon.svg'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
+
+// Interfaces
+import { Auction, AuctionBid } from 'src/interfaces/Auction'
 
 type ColumnLabelProps = SpaceProps
 
@@ -89,11 +93,13 @@ const IconImg = styled.img<IconImgProps>(
 )
 
 interface SelfBidListProps {
+  auction: Auction
+  clearingPrice?: AuctionBid
   status: string
   showGraph: boolean
 }
 
-export function SelfBidList({}: SelfBidListProps) {
+export function SelfBidList({ auction, clearingPrice }: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
 
   const toggleBidMenu = (index: number) => {
@@ -103,6 +109,8 @@ export function SelfBidList({}: SelfBidListProps) {
     }
     setBidMenu(index)
   }
+
+  const vsp = clearingPrice ? clearingPrice.sellAmount.toNumber() / clearingPrice.buyAmount.toNumber() : 0
 
   return (
     <Flex flexDirection="column" style={{ position: 'relative' }}>
@@ -114,10 +122,35 @@ export function SelfBidList({}: SelfBidListProps) {
           <ColumnLabel>Amount</ColumnLabel>
         </Flex>
         <Flex flex={5} flexDirection="row" alignItems="center">
-          <ColumnLabel>Est. XYZ</ColumnLabel>
+          <ColumnLabel>{`Est. ${auction.tokenSymbol}`}</ColumnLabel>
           <InfoImg src={InfoSVG} />
         </Flex>
       </Flex>
+
+      {auction.bids.map((bid: AuctionBid, index: number) => {
+        const bidPrice = bid.sellAmount.toNumber() / bid.buyAmount.toNumber()
+        return (
+          <Flex key={index} flexDirection="row" alignItems="center" height="50px" borderTop="1px dashed #DDDDE3" padding="0 16px">
+            <Flex flex={3}>
+              <TokenPriceLabel backgroundColor={vsp <= bidPrice ? "#4B9E985A" : "#E15F5F5A"}>
+                {`${numeral(bidPrice).format('0.[000]')} DAI`}
+              </TokenPriceLabel>
+            </Flex>
+            <Flex flex={2}>
+              <TokenPriceLabel>
+                {`${numeral(bid.sellAmount.toNumber()).format('0')} DAI`}
+              </TokenPriceLabel>
+            </Flex>
+            <Flex flex={5} flexDirection="row" alignItems="center">
+              <TokenPriceLabel>
+                {`${numeral(bid.buyAmount.toNumber()).format('0.[000]')} ${auction.tokenSymbol}`}
+              </TokenPriceLabel>
+              <Flex flex={1} />
+              <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(0)} />
+            </Flex>
+          </Flex>
+        )
+      })}
 
       <Flex flexDirection="row" alignItems="center" height="50px" borderTop="1px dashed #DDDDE3" padding="0 16px">
         <Flex flex={3}>
