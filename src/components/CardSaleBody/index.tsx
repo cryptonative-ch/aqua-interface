@@ -10,7 +10,6 @@ export const CardBody = styled.div<CardBodyProps>(
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'space-evenly',
     padding: '32px 24px 0px 24px',
     borderBottom: '1px solid #000',
     '&:last-child': {
@@ -20,7 +19,7 @@ export const CardBody = styled.div<CardBodyProps>(
   props =>
     `
   @media (max-width: ${props.theme.breakpoints[2]}) {
-    padding: 8px 6px 0px 6px
+    padding: 16px 16px 4px 16px
   }
   `,
   space,

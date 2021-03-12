@@ -1,6 +1,7 @@
 // External
 import styled from 'styled-components'
 import {
+  position,
   space,
   layout,
   flexbox,
@@ -11,10 +12,11 @@ import {
   TextAlignProps,
   textAlign,
   borderTop,
-  BorderTopProps
+  BorderTopProps,
+  PositionProps
 } from 'styled-system'
 
-export type FlexProps = SpaceProps & LayoutProps & FlexBaseProps & FlexboxProps & TextAlignProps & BorderTopProps
+export type FlexProps = SpaceProps & LayoutProps & FlexBaseProps & FlexboxProps & TextAlignProps & BorderTopProps & PositionProps
 
 export const Flex = styled.div<FlexProps>(
   {
@@ -24,5 +26,6 @@ export const Flex = styled.div<FlexProps>(
   layout,
   flexbox,
   textAlign,
-  borderTop
+  borderTop,
+  position
 )

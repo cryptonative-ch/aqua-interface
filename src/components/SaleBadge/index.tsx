@@ -26,23 +26,22 @@ export const ActiveBadge = styled.div({
   justifyContent: 'center',
   background: '#ffffff',
 })
-  
+
 
 export const TextBadge = styled.p<TextBadgeProps>(
   props => ({
-    margin: props.color === 'active' ?  '0': '5px 13px',
+    margin: props.color === 'active' ? '0' : '5px 13px',
     height: '17px',
-    width: props.color === 'active' ?  'auto': '69px',
+    width: props.color === 'active' ? 'auto' : '69px',
     fontFamily: 'Inter',
     fontSize: '14px',
     fontStyle: 'normal',
     fontWeight: 500,
     lineHeight: '17px',
-    letterSpacing: '0em',
+    letterSpacing: '0',
     textAlign: props.textAlign === 'right' ? 'right' : 'center',
-    color: props.color === 'active' ? '#304ffe':  '#7b7f93',
+    color: props.color === 'active' ? '#304ffe' : '#7b7f93',
     cursor: 'pointer',
   })
 )
 
- 

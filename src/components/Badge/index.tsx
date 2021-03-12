@@ -21,7 +21,7 @@ export const Badge = styled.div<BadgeProps>(
     `
 @media (max-width: ${props.theme.breakpoints[2]}) {
   height: 25px;
-  width: 63px;  
+  width: ${props.width === 'presale' ? '73px' : '63px'},;
   padding: 4px, 8px, 4px, 8px
 }
 `,
@@ -34,7 +34,7 @@ export const Content = styled.h3({
   fontSize: '16px',
   fontStyle: 'normal',
   fontWeight: 500,
-  letterSpacing: '0em',
+  letterSpacing: '0',
   textAlign: 'center',
   color: 'white',
   justifyContent: 'center',
@@ -45,8 +45,7 @@ export const Content = styled.h3({
   props =>
     `
 @media (max-width: ${props.theme.breakpoints[2]}) {
-  font-size: 13px;
-  line-height: 17px;
+  font-size: 14px;
 }
 `
 )

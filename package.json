@@ -92,14 +92,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "lint-staged && yarn test --coverage"
     }
   },
   "lint-staged": {
     "src/**/*.{ts, tsx, css}": [
-      "yarn lint",
-      "yarn format",
-      "yarn test"
+      "yarn lint --fix",
+      "yarn format"
     ]
   }
 }
