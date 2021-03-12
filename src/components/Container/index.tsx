@@ -10,6 +10,7 @@ export type ContainerProps = LayoutProps &
 
 export const Container = styled.div<ContainerProps>(
   props => ({
+    display: 'block',
     Height: '100%',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
