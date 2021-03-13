@@ -8,7 +8,6 @@ export const Divider = styled.hr<DividerProps>(
   {
     position: 'relative',
     width: '100%',
-    top: '36%',
     border: 'none',
     borderTop: '1px dashed #dddde3',
     margin: '0',

@@ -1,5 +1,5 @@
 // External
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import dayjs from 'dayjs'
 
 // Components
@@ -12,8 +12,6 @@ import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-import { Card } from 'src/components/Card'
-
 
 interface TimerComponentProps {
   auction: Auction
@@ -52,8 +50,6 @@ export const timeFrame = (unixSeconds: number) => {
 }
 
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
-
-
   const localTimeStamp = dayjs(Date.now()).unix()
 
   const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endBlock))

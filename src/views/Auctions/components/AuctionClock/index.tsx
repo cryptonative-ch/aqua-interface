@@ -31,27 +31,23 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   const [isMobile, setMobile] = useState(window.innerWidth < 768)
 
   const updateMedia = () => {
-    setMobile(window.innerWidth < 768);
-  };
-
+    setMobile(window.innerWidth < 768)
+  }
 
   useEffect(() => {
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-  });
-
+    window.addEventListener('resize', updateMedia)
+    return () => window.removeEventListener('resize', updateMedia)
+  })
 
   const color = '#304ffe'
 
   if (isAuctionClosed(auction)) {
     return (
       <Flex flexDirection="row" justifyContent="space-between">
-
         <CardText color="grey">Closed</CardText>
         <Flex>
           <Timer auction={auction} />
         </Flex>
-
       </Flex>
     )
   }
@@ -59,25 +55,23 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   if (isAuctionUpcoming(auction)) {
     return (
       <>
-        {
-          isMobile ?
-            <Flex flexDirection='column' justifyContent="space-evenly">
-              <Flex flexDirection="row" justifyContent="space-between">
-                <CardText color='grey'>Starts</CardText>
-                <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
-              </Flex>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <CardText color='grey'>Ends</CardText>
-                <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
-              </Flex>
-
-            </Flex>
-            :
+        {isMobile ? (
+          <Flex flexDirection="column" justifyContent="space-between">
             <Flex flexDirection="row" justifyContent="space-between">
-              <CardText color="grey">Timeframe</CardText>
-              <Timer auction={auction} />
+              <CardText color="grey">Starts</CardText>
+              <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
             </Flex>
-        }
+            <Flex flexDirection="row" justifyContent="space-between">
+              <CardText color="grey">Ends</CardText>
+              <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex flexDirection="row" justifyContent="space-between">
+            <CardText color="grey">Timeframe</CardText>
+            <Timer auction={auction} />
+          </Flex>
+        )}
       </>
     )
   }
@@ -85,9 +79,9 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <CardText color="grey">Time Remaining</CardText>
-      <Flex>
+      <Flex justifyContent="center">
         <Timer auction={auction} />
-        <svg height="16" width="16" style={{ marginLeft: '8px' }}>
+        <svg height="16" width="16" style={{ marginLeft: '8px', marginTop: '8px' }}>
           <circle r="8" cx="8" cy="8" fill={color} fillOpacity="0.1" transform="rotate(-90) translate(-16)" />
           <circle
             r="4"

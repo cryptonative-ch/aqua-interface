@@ -7,17 +7,11 @@ export const Card = styled.div<CardProps>(
   props => ({
     padding: props.theme.space[0],
     backgroundColor: 'white',
-    height: '247px',
-    width: '478px',
+    maxWidth: '478px',
+    minWidth: ' 359px',
     borderRadius: '0px',
+    display: 'block',
   }),
-  props =>
-    `
-    @media (max-width: ${props.theme.breakpoints[2]}) {
-      height: 213px;
-      width: 359px;
-    }
-  `,
   space,
   layout,
   flexbox,

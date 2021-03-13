@@ -28,9 +28,8 @@ interface AuctionSummaryProps {
 export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
   return (
     <Card>
-      <Divider />
       <CardBody>
-        <Flex justifyContent="space-between" alignItems="center" margin="0 0 0 0">
+        <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <Flex width="100%" alignItems="center">
             <TokenIconFigure>
               <Icon src={auction.tokenIcon} alt={auction.tokenName} />
@@ -44,6 +43,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
             <BadgeCard saleType="presale" />
           </Flex>
         </Flex>
+        <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">Auction Type</CardText>

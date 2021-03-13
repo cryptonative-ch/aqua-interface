@@ -9,7 +9,7 @@ export type ThemeGrid = {
 
 export const grid: ThemeGrid = {
   display: 'grid',
-  gridTemplateColumns: [`478px 478px`, `213px`],
+  gridTemplateColumns: [`478px 478px`, `478px`],
   gap: [`24px 24px`, `16px`],
 }
 

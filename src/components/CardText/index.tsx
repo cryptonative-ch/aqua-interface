@@ -15,7 +15,7 @@ export const CardText = styled.p<CardTextProps>(
     letterSpacing: '0',
     color: props.color === 'grey' ? '#7B7F93' : '#000629',
     height: props.fontSize === 'title' ? '24px' : '19px',
-    margin: '0',
+    margin: props.fontSize === 'title' ? '0' : '8px 0px',
     width: props.fontSize === 'title' ? '100px' : 'auto',
   }),
   props =>

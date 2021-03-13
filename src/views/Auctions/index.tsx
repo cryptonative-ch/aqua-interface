@@ -45,7 +45,6 @@ const AuctionListSection = styled.div(
   }),
   props => `
     @media (max-width: ${props.theme.breakpoints[2]}) {
-      max-width: 213px;
       grid-template-columns: ${props.theme.grid.gridTemplateColumns[1]};
       row-gap: ${props.theme.grid.gap[1]};
     })`
