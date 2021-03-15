@@ -7,6 +7,10 @@ import { Auction } from 'src/interfaces/Auction'
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
 
+//theme
+
+import { theme } from "src/styles/theme";
+
 export const getDefaults = (): Auction => ({
   id: '0x141',
   startBlock: 7656756757,

@@ -1,7 +1,7 @@
 // Externals
 
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
@@ -10,6 +10,34 @@ import { secondsTohms, timeFrame, Timer } from './index'
 // default
 
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
+
+
+// theme
+
+import { theme } from 'src/styles/theme'
+import { ThemeProvider } from 'styled-components'
+
+// interfaces
+import { Auction } from 'src/interfaces/Auction'
+
+//clean up
+
+afterEach(cleanup)
+
+
+
+//wrapper
+
+const wrapper = (auction: Auction) => {
+  return render(
+    < ThemeProvider theme={theme} >
+      <Timer auction={auction} />
+    </ThemeProvider>
+  )
+}
+
+
+// tests
 
 describe('seconds to HMS function', () => {
   describe('convert seconds into different formats', () => {
@@ -45,7 +73,7 @@ describe('Timer', () => {
       endBlock: addHours(dateUTC, 0.05).unix(),
     })
 
-    const { getByTestId } = render(<Timer auction={auction} />)
+    const { getByTestId } = wrapper(auction)
 
     expect(await getByTestId('open')).toHaveTextContent('3m')
   }),
@@ -55,7 +83,7 @@ describe('Timer', () => {
         endBlock: addHours(dateUTC, 114).unix(),
       })
 
-      const { getByText } = render(<Timer auction={auction} />)
+      const { getByText } = wrapper(auction)
       expect(getByText('to')).toBeInTheDocument()
     }),
     test('when auction is closed, it should return the correct display', async () => {
@@ -64,7 +92,7 @@ describe('Timer', () => {
         endBlock: addHours(dateUTC, -14).unix(),
       })
 
-      const { getByTestId } = render(<Timer auction={auction} />)
+      const { getByTestId } = wrapper(auction)
       expect(await getByTestId('closed')).toHaveTextContent('GMT')
     })
 })

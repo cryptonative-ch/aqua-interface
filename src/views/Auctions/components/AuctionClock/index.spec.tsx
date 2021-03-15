@@ -8,11 +8,31 @@ import { AuctionClock, timerPercentage } from './index'
 // defaults
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
 
+
+// theme
+
+import { theme } from 'src/styles/theme'
+import { ThemeProvider } from 'styled-components'
+
+// interfaces
+import { Auction } from 'src/interfaces/Auction'
+
 //clean up
 
 afterEach(cleanup)
 
 // tests
+
+//wrapper
+
+const wrapper = (auction: Auction) => {
+  return render(
+    < ThemeProvider theme={theme} >
+      <AuctionClock auction={auction} />
+    </ThemeProvider>
+  )
+}
+
 
 describe('Testing AuctionClock', () => {
   test('should display Timeframe when auction is upcoming', () => {
@@ -21,7 +41,7 @@ describe('Testing AuctionClock', () => {
       endBlock: 1678036442,
     })
 
-    const { getByText } = render(<AuctionClock auction={auction} />)
+    const { getByText } = wrapper(auction)
     expect(getByText('Timeframe')).toBeInTheDocument()
   }),
     test('should display closed when auction is Closed', () => {
@@ -30,7 +50,7 @@ describe('Testing AuctionClock', () => {
         endBlock: 1551806042,
       })
 
-      const { getByText } = render(<AuctionClock auction={auction} />)
+      const { getByText } = wrapper(auction)
       expect(getByText('Closed')).toBeInTheDocument()
     }),
     test('should display Time remaining when auction is open', () => {
@@ -38,7 +58,7 @@ describe('Testing AuctionClock', () => {
         startBlock: 1551806042,
         endBlock: 1646500442,
       })
-      const { getByText } = render(<AuctionClock auction={auction} />)
+      const { getByText } = wrapper(auction)
       expect(getByText('Time Remaining')).toBeInTheDocument()
     }),
     test('should display SVG circle', () => {
@@ -46,7 +66,7 @@ describe('Testing AuctionClock', () => {
         startBlock: addHours(dateUTC, -1).unix(),
         endBlock: addHours(dateUTC, 24).unix(),
       })
-      const { asFragment } = render(<AuctionClock auction={auction} />)
+      const { asFragment } = wrapper(auction)
       expect(asFragment()).toMatchSnapshot()
     }),
     test('should calculate percentage of slice according to timer', () => {

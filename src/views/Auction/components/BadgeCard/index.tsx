@@ -4,7 +4,7 @@ import React from 'react'
 //Components
 import { Badge, Content } from 'src/components/Badge'
 
-interface BadgeCardProps {
+export interface BadgeCardProps {
   saleType: 'private' | 'presale'
 }
 

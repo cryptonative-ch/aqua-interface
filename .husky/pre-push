@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn lint-staged && yarn test --coverage
+yarn lint-staged &&  CI=true yarn test --coverage
