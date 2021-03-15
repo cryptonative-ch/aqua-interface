@@ -50,7 +50,7 @@ const Title = styled.p({
   fontStyle: 'normal',
   fontWeight: 600,
   lineHeight: '44px',
-  letterSpacing: '0em',
+  letterSpacing: '0',
   textAlign: 'left',
   color: '#000629',
   marginBottom: '32px',
@@ -109,21 +109,21 @@ export function AuctionsView() {
           <AuctionListSection>
             {AuctionShow === AuctionStatus.UPCOMING
               ? auctions
-                  .filter(auction => isAuctionUpcoming(auction))
-                  .map(auction => (
-                    <AuctionSummaryWrapper to={`/ auctions / ${auction.id}`} key={auction.id}>
-                      <AuctionSummaryCard auction={auction} />
-                    </AuctionSummaryWrapper>
-                  ))
+                .filter(auction => isAuctionUpcoming(auction))
+                .map(auction => (
+                  <AuctionSummaryWrapper to={`/ auctions / ${auction.id}`} key={auction.id}>
+                    <AuctionSummaryCard auction={auction} />
+                  </AuctionSummaryWrapper>
+                ))
               : AuctionShow === AuctionStatus.CLOSED
-              ? auctions
+                ? auctions
                   .filter(auction => isAuctionClosed(auction))
                   .map(auction => (
                     <AuctionSummaryWrapper to={`/ auctions / ${auction.id} `} key={auction.id}>
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))
-              : auctions
+                : auctions
                   .filter(auction => isAuctionOpen(auction))
                   .map(auction => (
                     <AuctionSummaryWrapper to={`/ auctions / ${auction.id} `} key={auction.id}>

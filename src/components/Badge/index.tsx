@@ -25,7 +25,7 @@ export const Content = styled.h3({
   fontSize: '16px',
   fontStyle: 'normal',
   fontWeight: 500,
-  letterSpacing: '0em',
+  letterSpacing: '0',
   textAlign: 'center',
   color: 'white',
   justifyContent: 'center',

@@ -35,7 +35,7 @@ export const TextBadge = styled.p<TextBadgeProps>(props => ({
   fontStyle: 'normal',
   fontWeight: 500,
   lineHeight: '17px',
-  letterSpacing: '0em',
+  letterSpacing: '0',
   textAlign: props.textAlign === 'right' ? 'right' : 'center',
   color: props.color === 'active' ? '#304ffe' : '#7b7f93',
   cursor: 'pointer',
