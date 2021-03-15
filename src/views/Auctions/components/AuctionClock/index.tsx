@@ -28,10 +28,10 @@ export const timerPercentage = (auction: Auction) => {
 }
 
 export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
-  const [isMobile, setMobile] = useState(window.innerWidth < 768)
+  const [isMobile, setMobile] = useState(window.innerWidth < 770)
 
   const updateMedia = () => {
-    setMobile(window.innerWidth < 768)
+    setMobile(window.innerWidth < 770)
   }
 
   useEffect(() => {

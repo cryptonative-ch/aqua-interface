@@ -14,6 +14,7 @@ export const CardBody = styled.div<CardBodyProps>(
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100%',
+    width: '100%',
     padding: '32px 24px 8px 24px',
     borderBottom: '1px solid #000',
     '&:last-child': {
