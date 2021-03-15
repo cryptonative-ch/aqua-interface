@@ -5,33 +5,26 @@ import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { BadgeCard, BadgeCardProps } from './index'
-
+import { BadgeCard } from './index'
 
 // theme
 
 import { theme } from 'src/styles/theme'
 import { ThemeProvider } from 'styled-components'
 
-// interfaces
-import { Auction } from 'src/interfaces/Auction'
-
 //clean up
 
 afterEach(cleanup)
-
-
 
 //wrapper
 
 const wrapper = (saletype: 'private' | 'presale') => {
   return render(
-    < ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
       <BadgeCard saleType={saletype} />
     </ThemeProvider>
   )
 }
-
 
 describe('BadgeCard', () => {
   test('should display presale when presale props is input', () => {

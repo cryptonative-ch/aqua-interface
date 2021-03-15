@@ -10,7 +10,6 @@ import { AuctionFinalPrice } from './index'
 // utils
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
 
-
 // theme
 
 import { theme } from 'src/styles/theme'
@@ -29,12 +28,11 @@ afterEach(cleanup)
 
 const wrapper = (auction: Auction) => {
   return render(
-    < ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
       <AuctionFinalPrice auction={auction} />
     </ThemeProvider>
   )
 }
-
 
 describe('testing AuctionFinalPrice', () => {
   test('should display 0 is auction is upcoming', () => {

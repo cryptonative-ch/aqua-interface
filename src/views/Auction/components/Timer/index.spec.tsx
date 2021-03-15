@@ -11,7 +11,6 @@ import { secondsTohms, timeFrame, Timer } from './index'
 
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
 
-
 // theme
 
 import { theme } from 'src/styles/theme'
@@ -24,18 +23,15 @@ import { Auction } from 'src/interfaces/Auction'
 
 afterEach(cleanup)
 
-
-
 //wrapper
 
 const wrapper = (auction: Auction) => {
   return render(
-    < ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
       <Timer auction={auction} />
     </ThemeProvider>
   )
 }
-
 
 // tests
 

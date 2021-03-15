@@ -20,22 +20,17 @@ import { Auction } from 'src/interfaces/Auction'
 
 afterEach(cleanup)
 
-
-
 //wrapper
 
 const wrapper = (auction: Auction) => {
   return render(
-    < ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
       <AuctionAmount auction={auction} />
     </ThemeProvider>
   )
 }
 
-
 // tests
-
-
 
 const auction = getAuctionDefault({ tokenAmount: 5000 })
 

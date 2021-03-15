@@ -8,9 +8,6 @@ import { create } from 'react-test-renderer'
 // Components
 import { AuctionSummaryCard } from './index'
 
-// Interface
-import { Auction } from 'src/interfaces/Auction'
-
 // Theme
 import { theme } from 'src/styles/theme'
 import { ThemeProvider } from 'styled-components'

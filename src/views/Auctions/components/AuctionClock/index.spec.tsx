@@ -8,7 +8,6 @@ import { AuctionClock, timerPercentage } from './index'
 // defaults
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
 
-
 // theme
 
 import { theme } from 'src/styles/theme'
@@ -27,12 +26,11 @@ afterEach(cleanup)
 
 const wrapper = (auction: Auction) => {
   return render(
-    < ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
       <AuctionClock auction={auction} />
     </ThemeProvider>
   )
 }
-
 
 describe('Testing AuctionClock', () => {
   test('should display Timeframe when auction is upcoming', () => {
