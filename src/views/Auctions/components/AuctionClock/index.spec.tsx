@@ -32,6 +32,12 @@ const wrapper = (auction: Auction) => {
   )
 }
 
+const resizeWindow = (x: number, y: number) => {
+  window.innerWidth = x;
+  window.innerHeight = y;
+  window.dispatchEvent(new Event('resize'));
+}
+
 describe('Testing AuctionClock', () => {
   test('should display Timeframe when auction is upcoming', () => {
     const auction = getAuctionDefault({
@@ -73,5 +79,35 @@ describe('Testing AuctionClock', () => {
         endBlock: addHours(dateUTC, 24).unix(),
       })
       expect(timerPercentage(auction)).toBe(4.0000000000000036)
+    }),
+
+    test('should display Starts when on mobile viewport', () => {
+
+      resizeWindow(500, 1000);
+
+      const auction = getAuctionDefault({
+        startBlock: 1646500442,
+        endBlock: 1678036442,
+      })
+
+      const { getByText } = wrapper(auction)
+      expect(getByText('Starts')).toBeInTheDocument()
+
+
+    }),
+    test('should display Ends when on mobile viewport', () => {
+
+      resizeWindow(500, 1000);
+
+      const auction = getAuctionDefault({
+        startBlock: 1646500442,
+        endBlock: 1678036442,
+      })
+
+      const { getByText } = wrapper(auction)
+      expect(getByText('Ends')).toBeInTheDocument()
+
+
     })
+
 })
