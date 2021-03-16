@@ -187,7 +187,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
           </FormContainer>
           <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>
         </Flex>
-      </FormGroup >
+      </FormGroup>
       <Button
         disabled={isDisabled}
         data-testid="submit-button"
@@ -206,6 +206,6 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
       >
         {t('buttons.placeBid')}
       </Button>
-    </form >
+    </form>
   )
 }

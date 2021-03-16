@@ -93,7 +93,7 @@ interface SelfBidListProps {
   showGraph: boolean
 }
 
-export function SelfBidList({ }: SelfBidListProps) {
+export function SelfBidList({}: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
 
   const toggleBidMenu = (index: number) => {
