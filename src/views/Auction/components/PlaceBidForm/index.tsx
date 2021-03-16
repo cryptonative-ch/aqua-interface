@@ -15,62 +15,6 @@ import { Auction } from 'src/interfaces/Auction'
 import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
 
-<<<<<<< HEAD:src/views/Auction/components/PlaceBidForm.tsx
-const FormLabel = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 48px;
-  color: #000629;
-  margin-right: 24px;
-  width: 80px;
-`
-
-const FormDescription = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 140%;
-  color: #7b7f93;
-  margin-top: 8px;
-`
-
-const FormContainer = styled.div`
-  height: 48px;
-  width: 100%;
-  background: #f2f2f2;
-  border: none;
-  display: flex;
-`
-
-const FormText = styled.div`
-  position: absolute;
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #7b7f93;
-  font-size: 14px;
-  line-height: 48px;
-  margin: 0 16px;
-  user-select: none;
-`
-
-const MaxButton = styled.div`
-  border: 1px solid #dddde3;
-  padding: 0 4px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  text-align: center;
-  color: #7b7f93;
-  position: absolute;
-  right: 16px;
-  top: 13px;
-  cursor: pointer;
-  z-index: 200;
-`
-=======
 const FormLabel = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
@@ -125,7 +69,6 @@ const MaxButton = styled.div({
   cursor: 'pointer',
   zIndex: 200,
 })
->>>>>>> main:src/views/Auction/components/PlaceBidForm/index.tsx
 
 const FormInput = styled.input({
   flex: 1,
@@ -216,14 +159,9 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <FormLabel>Token Price</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-<<<<<<< HEAD:src/views/Auction/components/PlaceBidForm.tsx
-            <FormText>{`${tokenAmount.toString()} DAI`}</FormText>
-            <FormInput
-=======
             <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
             <FormInput
               aria-label="tokenAmount"
->>>>>>> main:src/views/Auction/components/PlaceBidForm/index.tsx
               id="tokenAmount"
               type="number"
               value={Number(tokenAmount).toString()}
@@ -237,14 +175,9 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-<<<<<<< HEAD:src/views/Auction/components/PlaceBidForm.tsx
-            <FormText>{`${tokenPrice.toString()} DAI`}</FormText>
-            <FormInput
-=======
             <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
             <FormInput
               aria-label="tokenPrice"
->>>>>>> main:src/views/Auction/components/PlaceBidForm/index.tsx
               id="tokenPrice"
               type="number"
               value={Number(tokenPrice).toString()}
@@ -254,7 +187,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
           </FormContainer>
           <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>
         </Flex>
-      </FormGroup>
+      </FormGroup >
       <Button
         disabled={isDisabled}
         data-testid="submit-button"
@@ -273,6 +206,6 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
       >
         {t('buttons.placeBid')}
       </Button>
-    </form>
+    </form >
   )
 }

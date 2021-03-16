@@ -62,20 +62,6 @@ const ModalContainer = styled.div<ModalContainerProps>(props => ({
   zIndex: 200,
 }))
 
-<<<<<<< HEAD:src/views/Auction/components/SelfBidList.tsx
-const ModalMenu = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  color: #7b7f93;
-  padding: 8px 0;
-  cursor: pointer;
-  &:hover {
-    color: #304ffe;
-  }
-`
-=======
 const ModalMenu = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
@@ -88,7 +74,6 @@ const ModalMenu = styled.div({
     color: '#304FFE',
   },
 })
->>>>>>> main:src/views/Auction/components/SelfBidList/index.tsx
 
 type IconImgProps = SpaceProps & {
   isButton?: boolean
@@ -108,7 +93,7 @@ interface SelfBidListProps {
   showGraph: boolean
 }
 
-export function SelfBidList({}: SelfBidListProps) {
+export function SelfBidList({ }: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
 
   const toggleBidMenu = (index: number) => {
