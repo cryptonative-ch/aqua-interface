@@ -1,10 +1,8 @@
 // Externals
-import {  LayoutProps, PositionProps, BorderProps } from 'styled-system'
+import { LayoutProps, PositionProps, BorderProps } from 'styled-system'
 import styled from 'styled-components'
 
-
 export type DividerProps = LayoutProps & PositionProps & BorderProps
-
 
 export const Divider = styled.hr<DividerProps>({
   position: 'relative',

@@ -17,23 +17,23 @@ const HeaderTitle = styled.div<HeaderTitleProps>(props => ({
   color: props.color,
 }))
 
-const HeaderDescription = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  fontSize: '24px',
-  lineHeight: '29px',
-  marginTop: '7px',
-  fontFeatureSettings: 'ss01 on',
-  color: '#000629',
-})
+const HeaderDescription = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 29px;
+  margin-top: 7px;
+  font-feature-settings: 'ss01' on;
+  color: #000629;
+`
 
-interface HeaderItemProps {
+interface InputFormProps {
   title: string
   description: string
   color: string
 }
 
-export function HeaderItem({ title, description, color }: HeaderItemProps) {
+export function InputForm({ title, description, color }: InputFormProps) {
   return (
     <Flex flexDirection="column" marginRight="100px">
       <HeaderTitle color={color}>{title}</HeaderTitle>
@@ -42,6 +42,6 @@ export function HeaderItem({ title, description, color }: HeaderItemProps) {
   )
 }
 
-HeaderItem.defaultProps = {
+InputForm.defaultProps = {
   color: '#7B7F93',
 }

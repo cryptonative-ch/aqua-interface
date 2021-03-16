@@ -3,10 +3,6 @@ import styled from 'styled-components'
 
 export type CardProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
 
-/**
- *
- * @todo allow change in height for personal bids
- */
 export const Card = styled.div<CardProps>(
   props => ({
     padding: props.theme.space[0],

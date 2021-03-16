@@ -1,4 +1,15 @@
-import { space, layout, flexbox, SpaceProps, LayoutProps, FlexProps, textAlign, TextAlignProps, BorderProps, border } from 'styled-system'
+import {
+  space,
+  layout,
+  flexbox,
+  SpaceProps,
+  LayoutProps,
+  FlexProps,
+  textAlign,
+  TextAlignProps,
+  BorderProps,
+  border,
+} from 'styled-system'
 import styled from 'styled-components'
 
 export type CardProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps & BorderProps

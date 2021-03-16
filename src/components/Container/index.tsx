@@ -1,14 +1,12 @@
 import { layout, LayoutProps, PositionProps } from 'styled-system'
 import styled from 'styled-components'
 
-
-export type ContainerProps = LayoutProps & PositionProps & {
-  fluid?: boolean
-  inner?: boolean
-  noPadding?: boolean
-}
-
-
+export type ContainerProps = LayoutProps &
+  PositionProps & {
+    fluid?: boolean
+    inner?: boolean
+    noPadding?: boolean
+  }
 
 export const Container = styled.div<ContainerProps>(
   props => ({
@@ -22,7 +20,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.inner ? props.fluid ? '90vw' : '980px' : '100%'};
+      max-width: ${props.inner ? (props.fluid ? '90vw' : '980px') : '100%'};
     }
   `,
   layout

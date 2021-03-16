@@ -11,7 +11,7 @@ import {
   TextAlignProps,
   textAlign,
   borderTop,
-  BorderTopProps
+  BorderTopProps,
 } from 'styled-system'
 
 export type FlexProps = SpaceProps & LayoutProps & FlexBaseProps & FlexboxProps & TextAlignProps & BorderTopProps

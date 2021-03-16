@@ -14,8 +14,8 @@ describe('HeaderControl', () => {
     expect(getByText('View Live Graph')).toBeInTheDocument()
     expect(getByTestId('logo-img')).toBeInTheDocument()
   }),
-  test('should display graph image', () => {
-    const { getByTestId } = render(<HeaderControl status="active" />)
-    expect(getByTestId('graph-img')).toBeInTheDocument()
-  })
+    test('should display graph image', () => {
+      const { getByTestId } = render(<HeaderControl status="active" />)
+      expect(getByTestId('graph-img')).toBeInTheDocument()
+    })
 })

@@ -21,8 +21,7 @@ import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { AuctionNavBar } from './components/AuctionNavBar'
-import { AbsoluteContainer } from "src/components/AbsoluteContainer";
-
+import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
@@ -31,34 +30,32 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
-
 const AuctionSummaryWrapper = styled(NavLink)`
-  display: 'block'
+  display: 'block';
 `
 
-const AuctionListSection = styled.div(
-  props => ({
-    margin: '0',
-    display: props.theme.grid.display,
-    maxWidth: '1000px',
-    gridTemplateColumns: props.theme.grid.gridTemplateColumns,
-    gap: props.theme.grid.gap,
-  })
-)
+const AuctionListSection = styled.div(props => ({
+  margin: '0',
+  display: props.theme.grid.display,
+  maxWidth: '1000px',
+  gridTemplateColumns: props.theme.grid.gridTemplateColumns,
+  gap: props.theme.grid.gap,
+}))
 
-const Title = styled.p`
-  height: 44px;
-  width: 210px;
-  font-family: Inter;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 44px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #000629;
-  margin-bottom: 32px;
-`
+const Title = styled.p({
+  height: '44px',
+  width: '210px',
+  fontFamily: 'Inter',
+  fontSize: '36px',
+  fontStyle: 'normal',
+  fontWeight: 600,
+  lineHeight: '44px',
+  letterSpacing: '0',
+  textAlign: 'left',
+  color: '#000629',
+  marginBottom: '32px',
+})
+
 export enum AuctionStatus {
   LIVE = 'Live',
   UPCOMING = 'upcoming',
@@ -112,24 +109,24 @@ export function AuctionsView() {
           <AuctionListSection>
             {AuctionShow === AuctionStatus.UPCOMING
               ? auctions
-                  .filter(auction => isAuctionUpcoming(auction))
-                  .map(auction => (
-                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                      <AuctionSummaryCard auction={auction} />
-                    </AuctionSummaryWrapper>
-                  ))
+                .filter(auction => isAuctionUpcoming(auction))
+                .map(auction => (
+                  <AuctionSummaryWrapper to={`/ auctions / ${auction.id}`} key={auction.id}>
+                    <AuctionSummaryCard auction={auction} />
+                  </AuctionSummaryWrapper>
+                ))
               : AuctionShow === AuctionStatus.CLOSED
-              ? auctions
+                ? auctions
                   .filter(auction => isAuctionClosed(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+                    <AuctionSummaryWrapper to={`/ auctions / ${auction.id} `} key={auction.id}>
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))
-              : auctions
+                : auctions
                   .filter(auction => isAuctionOpen(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+                    <AuctionSummaryWrapper to={`/ auctions / ${auction.id} `} key={auction.id}>
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))}
