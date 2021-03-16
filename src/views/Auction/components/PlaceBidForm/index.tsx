@@ -1,6 +1,6 @@
 // External
 import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 // Components
@@ -15,6 +15,7 @@ import { Auction } from 'src/interfaces/Auction'
 import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
 
+<<<<<<< HEAD:src/views/Auction/components/PlaceBidForm.tsx
 const FormLabel = styled.div`
   font-style: normal;
   font-weight: 500;
@@ -69,6 +70,62 @@ const MaxButton = styled.div`
   cursor: pointer;
   z-index: 200;
 `
+=======
+const FormLabel = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '48px',
+  marginRight: '24px',
+  width: '80px',
+  color: '#000629',
+})
+
+const FormDescription = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  lineHeight: '17px',
+  marginTop: '8px',
+  color: '#7B7F93',
+})
+
+const FormContainer = styled.div({
+  height: '48px',
+  width: '100%',
+  background: '#F2F2F2',
+  border: 'none',
+  display: 'flex',
+})
+
+const FormText = styled.div({
+  position: 'absolute',
+  flex: 1,
+  background: 'transparent',
+  border: 'none',
+  color: '#7B7F93',
+  fontSize: '14px',
+  lineHeight: '48px',
+  margin: '0 16px',
+  userSelect: 'none',
+})
+
+const MaxButton = styled.div({
+  border: '1px solid #DDDDE3',
+  padding: '0 4px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '21px',
+  textAlign: 'center',
+  color: '#7B7F93',
+  position: 'absolute',
+  right: '16px',
+  top: '13px',
+  cursor: 'pointer',
+  zIndex: 200,
+})
+>>>>>>> main:src/views/Auction/components/PlaceBidForm/index.tsx
 
 const FormInput = styled.input({
   flex: 1,
@@ -102,6 +159,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
+  const theme = useTheme()
   const [t] = useTranslation()
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
@@ -154,12 +212,18 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
 
   return (
     <form id="createBidForm" onSubmit={onFormSubmit}>
-      <FormGroup>
+      <FormGroup theme={theme}>
         <FormLabel>Token Price</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
+<<<<<<< HEAD:src/views/Auction/components/PlaceBidForm.tsx
             <FormText>{`${tokenAmount.toString()} DAI`}</FormText>
             <FormInput
+=======
+            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+            <FormInput
+              aria-label="tokenAmount"
+>>>>>>> main:src/views/Auction/components/PlaceBidForm/index.tsx
               id="tokenAmount"
               type="number"
               value={Number(tokenAmount).toString()}
@@ -169,12 +233,18 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
           <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
       </FormGroup>
-      <FormGroup>
+      <FormGroup theme={theme}>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
+<<<<<<< HEAD:src/views/Auction/components/PlaceBidForm.tsx
             <FormText>{`${tokenPrice.toString()} DAI`}</FormText>
             <FormInput
+=======
+            <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
+            <FormInput
+              aria-label="tokenPrice"
+>>>>>>> main:src/views/Auction/components/PlaceBidForm/index.tsx
               id="tokenPrice"
               type="number"
               value={Number(tokenPrice).toString()}
@@ -187,6 +257,7 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
       </FormGroup>
       <Button
         disabled={isDisabled}
+        data-testid="submit-button"
         type="submit"
         title={t('buttons.placeBid')}
         formButton

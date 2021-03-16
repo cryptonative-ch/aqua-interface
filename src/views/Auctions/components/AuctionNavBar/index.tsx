@@ -13,7 +13,11 @@ export const AuctionNavBar: React.FC = () => {
   if (AuctionShow === AuctionStatus.UPCOMING) {
     return (
       <BackgroundBadge>
-        <TextBadge textAlign="left" onClick={() => setAuctionShow(AuctionStatus.LIVE)}>
+        <TextBadge
+          data-testid="upcoming live click"
+          textAlign="left"
+          onClick={() => setAuctionShow(AuctionStatus.LIVE)}
+        >
           Live
         </TextBadge>
         <ActiveBadge>
@@ -21,7 +25,11 @@ export const AuctionNavBar: React.FC = () => {
             Upcoming
           </TextBadge>
         </ActiveBadge>
-        <TextBadge textAlign="right" onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>
+        <TextBadge
+          data-testid="upcoming close click"
+          textAlign="right"
+          onClick={() => setAuctionShow(AuctionStatus.CLOSED)}
+        >
           Closed
         </TextBadge>
       </BackgroundBadge>
@@ -31,10 +39,12 @@ export const AuctionNavBar: React.FC = () => {
   if (AuctionShow === AuctionStatus.CLOSED) {
     return (
       <BackgroundBadge>
-        <TextBadge textAlign="left" onClick={() => setAuctionShow(AuctionStatus.LIVE)}>
+        <TextBadge data-testid="closed live click" textAlign="left" onClick={() => setAuctionShow(AuctionStatus.LIVE)}>
           Live
         </TextBadge>
-        <TextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</TextBadge>
+        <TextBadge data-testid="closedupcomingclick" onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>
+          Upcoming
+        </TextBadge>
         <ActiveBadge>
           <TextBadge color="active" data-testid="Closed">
             Closed
@@ -50,8 +60,10 @@ export const AuctionNavBar: React.FC = () => {
           Live
         </TextBadge>
       </ActiveBadge>
-      <TextBadge onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>Upcoming</TextBadge>
-      <TextBadge textAlign="right" onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>
+      <TextBadge data-testid="live upcoming click" onClick={() => setAuctionShow(AuctionStatus.UPCOMING)}>
+        Upcoming
+      </TextBadge>
+      <TextBadge data-testid="live closed click" textAlign="right" onClick={() => setAuctionShow(AuctionStatus.CLOSED)}>
         Closed
       </TextBadge>
     </BackgroundBadge>
