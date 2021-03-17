@@ -105,7 +105,9 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
       <TokenIconContainer src={auction.tokenIcon} />
       <HeaderText>{`${auction.tokenName} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>
-      <TimeText data-testid="format_time">{format_time}</TimeText>
+      {isAuctionOpen(auction) && (
+        <TimeText data-testid="format_time">{format_time}</TimeText>
+      )}
     </HeaderContainer>
   )
 }

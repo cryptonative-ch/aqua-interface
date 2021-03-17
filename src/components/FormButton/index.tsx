@@ -18,6 +18,7 @@ import {
   background,
   color,
   ColorProps,
+  SpaceProps
 } from 'styled-system'
 
 export type ButtonProps = SizeProps &
@@ -27,42 +28,32 @@ export type ButtonProps = SizeProps &
   FontSizeProps &
   BackgroundProps &
   ColorProps &
-  FontWeightProps & {
-    variant?: string
-    rounded?: boolean
-    padding?: boolean
-    border?: boolean
-    margin?: boolean
-    formButton?: boolean
-  }
+  FontWeightProps &
+  SpaceProps
 
-export const Button = styled.button<ButtonProps>(
-  props => ({
+export const FormButton = styled.button<ButtonProps>(
+  () => ({
     appearance: 'none',
-    padding: props.padding ? '0px' : '12px 16px',
-    margin: props.formButton ? '8px 0 0 0' : props.margin ? '5px' : 'auto',
     textAlign: 'center',
     display: 'inline-block',
     verticalAlign: 'middle',
     userSelect: 'none',
     backgroundColor: 'transparent',
-    border: props.border || props.formButton ? 'none' : `1px solid ${props.theme.colors.primary}`,
-    // @TODO: Move radis to Theme
-    borderRadius: props.formButton ? 0 : props.rounded ? '32px' : props.theme.radii.base,
     fontSize: '1rem',
     fontWeight: 400,
     fontFamily: 'inherit',
     lineHeight: 1.5,
-    outline: props.formButton ? 'none' : 'unset',
     color: 'black',
+    border: 'none',
+    outline: 'none',
     ':disabled': {
-      opacity: props.formButton ? 1 : 0.5,
+      opacity: 1
     },
     ':hover': {
-      textDecoration: 'underline',
+      textDecoration: 'none',
     },
     ':focus': {
-      outline: props.formButton ? 'none' : 'unset',
+      outline: 'none',
     },
     textDecoration: 'none'
   }),
@@ -83,11 +74,5 @@ export const Button = styled.button<ButtonProps>(
       },
     },
   }),
-  background
+  background,
 )
-
-Button.defaultProps = {
-  rounded: false,
-  formButton: false,
-  variant: 'primary',
-}

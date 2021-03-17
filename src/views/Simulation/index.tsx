@@ -229,7 +229,7 @@ export function SimulationView() {
                 </CardBody>
                 <SelfBidList auction={{ ...auction, bids: bids }} clearingPrice={clearingPrice}/>
               </Card>
-              <TokenFooter />
+              <TokenFooter auction={auction} />
             </Flex>
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
