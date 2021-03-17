@@ -10,15 +10,6 @@ type HeaderTitleProps = TypographyProps & {
   color: string
 }
 
-<<<<<<< HEAD
-const HeaderTitle = styled.div<HeaderTitleProps>(props => ({
-  fontStyle: 'normal',
-  fontWeight: 500,
-  fontSize: '16px',
-  lineHeight: '19px',
-  color: props.color,
-}))
-=======
 const HeaderTitle = styled.div<HeaderTitleProps>(
   props => ({
     fontStyle: 'normal',
@@ -29,7 +20,6 @@ const HeaderTitle = styled.div<HeaderTitleProps>(
   }),
   typography
 )
->>>>>>> - Connect with Real Data
 
 const HeaderDescription = styled.div({
   fontStyle: 'normal',

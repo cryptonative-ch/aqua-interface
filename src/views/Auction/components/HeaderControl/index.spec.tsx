@@ -10,8 +10,8 @@ import { HeaderControl } from './index'
 describe('HeaderControl', () => {
   test('should display texts and logo img', () => {
     const { getByText, getByTestId } = render(<HeaderControl status="closed" />)
-    expect(getByText('How is the Current Price (CP) calculated?')).toBeInTheDocument()
-    expect(getByText('View Live Graph')).toBeInTheDocument()
+    expect(getByText('Missed out on the sale? You can get ERT on')).toBeInTheDocument()
+    expect(getByText('Go to Swapr')).toBeInTheDocument()
     expect(getByTestId('logo-img')).toBeInTheDocument()
   }),
     test('should display graph image', () => {

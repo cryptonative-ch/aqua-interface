@@ -54,6 +54,6 @@ describe('Testing AuctionClock', () => {
         startBlock: addHours(dateUTC, -1).unix(),
         endBlock: addHours(dateUTC, 24).unix(),
       })
-      expect(timerPercentage(auction)).toBe(4.0000000000000036)
+      expect(timerPercentage(auction)).toBe(-19.999999999999996)
     })
 })

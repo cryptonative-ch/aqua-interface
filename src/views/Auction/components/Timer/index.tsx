@@ -59,7 +59,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   if (isAuctionUpcoming(auction)) {
     return (
       <Flex>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
+        <CardText data-testid="open">{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
         <CardText color="grey">&nbsp;to&nbsp;</CardText>
         <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
       </Flex>
