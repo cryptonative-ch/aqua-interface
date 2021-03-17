@@ -10,7 +10,6 @@ export type ContainerProps = LayoutProps &
 
 export const Container = styled.div<ContainerProps>(
   props => ({
-    display: 'block',
     Height: '100%',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
@@ -29,8 +28,8 @@ export const Container = styled.div<ContainerProps>(
   `,
   props => `
     @media only screen and (min-width: ${props.theme.breakpoints[0]}) and (max-width: ${props.theme.breakpoints[2]})  {
-      padding-left: ${props.noPadding ? 0 : '150px'};
-      padding-right: ${props.noPadding ? 0 : '150px'};
+      padding-left: ${props.noPadding ? 0 : 'calc(25% - 50px)'};
+      padding-right: ${props.noPadding ? 0 : 'calc(25%)'};
     }
   `,
   layout
