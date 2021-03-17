@@ -1,10 +1,8 @@
 // External
 
 import React from 'react'
-import { cleanup } from '@testing-library/react'
+import { cleanup, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import { create } from 'react-test-renderer'
-
 // Components
 import { AuctionSummaryCard } from './index'
 
@@ -27,11 +25,16 @@ describe('testing Auction Summary Card', () => {
       startBlock: 1646500442,
       endBlock: 1678036442,
     })
-    const AST = create(
+    const { getByText } = render(
       <ThemeProvider theme={theme}>
         <AuctionSummaryCard auction={auction} />
       </ThemeProvider>
     )
-    expect(AST.toJSON()).toMatchSnapshot()
+    expect(getByText('Auction Type')).toBeInTheDocument()
+    expect(getByText('Point Dutch')).toBeInTheDocument()
+    expect(getByText('Current Price')).toBeInTheDocument()
+    expect(getByText('Amount for Sale')).toBeInTheDocument()
+    expect(getByText('Pre-sale')).toBeInTheDocument()
+    expect(getByText('Private')).toBeInTheDocument()
   })
 })

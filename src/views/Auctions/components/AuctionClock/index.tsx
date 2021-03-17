@@ -23,7 +23,7 @@ export const timerPercentage = (auction: Auction) => {
   const startTime = convertUtcTimestampToLocal(auction.startBlock)
   const endTime = convertUtcTimestampToLocal(auction.endBlock)
   const totalTime = Math.abs(startTime - endTime)
-  const percentage = (1 - Math.abs(localTimeStamp - endTime) / totalTime) * 100
+  const percentage = Math.round((1 - Math.abs(localTimeStamp - endTime) / totalTime) * 100)
   return percentage
 }
 
