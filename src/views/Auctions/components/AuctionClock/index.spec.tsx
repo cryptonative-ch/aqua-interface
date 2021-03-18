@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { AuctionClock, timerPercentage } from './index'
 
 // defaults
-import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
+import { getAuctionDefault, addHours, dateUTC, resizeWindow } from 'src/utils/Defaults'
 
 // theme
 
@@ -30,12 +30,6 @@ const wrapper = (auction: Auction) => {
       <AuctionClock auction={auction} />
     </ThemeProvider>
   )
-}
-
-const resizeWindow = (x: number, y: number) => {
-  window.innerWidth = x
-  window.innerHeight = y
-  window.dispatchEvent(new Event('resize'))
 }
 
 describe('Testing AuctionClock', () => {
