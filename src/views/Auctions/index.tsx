@@ -111,7 +111,7 @@ export function AuctionsView() {
               ? auctions
                 .filter(auction => isAuctionUpcoming(auction))
                 .map(auction => (
-                  <AuctionSummaryWrapper to={`/ auctions / ${auction.id}`} key={auction.id}>
+                  <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                     <AuctionSummaryCard auction={auction} />
                   </AuctionSummaryWrapper>
                 ))
@@ -119,14 +119,14 @@ export function AuctionsView() {
                 ? auctions
                   .filter(auction => isAuctionClosed(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/ auctions / ${auction.id} `} key={auction.id}>
+                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))
                 : auctions
                   .filter(auction => isAuctionOpen(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/ auctions / ${auction.id} `} key={auction.id}>
+                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))}
