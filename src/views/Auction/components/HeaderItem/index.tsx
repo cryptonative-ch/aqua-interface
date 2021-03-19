@@ -31,23 +31,43 @@ const HeaderDescription = styled.div({
   color: '#000629',
 })
 
+const MobileHeaderDescription = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fontSize: '16px',
+  lineHeight: '19px',
+  color: '#000629',
+  marginLeft: 'auto'
+})
+
 interface HeaderItemProps {
   title: string
   description: string
   color: string
   textAlign: string
+  isMobile: boolean
 }
 
-export function HeaderItem({ title, description, color, textAlign }: HeaderItemProps) {
+export function HeaderItem({ title, description, color, textAlign, isMobile }: HeaderItemProps) {
   return (
-    <Flex flexDirection="column" marginRight={textAlign === 'right' ? "0" : "100px"}>
+    <Flex
+      flexDirection={isMobile ? "row" : "column"}
+      alignItems={isMobile ? "center" : "unset"}
+      marginRight={isMobile ? "0" : textAlign === 'right' ? "0" : "100px"}
+      marginBottom={isMobile ? "16px" : "0"}
+    >
       <HeaderTitle textAlign={textAlign === 'left' ? 'left' : 'right'} color={color}>{title}</HeaderTitle>
-      {description.length > 0 && (<HeaderDescription>{description}</HeaderDescription>)}
+      {isMobile ? (
+        <MobileHeaderDescription>{description}</MobileHeaderDescription>
+      ): (
+        description.length > 0 && (<HeaderDescription>{description}</HeaderDescription>)
+      )}
     </Flex>
   )
 }
 
 HeaderItem.defaultProps = {
   color: '#7B7F93',
-  textAlign: 'left'
+  textAlign: 'left',
+  isMobile: false
 }

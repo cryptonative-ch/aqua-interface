@@ -9,6 +9,8 @@ import { Auction } from 'src/interfaces/Auction'
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
+import { useWindowSize } from 'src/hooks/useWindowSize'
+import { Flex } from 'src/components/Flex'
 
 const HeaderText = styled.div`
   font-style: normal;
@@ -39,19 +41,52 @@ const TimeText = styled.div`
   margin-left: auto;
 `
 
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  height: 60px;
-  margin: 24px 0;
+const MobileHeaderText = styled.div`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 44px;
+  color: #000629;
+  margin: 0 16px 0 0;
 `
+
+const MobileStatusText = styled.div`
+  padding: 4px 8px;
+  background: #000629;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #ffffff;
+  height: 28px;
+  margin: 8px 0;
+`
+
+type HeaderContainerProps = {
+  isMobile: boolean
+}
+
+const HeaderContainer = styled.div<HeaderContainerProps>(
+  (props) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: props.isMobile ? 'flex-start' : 'center',
+    justifyContent: 'flex-start',
+    margin: '24px 0',
+    padding: props.isMobile ? '0 24px' : 0
+  })
+)
 
 const TokenIconContainer = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 60px;
+`
+
+const MobileTokenIconContainer = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 48px;
 `
 
 export const secondsTohms = (seconds: number) => {
@@ -77,6 +112,8 @@ interface AuctionHeaderProps {
 }
 
 export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
+  const { isMobile } = useWindowSize()
+
   // calculating time difference between local persons time and the start and end block times
   const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
   const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
@@ -100,8 +137,22 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
     format_time = secondsTohms(time_diff_end)
   }
 
+  if (isMobile) {
+    return (
+      <HeaderContainer isMobile={isMobile}>
+        <MobileTokenIconContainer src={auction.tokenIcon} />
+        <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
+          <MobileHeaderText>
+            {`${auction.tokenName} Initial Auction`}
+          </MobileHeaderText>
+          <MobileStatusText>Private</MobileStatusText>
+        </Flex>
+      </HeaderContainer>
+    )
+  }
+
   return (
-    <HeaderContainer>
+    <HeaderContainer isMobile={isMobile}>
       <TokenIconContainer src={auction.tokenIcon} />
       <HeaderText>{`${auction.tokenName} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>

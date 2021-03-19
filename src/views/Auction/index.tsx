@@ -7,10 +7,12 @@ import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 import numeral from 'numeral'
+import styled from 'styled-components'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useAuction } from 'src/hooks/useAuction'
+import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Actions
 import { setPageTitle } from 'src/redux/page'
@@ -24,6 +26,7 @@ import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
+import { MobileFooter } from 'src/components/MobileFooter'
 import { BarChart } from './components/BarChart'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
@@ -50,12 +53,22 @@ import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 
+const ChartDescription = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '21px',
+  color: '#7B7F93',
+  margin: '0 16px 16px'
+})
+
 interface AuctionViewParams {
   auctionId: string
 }
 
 export function AuctionView() {
   const wallet = useWallet()
+  const { isMobile } = useWindowSize()
 
   const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
   const [connectModal, setModalVisible] = useState<boolean>(false)
@@ -101,52 +114,86 @@ export function AuctionView() {
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
       <Container noPadding>
-        <BackButton />
+        {!isMobile && (<BackButton />)}
         <AuctionHeader auction={auction} />
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="column" flex={1}>
-            <Card mb={theme.space[4]} border="none">
-              <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
-                <Flex flexDirection="row" alignItems="center" flex={1}>
-                  <HeaderItem
-                    title={isAuctionUpcoming(auction) ? "Min. Price" : isAuctionOpen(auction) ? "Current Price" : "Final Price"}
-                    description={`${(1 / (clearingPrice?.sellAmount.toNumber() || 0)).toFixed(2)} DAI/${auction.tokenSymbol}`}
-                  />
-                  <HeaderItem
-                    title={isAuctionClosed(auction) ? "Amount Sold" : "Amount for Sale"}
-                    description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
-                  />
-                  <Flex flex={1} />
-                  {isAuctionClosed(auction) && (
+            <Card border="none" marginX={isMobile ? "8px" : "0"}>
+              <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={isMobile ? '16px 16px 0 16px' : theme.space[4]}>
+                {isMobile ? (
+                  <Flex flexDirection="column" flex={1}>
                     <HeaderItem
-                      title="Closed On"
-                      description={convertTimestampWithMoment(auction.endBlock)}
-                      textAlign="right"
+                      isMobile
+                      title={isAuctionUpcoming(auction) ? "Min. Price" : isAuctionOpen(auction) ? "Current Price" : "Final Price"}
+                      description={`${(1 / (clearingPrice?.sellAmount.toNumber() || 0)).toFixed(2)} DAI/${auction.tokenSymbol}`}
                     />
-                  )}
-                  {isAuctionUpcoming(auction) && (
                     <HeaderItem
-                      title="Starts On"
-                      description={convertTimestampWithMoment(auction.startBlock)}
-                      textAlign="right"
+                      isMobile
+                      title={isAuctionClosed(auction) ? "Amount Sold" : "Amount for Sale"}
+                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
                     />
-                  )}
-                </Flex>
+                    {isAuctionClosed(auction) && (
+                      <HeaderItem
+                        isMobile
+                        title="Closed On"
+                        description={convertTimestampWithMoment(auction.endBlock)}
+                        textAlign="right"
+                      />
+                    )}
+                    {isAuctionUpcoming(auction) && (
+                      <HeaderItem
+                        isMobile
+                        title="Starts On"
+                        description={convertTimestampWithMoment(auction.startBlock)}
+                        textAlign="right"
+                      />
+                    )}
+                  </Flex>
+                ) : (
+                  <Flex flexDirection="row" alignItems="center" flex={1}>
+                    <HeaderItem
+                      title={isAuctionUpcoming(auction) ? "Min. Price" : isAuctionOpen(auction) ? "Current Price" : "Final Price"}
+                      description={`${(1 / (clearingPrice?.sellAmount.toNumber() || 0)).toFixed(2)} DAI/${auction.tokenSymbol}`}
+                    />
+                    <HeaderItem
+                      title={isAuctionClosed(auction) ? "Amount Sold" : "Amount for Sale"}
+                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
+                    />
+                    <Flex flex={1} />
+                    {isAuctionClosed(auction) && (
+                      <HeaderItem
+                        title="Closed On"
+                        description={convertTimestampWithMoment(auction.endBlock)}
+                        textAlign="right"
+                      />
+                    )}
+                    {isAuctionUpcoming(auction) && (
+                      <HeaderItem
+                        title="Starts On"
+                        description={convertTimestampWithMoment(auction.startBlock)}
+                        textAlign="right"
+                      />
+                    )}
+                  </Flex>
+                )}
               </CardBody>
-              {isAuctionOpen(auction) && (
-                <CardBody display="flex" padding={theme.space[4]} border="none">
+              {isAuctionOpen(auction) && (auction.bids && auction.bids.length > 0) && (
+                <CardBody display="flex" padding={isMobile ? "16px" : theme.space[4]} border="none">
                   <HeaderControl showGraph={showGraph} toggleGraph={toggleGraph} />
                 </CardBody>
               )}
               {isAuctionClosed(auction) && (!auction.bids || auction.bids.length === 0) && (
-                <CardBody display="flex" padding={theme.space[4]} border="none">
+                <CardBody display="flex" padding={isMobile ? "16px" : theme.space[4]} border="none">
                   <HeaderControl showGraph={showGraph} toggleGraph={toggleGraph} status={isAuctionClosed(auction) ? 'closed' : 'active'} />
                 </CardBody>
+              )}
+              {isMobile && showGraph && (
+                <ChartDescription>This can be a concise explanation on how the point dutch auction works and how the Current Price is calculated.</ChartDescription>
               )}
               {showGraph && (
                 <CardBody
                   display="flex"
-                  padding="8px 24px 24px"
+                  padding="0 16px 16px"
                   border="none"
                   ref={e => {
                     if (e) {
@@ -166,11 +213,11 @@ export function AuctionView() {
               )}
             </Card>
             {auction.bids && auction.bids.length > 0 && (
-              <Card mb={theme.space[4]} border="none">
-                <CardBody display="flex" padding={theme.space[4]} border="none" flexDirection="row" alignItems="center">
+              <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
+                <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none" flexDirection="row" alignItems="center">
                   <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourBids')}</CardTitle>
                   <Flex flex={1} />
-                  {isAuctionClosed(auction) && (
+                  {isAuctionClosed(auction) && !isMobile && (
                     <>
                       <FormButton
                         disabled={false}
@@ -207,7 +254,7 @@ export function AuctionView() {
             )}
             <TokenFooter auction={auction} />
           </Flex>
-          {isAuctionOpen(auction) && (
+          {isAuctionOpen(auction) && !isMobile && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
@@ -235,7 +282,8 @@ export function AuctionView() {
         metamaskImage={MetamaskImage}
         walletImage={WalletImage}
       ></WalletConnector>
-      <Footer />
+      {!isMobile && (<Footer />)}
+      {isMobile && (<MobileFooter />)}
     </Container>
   )
 }
