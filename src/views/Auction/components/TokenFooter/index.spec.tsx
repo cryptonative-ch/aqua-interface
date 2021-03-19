@@ -46,7 +46,6 @@ describe('TokenFooter', () => {
     )
     expect(getByText('About Compound')).toBeInTheDocument()
     expect(getByText('Website')).toBeInTheDocument()
-    expect(getByText('Address')).toBeInTheDocument()
     expect(getByText('Socials')).toBeInTheDocument()
   })
 })
