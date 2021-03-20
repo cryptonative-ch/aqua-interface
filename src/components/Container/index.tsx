@@ -27,9 +27,9 @@ export const Container = styled.div<ContainerProps>(
     }
   `,
   props => `
-    @media only screen and (min-width: ${props.theme.breakpoints[0]}) and (max-width: ${props.theme.breakpoints[2]})  {
-      padding-left: ${props.noPadding ? 0 : 'calc(25% - 50px)'};
-      padding-right: ${props.noPadding ? 0 : 'calc(25%)'};
+    @media only screen and (min-width: 620px) and (max-width: ${props.theme.breakpoints[2]})  {
+      padding-left: ${props.noPadding ? 0 : 'calc(20%)'};
+      padding-right: ${props.noPadding ? 0 : 'calc(20%)'};
     }
   `,
   layout

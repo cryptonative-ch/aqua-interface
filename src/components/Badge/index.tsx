@@ -14,7 +14,7 @@ export const Badge = styled.div<BadgeProps>(
     borderRadius: '0px',
     background: '#000629',
     justifyContent: 'center',
-    margin: '0px 4px',
+    margin: '4px 4px',
   }),
   props =>
     `

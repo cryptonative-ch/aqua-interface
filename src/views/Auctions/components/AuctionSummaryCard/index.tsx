@@ -13,6 +13,7 @@ import { AuctionAmount } from '../AuctionAmount'
 import { Divider } from 'src/components/Divider'
 import { AuctionClock } from '../AuctionClock'
 import { Icon } from 'src/components/Icon'
+import { BadgeFlex } from 'src/layouts/BadgeFlex'
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
@@ -38,10 +39,10 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
               {auction.tokenName}
             </CardText>
           </Flex>
-          <Flex>
+          <BadgeFlex>
             <BadgeCard saleType="private" />
             <BadgeCard saleType="presale" />
-          </Flex>
+          </BadgeFlex>
         </Flex>
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
