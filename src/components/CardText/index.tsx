@@ -3,10 +3,18 @@
 import styled from 'styled-components'
 import { LineHeightProps, FontSizeProps, FontWeightProps } from 'styled-system'
 
+// Components
+import { Flex } from "src/components/Flex";
+
+
 export type CardTextProps = FontSizeProps & FontWeightProps & LineHeightProps
 
 export const CardText = styled.p<CardTextProps>(
+  Flex,
   props => ({
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     fontFamily: 'Inter',
     fontSize: props.fontSize === 'title' ? '24px' : '16px',
     fontStyle: 'normal',
@@ -14,9 +22,9 @@ export const CardText = styled.p<CardTextProps>(
     lineHeight: props.fontSize === 'title' ? '29px' : '19px',
     letterSpacing: '0',
     color: props.color === 'grey' ? '#7B7F93' : '#000629',
-    height: props.fontSize === 'title' ? '24px' : '19px',
-    margin: props.fontSize === 'title' ? '0' : '8px 0px',
-    width: props.fontSize === 'title' ? '100px' : 'auto',
+    height: props.fontSize === 'title' ? '30px' : '19px',
+    margin: props.fontSize === 'title' ? '0 8px 0 0' : '8px 0px',
+    width: props.fontSize === 'title' ? '80%' : 'auto',
   }),
   props =>
     `
@@ -25,7 +33,7 @@ export const CardText = styled.p<CardTextProps>(
   font-weight: ${props.fontWeight === 'light' ? 400 : 500};
   line-height: ${props.fontSize === 'title' ? '19px' : '17px'};
   height: ${props.fontSize === 'title' ? '19px' : '17px'};
-  width: ${props.fontSize === 'title' ? '67px' : 'auto'};
+
 
 }
 `

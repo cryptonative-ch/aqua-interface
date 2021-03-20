@@ -31,13 +31,17 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
     <Card>
       <CardBody>
         <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
-          <Flex width="100%" alignItems="center">
+          <Flex width="70%" alignItems="center">
             <TokenIconFigure>
               <Icon src={auction.tokenIcon} alt={auction.tokenName} />
             </TokenIconFigure>
-            <CardText fontSize="title" lineHeight="title">
+
+            <CardText fontSize="title">
               {auction.tokenName}
             </CardText>
+
+
+
           </Flex>
           <BadgeFlex>
             <BadgeCard saleType="private" />
