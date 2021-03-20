@@ -27,8 +27,6 @@ export const getAuctionDefault = (a?: Partial<Auction>): Auction => ({
 export const resizeWindow = (x: number, y: number) => {
   Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: x })
   Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: y })
-  // window.innerWidth = x
-  // window.innerHeight = y
   window.dispatchEvent(new Event('resize'))
 }
 

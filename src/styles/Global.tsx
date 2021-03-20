@@ -72,7 +72,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: ${props => props.theme.fontSizes[0]}px;
     a {
       color: ${props => props.theme.colors.text};
-      text-decoration: underline;
+      text-decoration: none;
     }
     @media (min-width: ${props => props.theme.breakpoints[0]}) {
       & {
@@ -102,6 +102,7 @@ export const GlobalStyle = createGlobalStyle`
     transition: all 0.2s;
     &:hover {
       color: ${props => props.theme.colors.text};
+      transform: scale3d(1.05, 1.05, 1);
     }
   }
 
