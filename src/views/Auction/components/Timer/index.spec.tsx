@@ -1,6 +1,7 @@
 // Externals
 
 import React from 'react'
+import dayjs from 'dayjs'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
@@ -10,6 +11,8 @@ import { secondsTohms, timeFrame, Timer } from './index'
 // default
 
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
+// Utils
+import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 describe('seconds to HMS function', () => {
   describe('convert seconds into different formats', () => {
@@ -39,16 +42,6 @@ describe('converts unix seconds into local Date time format function', () => {
 })
 
 describe('Timer', () => {
-  test('when auction is open it should render the correct display', async () => {
-    const auction = getAuctionDefault({
-      startBlock: addHours(dateUTC, -0.01).unix(),
-      endBlock: addHours(dateUTC, 0.05).unix(),
-    })
-
-    const { getByTestId } = render(<Timer auction={auction} />)
-
-    expect(await getByTestId('open')).toHaveTextContent('3m')
-  }),
     test('when auction is upcoming, it displays the correct return', () => {
       const auction = getAuctionDefault({
         startBlock: addHours(dateUTC, 14).unix(),

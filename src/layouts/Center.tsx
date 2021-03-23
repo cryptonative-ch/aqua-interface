@@ -1,6 +1,10 @@
-import React from 'react'
+import styled from 'styled-components'
 import { Flex, FlexProps } from 'src/components/Flex'
 
-export const Center: React.FC<FlexProps> = props => (
-  <Flex flexDirection="column" alignItems="center" justifyContent="center" {...props} />
+export const Center = styled(Flex)<FlexProps>(
+  () => ({
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
 )
