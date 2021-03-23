@@ -10,7 +10,7 @@ import { useMountEffect } from 'src/hooks/useMountEffect'
 import { setPageTitle } from 'src/redux/page'
 
 // Layout
-import { Flex } from 'src/components/Flex'
+import { Center } from 'src/layouts/Center'
 
 export function NotFoundView() {
   const dispatch = useDispatch()
@@ -21,8 +21,8 @@ export function NotFoundView() {
   })
 
   return (
-    <Flex minHeight="100%" flexDirection="column" justifyContent="center" alignItems="center">
+    <Center minHeight="100%">
       <h1>{t('texts.notFound')}</h1>
-    </Flex>
+    </Center>
   )
 }

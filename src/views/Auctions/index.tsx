@@ -12,13 +12,15 @@ import { useAuctions } from 'src/hooks/useAuctions'
 // Redux Actions
 import { setPageTitle } from 'src/redux/page'
 
+// Layouts
+import { Center } from 'src/layouts/Center'
+
 // Components
 import { AuctionSummaryCard } from './components/AuctionSummaryCard'
 import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { AuctionNavBar } from './components/AuctionNavBar'
-import { Flex } from 'src/components/Flex'
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 
 // Svg
@@ -94,7 +96,7 @@ export function AuctionsView() {
   }, [auctions, t, dispatch, time])
 
   if (loading) {
-    return <Flex minHeight="100%" flexDirection="column" justifyContent="center" alignItems="center">LOADING</Flex>
+    return <Center minHeight="100%">LOADING</Center>
   }
 
   return (
