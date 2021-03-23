@@ -47,13 +47,30 @@ export const Row = styled.div({
   alignItems: 'center',
 })
 
-export const Title = styled.div({
+type TitleProps = {
+  isFooter?: boolean
+}
+
+export const Title = styled.div<TitleProps>((props) => ({
   fontStyle: 'normal',
   fontWeight: 600,
   fontSize: '16px',
   lineHeight: '19px',
   color: '#000629',
-})
+  ...(props.isFooter && {
+    fontWeight: 500,
+    fontSize: '14px',
+    lineHeight: '21px',
+    color: '#7b7f93',
+    padding: '0 12px',
+    cursor: 'pointer',
+    userSelect: 'none',
+  })
+}))
+
+Title.defaultProps = {
+  isFooter: false
+}
 
 export const MenuOption = styled.div<SpaceProps & ColorProps>(
   () => ({

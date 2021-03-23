@@ -1,5 +1,10 @@
 import dayjs from 'dayjs'
-import moment from 'moment-timezone'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import advanced from 'dayjs/plugin/advancedFormat'
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(advanced)
 
 export const convertUtcTimestampToLocal = (utcTimestamp: number) => {
   const utcMinutesOffset = new Date().getTimezoneOffset()
@@ -8,5 +13,5 @@ export const convertUtcTimestampToLocal = (utcTimestamp: number) => {
 }
 
 export const convertTimestampWithMoment = (utcTimestamp: number) => {
-  return moment.utc(utcTimestamp * 1000).tz(moment.tz.guess()).format('MMM D, hh:mm z')
+  return dayjs.utc(utcTimestamp * 1000).tz(dayjs.tz.guess()).format('MMM D, hh:mm z')
 }

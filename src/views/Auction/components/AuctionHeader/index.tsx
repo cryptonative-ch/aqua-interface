@@ -12,55 +12,55 @@ import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { Flex } from 'src/components/Flex'
 
-const HeaderText = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  color: #000629;
-  margin: 0 40px 0 16px;
-`
+const HeaderText = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 600,
+  fontSize: '36px',
+  lineHeight: '44px',
+  color: '#000629',
+  margin: '0 40px 0 16px',
+})
 
-const StatusText = styled.div`
-  padding: 4px 8px;
-  background: #000629;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  color: #ffffff;
-`
+const StatusText = styled.div({
+  padding: '4px 8px',
+  background: '#000629',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '19px',
+  color: '#ffffff',
+})
 
-const TimeText = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 36px;
-  line-height: 44px;
-  text-align: right;
-  color: #7b7f93;
-  margin-left: auto;
-`
+const TimeText = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fontSize: '36px',
+  lineHeight: '44px',
+  textAlign: 'right',
+  color: '#7b7f93',
+  marginLeft: 'auto',
+})
 
-const MobileHeaderText = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 44px;
-  color: #000629;
-  margin: 0 16px 0 0;
-`
+const MobileHeaderText = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 600,
+  fontSize: '36px',
+  lineHeight: '44px',
+  color: '#000629',
+  margin: '0 16px 0 0',
+})
 
-const MobileStatusText = styled.div`
-  padding: 4px 8px;
-  background: #000629;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  color: #ffffff;
-  height: 28px;
-  margin: 8px 0;
-`
+const MobileStatusText = styled.div({
+  padding: '4px 8px',
+  background: '#000629',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '19px',
+  color: '#ffffff',
+  height: '28px',
+  margin: '8px 0',
+})
 
 type HeaderContainerProps = {
   isMobile: boolean
@@ -77,17 +77,17 @@ const HeaderContainer = styled.div<HeaderContainerProps>(
   })
 )
 
-const TokenIconContainer = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 60px;
-`
+const TokenIconContainer = styled.img({
+  width: '60px',
+  height: '60px',
+  borderRadius: '60px'
+})
 
-const MobileTokenIconContainer = styled.img`
-  width: 48px;
-  height: 48px;
-  border-radius: 48px;
-`
+const MobileTokenIconContainer = styled.img({
+  width: '48px',
+  height: '48px',
+  borderRadius: '48px'
+})
 
 export const secondsTohms = (seconds: number) => {
   if (seconds < 0) {

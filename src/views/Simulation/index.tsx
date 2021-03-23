@@ -33,9 +33,6 @@ import { SelfBidList } from '../Auction/components/SelfBidList'
 import { TokenFooter } from '../Auction/components/TokenFooter'
 import { Modal } from 'src/components/Modal'
 
-// Layout
-import { Center } from 'src/layouts/Center'
-
 // Mesa Utils
 import { isAuctionOpen } from 'src/mesa/auction'
 import { calculateClearingPrice } from 'src/mesa/price'
@@ -172,9 +169,9 @@ export function SimulationView() {
 
   if (!auction) {
     return (
-      <Center minHeight="100%">
+      <Flex minHeight="100%" flexDirection="column" justifyContent="center" alignItems="center">
         <Container>Loading</Container>
-      </Center>
+      </Flex>
     )
   }
 
