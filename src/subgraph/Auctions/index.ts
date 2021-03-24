@@ -6,7 +6,7 @@ import { request, gql } from 'graphql-request'
 
 
 
-const ENDPOINT = "http://localhost:8000/subgraphs/name/adamazad/mesa/graphql"
+const ENDPOINT = "http://localhost:8000/subgraphs/name/adamazad/mesa"
 
 
 
@@ -23,6 +23,16 @@ const auctionsQuery = gql`{
       endBlock:endTime
       gracePeriod
       tokenAmount
+      bids {
+        address:id
+     createdAt
+     updatedAt
+     deletedAt
+     status
+       sellAmount:tokenInAmount
+       buyAmount:tokenOutAmount
+      
+     }
     }
   }
 

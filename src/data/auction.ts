@@ -22,10 +22,15 @@ const addMinutes = (dayjsInstance: Dayjs, minutes: number) => dayjsInstance.clon
 export async function generateAuctionData(unixTimestamp: number): Promise<Auction[]> {
   const dateUTC = dayjs.unix(unixTimestamp)
 
-  const auctionsArray = auctionsRequest.then(data => {return data.auctions})
+  const auctionsArray = await auctionsRequest
+
+  // console.log(...auctionsArray.auctions)
+  auctionsRequest.then(data => console.log(data.auctions.map((element: any) => ({...element,bids: element.bids.map((item: any) => ({...item,buyAmount: BigNumber.from(item.buyAmount), sellAmount: BigNumber.from(item.sellAmount) }))}))))
+
+const newArray = auctionsArray.auctions.map((element: any) => ({...element,bids: element.bids.map((item: any) => ({...item,buyAmount: BigNumber.from(item.buyAmount), sellAmount: BigNumber.from(item.sellAmount) }))}))
 
   return [
-   
+    ...newArray,
     // Open/running
     {
       id: '0x141',

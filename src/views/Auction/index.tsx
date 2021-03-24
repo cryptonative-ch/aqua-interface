@@ -47,8 +47,6 @@ import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 
-// Subgraph
-import { auctionsRequest } from "src/subgraph/Auctions";
 
 interface AuctionViewParams {
   auctionId: string
