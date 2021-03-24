@@ -19,8 +19,8 @@ const auctionsQuery = gql`{
       updatedAt
       deletedAt
       status
-      startTime
-      endTime
+      startBlock:startTime
+      endBlock:endTime
       gracePeriod
       tokenAmount
     }

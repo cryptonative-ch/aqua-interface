@@ -11,14 +11,21 @@ import Mesa from 'src/assets/svg/Mesa.svg'
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
+//subgraph
+
+import { auctionsRequest } from "src/subgraph/Auctions";
+
 const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 
 const addMinutes = (dayjsInstance: Dayjs, minutes: number) => dayjsInstance.clone().add(minutes, 'm')
 
-export function generateAuctionData(unixTimestamp: number): Auction[] {
+export async function generateAuctionData(unixTimestamp: number): Promise<Auction[]> {
   const dateUTC = dayjs.unix(unixTimestamp)
 
+  const auctionsArray = auctionsRequest.then(data => {return data.auctions})
+
   return [
+   
     // Open/running
     {
       id: '0x141',

@@ -19,8 +19,8 @@ const auctionBidsQuery = gql`{
       updatedAt
       deletedAt
       status
-      startTime
-      endTime
+      startBlock:startTime
+      endBlock:endTime
       gracePeriod
       tokenAmount
       bids {
@@ -32,7 +32,6 @@ const auctionBidsQuery = gql`{
         tokenInAmount
         tokenOutAmount
         address
-        
       }
     }
   }

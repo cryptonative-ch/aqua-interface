@@ -8,6 +8,7 @@ import { generateAuctionData } from 'src/data/auction'
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
+
 interface UseAuctionsReturn {
   loading: boolean
   error: Error | null
@@ -21,10 +22,16 @@ export function useAuctions(): UseAuctionsReturn {
 
   useEffect(() => {
     const utcDate = dayjs(new Date().toUTCString())
+   
     // Populate with fake data
     // startBlock and endBlock assumes that there are 6000 blocks per 24 hours interval
     // push data once
-    setAuctions(generateAuctionData(utcDate.unix()))
+   
+
+    const fetchData = async() => {
+      setAuctions(await generateAuctionData(utcDate.unix()))
+    }
+    fetchData()
     setLoading(false)
   }, [])
 
