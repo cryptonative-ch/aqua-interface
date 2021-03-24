@@ -33,6 +33,8 @@
     "d3": "^6.5.0",
     "dayjs": "^1.10.3",
     "ethers": "^5.0.24",
+    "graphql": "^15.5.0",
+    "graphql-request": "^3.4.0",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-http-backend": "^1.0.21",
