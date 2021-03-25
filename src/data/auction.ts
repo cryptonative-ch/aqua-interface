@@ -24,9 +24,6 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
 
   const auctionsArray = await auctionsRequest
 
-  // console.log(...auctionsArray.auctions)
-  auctionsRequest.then(data => console.log(data.auctions.map((element: any) => ({...element,bids: element.bids.map((item: any) => ({...item,buyAmount: BigNumber.from(item.buyAmount), sellAmount: BigNumber.from(item.sellAmount) }))}))))
-
 const newArray = auctionsArray.auctions.map((element: any) => ({...element,bids: element.bids.map((item: any) => ({...item,buyAmount: BigNumber.from(item.buyAmount), sellAmount: BigNumber.from(item.sellAmount) }))}))
 
   return [
