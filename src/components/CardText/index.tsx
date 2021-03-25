@@ -4,8 +4,7 @@ import styled from 'styled-components'
 import { LineHeightProps, FontSizeProps, FontWeightProps } from 'styled-system'
 
 // Components
-import { Flex } from "src/components/Flex";
-
+import { Flex } from 'src/components/Flex'
 
 export type CardTextProps = FontSizeProps & FontWeightProps & LineHeightProps
 

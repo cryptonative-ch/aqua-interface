@@ -14,6 +14,8 @@ import {
   borderTop,
   BorderTopProps,
   PositionProps,
+  ColorProps,
+  color,
 } from 'styled-system'
 
 export type FlexProps = SpaceProps &
@@ -22,13 +24,15 @@ export type FlexProps = SpaceProps &
   FlexboxProps &
   TextAlignProps &
   BorderTopProps &
-  PositionProps
+  PositionProps &
+  ColorProps
 
 export const Flex = styled.div<FlexProps>(
   {
     display: 'flex',
   },
   space,
+  color,
   layout,
   flexbox,
   textAlign,

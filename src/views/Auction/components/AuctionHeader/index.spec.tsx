@@ -11,7 +11,7 @@ import { secondsTohms, AuctionHeader } from './index'
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
-import { getAuctionDefault, addHours, dateUTC, utcDate } from 'src/utils/Defaults'
+import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
 
 describe('seconds to HMS function', () => {
   describe('convert seconds into different formats', () => {
@@ -46,7 +46,7 @@ describe('AuctionHeader', () => {
     }
     const { getByText, getByTestId } = render(<AuctionHeader auction={auction} />)
     expect(await getByTestId('format_time')).toHaveTextContent(format_time, { normalizeWhitespace: false })
-    expect(getByText('XYZ Initial Auction')).toBeInTheDocument()
+    expect(getByText('Omen Initial Auction')).toBeInTheDocument()
     expect(getByText('Private')).toBeInTheDocument()
   })
 })

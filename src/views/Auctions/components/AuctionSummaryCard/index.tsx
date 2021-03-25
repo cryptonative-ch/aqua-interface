@@ -35,13 +35,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
             <TokenIconFigure>
               <Icon src={auction.tokenIcon} alt={auction.tokenName} />
             </TokenIconFigure>
-
-            <CardText fontSize="title">
-              {auction.tokenName}
-            </CardText>
-
-
-
+            <CardText fontSize="title">{auction.tokenName}</CardText>
           </Flex>
           <BadgeFlex>
             <BadgeCard saleType="private" />

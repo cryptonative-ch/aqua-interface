@@ -29,13 +29,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
       tokenName: 'Omen',
       tokenSymbol: 'DXD',
       tokenIcon: Omen,
-      bids: [
-        {
-          address: '0xf1',
-          buyAmount: BigNumber.from(30),
-          sellAmount: BigNumber.from(100),
-        },
-      ],
+      bids: [],
     },
     {
       id: '0x142',
@@ -100,6 +94,17 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
           sellAmount: BigNumber.from(100),
         },
       ],
+    },
+    {
+      id: '0x1435',
+      startBlock: addHours(dateUTC, -140).unix(),
+      endBlock: addHours(dateUTC, -14).unix(),
+      tokenAddress: '0x',
+      tokenAmount: 1500,
+      tokenName: 'ClosedWithout',
+      tokenSymbol: 'CLOSE',
+      tokenIcon: Compound,
+      bids: [],
     },
   ]
 }

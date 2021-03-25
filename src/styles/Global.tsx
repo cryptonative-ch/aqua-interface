@@ -102,7 +102,7 @@ export const GlobalStyle = createGlobalStyle`
     transition: all 0.2s;
     &:hover {
       color: ${props => props.theme.colors.text};
-      transform: scale3d(1.05, 1.05, 1);
+      text-decoration: underline;
     }
   }
 
