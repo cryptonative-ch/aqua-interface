@@ -11,11 +11,5 @@ export const Divider = styled.hr<DividerProps>(
     border: 'none',
     borderTop: '1px dashed #dddde3',
     margin: '0',
-  },
-  props =>
-    `
-@media (max-width: ${props.theme.breakpoints[2]}) {
-top: 30%
-}
-`
+  }
 )
