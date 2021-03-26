@@ -43,10 +43,11 @@ const ArrowImg = styled.img({
 interface HeaderControlProps {
   status: string
   showGraph: boolean
+  isFixed?: boolean
   toggleGraph: () => void
 }
 
-export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph, isFixed }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
 
   if (isMobile && status === 'closed') {
@@ -128,6 +129,7 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
 HeaderControl.defaultProps = {
   status: 'active',
   showGraph: false,
+  isFixed: false,
   toggleGraph: () => {
     return
   },
