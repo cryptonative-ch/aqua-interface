@@ -18,7 +18,7 @@ import {
   background,
   color,
   ColorProps,
-  SpaceProps
+  SpaceProps,
 } from 'styled-system'
 
 export type ButtonProps = SizeProps &
@@ -47,7 +47,7 @@ export const FormButton = styled.button<ButtonProps>(
     border: 'none',
     outline: 'none',
     ':disabled': {
-      opacity: 1
+      opacity: 1,
     },
     ':hover': {
       textDecoration: 'none',
@@ -55,7 +55,7 @@ export const FormButton = styled.button<ButtonProps>(
     ':focus': {
       outline: 'none',
     },
-    textDecoration: 'none'
+    textDecoration: 'none',
   }),
   fontSize,
   fontWeight,
@@ -74,5 +74,5 @@ export const FormButton = styled.button<ButtonProps>(
       },
     },
   }),
-  background,
+  background
 )

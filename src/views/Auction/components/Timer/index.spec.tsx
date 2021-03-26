@@ -1,8 +1,7 @@
 // Externals
 
 import React from 'react'
-import dayjs from 'dayjs'
-import { render } from '@testing-library/react'
+import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
@@ -11,8 +10,30 @@ import { secondsTohms, timeFrame, Timer } from './index'
 // default
 
 import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
-// Utils
-import { convertUtcTimestampToLocal } from 'src/utils/date'
+
+// theme
+
+import { theme } from 'src/styles/theme'
+import { ThemeProvider } from 'styled-components'
+
+// interfaces
+import { Auction } from 'src/interfaces/Auction'
+
+//clean up
+
+afterEach(cleanup)
+
+//wrapper
+
+const wrapper = (auction: Auction) => {
+  return render(
+    <ThemeProvider theme={theme}>
+      <Timer auction={auction} />
+    </ThemeProvider>
+  )
+}
+
+// tests
 
 describe('seconds to HMS function', () => {
   describe('convert seconds into different formats', () => {
@@ -42,13 +63,23 @@ describe('converts unix seconds into local Date time format function', () => {
 })
 
 describe('Timer', () => {
+  test('when auction is open it should render the correct display', async () => {
+    const auction = getAuctionDefault({
+      startBlock: addHours(dateUTC, -0.01).unix(),
+      endBlock: addHours(dateUTC, 0.05).unix(),
+    })
+
+    const { getByTestId } = wrapper(auction)
+
+    expect(await getByTestId('open')).toHaveTextContent('3m')
+  }),
     test('when auction is upcoming, it displays the correct return', () => {
       const auction = getAuctionDefault({
         startBlock: addHours(dateUTC, 14).unix(),
         endBlock: addHours(dateUTC, 114).unix(),
       })
 
-      const { getByText } = render(<Timer auction={auction} />)
+      const { getByText } = wrapper(auction)
       expect(getByText('to')).toBeInTheDocument()
     }),
     test('when auction is closed, it should return the correct display', async () => {
@@ -57,7 +88,7 @@ describe('Timer', () => {
         endBlock: 1552334525,
       })
 
-      const { getByTestId } = render(<Timer auction={auction} />)
+      const { getByTestId } = wrapper(auction)
       expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 20:02 GMT')
     })
 })

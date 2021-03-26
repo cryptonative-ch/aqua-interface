@@ -1,6 +1,15 @@
 //External
 import styled from 'styled-components'
-import { space, SpaceProps, ColorProps, color, layout, LayoutProps, justifyContent, JustifyContentProps } from 'styled-system'
+import {
+  space,
+  SpaceProps,
+  ColorProps,
+  color,
+  layout,
+  LayoutProps,
+  justifyContent,
+  JustifyContentProps,
+} from 'styled-system'
 // Svg
 import DownArrowUrl from 'src/assets/svg/Down-Arrow.svg'
 
@@ -23,21 +32,19 @@ type MobileMenuProps = {
   expanded: boolean
 }
 
-export const MobileMenu = styled.div<MobileMenuProps>(
-  (props) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    zIndex: 200,
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: 'calc(100vh)',
-    transition: 'transform 0.3s ease-in-out',
-    backgroundColor: '#FFF',
-    transform: props.expanded ? 'translateX(0)' : 'translateX(-100%)'
-  }),
-)
+export const MobileMenu = styled.div<MobileMenuProps>(props => ({
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'absolute',
+  zIndex: 200,
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: 'calc(100vh)',
+  transition: 'transform 0.3s ease-in-out',
+  backgroundColor: '#FFF',
+  transform: props.expanded ? 'translateX(0)' : 'translateX(-100%)',
+}))
 
 export const Row = styled.div({
   padding: '0',
@@ -51,7 +58,7 @@ type TitleProps = {
   isFooter?: boolean
 }
 
-export const Title = styled.div<TitleProps>((props) => ({
+export const Title = styled.div<TitleProps>(props => ({
   fontStyle: 'normal',
   fontWeight: 600,
   fontSize: '16px',
@@ -65,11 +72,11 @@ export const Title = styled.div<TitleProps>((props) => ({
     padding: '0 12px',
     cursor: 'pointer',
     userSelect: 'none',
-  })
+  }),
 }))
 
 Title.defaultProps = {
-  isFooter: false
+  isFooter: false,
 }
 
 export const MenuOption = styled.div<SpaceProps & ColorProps>(
@@ -89,7 +96,7 @@ export const MenuBorder = styled.div({
   border: '1px dashed #DDDDE3',
   boxSizing: 'border-box',
   borderWidth: '1px 0 0 0',
-  margin: '16px 0 0'
+  margin: '16px 0 0',
 })
 
 export const Description = styled.div<SpaceProps>(
@@ -107,7 +114,9 @@ export const Description = styled.div<SpaceProps>(
 export type ButtonProps = {
   backgroundColor: string
   textColor?: string
-} & SpaceProps & LayoutProps & JustifyContentProps
+} & SpaceProps &
+  LayoutProps &
+  JustifyContentProps
 
 export const Button = styled.div<ButtonProps>(
   ({ backgroundColor, textColor = 'white' }) => ({

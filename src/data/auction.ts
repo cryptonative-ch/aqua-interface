@@ -29,8 +29,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
       tokenName: 'Omen',
       tokenSymbol: 'DXD',
       tokenIcon: Omen,
-      bids: [
-      ],
+      bids: [],
     },
     {
       id: '0x142',
@@ -105,8 +104,7 @@ export function generateAuctionData(unixTimestamp: number): Auction[] {
       tokenName: 'ClosedWithout',
       tokenSymbol: 'CLOSE',
       tokenIcon: Compound,
-      bids: [
-      ],
+      bids: [],
     },
   ]
 }

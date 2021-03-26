@@ -66,27 +66,25 @@ type HeaderContainerProps = {
   isMobile: boolean
 }
 
-const HeaderContainer = styled.div<HeaderContainerProps>(
-  (props) => ({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: props.isMobile ? 'flex-start' : 'center',
-    justifyContent: 'flex-start',
-    margin: '24px 0',
-    padding: props.isMobile ? '0 24px' : 0
-  })
-)
+const HeaderContainer = styled.div<HeaderContainerProps>(props => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: props.isMobile ? 'flex-start' : 'center',
+  justifyContent: 'flex-start',
+  margin: '24px 0',
+  padding: props.isMobile ? '0 24px' : 0,
+}))
 
 const TokenIconContainer = styled.img({
   width: '60px',
   height: '60px',
-  borderRadius: '60px'
+  borderRadius: '60px',
 })
 
 const MobileTokenIconContainer = styled.img({
   width: '48px',
   height: '48px',
-  borderRadius: '48px'
+  borderRadius: '48px',
 })
 
 export const secondsTohms = (seconds: number) => {
@@ -142,9 +140,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
       <HeaderContainer isMobile={isMobile}>
         <MobileTokenIconContainer src={auction.tokenIcon} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
-          <MobileHeaderText>
-            {`${auction.tokenName} Initial Auction`}
-          </MobileHeaderText>
+          <MobileHeaderText>{`${auction.tokenName} Initial Auction`}</MobileHeaderText>
           <MobileStatusText>Private</MobileStatusText>
         </Flex>
       </HeaderContainer>
@@ -156,9 +152,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
       <TokenIconContainer src={auction.tokenIcon} />
       <HeaderText>{`${auction.tokenName} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>
-      {isAuctionOpen(auction) && (
-        <TimeText data-testid="format_time">{format_time}</TimeText>
-      )}
+      {isAuctionOpen(auction) && <TimeText data-testid="format_time">{format_time}</TimeText>}
     </HeaderContainer>
   )
 }

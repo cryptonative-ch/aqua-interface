@@ -49,13 +49,16 @@ interface HeaderControlProps {
 export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
 
-  if (isMobile && status === "closed") {
+  if (isMobile && status === 'closed') {
     return (
       <Flex flexDirection="column" justifyContent="space-between" alignItems="center" flex={1}>
-        <Flex flexDirection="row" alignItems="center" justifyContent={isMobile && status === 'closed' ? "center" : "flex-start"} flex={1}>
-          <ControlTitle>
-            You can get ERT on
-          </ControlTitle>
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent={isMobile && status === 'closed' ? 'center' : 'flex-start'}
+          flex={1}
+        >
+          <ControlTitle>You can get ERT on</ControlTitle>
           <LogoImg data-testid="logo-img" src={LogoSVG} />
         </Flex>
         <FormButton
@@ -79,13 +82,18 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
 
   return (
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" flex={1}>
-      <Flex flexDirection="row" alignItems="center" justifyContent={isMobile && status === 'closed' ? "center" : "flex-start"} flex={1}>
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent={isMobile && status === 'closed' ? 'center' : 'flex-start'}
+        flex={1}
+      >
         <ControlTitle>
-          {status === 'closed' ? 'Missed out on the sale? You can get ERT on' : 'How is the Current Price (CP) calculated?'}
+          {status === 'closed'
+            ? 'Missed out on the sale? You can get ERT on'
+            : 'How is the Current Price (CP) calculated?'}
         </ControlTitle>
-        {status === 'closed' && (
-          <LogoImg data-testid="logo-img" src={LogoSVG} />
-        )}
+        {status === 'closed' && <LogoImg data-testid="logo-img" src={LogoSVG} />}
       </Flex>
       {status === 'closed' ? (
         <FormButton
@@ -102,11 +110,15 @@ export function HeaderControl({ status, showGraph, toggleGraph }: HeaderControlP
           Go to Swapr
         </FormButton>
       ) : (
-        <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" style={{cursor: 'pointer'}} onClick={toggleGraph} >
-          {!isMobile && (<ControlButton>View Live Graph</ControlButton>)}
-          {status === 'active' && (
-            <ArrowImg data-testid="graph-img" src={showGraph ? UpSVG : DownSVG} />
-          )}
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          style={{ cursor: 'pointer' }}
+          onClick={toggleGraph}
+        >
+          {!isMobile && <ControlButton>View Live Graph</ControlButton>}
+          {status === 'active' && <ArrowImg data-testid="graph-img" src={showGraph ? UpSVG : DownSVG} />}
         </Flex>
       )}
     </Flex>

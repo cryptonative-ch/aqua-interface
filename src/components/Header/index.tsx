@@ -7,7 +7,19 @@ import MenuImg from 'src/assets/svg/Menu-Icon.svg'
 import CloseImg from 'src/assets/svg/Close.svg'
 
 // Internal
-import { Wrapper, Row, Title, Description, Button, ButtonText, ButtonImage, MenuIcon, MobileMenu, MenuOption, MenuBorder } from './style'
+import {
+  Wrapper,
+  Row,
+  Title,
+  Description,
+  Button,
+  ButtonText,
+  ButtonImage,
+  MenuIcon,
+  MobileMenu,
+  MenuOption,
+  MenuBorder,
+} from './style'
 
 // Component
 import { Flex } from 'src/components/Flex'
@@ -30,9 +42,9 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
 
   useEffect(() => {
     if (menuOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = 'auto'
     }
   }, [menuOpen])
 
@@ -49,8 +61,12 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
           </Wrapper>
           {walletAddress.length > 0 ? (
             <Flex padding="24px" flex={1} flexDirection="column">
-              <MenuOption paddingTop="0" marginBottom="4px">Connected with MetaMask</MenuOption>
-              <MenuOption paddingTop="0" marginBottom="16px" color="#000629">{walletAddress}</MenuOption>
+              <MenuOption paddingTop="0" marginBottom="4px">
+                Connected with MetaMask
+              </MenuOption>
+              <MenuOption paddingTop="0" marginBottom="16px" color="#000629">
+                {walletAddress}
+              </MenuOption>
               <Button
                 onClick={disconnectWallet}
                 backgroundColor="#7B7F93"
@@ -93,13 +109,7 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
           <Description marginLeft="0">from DXdao</Description>
         </Flex>
         {!wallet.account && !isConnecting && (
-          <Button
-            onClick={connectWallet}
-            backgroundColor="#7B7F93"
-            textColor="white"
-            padding="0 24px"
-            margin="0"
-          >
+          <Button onClick={connectWallet} backgroundColor="#7B7F93" textColor="white" padding="0 24px" margin="0">
             <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect' : walletAddress}</ButtonText>
             {wallet.account && <ButtonImage />}
           </Button>

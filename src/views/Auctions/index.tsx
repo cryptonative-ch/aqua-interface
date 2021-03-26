@@ -22,6 +22,7 @@ import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { AuctionNavBar } from './components/AuctionNavBar'
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
+import { Card } from 'src/components/CardSale'
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
@@ -30,17 +31,23 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 
-const AuctionSummaryWrapper = styled(NavLink)`
-  display: 'block';
-`
+const AuctionSummaryWrapper = styled(NavLink)(Card, {
+  display: 'block',
+})
 
-const AuctionListSection = styled.div(props => ({
-  margin: '0',
-  display: props.theme.grid.display,
-  maxWidth: '1000px',
-  gridTemplateColumns: props.theme.grid.gridTemplateColumns,
-  gap: props.theme.grid.gap,
-}))
+const AuctionListSection = styled.div(
+  props => ({
+    margin: '0',
+    display: props.theme.grid.display,
+    gridTemplateColumns: props.theme.grid.gridTemplateColumns[0],
+    gap: props.theme.grid.gap[0],
+  }),
+  props => `
+    @media (max-width: ${props.theme.breakpoints[2]}) {
+      grid-template-columns: ${props.theme.grid.gridTemplateColumns[1]};
+      row-gap: ${props.theme.grid.gap[1]};
+    })`
+)
 
 const Title = styled.p({
   height: '44px',
@@ -109,21 +116,21 @@ export function AuctionsView() {
           <AuctionListSection>
             {AuctionShow === AuctionStatus.UPCOMING
               ? auctions
-                .filter(auction => isAuctionUpcoming(auction))
-                .map(auction => (
-                  <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
-                    <AuctionSummaryCard auction={auction} />
-                  </AuctionSummaryWrapper>
-                ))
+                  .filter(auction => isAuctionUpcoming(auction))
+                  .map(auction => (
+                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+                      <AuctionSummaryCard auction={auction} />
+                    </AuctionSummaryWrapper>
+                  ))
               : AuctionShow === AuctionStatus.CLOSED
-                ? auctions
+              ? auctions
                   .filter(auction => isAuctionClosed(auction))
                   .map(auction => (
                     <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))
-                : auctions
+              : auctions
                   .filter(auction => isAuctionOpen(auction))
                   .map(auction => (
                     <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>

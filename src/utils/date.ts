@@ -13,5 +13,8 @@ export const convertUtcTimestampToLocal = (utcTimestamp: number) => {
 }
 
 export const convertTimestampWithMoment = (utcTimestamp: number) => {
-  return dayjs.utc(utcTimestamp * 1000).tz(dayjs.tz.guess()).format('MMM D, hh:mm z')
+  return dayjs
+    .utc(utcTimestamp * 1000)
+    .tz(dayjs.tz.guess())
+    .format('MMM D, hh:mm z')
 }

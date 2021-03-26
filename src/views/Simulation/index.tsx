@@ -227,7 +227,7 @@ export function SimulationView() {
                     {t('texts.yourBids')}
                   </CardTitle>
                 </CardBody>
-                <SelfBidList auction={{ ...auction, bids: bids }} clearingPrice={clearingPrice}/>
+                <SelfBidList auction={{ ...auction, bids: bids }} clearingPrice={clearingPrice} />
               </Card>
               <TokenFooter auction={auction} />
             </Flex>

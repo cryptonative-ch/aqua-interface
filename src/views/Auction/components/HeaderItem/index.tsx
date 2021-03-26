@@ -16,7 +16,7 @@ const HeaderTitle = styled.div<HeaderTitleProps>(
     fontWeight: 500,
     fontSize: '16px',
     lineHeight: '19px',
-    color: props.color
+    color: props.color,
   }),
   typography
 )
@@ -37,7 +37,7 @@ const MobileHeaderDescription = styled.div({
   fontSize: '16px',
   lineHeight: '19px',
   color: '#000629',
-  marginLeft: 'auto'
+  marginLeft: 'auto',
 })
 
 interface HeaderItemProps {
@@ -51,16 +51,18 @@ interface HeaderItemProps {
 export function HeaderItem({ title, description, color, textAlign, isMobile }: HeaderItemProps) {
   return (
     <Flex
-      flexDirection={isMobile ? "row" : "column"}
-      alignItems={isMobile ? "center" : "unset"}
-      marginRight={isMobile ? "0" : textAlign === 'right' ? "0" : "100px"}
-      marginBottom={isMobile ? "16px" : "0"}
+      flexDirection={isMobile ? 'row' : 'column'}
+      alignItems={isMobile ? 'center' : 'unset'}
+      marginRight={isMobile ? '0' : textAlign === 'right' ? '0' : '100px'}
+      marginBottom={isMobile ? '16px' : '0'}
     >
-      <HeaderTitle textAlign={textAlign === 'left' ? 'left' : 'right'} color={color}>{title}</HeaderTitle>
+      <HeaderTitle textAlign={textAlign === 'left' ? 'left' : 'right'} color={color}>
+        {title}
+      </HeaderTitle>
       {isMobile ? (
         <MobileHeaderDescription>{description}</MobileHeaderDescription>
-      ): (
-        description.length > 0 && (<HeaderDescription>{description}</HeaderDescription>)
+      ) : (
+        description.length > 0 && <HeaderDescription>{description}</HeaderDescription>
       )}
     </Flex>
   )
@@ -69,5 +71,5 @@ export function HeaderItem({ title, description, color, textAlign, isMobile }: H
 HeaderItem.defaultProps = {
   color: '#7B7F93',
   textAlign: 'left',
-  isMobile: false
+  isMobile: false,
 }
