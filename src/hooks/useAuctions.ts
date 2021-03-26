@@ -1,12 +1,24 @@
 // External
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
 
-// Data generators
-import { generateAuctionData } from 'src/data/auction'
 
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
+
+//subgraph
+
+import { auctionsRequest } from "src/subgraph/Auctions";
+
+
+
+
+
+
+const getAuctions = async() => {
+  console.log(await auctionsRequest)
+
+  return [...(await auctionsRequest).auctions]
+}
 
 
 interface UseAuctionsReturn {
@@ -20,16 +32,15 @@ export function useAuctions(): UseAuctionsReturn {
   const [error] = useState<Error | null>(null)
   const [auctions, setAuctions] = useState<Auction[]>([])
 
-  useEffect(() => {
-    const utcDate = dayjs(new Date().toUTCString())
-   
+  useEffect(() => {   
     // Populate with fake data
     // startBlock and endBlock assumes that there are 6000 blocks per 24 hours interval
     // push data once
    
 
     const fetchData = async() => {
-      setAuctions(await generateAuctionData(utcDate.unix()))
+      
+      setAuctions(await getAuctions())
     }
     fetchData()
     setLoading(false)

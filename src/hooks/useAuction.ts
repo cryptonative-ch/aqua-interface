@@ -1,11 +1,23 @@
 // External
 import { useEffect, useState } from 'react'
-
+import { BigNumber } from 'ethers'
 // Hooks
 import { useAuctions } from './useAuctions'
 
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
+
+//subgraph
+
+import { auctionsRequest } from "src/subgraph/Auctions";
+
+
+
+const generateAuctionData = async() => {
+  const auctionsArray = (await auctionsRequest).auctions.map((element: any) => ({...element,bids: element.bids.map((item: any) => ({...item,buyAmount: BigNumber.from(item.buyAmount), sellAmount: BigNumber.from(item.sellAmount) }))}))
+
+  return [...auctionsArray]
+}
 
 interface UseAuctionReturn {
   loading: boolean

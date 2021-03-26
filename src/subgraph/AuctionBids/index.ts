@@ -1,12 +1,8 @@
 // Externals
 import { request, gql } from 'graphql-request'
 
-
-
-
-
-
-const ENDPOINT = "http://localhost:8000/subgraphs/name/adamazad/mesa"
+// subgraph 
+import { ENDPOINT } from "../index";
 
 
 
