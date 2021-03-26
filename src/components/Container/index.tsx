@@ -20,7 +20,7 @@ export const Container = styled.div<ContainerProps>(
   }),
   props => `
     @media (min-width: ${props.theme.breakpoints[0]}) {
-      max-width: ${props.inner ? (props.fluid ? '90vw' : '1020px') : '100%'};
+      max-width: ${props.inner ? (props.fluid ? '90vw' : '1012px') : '100%'};
       padding-left: ${props.noPadding ? 0 : props.theme.space[3] + 'px'};
       padding-right: ${props.noPadding ? 0 : props.theme.space[3] + 'px'};
       

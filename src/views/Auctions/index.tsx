@@ -39,7 +39,6 @@ const AuctionListSection = styled.div(
   props => ({
     margin: '0',
     display: props.theme.grid.display,
-    maxWidth: '1000px',
     gridTemplateColumns: props.theme.grid.gridTemplateColumns[0],
     gap: props.theme.grid.gap[0],
   }),
