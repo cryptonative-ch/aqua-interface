@@ -62,6 +62,14 @@ const ChartDescription = styled.div({
   margin: '0 16px 16px'
 })
 
+const FixedFormMax = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '19px',
+  color: '#7B7F93',
+})
+
 interface FixedPriceAuctionViewParams {
   auctionId: string
 }
@@ -152,14 +160,17 @@ export function FixedPriceAuctionView() {
                 ) : (
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
-                      title={isAuctionUpcoming(auction) ? "Min. Price" : isAuctionOpen(auction) ? "Current Price" : "Final Price"}
-                      description={`${(1 / (clearingPrice?.sellAmount.toNumber() || 0)).toFixed(2)} DAI/${auction.tokenSymbol}`}
+                      title="Price"
+                      description={`${(1 / (clearingPrice?.sellAmount.toNumber() || 1)).toFixed(2)} DAI/${auction.tokenSymbol}`}
                     />
                     <HeaderItem
-                      title={isAuctionClosed(auction) ? "Amount Sold" : "Amount for Sale"}
-                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
+                      title={isAuctionClosed(auction) ? "Amount Sold" : "Min. - Max. Allocation"}
+                      description={`100 - ${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
+                      flexAmount={1.5}
                     />
-                    <Flex flex={1} />
+                    {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && (
+                      <Flex flex={1} />
+                    )}
                     {isAuctionClosed(auction) && (
                       <HeaderItem
                         title="Closed On"
@@ -215,7 +226,7 @@ export function FixedPriceAuctionView() {
             {auction.bids && auction.bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none" flexDirection="row" alignItems="center">
-                  <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourBids')}</CardTitle>
+                  <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">{t('texts.yourActivity')}</CardTitle>
                   <Flex flex={1} />
                   {isAuctionClosed(auction) && !isMobile && (
                     <>
@@ -249,7 +260,7 @@ export function FixedPriceAuctionView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList auction={auction} clearingPrice={clearingPrice} />
+                <SelfBidList auction={auction} clearingPrice={clearingPrice} isFixed={true}/>
               </Card>
             )}
             <TokenFooter auction={auction} />
@@ -258,8 +269,11 @@ export function FixedPriceAuctionView() {
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
-                  <Flex flexDirection="row" alignItems="center" flex={1}>
-                    <HeaderItem title="Place a Bid" description="" color="#000629" />
+                  <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
+                    <HeaderItem title={`Buy ${auction.tokenSymbol}`} description="" color="#000629" />
+                    <FixedFormMax>
+                      {`Max. 3,500 ${auction.tokenSymbol}`}
+                    </FixedFormMax>
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
@@ -269,6 +283,7 @@ export function FixedPriceAuctionView() {
                     }}
                     auction={auction}
                     currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
+                    isFixed
                   />
                 </CardBody>
               </Card>

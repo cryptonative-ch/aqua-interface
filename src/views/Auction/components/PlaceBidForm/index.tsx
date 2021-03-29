@@ -15,6 +15,10 @@ import { Auction } from 'src/interfaces/Auction'
 import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
 
+const FormBody = styled.form({
+  flex: 1
+})
+
 const FormLabel = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
@@ -52,6 +56,17 @@ const FormText = styled.div({
   lineHeight: '48px',
   margin: '0 16px',
   userSelect: 'none',
+})
+
+const FixedTerm = styled.div({
+  border: '1px dashed #DDDDE3',
+  borderWidth: '1px 0 0 0',
+  padding: '16px 0 8px 0',
+  textAlign: 'center',
+  fontSize: '14px',
+  lineHeight: '21px',
+  color: '#7B7F93',
+  fontWeight: 400
 })
 
 const MaxButton = styled.div({
@@ -95,9 +110,10 @@ interface PlaceBidComponentProps {
   auction: Auction
   onSubmit: (bidData: BidData) => void
   currentSettlementPrice?: number
+  isFixed?: boolean
 }
 
-export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: PlaceBidComponentProps) {
+export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixed }: PlaceBidComponentProps) => {
   const { isShown, result, toggleModal, setResult } = useContext(BidModalContext)
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
@@ -154,23 +170,25 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
   const isDisabled = !formValid || isAuctionClosed(auction) || isAuctionUpcoming(auction)
 
   return (
-    <form id="createBidForm" onSubmit={onFormSubmit}>
-      <FormGroup theme={theme}>
-        <FormLabel>Token Price</FormLabel>
-        <Flex flexDirection="column" flex={1}>
-          <FormContainer>
-            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
-            <FormInput
-              aria-label="tokenAmount"
-              id="tokenAmount"
-              type="number"
-              value={Number(tokenAmount).toString()}
-              onChange={onTokenAmountChange}
-            />
-          </FormContainer>
-          <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
-        </Flex>
-      </FormGroup>
+    <FormBody id="createBidForm" onSubmit={onFormSubmit}>
+      {!isFixed && (
+        <FormGroup theme={theme}>
+          <FormLabel>Token Price</FormLabel>
+          <Flex flexDirection="column" flex={1}>
+            <FormContainer>
+              <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+              <FormInput
+                aria-label="tokenAmount"
+                id="tokenAmount"
+                type="number"
+                value={Number(tokenAmount).toString()}
+                onChange={onTokenAmountChange}
+              />
+            </FormContainer>
+            <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
+          </Flex>
+        </FormGroup>
+      )}
       <FormGroup theme={theme}>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
@@ -185,9 +203,16 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
             />
             <MaxButton>Max</MaxButton>
           </FormContainer>
-          <FormDescription>Enter the amount of DAI you would like to trade. You have 123,456 DAI.</FormDescription>
+          <FormDescription>
+            {isFixed ? 'You have 123,456 DAI.' : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
+          </FormDescription>
         </Flex>
       </FormGroup>
+      {isFixed && (
+        <FixedTerm>
+          {`You'll get 1,000 ${auction.tokenSymbol}`}
+        </FixedTerm>
+      )}
       <Button
         disabled={isDisabled}
         data-testid="submit-button"
@@ -204,8 +229,12 @@ export function PlaceBidForm({ auction, onSubmit, currentSettlementPrice }: Plac
         background={isDisabled ? '#DDDDE3' : '#304FFE'}
         color={isDisabled ? '#7B7F93' : '#fff'}
       >
-        {t('buttons.placeBid')}
+        {isFixed ? t('texts.placeBuyOrder') : t('buttons.placeBid')}
       </Button>
-    </form>
+    </FormBody>
   )
+}
+
+PlaceBidForm.defaultProps = {
+  isFixed: false
 }

@@ -21,7 +21,9 @@
     "upcomingAuctions": "Upcoming Auctions",
     "calculatedVirtualPrice": "Virtual Settlement Price",
     "bidMaybeTooLow": "Bid may be too low to be included",
-    "doYouWishToContinue": "Do you wish to continue?"
+    "doYouWishToContinue": "Do you wish to continue?",
+    "yourActivity": "Your Activity",
+    "placeBuyOrder": "Place Buy Order"
   },
   "buttons": {
     "back": "Back",

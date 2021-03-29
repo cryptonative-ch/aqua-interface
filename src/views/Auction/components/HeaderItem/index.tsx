@@ -46,15 +46,17 @@ interface HeaderItemProps {
   color: string
   textAlign: string
   isMobile: boolean
+  flexAmount?: number
 }
 
-export function HeaderItem({ title, description, color, textAlign, isMobile }: HeaderItemProps) {
+export function HeaderItem({ title, description, color, textAlign, isMobile, flexAmount }: HeaderItemProps) {
   return (
     <Flex
       flexDirection={isMobile ? 'row' : 'column'}
       alignItems={isMobile ? 'center' : 'unset'}
-      marginRight={isMobile ? '0' : textAlign === 'right' ? '0' : '100px'}
+      marginRight={isMobile ? '0' : textAlign === 'right' ? '0' : flexAmount !== 1 ? '60px' : '100px'}
       marginBottom={isMobile ? '16px' : '0'}
+      flex={flexAmount}
     >
       <HeaderTitle textAlign={textAlign === 'left' ? 'left' : 'right'} color={color}>
         {title}
@@ -72,4 +74,5 @@ HeaderItem.defaultProps = {
   color: '#7B7F93',
   textAlign: 'left',
   isMobile: false,
+  flexAmount: 1
 }
