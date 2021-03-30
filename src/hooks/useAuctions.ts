@@ -13,11 +13,15 @@ const getAuctions = async () => {
 
   const easyAuctions = (await auctionsRequest).Easyauctions
 
+  const easyAuctionType = easyAuctions.map((item:any) => ({...item, type: 'easyAuction'}))
+
   const fixedPriceAuctions = (await auctionsRequest).fixedPriceAuctions
 
-  const auctionsArray = easyAuctions.map((item: unknown[], i: number) => Object.assign({}, item, fixedPriceAuctions[i]))
+  const fixedPriceAuctionsType = fixedPriceAuctions.map((item:any) => ({...item, type: 'fixedPriceAuctions'}))
 
-  return [auctionsArray]
+  const auctionsArray = easyAuctionType.map((item: unknown[], i: number) => Object.assign({}, item, fixedPriceAuctionsType[i]))
+
+  return [...auctionsArray]
 }
 
 interface UseAuctionsReturn {
