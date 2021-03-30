@@ -1,38 +1,48 @@
 // Externals
-import { request, gql } from 'graphql-request'
-
-// subgraph 
-import { ENDPOINT } from "../index";
+import { gql } from 'graphql-request'
 
 
 
-
-
-const auctionBidsQuery = gql`{
-    auctions {
+export const auctionBidsQuery = (Id: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
+  if (auctionType == 'fixedPriceAuction') {
+    
+    return gql`
+    @live 
+    # live queries turning these into pseudo subscriptions
+    # live queries observe data and update based on that
+    # subscriptions update based on certain events
+      {
+        fixedPriceAuction (id: ${Id}) {
+    bids {
       id
+      status
       createdAt
       updatedAt
       deletedAt
-      status
-      startBlock:startTime
-      endBlock:endTime
-      gracePeriod
-      tokenAmount
-      bids {
-         id
-      createdAt
-      updatedAt
-      deletedAt
-      status
-        tokenInAmount
-        tokenOutAmount
-        address
-      }
+      tokenInAmount
+      tokenOutAmount
+      address
     }
+   }
+ }
+      `
   }
 
-
+  return gql`
+  @live 
+{
+  easyAuction (id: ${Id}) {
+    bids {
+      id
+      status
+      createdAt
+      updatedAt
+      deletedAt
+      tokenInAmount
+      tokenOutAmount
+      address
+    }
+   }
+ }
 `
-
-export const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery)
+}

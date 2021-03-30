@@ -4,9 +4,11 @@ import { useWallet } from 'use-wallet'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 import numeral from 'numeral'
+import { BigNumber } from 'ethers'
+import { request } from 'graphql-request'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
@@ -48,6 +50,47 @@ import { NotFoundView } from 'src/views/NotFound'
 import { AuctionBid } from 'src/interfaces/Auction'
 
 
+//redux
+
+import {  GenerateBid, StartBid } from 'src/redux/BidData'
+import { RootState } from 'src/redux/store'
+
+//subgraph
+
+import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
+import { ENDPOINT } from 'src/subgraph'
+
+
+
+
+/**
+ *
+ * @todo initial load, pulls all data
+ * subsequent loads in individial bids
+ */
+
+ const generateInitialAuctionData = async (id: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
+  // reformat data
+  const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(id, auctionType))
+
+  const auctionBids = (await auctionBidsRequest).easybids.map((item: any) => ({
+    ...item,
+    tokenOutAmount: BigNumber.from(item.tokenOutAmount),
+    tokenInAmount: BigNumber.from(item.tokenInAmount),
+  }))
+
+  return [...auctionBids]
+}
+
+const generatedSubscriptionAuctiondata = async() => {
+  // subscription to auctionBids
+  // pulls in single bids each 1/5/10 seconds
+}
+
+const bids = useSelector<RootState, AuctionBid[]>(state => {
+  return state.BidReducer.bids
+})
+
 interface AuctionViewParams {
   auctionId: string
 }
@@ -82,12 +125,27 @@ export function AuctionView() {
       setUserAddress(walletAddress || getRandomWallet().address)
     }
 
-    //Calculate the virtual
-    if (auction) {
-      setClearingPrice(calculateClearingPrice(auction.bids))
+      const initialFetchData = async() => {
+        dispatch(setPageTitle(t(auction?.name as string)))
+        // how to filter different auction types
+        dispatch(StartBid(await generateInitialAuctionData(params.auctionId, 'fixedPriceAuction' )))
+        // auction bids calculation
+        // call redux value in here
+        setClearingPrice(calculateClearingPrice(bids))
+      }
+      const subscriptionFetchData = async() => {
+        //subscription feed to graphql node 
+        // real time data feed of bids
+        // if not subscription called every 1/5/10 seconds
+        dispatch(GenerateBid(await generatedSubscriptionAuctiondata))
+      }
+
+    if (showGraph){
+      initialFetchData()
+      subscriptionFetchData()
     }
-    dispatch(setPageTitle(t(auction?.tokenName as string)))
-  }, [auction, t, dispatch])
+    
+  }, [auction, t, dispatch, bids])
 
   if (!auction) {
     return <NotFoundView />
@@ -126,9 +184,9 @@ export function AuctionView() {
                   <BarChart
                     width={containerWidth}
                     height={400}
-                    data={auction.bids}
+                    data={bids}
                     userAddress={userAddress}
-                    vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5}
+                    vsp={(clearingPrice?.tokenInAmount.toNumber() || 0) / 5}
                   />
                 </CardBody>
               )}
@@ -156,7 +214,7 @@ export function AuctionView() {
                     console.log('Add to Auction')
                   }}
                   auction={auction}
-                  currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
+                  currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
                 />
               </CardBody>
             </Card>

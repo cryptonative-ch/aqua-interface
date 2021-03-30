@@ -13,36 +13,36 @@ function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: Auctio
 
   for (const order of sellOrders) {
     // Increase total volume
-    totalSellVolume = totalSellVolume.add(order.sellAmount)
+    totalSellVolume = totalSellVolume.add(order.tokenInAmount)
 
-    if (totalSellVolume.mul(order.buyAmount).div(order.sellAmount).gte(initialAuctionOrder.sellAmount)) {
-      const coveredBuyAmount = initialAuctionOrder.sellAmount.sub(
-        totalSellVolume.sub(order.sellAmount).mul(order.buyAmount).div(order.sellAmount)
+    if (totalSellVolume.mul(order.tokenOutAmount).div(order.tokenInAmount).gte(initialAuctionOrder.tokenInAmount)) {
+      const coveredtokenOutAmount = initialAuctionOrder.tokenInAmount.sub(
+        totalSellVolume.sub(order.tokenInAmount).mul(order.tokenOutAmount).div(order.tokenInAmount)
       )
-      const sellAmountClearingOrder = coveredBuyAmount.mul(order.sellAmount).div(order.buyAmount)
-      if (sellAmountClearingOrder.gt(BigNumber.from(0))) {
+      const tokenInAmountClearingOrder = coveredtokenOutAmount.mul(order.tokenInAmount).div(order.tokenOutAmount)
+      if (tokenInAmountClearingOrder.gt(BigNumber.from(0))) {
         return order
       } else {
         return {
           address: initialAuctionOrder.address,
-          buyAmount: initialAuctionOrder.sellAmount,
-          sellAmount: totalSellVolume.sub(order.sellAmount),
+          tokenOutAmount: initialAuctionOrder.tokenInAmount,
+          tokenInAmount: totalSellVolume.sub(order.tokenInAmount),
         }
       }
     }
   }
   // otherwise, clearing price is initialAuctionOrder
-  if (totalSellVolume.gt(initialAuctionOrder.buyAmount)) {
+  if (totalSellVolume.gt(initialAuctionOrder.tokenOutAmount)) {
     return {
       address: initialAuctionOrder.address,
-      buyAmount: initialAuctionOrder.sellAmount,
-      sellAmount: totalSellVolume,
+      tokenOutAmount: initialAuctionOrder.tokenInAmount,
+      tokenInAmount: totalSellVolume,
     }
   } else {
     return {
       address: initialAuctionOrder.address,
-      buyAmount: initialAuctionOrder.sellAmount,
-      sellAmount: initialAuctionOrder.buyAmount,
+      tokenOutAmount: initialAuctionOrder.tokenInAmount,
+      tokenInAmount: initialAuctionOrder.tokenOutAmount,
     }
   }
 }
@@ -52,8 +52,8 @@ function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: Auctio
  * @param auctionBids
  */
 export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
-  if (order1.buyAmount.mul(order2.sellAmount).lt(order2.buyAmount.mul(order1.sellAmount))) return -1
-  if (order1.buyAmount.mul(order2.sellAmount).eq(order2.buyAmount.mul(order1.sellAmount))) {
+  if (order1.tokenOutAmount.mul(order2.tokenInAmount).lt(order2.tokenOutAmount.mul(order1.tokenInAmount))) return -1
+  if (order1.tokenOutAmount.mul(order2.tokenInAmount).eq(order2.tokenOutAmount.mul(order1.tokenInAmount))) {
     if (order1.address < order2.address) return -1
   }
   return 1
@@ -67,8 +67,8 @@ export function calculateClearingPrice(easyAuctionBids: AuctionBid[]): AuctionBi
   if (!easyAuctionBids.length) {
     return {
       address: '0x',
-      buyAmount: BigNumber.from(0),
-      sellAmount: BigNumber.from(0),
+      tokenOutAmount: BigNumber.from(0),
+      tokenInAmount: BigNumber.from(0),
     }
   }
 

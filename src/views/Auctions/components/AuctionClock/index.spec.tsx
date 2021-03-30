@@ -17,8 +17,8 @@ afterEach(cleanup)
 describe('Testing AuctionClock', () => {
   test('should display Timeframe when auction is upcoming', () => {
     const auction = getAuctionDefault({
-      startBlock: 1646500442,
-      endBlock: 1678036442,
+      startDate: 1646500442,
+      endDate: 1678036442,
     })
 
     const { getByText } = render(<AuctionClock auction={auction} />)
@@ -26,8 +26,8 @@ describe('Testing AuctionClock', () => {
   }),
     test('should display closed when auction is Closed', () => {
       const auction = getAuctionDefault({
-        startBlock: 1520270042,
-        endBlock: 1551806042,
+        startDate: 1520270042,
+        endDate: 1551806042,
       })
 
       const { getByText } = render(<AuctionClock auction={auction} />)
@@ -35,24 +35,24 @@ describe('Testing AuctionClock', () => {
     }),
     test('should display Time remaining when auction is open', () => {
       const auction = getAuctionDefault({
-        startBlock: 1551806042,
-        endBlock: 1646500442,
+        startDate: 1551806042,
+        endDate: 1646500442,
       })
       const { getByText } = render(<AuctionClock auction={auction} />)
       expect(getByText('Time Remaining')).toBeInTheDocument()
     }),
     test('should display SVG circle', () => {
       const auction = getAuctionDefault({
-        startBlock: addHours(dateUTC, -1).unix(),
-        endBlock: addHours(dateUTC, 24).unix(),
+        startDate: addHours(dateUTC, -1).unix(),
+        endDate: addHours(dateUTC, 24).unix(),
       })
       const { asFragment } = render(<AuctionClock auction={auction} />)
       expect(asFragment()).toMatchSnapshot()
     }),
     test('should calculate percentage of slice according to timer', () => {
       const auction = getAuctionDefault({
-        startBlock: addHours(dateUTC, -1).unix(),
-        endBlock: addHours(dateUTC, 24).unix(),
+        startDate: addHours(dateUTC, -1).unix(),
+        endDate: addHours(dateUTC, 24).unix(),
       })
       expect(timerPercentage(auction)).toBe(4.0000000000000036)
     })

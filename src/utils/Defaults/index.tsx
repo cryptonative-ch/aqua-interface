@@ -9,12 +9,12 @@ import Omen from 'src/assets/svg/Omen.svg'
 
 export const getDefaults = (): Auction => ({
   id: '0x141',
-  startBlock: 7656756757,
-  endBlock: 7656756757,
+  startDate: 7656756757,
+  endDate: 7656756757,
   tokenAddress: '0x',
   tokenAmount: 5000,
   tokenName: 'Omen',
-  tokenSymbol: 'DXD',
+  symbol: 'DXD',
   tokenIcon: Omen,
   bids: [],
 })

@@ -7,6 +7,7 @@ import numeral from 'numeral'
 import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 
+
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useAuction } from 'src/hooks/useAuction'
@@ -157,8 +158,8 @@ export function SimulationView() {
           () =>
             addBid({
               address: getRandomWallet().address,
-              sellAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
-              buyAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
+              tokenInAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
+              tokenOutAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
             }),
           1000
         )
@@ -216,7 +217,7 @@ export function SimulationView() {
                       height={400}
                       data={bids}
                       userAddress={userAddress}
-                      vsp={(clearingPrice?.sellAmount.toNumber() || 0) / 5}
+                      vsp={(clearingPrice?.tokenInAmount.toNumber() || 0) / 5}
                     />
                   </CardBody>
                 )}

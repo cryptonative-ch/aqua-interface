@@ -79,8 +79,8 @@ interface AuctionHeaderProps {
 
 export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
   // calculating time difference between local persons time and the start and end block times
-  const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
-  const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
+  const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startDate))
+  const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endDate))
 
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState(0)

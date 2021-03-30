@@ -20,8 +20,8 @@ interface AuctionClockProps {
 
 export const timerPercentage = (auction: Auction) => {
   const localTimeStamp = dayjs(Date.now()).unix()
-  const startTime = convertUtcTimestampToLocal(auction.startBlock)
-  const endTime = convertUtcTimestampToLocal(auction.endBlock)
+  const startTime = convertUtcTimestampToLocal(auction.startDate)
+  const endTime = convertUtcTimestampToLocal(auction.endDate)
   const totalTime = Math.abs(startTime - endTime)
   const percentage = (1 - Math.abs(localTimeStamp - endTime) / totalTime) * 100
   return percentage

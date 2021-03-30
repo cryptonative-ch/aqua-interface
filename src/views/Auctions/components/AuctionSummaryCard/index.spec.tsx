@@ -27,8 +27,8 @@ afterEach(cleanup)
 describe('testing Auction Summary Card', () => {
   test('should display the correct styling', () => {
     const auction = getAuctionDefault({
-      startBlock: 1646500442,
-      endBlock: 1678036442,
+      startDate: 1646500442,
+      endDate: 1678036442,
     })
     const AST = create(
       <ThemeProvider theme={theme}>

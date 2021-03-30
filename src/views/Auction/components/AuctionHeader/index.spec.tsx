@@ -32,12 +32,12 @@ describe('seconds to HMS function', () => {
 describe('AuctionHeader', () => {
   test('it should render the correct auction header', async () => {
     const auction = getAuctionDefault({
-      startBlock: addHours(dateUTC, -24).unix(),
-      endBlock: addHours(dateUTC, +24).unix(),
+      startDate: addHours(dateUTC, -24).unix(),
+      endDate: addHours(dateUTC, +24).unix(),
     })
 
-    const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
-    const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
+    const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startDate))
+    const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endDate))
     let format_time = ''
     if (isAuctionUpcoming(auction)) {
       format_time = secondsTohms(time_diff_start)

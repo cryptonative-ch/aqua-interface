@@ -16,7 +16,7 @@ export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {
   return (
     <Flex>
       <CardText>{numeral(auction.tokenAmount).format('0,0')}</CardText>
-      <CardText fontWeight="light">&nbsp;{auction.tokenSymbol}</CardText>
+      <CardText fontWeight="light">&nbsp;{auction.tokenOut.symbol}</CardText>
     </Flex>
   )
 }

@@ -17,16 +17,16 @@ interface BarChartComponentProps {
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp }) => {
   const ref = useRef<SVGSVGElement>(null)
 
-  const getBidPricePerShare = (bid: AuctionBid) => bid.sellAmount.toNumber() / bid.buyAmount.toNumber()
+  const getBidPricePerShare = (bid: AuctionBid) => bid.tokenInAmount.toNumber() / bid.tokenOutAmount.toNumber()
 
   const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
-    return `${(bid.sellAmount.toNumber() / bid.buyAmount.toNumber()).toFixed(2)}${
-      bid.buyAmount.toNumber() >= fontSize * 4 ? ' DAI/XYZ' : ''
+    return `${(bid.tokenInAmount.toNumber() / bid.tokenOutAmount.toNumber()).toFixed(2)}${
+      bid.tokenOutAmount.toNumber() >= fontSize * 4 ? ' DAI/XYZ' : ''
     }`
   }
 
   const getBidAmountText = (bid: AuctionBid, fontSize: number) => {
-    return `${bid.buyAmount.toNumber().toFixed(0)}${bid.buyAmount.toNumber() >= fontSize * 3 ? ' XYZ' : ''}`
+    return `${bid.tokenOutAmount.toNumber().toFixed(0)}${bid.tokenOutAmount.toNumber() >= fontSize * 3 ? ' XYZ' : ''}`
   }
 
   const draw = () => {
@@ -34,11 +34,11 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       return
     }
     const svg = d3.select(ref.current)
-    const sortedData = data.sort((first, second) => second.sellAmount.toNumber() - first.sellAmount.toNumber())
+    const sortedData = data.sort((first, second) => second.tokenInAmount.toNumber() - first.tokenInAmount.toNumber())
     const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
     const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
-    const activeChartData: any[] = activeBids.map(item => item.buyAmount.toNumber())
-    const inactiveChartData: any[] = inactiveBids.map(item => item.buyAmount.toNumber())
+    const activeChartData: any[] = activeBids.map(item => item.tokenOutAmount.toNumber())
+    const inactiveChartData: any[] = inactiveBids.map(item => item.tokenOutAmount.toNumber())
 
     svg.selectAll('g').remove()
     const activeSelection = svg.append('g').attr('class', 'activeSelection').selectAll('rect').data(activeChartData)

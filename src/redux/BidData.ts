@@ -62,8 +62,8 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
         bids: state.bids.filter(
           bid =>
             bid.address !== action.payload.address &&
-            bid.sellAmount !== action.payload.sellAmount &&
-            bid.buyAmount !== action.payload.buyAmount
+            bid.tokenInAmount !== action.payload.tokenInAmount &&
+            bid.tokenOutAmount !== action.payload.tokenOutAmount
         ),
       }
     case INITIAL_BID_SEED:

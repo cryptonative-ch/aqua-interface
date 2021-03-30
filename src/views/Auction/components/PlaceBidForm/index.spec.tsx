@@ -32,12 +32,12 @@ describe('PlaceBidForm', () => {
     })
     const auction = {
       id: '0x143',
-      startBlock: addHours(dateUTC, 14).unix(),
-      endBlock: addHours(dateUTC, 114).unix(),
+      startDate: addHours(dateUTC, 14).unix(),
+      endDate: addHours(dateUTC, 114).unix(),
       tokenAddress: '0x',
       tokenAmount: 150000,
       tokenName: 'Compound',
-      tokenSymbol: 'COMP',
+      symbol: 'COMP',
       tokenIcon: Compound,
       bids: [],
     }

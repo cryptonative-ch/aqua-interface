@@ -41,8 +41,8 @@ describe('converts unix seconds into local Date time format function', () => {
 describe('Timer', () => {
   test('when auction is open it should render the correct display', async () => {
     const auction = getAuctionDefault({
-      startBlock: addHours(dateUTC, -0.01).unix(),
-      endBlock: addHours(dateUTC, 0.05).unix(),
+      startDate: addHours(dateUTC, -0.01).unix(),
+      endDate: addHours(dateUTC, 0.05).unix(),
     })
 
     const { getByTestId } = render(<Timer auction={auction} />)
@@ -51,8 +51,8 @@ describe('Timer', () => {
   }),
     test('when auction is upcoming, it displays the correct return', () => {
       const auction = getAuctionDefault({
-        startBlock: addHours(dateUTC, 14).unix(),
-        endBlock: addHours(dateUTC, 114).unix(),
+        startDate: addHours(dateUTC, 14).unix(),
+        endDate: addHours(dateUTC, 114).unix(),
       })
 
       const { getByText } = render(<Timer auction={auction} />)
@@ -60,8 +60,8 @@ describe('Timer', () => {
     }),
     test('when auction is closed, it should return the correct display', async () => {
       const auction = getAuctionDefault({
-        startBlock: 1520798525,
-        endBlock: 1552334525,
+        startDate: 1520798525,
+        endDate: 1552334525,
       })
 
       const { getByTestId } = render(<Timer auction={auction} />)
