@@ -4,25 +4,12 @@ import { useEffect, useState } from 'react'
 // Interfaces
 import { Auction } from 'src/interfaces/Auction'
 
-//subgraph
+// subgraph
 
-import { auctionsRequest } from 'src/subgraph/Auctions'
+import { getAuctionsData } from "src/subgraph";
 
-const getAuctions = async () => {
-  console.log(await auctionsRequest)
 
-  const easyAuctions = (await auctionsRequest).Easyauctions
 
-  const easyAuctionType = easyAuctions.map((item:any) => ({...item, type: 'easyAuction'}))
-
-  const fixedPriceAuctions = (await auctionsRequest).fixedPriceAuctions
-
-  const fixedPriceAuctionsType = fixedPriceAuctions.map((item:any) => ({...item, type: 'fixedPriceAuctions'}))
-
-  const auctionsArray = easyAuctionType.map((item: unknown[], i: number) => Object.assign({}, item, fixedPriceAuctionsType[i]))
-
-  return [...auctionsArray]
-}
 
 interface UseAuctionsReturn {
   loading: boolean
@@ -30,10 +17,14 @@ interface UseAuctionsReturn {
   auctions: Auction[]
 }
 
+
+
+
 export function useAuctions(): UseAuctionsReturn {
   const [loading, setLoading] = useState<boolean>(true)
   const [error] = useState<Error | null>(null)
   const [auctions, setAuctions] = useState<Auction[]>([])
+ 
 
   useEffect(() => {
     // Populate with fake data
@@ -41,7 +32,8 @@ export function useAuctions(): UseAuctionsReturn {
     // push data once
 
     const fetchData = async () => {
-      setAuctions(await getAuctions())
+      
+      setAuctions(await getAuctionsData())
     }
     fetchData()
     setLoading(false)

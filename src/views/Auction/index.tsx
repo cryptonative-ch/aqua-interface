@@ -7,8 +7,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 import numeral from 'numeral'
-import { BigNumber } from 'ethers'
-import { request } from 'graphql-request'
+
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
@@ -56,9 +55,9 @@ import {  GenerateBid, StartBid } from 'src/redux/BidData'
 import { RootState } from 'src/redux/store'
 
 //subgraph
+import { selectAuctiontype, generateInitialAuctionData } from "src/subgraph";
 
-import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
-import { ENDPOINT } from 'src/subgraph'
+
 
 
 
@@ -69,27 +68,8 @@ import { ENDPOINT } from 'src/subgraph'
  * subsequent loads in individial bids
  */
 
- const generateInitialAuctionData = async (id: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
-  // reformat data
-  const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(id, auctionType))
 
-  const auctionBids = (await auctionBidsRequest).easybids.map((item: any) => ({
-    ...item,
-    tokenOutAmount: BigNumber.from(item.tokenOutAmount),
-    tokenInAmount: BigNumber.from(item.tokenInAmount),
-  }))
 
-  return [...auctionBids]
-}
-
-const generatedSubscriptionAuctiondata = async() => {
-  // subscription to auctionBids
-  // pulls in single bids each 1/5/10 seconds
-}
-
-const bids = useSelector<RootState, AuctionBid[]>(state => {
-  return state.BidReducer.bids
-})
 
 interface AuctionViewParams {
   auctionId: string
@@ -112,6 +92,10 @@ export function AuctionView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
+  const bids = useSelector<RootState, AuctionBid[]>(state => {
+    return state.BidReducer.bids
+  })
+
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -128,7 +112,7 @@ export function AuctionView() {
       const initialFetchData = async() => {
         dispatch(setPageTitle(t(auction?.name as string)))
         // how to filter different auction types
-        dispatch(StartBid(await generateInitialAuctionData(params.auctionId, 'fixedPriceAuction' )))
+        dispatch(StartBid(await generateInitialAuctionData(params.auctionId, await selectAuctiontype(params.auctionId) )))
         // auction bids calculation
         // call redux value in here
         setClearingPrice(calculateClearingPrice(bids))
@@ -137,7 +121,7 @@ export function AuctionView() {
         //subscription feed to graphql node 
         // real time data feed of bids
         // if not subscription called every 1/5/10 seconds
-        dispatch(GenerateBid(await generatedSubscriptionAuctiondata))
+        // dispatch(GenerateBid())
       }
 
     if (showGraph){

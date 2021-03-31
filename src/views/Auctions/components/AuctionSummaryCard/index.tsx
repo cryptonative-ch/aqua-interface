@@ -32,10 +32,10 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
         <Flex justifyContent="space-between" alignItems="center">
           <Flex width="100%" alignItems="center">
             <TokenIconFigure>
-              <img style={{ height: '45px' }} src={auction.tokenIcon} alt={auction.tokenName} />
+              <img style={{ height: '45px' }} src={auction.tokenOut?.icon} alt={auction.tokenOut?.name} />
             </TokenIconFigure>
             <CardText fontSize="title" lineHeight="title">
-              {auction.tokenName}
+              {auction.name}
             </CardText>
           </Flex>
           <Flex>

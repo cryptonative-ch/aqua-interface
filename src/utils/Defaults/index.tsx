@@ -9,14 +9,26 @@ import Omen from 'src/assets/svg/Omen.svg'
 
 export const getDefaults = (): Auction => ({
   id: '0x141',
-  startDate: 7656756757,
-  endDate: 7656756757,
-  tokenAddress: '0x',
+  createdAt:1585481341,
+  updatedAt: null,
+  deletedAt: null,
+  status: 'closed',
+  startDate: 1585654141,
+  endDate: 1617193741,
   tokenAmount: 5000,
-  tokenName: 'Omen',
-  symbol: 'DXD',
-  tokenIcon: Omen,
+  name: 'Omen',
+  tokenOut: {
+    id: '0x141',
+    BaseAuction: '0x141'
+    name:'Omen',
+    icon: 'IPFS LINK HERE',
+    address: '0x',
+    decimals: 18,
+    symbol: 'DXD'
+  },
+  // tokenIcon: Omen,
   bids: [],
+  type: 'easyAuction',
 })
 
 export const getAuctionDefault = (a?: Partial<Auction>): Auction => ({

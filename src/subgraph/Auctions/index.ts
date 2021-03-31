@@ -14,7 +14,7 @@ const auctionsQuery = gql`
       deletedAt
       status
       sellAmount
-      minBuyAmount
+      
       minFundingThreshold
       orderCancellationPeriod
       duration
@@ -28,25 +28,25 @@ const auctionsQuery = gql`
       updatedAt
       deletedAt
       status
-      startTime
-      endTime
-      gracePeriod
+      startDate
+      endDate
+      
       tokenAmount
       tokenIn {
         id
-        auction
+        
         name
-        icon
-        addressss
+        
+        
         symbol
         decimals
       }
       tokenOut {
         id
-        auction
+        
         name
-        icon
-        addressss
+        
+        
         symbol
         decimals
       }
@@ -54,4 +54,5 @@ const auctionsQuery = gql`
   }
 `
 
-export const auctionsRequest = request(ENDPOINT, auctionsQuery)
+export const auctionsRequest = request('http://localhost:8000/subgraphs/name/adamazad/mesa', auctionsQuery)
+

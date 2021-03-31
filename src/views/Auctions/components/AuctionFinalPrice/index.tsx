@@ -8,13 +8,13 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 
 // Interfaces
-import { EasyAuction, FixedPriceAuction } from 'src/interfaces/Auction'
+import { Auction } from 'src/interfaces/Auction'
 
 // Mesa Utils
 import { isAuctionUpcoming } from 'src/mesa/auction'
 
 interface AuctionFinalPriceProps {
-  auction: EasyAuction & FixedPriceAuction
+  auction: Auction
 }
 
 const round = (num: number) => {
@@ -33,7 +33,7 @@ export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
     return (
       <Flex>
         <CardText>N/A</CardText>
-        <CardText fontWeight="light">&nbsp;DAI/{auction.tokenOut.symbol}</CardText>
+        <CardText fontWeight="light">&nbsp;DAI/{auction.tokenOut?.symbol}</CardText>
       </Flex>
     )
   }
@@ -50,7 +50,7 @@ export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
     <Flex>
       {/* <CardText data-testid="openprice">{pricePerToken}</CardText> */}
       <CardText data-testid="openprice">N/A</CardText>
-      <CardText fontWeight="light">&nbsp;DAI/{auction.tokenOut.symbol}</CardText>
+      <CardText fontWeight="light">&nbsp;DAI/{auction.tokenOut?.symbol}</CardText>
     </Flex>
   )
 }

@@ -3,6 +3,7 @@ import { gql } from 'graphql-request'
 
 
 
+
 export const auctionBidsQuery = (Id: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
   if (auctionType == 'fixedPriceAuction') {
     
@@ -13,6 +14,7 @@ export const auctionBidsQuery = (Id: string, auctionType: 'fixedPriceAuction' | 
     # subscriptions update based on certain events
       {
         fixedPriceAuction (id: ${Id}) {
+          id
     bids {
       id
       status
@@ -32,6 +34,7 @@ export const auctionBidsQuery = (Id: string, auctionType: 'fixedPriceAuction' | 
   @live 
 {
   easyAuction (id: ${Id}) {
+    id
     bids {
       id
       status
@@ -46,3 +49,5 @@ export const auctionBidsQuery = (Id: string, auctionType: 'fixedPriceAuction' | 
  }
 `
 }
+
+
