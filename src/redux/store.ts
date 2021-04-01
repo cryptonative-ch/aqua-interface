@@ -4,7 +4,7 @@ import Thunk, { ThunkAction } from 'redux-thunk'
 // Reducers
 import page from './page'
 import { BidReducer } from './bidData'
-import { AuctionReducer } from "./auctionListings";
+import { AuctionReducer } from './auctionListings'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
@@ -15,7 +15,7 @@ declare module 'react-redux' {
 const rootReducer = combineReducers({
   page,
   BidReducer,
-  AuctionReducer
+  AuctionReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

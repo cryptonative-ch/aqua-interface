@@ -9,8 +9,10 @@ import WalletConnector from 'cryptowalletconnector'
 // Hooks
 import { useAuctions } from 'src/hooks/useAuctions'
 
-// Redux Actions
+// Redux 
 import { setPageTitle } from 'src/redux/page'
+
+
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -29,6 +31,8 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
+
+
 
 const AuctionSummaryWrapper = styled(NavLink)`
   display: 'block';
@@ -84,10 +88,16 @@ export function AuctionsView() {
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
+   
+    
 
     if (auctions.length) {
       setLoading(false)
     }
+
+    // remove this time component
+    // will cause a request to the server every second
+    // check what it does
     const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
 
     return () => {

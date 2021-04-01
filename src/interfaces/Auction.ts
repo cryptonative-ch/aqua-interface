@@ -1,15 +1,13 @@
 import { BigNumber } from 'ethers'
 
- interface BaseAuction {
+interface BaseAuction {
   id: string // Contract address (Using Factory pattern)
   name: string // BaseAuction name
   createdAt: number // The UTC timestamp at which the BaseAuction was placed
   updatedAt: number | null // The UTC timestamp at which the BaseAuction was updated
-  deletedAt: number | null// The UTC timestamp at which the BaseAuction was deleted
+  deletedAt: number | null // The UTC timestamp at which the BaseAuction was deleted
   status: string // open/ended/settled/upcoming
 }
-
-
 
 export interface AuctionBid {
   id?: string
@@ -74,8 +72,7 @@ export interface FixedPriceAuction extends BaseAuction {
   bids: AuctionBid[]
 }
 
-
-export type auctionType =  'fixedPriceAuction' | 'easyAuction'
+export type auctionType = 'fixedPriceAuction' | 'easyAuction'
 
 export interface Auction extends FixedPriceAuction, EasyAuction {
   type: auctionType

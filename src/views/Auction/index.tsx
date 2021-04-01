@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 import numeral from 'numeral'
 
-
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useAuction } from 'src/hooks/useAuction'
@@ -46,30 +45,21 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
-
+import { AuctionBid, Auction } from 'src/interfaces/Auction'
 
 //redux
 
-import {  StartBid } from 'src/redux/bidData'
 import { RootState } from 'src/redux/store'
 
 //subgraph
-import { selectAuctiontype, generateInitialAuctionData } from "src/subgraph";
-
-
-
-
-
+import { selectAuctiontype, generateInitialAuctionData } from 'src/subgraph'
+import { startBid } from 'src/redux/bidData'
 
 /**
  *
  * @todo initial load, pulls all data
  * subsequent loads in individial bids
  */
-
-
-
 
 interface AuctionViewParams {
   auctionId: string
@@ -96,6 +86,12 @@ export function AuctionView() {
     return state.BidReducer.bids
   })
 
+  const auctionReduxStore = useSelector<RootState, Auction[]>(state => {
+    return state.AuctionReducer.auctions
+  })
+
+  
+
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -109,26 +105,17 @@ export function AuctionView() {
       setUserAddress(walletAddress || getRandomWallet().address)
     }
 
-      const initialFetchData = async() => {
-        dispatch(setPageTitle(t(auction?.name as string)))
-        // how to filter different auction types
-        dispatch(StartBid(await generateInitialAuctionData(params.auctionId, await selectAuctiontype(params.auctionId) )))
-        // auction bids calculation
-        // call redux value in here
-        setClearingPrice(calculateClearingPrice(bids))
-      }
-      const subscriptionFetchData = async() => {
-        //subscription feed to graphql node 
-        // real time data feed of bids
-        // if not subscription called every 1/5/10 seconds
-        // dispatch(GenerateBid())
-      }
-
-    if (showGraph){
-      initialFetchData()
-      subscriptionFetchData()
+    const FetchData = async () => {
+      dispatch(setPageTitle(t(auction?.name as string)))
+      dispatch(startBid(await generateInitialAuctionData(params.auctionId, selectAuctiontype(params.auctionId, auctionReduxStore))))
+      // check this
+      setClearingPrice(calculateClearingPrice(bids))
     }
-    
+ 
+
+    if (auction) {
+      FetchData()
+    }
   }, [auction, t, dispatch, bids])
 
   if (!auction) {

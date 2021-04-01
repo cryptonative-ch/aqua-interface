@@ -14,7 +14,7 @@ const auctionsQuery = gql`
       deletedAt
       status
       sellAmount
-      
+
       minFundingThreshold
       orderCancellationPeriod
       duration
@@ -30,23 +30,21 @@ const auctionsQuery = gql`
       status
       startDate
       endDate
-      
+
       tokenAmount
       tokenIn {
         id
-        
+
         name
-        
-        
+
         symbol
         decimals
       }
       tokenOut {
         id
-        
+
         name
-        
-        
+
         symbol
         decimals
       }
@@ -55,4 +53,3 @@ const auctionsQuery = gql`
 `
 
 export const auctionsRequest = request('http://localhost:8000/subgraphs/name/adamazad/mesa', auctionsQuery)
-

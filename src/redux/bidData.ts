@@ -6,42 +6,40 @@ import { AuctionBid } from 'src/interfaces/Auction'
 
 // ACTION
 enum ActionTypes {
-GENERATE_BID = 'GENERATE_BID',
-REMOVE_BID = 'REMOVE_BID',
-INITIAL_BID_SEED = 'INITIAL_BID_SEED'
+  GENERATE_BID = 'GENERATE_BID',
+  REMOVE_BID = 'REMOVE_BID',
+  INITIAL_BID_SEED = 'INITIAL_BID_SEED',
 }
-
-
 
 interface BidState {
   bids: AuctionBid[]
 }
 
-interface GenerateBidAction extends Action<ActionTypes.GENERATE_BID> {
+interface generateBidAction extends Action<ActionTypes.GENERATE_BID> {
   payload: AuctionBid
 }
 
-interface RemoveBidAction extends Action<ActionTypes.REMOVE_BID> {
+interface removeBidAction extends Action<ActionTypes.REMOVE_BID> {
   payload: AuctionBid
 }
 
-interface InitialBidSeedAction  extends Action<ActionTypes.INITIAL_BID_SEED>{
+interface InitialBidSeedAction extends Action<ActionTypes.INITIAL_BID_SEED> {
   payload: AuctionBid[]
 }
 
-type BidActionTypes = GenerateBidAction | RemoveBidAction | InitialBidSeedAction
+type BidActionTypes = generateBidAction | removeBidAction | InitialBidSeedAction
 
-export const GenerateBid = (payload: AuctionBid) => ({
+export const generateBid = (payload: AuctionBid) => ({
   payload,
   type: ActionTypes.GENERATE_BID,
 })
 
-export const RemoveBid = (payload: AuctionBid) => ({
+export const removeBid = (payload: AuctionBid) => ({
   payload,
   type: ActionTypes.REMOVE_BID,
 })
 
-export const StartBid = (payload: AuctionBid[]) => ({
+export const startBid = (payload: AuctionBid[]) => ({
   payload,
   type: ActionTypes.INITIAL_BID_SEED,
 })

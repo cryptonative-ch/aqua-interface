@@ -7,7 +7,6 @@ import numeral from 'numeral'
 import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 
-
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useAuction } from 'src/hooks/useAuction'
@@ -49,7 +48,7 @@ import { BidModalContext } from 'src/contexts'
 
 //redux
 
-import { GenerateBid, StartBid } from 'src/redux/bidData'
+import { generateBid, startBid } from 'src/redux/bidData'
 import { RootState } from 'src/redux/store'
 
 // Data
@@ -120,7 +119,7 @@ export function SimulationView() {
 
   const addBid = useCallback(
     (newAuctionBid: AuctionBid) => {
-      dispatch(GenerateBid(newAuctionBid))
+      dispatch(generateBid(newAuctionBid))
     },
     [dispatch]
   )
@@ -148,7 +147,7 @@ export function SimulationView() {
         // Add 1 random bids every second
 
         if (bids.length == 0) {
-          dispatch(StartBid(initialBid))
+          dispatch(startBid(initialBid))
         }
 
         if (bids.length >= 30) {
