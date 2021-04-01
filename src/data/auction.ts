@@ -19,87 +19,138 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
   const dateUTC = dayjs.unix(unixTimestamp)
 
   return [
-    // Open/running
-    // {
-    //   id: '0x141',
-    //   startDate: addHours(dateUTC, -24).unix(),
-    //   endDate: addHours(dateUTC, +24).unix(),
-    //   tokenAddress: '0x',
-    //   tokenAmount: 5000,
-    //   tokenName: 'Omen',
-    //   symbol: 'DXD',
-    //   tokenIcon: Omen,
-    //   bids: [
-    //     {
-    //       address: '0xf1',
-    //       tokenOutAmount: BigNumber.from(30),
-    //       tokenInAmount: BigNumber.from(100),
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: '0x142',
-    //   startDate: addHours(dateUTC, -10).unix(),
-    //   endDate: addHours(dateUTC, +100).unix(),
-    //   tokenAddress: '0x',
-    //   tokenAmount: 2500,
-    //   tokenName: 'Gelato',
-    //   symbol: 'GEL',
-    //   tokenIcon: Gelato,
-    //   bids: [
-    //     {
-    //       address: '0xf1',
-    //       tokenOutAmount: BigNumber.from(30),
-    //       tokenInAmount: BigNumber.from(100),
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: 'simulation',
-    //   startDate: addMinutes(dateUTC, 0).unix(),
-    //   endDate: addMinutes(dateUTC, 5).unix(),
-    //   tokenAddress: '0x',
-    //   tokenAmount: 10000,
-    //   tokenName: 'Mesa',
-    //   symbol: 'MESA',
-    //   tokenIcon: Mesa,
-    //   bids: [
-    //     {
-    //       address: '0xf1',
-    //       tokenOutAmount: BigNumber.from(30),
-    //       tokenInAmount: BigNumber.from(100),
-    //     },
-    //   ],
-    // },
-    // // Upcoming
-    // {
-    //   id: '0x143',
-    //   startDate: addHours(dateUTC, 14).unix(),
-    //   endDate: addHours(dateUTC, 114).unix(),
-    //   tokenAddress: '0x',
-    //   tokenAmount: 150000,
-    //   tokenName: 'Compound',
-    //   symbol: 'COMP',
-    //   tokenIcon: Compound,
-    //   bids: [],
-    // },
-    // // Closed
-    // {
-    //   id: '0x1434',
-    //   startDate: addHours(dateUTC, -140).unix(),
-    //   endDate: addHours(dateUTC, -14).unix(),
-    //   tokenAddress: '0x',
-    //   tokenAmount: 1500,
-    //   tokenName: 'Closed',
-    //   symbol: 'CLOSE',
-    //   tokenIcon: Compound,
-    //   bids: [
-    //     {
-    //       address: '0xf1',
-    //       tokenOutAmount: BigNumber.from(30),
-    //       tokenInAmount: BigNumber.from(100),
-    //     },
-    //   ],
-    // },
+    //Open/running
+    {
+      id: '0x141',
+      createdAt: 1585481341,
+      updatedAt: null,
+      deletedAt: null,
+      status: 'live',
+      startDate: addHours(dateUTC, -24).unix(),
+      endDate: addHours(dateUTC, +24).unix(),
+      tokenOut: {
+        id: '0x141',
+        name: 'Omen',
+        icon: Omen,
+        address: '0x',
+        decimals: 18,
+        symbol: 'DXD',
+      },
+      type: 'easyAuction',
+      tokenAmount: 5000,
+      name: 'Omen',
+      bids: [
+        {
+          address: '0xf1',
+          tokenOutAmount: BigNumber.from(30),
+          tokenInAmount: BigNumber.from(100),
+        },
+      ],
+    },
+    {
+      id: '0x142',
+      createdAt: 1585481341,
+      updatedAt: null,
+      deletedAt: null,
+      status: 'live',
+      startDate: addHours(dateUTC, -10).unix(),
+      endDate: addHours(dateUTC, +100).unix(),
+      tokenOut: {
+        id: '0x141',
+        name: 'Gelato',
+        icon: Gelato,
+        address: '0x',
+        decimals: 18,
+        symbol: 'GEL',
+      },
+      type: 'easyAuction',
+      name: 'Gelato',
+      tokenAmount: 2500,
+      bids: [
+        {
+          address: '0xf1',
+          tokenOutAmount: BigNumber.from(30),
+          tokenInAmount: BigNumber.from(100),
+        },
+      ],
+    },
+    {
+      id: 'simulation',
+      createdAt: 1585481341,
+      updatedAt: null,
+      deletedAt: null,
+      status: 'live',
+      startDate: addMinutes(dateUTC, 0).unix(),
+      endDate: addMinutes(dateUTC, 5).unix(),
+      tokenOut: {
+        id: '0x141',
+        name: 'Mesa',
+        icon: Mesa,
+        address: '0x',
+        decimals: 18,
+        symbol: 'MESA',
+      },
+      type: 'easyAuction',
+      name: 'Mesa',
+      tokenAmount: 10000,
+      bids: [
+        {
+          address: '',
+          tokenOutAmount: BigNumber.from(30),
+          tokenInAmount: BigNumber.from(100),
+        },
+      ],
+    },
+    // Upcoming
+    {
+      id: '0x143',
+      createdAt: 1585481341,
+      updatedAt: null,
+      deletedAt: null,
+      status: 'upcoming',
+      startDate: addHours(dateUTC, 14).unix(),
+      endDate: addHours(dateUTC, 114).unix(),
+      tokenOut: {
+        id: '0x141',
+        name: 'Compound',
+        icon: Compound,
+        address: '0x',
+        decimals: 18,
+        symbol: 'COMP',
+      },
+      name: 'Compound',
+      type: 'easyAuction',
+      tokenAmount: 150000,
+      bids: [],
+    },
+    // Closed
+    {
+      id: '0x1434',
+      createdAt: 1585481341,
+      updatedAt: null,
+      deletedAt: null,
+      status: 'closed',
+      startDate: addHours(dateUTC, -140).unix(),
+      endDate: addHours(dateUTC, -14).unix(),
+      tokenOut: {
+        id: '0x141',
+        name: 'Compound',
+        icon: Compound,
+        address: '0x',
+        decimals: 18,
+        symbol: 'COMP',
+      },
+      type: 'easyAuction',
+      tokenAmount: 1500,
+      name: 'Closed',
+      
+      bids: [
+        {
+          address: '0xf1',
+          tokenOutAmount: BigNumber.from(30),
+          tokenInAmount: BigNumber.from(100),
+        },
+      ],
+    },
   ]
 }

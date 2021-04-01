@@ -2,6 +2,7 @@
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
+import { useWallet } from 'use-wallet'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -10,6 +11,10 @@ import { Flex } from 'src/components/Flex'
 import InfoSVG from 'src/assets/svg/Info-Icon.svg'
 import MoreSVG from 'src/assets/svg/More-Icon.svg'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
+
+//redux
+import {  } from "src/redux";
+
 
 type ColumnLabelProps = SpaceProps
 
@@ -95,6 +100,13 @@ interface SelfBidListProps {
 
 export function SelfBidList({}: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
+  // use walletaddress to filter userbids
+  // connect bid data to bidlist
+  const wallet = useWallet()
+  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
+
+  
+
 
   const toggleBidMenu = (index: number) => {
     if (bidMenu === index) {
