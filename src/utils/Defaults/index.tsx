@@ -19,14 +19,12 @@ export const getDefaults = (): Auction => ({
   name: 'Omen',
   tokenOut: {
     id: '0x141',
-    BaseAuction: '0x141'
     name:'Omen',
-    icon: 'IPFS LINK HERE',
+    icon: Omen,
     address: '0x',
     decimals: 18,
     symbol: 'DXD'
   },
-  // tokenIcon: Omen,
   bids: [],
   type: 'easyAuction',
 })

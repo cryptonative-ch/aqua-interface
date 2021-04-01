@@ -49,7 +49,7 @@ import { BidModalContext } from 'src/contexts'
 
 //redux
 
-import { GenerateBid, StartBid } from 'src/redux/BidData'
+import { GenerateBid, StartBid } from 'src/redux/bidData'
 import { RootState } from 'src/redux/store'
 
 // Data

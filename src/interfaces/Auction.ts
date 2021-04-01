@@ -77,8 +77,6 @@ export interface FixedPriceAuction extends BaseAuction {
 
 export type auctionType =  'fixedPriceAuction' | 'easyAuction'
 
-
-
 export interface Auction extends FixedPriceAuction, EasyAuction {
   type: auctionType
   startDate: number // Open timestamp

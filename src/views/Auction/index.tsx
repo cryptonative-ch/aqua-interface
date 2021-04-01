@@ -51,7 +51,7 @@ import { AuctionBid } from 'src/interfaces/Auction'
 
 //redux
 
-import {  GenerateBid, StartBid } from 'src/redux/BidData'
+import {  StartBid } from 'src/redux/bidData'
 import { RootState } from 'src/redux/store'
 
 //subgraph

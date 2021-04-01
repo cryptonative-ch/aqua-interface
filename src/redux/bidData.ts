@@ -1,28 +1,31 @@
+// Externals
+import { Action } from 'redux'
+
 // interface
 import { AuctionBid } from 'src/interfaces/Auction'
 
 // ACTION
+enum ActionTypes {
+GENERATE_BID = 'GENERATE_BID',
+REMOVE_BID = 'REMOVE_BID',
+INITIAL_BID_SEED = 'INITIAL_BID_SEED'
+}
 
-const GENERATE_BID = 'GENERATE_BID'
-const REMOVE_BID = 'REMOVE_BID'
-const INITIAL_BID_SEED = 'INITIAL_BID_SEED'
 
-export interface BidState {
+
+interface BidState {
   bids: AuctionBid[]
 }
 
-interface GenerateBidAction {
-  type: typeof GENERATE_BID
+interface GenerateBidAction extends Action<ActionTypes.GENERATE_BID> {
   payload: AuctionBid
 }
 
-interface RemoveBidAction {
-  type: typeof REMOVE_BID
+interface RemoveBidAction extends Action<ActionTypes.REMOVE_BID> {
   payload: AuctionBid
 }
 
-interface InitialBidSeedAction {
-  type: typeof INITIAL_BID_SEED
+interface InitialBidSeedAction  extends Action<ActionTypes.INITIAL_BID_SEED>{
   payload: AuctionBid[]
 }
 
@@ -30,17 +33,17 @@ type BidActionTypes = GenerateBidAction | RemoveBidAction | InitialBidSeedAction
 
 export const GenerateBid = (payload: AuctionBid) => ({
   payload,
-  type: GENERATE_BID,
+  type: ActionTypes.GENERATE_BID,
 })
 
 export const RemoveBid = (payload: AuctionBid) => ({
   payload,
-  type: REMOVE_BID,
+  type: ActionTypes.REMOVE_BID,
 })
 
 export const StartBid = (payload: AuctionBid[]) => ({
   payload,
-  type: INITIAL_BID_SEED,
+  type: ActionTypes.INITIAL_BID_SEED,
 })
 
 const defaultState: BidState = {
@@ -51,12 +54,12 @@ const defaultState: BidState = {
 
 export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
-    case GENERATE_BID:
+    case ActionTypes.GENERATE_BID:
       return {
         ...state,
         bids: [...state.bids, action.payload],
       }
-    case REMOVE_BID:
+    case ActionTypes.REMOVE_BID:
       return {
         ...state,
         bids: state.bids.filter(
@@ -66,7 +69,7 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
             bid.tokenOutAmount !== action.payload.tokenOutAmount
         ),
       }
-    case INITIAL_BID_SEED:
+    case ActionTypes.INITIAL_BID_SEED:
       return {
         ...state,
         bids: action.payload,
