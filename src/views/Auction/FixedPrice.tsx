@@ -42,7 +42,7 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
-import { convertTimestampWithMoment } from 'src/utils/date'
+import { convertTimestampWithMoment, calculateTimeDifference } from 'src/utils/date'
 
 // Wallet Utils
 import { getRandomWallet } from 'src/utils/wallets'
@@ -156,6 +156,16 @@ export function FixedPriceAuctionView() {
                         textAlign="right"
                       />
                     )}
+                    {isAuctionOpen(auction) && (
+                      <HeaderItem
+                        isMobile
+                        title="Ends In"
+                        description={calculateTimeDifference(auction.endBlock)}
+                        textAlign="right"
+                        auctionLive={true}
+                        auction={auction}
+                      />
+                    )}
                   </Flex>
                 ) : (
                   <Flex flexDirection="row" alignItems="center" flex={1}>
@@ -169,7 +179,7 @@ export function FixedPriceAuctionView() {
                       flexAmount={1.5}
                     />
                     {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && (
-                      <Flex flex={1} />
+                      <Flex flex={0.2} />
                     )}
                     {isAuctionClosed(auction) && (
                       <HeaderItem
@@ -183,6 +193,16 @@ export function FixedPriceAuctionView() {
                         title="Starts On"
                         description={convertTimestampWithMoment(auction.startBlock)}
                         textAlign="right"
+                      />
+                    )}
+                    {isAuctionOpen(auction) && (
+                      <HeaderItem
+                        title="Ends In"
+                        description={calculateTimeDifference(auction.endBlock)}
+                        textAlign="right"
+                        auctionLive={true}
+                        auction={auction}
+                        flexAmount={1.3}
                       />
                     )}
                   </Flex>

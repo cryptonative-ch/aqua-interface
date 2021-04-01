@@ -42,7 +42,7 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
-import { convertTimestampWithMoment } from 'src/utils/date'
+import { convertTimestampWithMoment, calculateTimeDifference } from 'src/utils/date'
 
 // Wallet Utils
 import { getRandomWallet } from 'src/utils/wallets'
@@ -160,6 +160,16 @@ export function AuctionView() {
                         textAlign="right"
                       />
                     )}
+                    {isAuctionOpen(auction) && (
+                      <HeaderItem
+                        isMobile
+                        title="Ends In"
+                        description={calculateTimeDifference(auction.endBlock)}
+                        textAlign="right"
+                        auctionLive={true}
+                        auction={auction}
+                      />
+                    )}
                   </Flex>
                 ) : (
                   <Flex flexDirection="row" alignItems="center" flex={1}>
@@ -179,7 +189,9 @@ export function AuctionView() {
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
                       description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenSymbol}`}
                     />
-                    <Flex flex={1} />
+                    {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && (
+                      <Flex flex={0.2} />
+                    )}
                     {isAuctionClosed(auction) && (
                       <HeaderItem
                         title="Closed On"
@@ -192,6 +204,16 @@ export function AuctionView() {
                         title="Starts On"
                         description={convertTimestampWithMoment(auction.startBlock)}
                         textAlign="right"
+                      />
+                    )}
+                    {isAuctionOpen(auction) && (
+                      <HeaderItem
+                        title="Ends In"
+                        description={calculateTimeDifference(auction.endBlock)}
+                        textAlign="right"
+                        auctionLive={true}
+                        auction={auction}
+                        flexAmount={1.3}
                       />
                     )}
                   </Flex>
