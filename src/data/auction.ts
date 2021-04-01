@@ -143,7 +143,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
       type: 'easyAuction',
       tokenAmount: 1500,
       name: 'Closed',
-      
+
       bids: [
         {
           address: '0xf1',
@@ -151,6 +151,27 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
           tokenInAmount: BigNumber.from(100),
         },
       ],
+    },
+    {
+      id: '0x1435',
+      createdAt: 1585481341,
+      updatedAt: null,
+      deletedAt: null,
+      status: 'closed',
+      startDate: addHours(dateUTC, -140).unix(),
+      endDate: addHours(dateUTC, -14).unix(),
+      tokenOut: {
+        id: '0x141',
+        name: 'Compound',
+        icon: Compound,
+        address: '0x',
+        decimals: 18,
+        symbol: 'CLOSE',
+      },
+      type: 'easyAuction',
+      tokenAmount: 1500,
+      name: 'ClosedWithout',
+      bids: [],
     },
   ]
 }

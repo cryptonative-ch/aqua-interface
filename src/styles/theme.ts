@@ -3,14 +3,14 @@ import * as CSS from 'csstype'
 
 export type ThemeGrid = {
   display: CSS.Property.Grid
-  gridTemplateColumns: CSS.Property.GridTemplateColumns
-  gap: CSS.Property.Gap
+  gridTemplateColumns: CSS.Property.GridTemplateColumns[]
+  gap: CSS.Property.Gap[]
 }
 
 export const grid: ThemeGrid = {
   display: 'grid',
-  gridTemplateColumns: '478px 478px',
-  gap: '24px 24px',
+  gridTemplateColumns: [`478px 478px`, '100%'],
+  gap: [`24px 24px`, `16px`],
 }
 
 export type ThemeRadii = {

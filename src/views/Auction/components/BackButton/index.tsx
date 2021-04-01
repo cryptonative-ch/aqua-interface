@@ -9,13 +9,13 @@ import { Link } from 'src/components/Link'
 // Svg
 import LeftArrowSVG from 'src/assets/svg/Left-Arrow.svg'
 
-const ButtonText = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 150%;
-  color: #7b7f93;
-`
+const ButtonText = styled.div({
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '150%',
+  color: '#7b7f93',
+})
 
 const BackLink = styled(Link)({
   display: 'flex',
@@ -26,11 +26,11 @@ const BackLink = styled(Link)({
   padding: '8px 0',
 })
 
-const ArrowImg = styled.img`
-  width: 16px;
-  height: 16px;
-  margin-right: 4px;
-`
+const ArrowImg = styled.img({
+  width: '16px',
+  height: '16px',
+  marginRight: '4px',
+})
 
 export function BackButton() {
   const [t] = useTranslation()

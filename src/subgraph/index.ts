@@ -2,11 +2,8 @@
 import { BigNumber } from 'ethers'
 import { request } from 'graphql-request'
 
-
 //interface
 import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
-
-
 
 //subgraph
 
@@ -20,7 +17,6 @@ import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
 export const ENDPOINT = 'http://localhost:8000/subgraphs/name/adamazad/mesa'
 
-
 export const getAuctionsData = async (): Promise<Auction[]> => {
   const easyAuction: auctionType = 'easyAuction'
   const fixedPriceAuction: auctionType = 'fixedPriceAuction'
@@ -31,8 +27,6 @@ export const getAuctionsData = async (): Promise<Auction[]> => {
   const auctionsArray = [...addEasyAuctionType, ...addFixedPriceAuctionsType]
   return auctionsArray
 }
-
-
 
 export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType => {
   const auctionType: Auction = auctions.filter(item => item.id === id)[0]
@@ -52,7 +46,5 @@ export const generateInitialAuctionData = async (
     tokenInAmount: BigNumber.from(item.tokenInAmount),
   }))
 
- return auctionBids
+  return auctionBids
 }
-
-

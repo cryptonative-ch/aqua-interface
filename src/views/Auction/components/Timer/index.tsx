@@ -50,8 +50,6 @@ export const timeFrame = (unixSeconds: number) => {
 }
 
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
-  // calculating time difference between local persons time and the start and end block times
-
   const localTimeStamp = dayjs(Date.now()).unix()
 
   const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endDate))
@@ -59,7 +57,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   if (isAuctionUpcoming(auction)) {
     return (
       <Flex>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startDate))}</CardText>
+        <CardText data-testid="open">{timeFrame(convertUtcTimestampToLocal(auction.startDate))}</CardText>
         <CardText color="grey">&nbsp;to&nbsp;</CardText>
         <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endDate))}</CardText>
       </Flex>

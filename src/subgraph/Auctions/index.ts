@@ -13,12 +13,12 @@ const auctionsQuery = gql`
       updatedAt
       deletedAt
       status
-      sellAmount
+      tokenInAmount
 
       minFundingThreshold
       orderCancellationPeriod
       duration
-      minBuyAmountPerOrder
+      mintokenOutAmountPerOrder
       isAtomicClosureAllowed
     }
     easyAuctions {

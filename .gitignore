@@ -27,3 +27,4 @@ yarn.lock
 
 # dependencies
 .vscode
+.husky/_/

@@ -61,6 +61,9 @@ export const Button = styled.button<ButtonProps>(
     ':hover': {
       textDecoration: 'underline',
     },
+    ':focus': {
+      outline: props.formButton ? 'none' : 'unset',
+    },
     textDecoration: 'none',
   }),
   fontSize,

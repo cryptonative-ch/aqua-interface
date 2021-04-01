@@ -11,7 +11,7 @@ import { getAuctionsData } from 'src/subgraph'
 
 //redux
 import { RootState } from 'src/redux/store'
-import { generateAuctions } from "src/redux/auctionListings";
+import { generateAuctions } from 'src/redux/auctionListings'
 
 interface UseAuctionsReturn {
   loading: boolean
@@ -31,7 +31,6 @@ export function useAuctions(): UseAuctionsReturn {
   const fetchData = async () => {
     dispatch(generateAuctions(await getAuctionsData()))
   }
-
 
   useEffect(() => {
     // Populate with fake data

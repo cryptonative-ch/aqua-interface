@@ -61,14 +61,14 @@ export interface EasyAuction extends BaseAuction {
 export interface FixedPriceAuction extends BaseAuction {
   // Specific to the FixedPriceAuction
   // Amount to sell
-  sellAmount?: string
+  tokenInAmount?: string
   // Minimum amount per bid
   minbiddingAmount?: number
   minFundingThreshold?: number
   orderCancellationPeriod?: number
   duration?: number
-  minBuyAmountPerOrder?: number
-  isAtomicClosureAllowed?: Boolean
+  mintokenOutAmountPerOrder?: number
+  isAtomicClosureAllowed?: boolean
   bids: AuctionBid[]
 }
 
@@ -114,5 +114,5 @@ export interface BaseAuctionTemplate {
   // Template name
   name: BaseAuctionTemplateName
   // Exists
-  verified: Boolean
+  verified: boolean
 }

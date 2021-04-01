@@ -7,9 +7,8 @@ export const Card = styled.div<CardProps>(
   props => ({
     padding: props.theme.space[0],
     backgroundColor: 'white',
-    height: '247px',
-    width: '478px',
-    borderRadius: '0px',
+    borderRadius: '0',
+    width: '100%',
   }),
   space,
   layout,

@@ -45,5 +45,3 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
  }
 `
 }
-
-

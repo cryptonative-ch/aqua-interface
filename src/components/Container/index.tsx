@@ -19,8 +19,17 @@ export const Container = styled.div<ContainerProps>(
     justifyContent: 'center',
   }),
   props => `
-    @media (min-width: ${props.theme.breakpoints[1]}) {
-      max-width: ${props.inner ? (props.fluid ? '90vw' : '980px') : '100%'};
+    @media (min-width: ${props.theme.breakpoints[0]}) {
+      max-width: ${props.inner ? (props.fluid ? '90vw' : '1012px') : '100%'};
+      padding-left: ${props.noPadding ? 0 : props.theme.space[3] + 'px'};
+      padding-right: ${props.noPadding ? 0 : props.theme.space[3] + 'px'};
+      
+    }
+  `,
+  props => `
+    @media only screen and (min-width: 620px) and (max-width: ${props.theme.breakpoints[2]})  {
+      padding-left: ${props.noPadding ? 0 : 'calc(20%)'};
+      padding-right: ${props.noPadding ? 0 : 'calc(20%)'};
     }
   `,
   layout

@@ -12,6 +12,8 @@ import { BadgeCard } from 'src/views/Auction/components/BadgeCard'
 import { AuctionAmount } from '../AuctionAmount'
 import { Divider } from 'src/components/Divider'
 import { AuctionClock } from '../AuctionClock'
+import { Icon } from 'src/components/Icon'
+import { BadgeFlex } from 'src/layouts/BadgeFlex'
 
 // Interface
 import { Auction } from 'src/interfaces/Auction'
@@ -27,27 +29,27 @@ interface AuctionSummaryProps {
 export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
   return (
     <Card>
-      <Divider />
       <CardBody>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Flex width="100%" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
+          <Flex width="70%" alignItems="center">
             <TokenIconFigure>
-              <img style={{ height: '45px' }} src={auction.tokenOut?.icon} alt={auction.tokenOut?.name} />
+              <Icon src={auction.tokenOut?.icon} alt={auction.tokenOut?.name} />
             </TokenIconFigure>
-            <CardText fontSize="title" lineHeight="title">
-              {auction.name}
-            </CardText>
+            <CardText fontSize="title">{auction.name}</CardText>
           </Flex>
-          <Flex>
+          <BadgeFlex>
             <BadgeCard saleType="private" />
             <BadgeCard saleType="presale" />
-          </Flex>
+          </BadgeFlex>
         </Flex>
-        <Flex flexDirection="column" justifyContent="space-evenly" height="153px">
+        <Divider />
+        <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText lineHeight="title" color="grey">
-              Current Price
-            </CardText>
+            <CardText color="grey">Auction Type</CardText>
+            <CardText>Point Dutch</CardText>
+          </Flex>
+          <Flex flexDirection="row" justifyContent="space-between">
+            <CardText color="grey">Current Price</CardText>
             <AuctionFinalPrice auction={auction} />
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
