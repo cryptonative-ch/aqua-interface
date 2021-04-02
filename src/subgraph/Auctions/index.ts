@@ -1,9 +1,6 @@
 // Externals
 import { request, gql } from 'graphql-request'
 
-// subgraph
-import { ENDPOINT } from '../index'
-
 const auctionsQuery = gql`
   {
     fixedPriceAuctions {

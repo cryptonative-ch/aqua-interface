@@ -75,7 +75,7 @@ const HeaderContainer = styled.div<HeaderContainerProps>(props => ({
   padding: props.isMobile ? '0 24px' : 0,
 }))
 
-const tokenIconContainer = styled.img({
+const TokenIconContainer = styled.img({
   width: '60px',
   height: '60px',
   borderRadius: '60px',
@@ -149,7 +149,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
 
   return (
     <HeaderContainer isMobile={isMobile}>
-      <tokenIconContainer src={auction.tokenOut?.icon} />
+      <TokenIconContainer src={auction.tokenOut?.icon} />
       <HeaderText>{`${auction.tokenOut?.name} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>
       {isAuctionOpen(auction) && <TimeText data-testid="format_time">{format_time}</TimeText>}

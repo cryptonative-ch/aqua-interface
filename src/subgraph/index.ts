@@ -40,7 +40,7 @@ export const generateInitialAuctionData = async (
   const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(id, auctionType))
 
   // converts buy/sell numbers from type number to type bignumbers
-  const auctionBids: AuctionBid[] = (await auctionBidsRequest).easyauctionbids.map((item: any) => ({
+  const auctionBids: AuctionBid[] = (await auctionBidsRequest).easyauctionbids.map((item: AuctionBid) => ({
     ...item,
     tokenOutAmount: BigNumber.from(item.tokenOutAmount),
     tokenInAmount: BigNumber.from(item.tokenInAmount),

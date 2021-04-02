@@ -1,13 +1,14 @@
 // Externals
 import { gql } from 'graphql-request'
 
+// no subscriptions
+// switch to long polling
+
 export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
   if (auctionType == 'fixedPriceAuction') {
     return gql`
     @live 
-    # live queries turning these into pseudo subscriptions
-    # live queries observe data and update based on that
-    # subscriptions update based on certain events
+  
       {
         fixedPriceAuction (id: ${auctionid}) {
           id

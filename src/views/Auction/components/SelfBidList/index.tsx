@@ -2,7 +2,6 @@
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
-import { useWallet } from 'use-wallet'
 import numeral from 'numeral'
 
 // Components
@@ -108,8 +107,6 @@ export function SelfBidList({ auction, clearingPrice }: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
   // use walletaddress to filter userbids
   // connect bid data to bidlist
-  const wallet = useWallet()
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
 
   const { isMobile } = useWindowSize()
 

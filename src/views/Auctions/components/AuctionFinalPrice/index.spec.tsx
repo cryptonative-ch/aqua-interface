@@ -35,22 +35,12 @@ const wrapper = (auction: Auction) => {
 }
 
 describe('testing AuctionFinalPrice', () => {
-  test('should display 0 is auction is upcoming', () => {
-    const auction = getAuctionDefault({
-      startDate: addHours(dateUTC, 14).unix(),
-      endDate: addHours(dateUTC, 114).unix(),
+  test('should display final price correctly', () => {
+    const auction = getAuctionDefault('easyAuction', {
+      startDate: addHours(dateUTC, -24).unix(),
+      endDate: addHours(dateUTC, +24).unix(),
     })
-
-    const { getByText } = wrapper(auction)
-    expect(getByText('N/A')).toBeInTheDocument()
-  }),
-    test('should display final price correctly', () => {
-      const auction = getAuctionDefault({
-        startDate: addHours(dateUTC, -24).unix(),
-        endDate: addHours(dateUTC, +24).unix(),
-      })
-
-      const { getByTestId } = wrapper(auction)
-      expect(getByTestId('openprice')).not.toHaveTextContent('N/A')
-    })
+    const { getByTestId } = wrapper(auction)
+    expect(getByTestId('openprice')).toHaveTextContent('10')
+  })
 })
