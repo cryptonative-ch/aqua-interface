@@ -1,0 +1,167 @@
+### needed for graphql-faker
+
+type MesaFactory {
+  # ID: should be a unique easy-to-reference
+  id: ID!
+  # Auction
+  auctionCount: Int
+  # Factory address
+  address: String!
+  # Fee manager: CFO
+  feeManager: String
+  # Fee Collector: Treasury
+  feeTo: String
+  # Template manager:
+  templateManager: String!
+  # Address of TemplateLauncher contract
+  templateLauncher: String!
+  feeNumerator: Int
+  auctionFee: Int
+}
+
+# Base Auction schema
+interface Auction {
+  # Contract address
+  id: ID!
+  # The auction name
+  name: String
+  # The UTC timestamp at which the auction was placed
+  createdAt: Int!
+  # The UTC timestamp at which the auction was updated
+  updatedAt: Int
+  # The UTC timestamp at which the auction was deleted
+  deletedAt: Int
+  # open/ended/settled/upcoming
+  status: String
+}
+
+# EasyAuction entity
+type EasyAuction implements Auction {
+  # Base fields from Auction interface
+  id: ID!
+  name: String
+  createdAt: Int!
+  updatedAt: Int
+  deletedAt: Int
+  status: String
+  # Specific to the EasyAuction
+  startDate: Int # Open timestamp
+  endDate: Int # Close timestamp
+  # Int of seconds after the endTime of the auction
+  gracePeriodStartDate: Int
+  # Int of seconds after the endTime of the auction
+  gracePeriodEndDate: Int
+  # Total amount of tokens available for auctioning
+  tokenAmount: Int
+  # Minimum amount per bid
+  minimumBidAmount: Int
+  # Bidding token (ie: DAI, USDC)
+  tokenIn: AuctionToken
+  # Auctioning token
+  tokenOut: AuctionToken
+  # List of bids
+  bids: [EasyAuctionBid!]
+  # The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
+  minFundingThreshold: Int
+}
+
+# FixedPriceAuction
+type FixedPriceAuction implements Auction {
+  # Base fields from Auction interface
+  id: ID!
+  name: String
+  createdAt: Int!
+  updatedAt: Int
+  deletedAt: Int
+  status: String
+  # Specific to the FixedPriceAuction
+  startDate: Int # Open timestamp
+  endDate: Int # Close timestamp
+  # Amount to sell
+  sellAmount: String
+  # Minimum amount per bid
+  minbiddingAmount: Int
+  minFundingThreshold: Int
+  orderCancellationPeriod: Int
+  duration: Int
+  minBuyAmountPerOrder: Int
+  isAtomicClosureAllowed: Boolean
+  bids: [FixedPriceAuctionPurchase!]
+}
+
+# AuctionBid
+type EasyAuctionBid {
+  id: ID!
+  # submitted/settled/cancelled/claimed
+  status: String
+  # The UTC timestamp at which the bid was placed
+  createdAt: Int
+  # The UTC timestamp at which the bid was updated
+  updatedAt: Int
+  # The UTC timestamp at which the bid was deleted
+  deletedAt: Int
+  # Int of tokens the investor wants to buy
+  tokenInAmount: Int
+  # Int of tokens the investor wants to buy
+  tokenOutAmount: Int
+  # The bidder's Ethereum address
+  address: String
+}
+
+type FixedPriceAuctionPurchase {
+  id: ID!
+  # The UTC timestamp at which the bid was placed
+  createdAt: Int
+  # The UTC timestamp at which the bid was updated
+  updatedAt: Int
+  # The UTC timestamp at which the bid was deleted
+  deletedAt: Int
+  # The amount paid by the buyer
+  amount: Int
+  # The buyer address EOA
+  buyer: String
+}
+
+# AuctionToken
+type AuctionToken {
+  # Token address
+  id: ID!
+  # Token name, from the smart contract ERC20.name()
+  name: String
+  # ERC20 Token's contract address
+  address: String
+  # Symbol, from ERC20.symbol()
+  symbol: String
+  # Decimal, from ERC.decimals()
+  decimals: Int
+}
+
+type AuctionUser {
+  # User id
+  id: ID!
+  # The bidder's Ethereum address
+  address: String
+}
+
+enum AuctionTemplateName {
+  EasyAuction
+  FixPriceAuction
+}
+
+type AuctionTemplate {
+  # TemplatesId from the event
+  id: ID!
+  # Address of the AuctionTemplate contract: either EasyAuction or FixedPriceAuction
+  address: String
+  # Address of the MesaFactory
+  factory: String
+  # Template name
+  name: AuctionTemplateName
+  # Exists
+  verified: Boolean
+}
+
+type Query {
+  easyAuctions: [EasyAuction]
+  fixedPriceAuctions: [FixedPriceAuction]
+}

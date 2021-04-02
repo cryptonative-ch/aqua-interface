@@ -13,7 +13,7 @@ import { getAuctionDefault } from 'src/utils/Defaults'
 
 describe('TokenFooter', () => {
   test('should display multiple texts on Footer component', () => {
-    const auction = getAuctionDefault({name: 'Compound'})
+    const auction = getAuctionDefault({ name: 'Compound' })
 
     const { getByText } = render(
       <UseWalletProvider

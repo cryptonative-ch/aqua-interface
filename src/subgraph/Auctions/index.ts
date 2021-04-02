@@ -46,4 +46,4 @@ const auctionsQuery = gql`
   }
 `
 
-export const auctionsRequest = request('http://localhost:8000/subgraphs/name/adamazad/mesa', auctionsQuery)
+export const auctionsRequest = request('http://localhost:9002/graphql', auctionsQuery)
