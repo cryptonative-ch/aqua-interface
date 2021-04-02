@@ -17,6 +17,9 @@ import { calculateClearingPrice } from 'src/mesa/price'
 import { theme } from '../../../../styles/theme'
 import { PlaceBidForm } from './index'
 
+//defaults
+import { getAuctionDefault } from 'src/utils/Defaults'
+
 // variables
 const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 const utcDate = dayjs(new Date().toUTCString())
@@ -30,17 +33,7 @@ describe('PlaceBidForm', () => {
         useSuspense: false,
       },
     })
-    const auction = {
-      id: '0x143',
-      startDate: addHours(dateUTC, 14).unix(),
-      endDate: addHours(dateUTC, 114).unix(),
-      tokenAddress: '0x',
-      tokenAmount: 150000,
-      tokenName: 'Compound',
-      symbol: 'COMP',
-      tokenIcon: Compound,
-      bids: [],
-    }
+    const auction = getAuctionDefault()
     const { getByText, getByTestId, getByLabelText } = render(
       <ThemeProvider theme={theme}>
         <PlaceBidForm

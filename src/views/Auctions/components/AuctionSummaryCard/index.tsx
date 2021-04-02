@@ -18,7 +18,7 @@ import { BadgeFlex } from 'src/layouts/BadgeFlex'
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
-const TokenIconFigure = styled.div(props => ({
+const tokenIconFigure = styled.div(props => ({
   marginRight: props.theme.space[3],
 }))
 
@@ -32,9 +32,9 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
       <CardBody>
         <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <Flex width="70%" alignItems="center">
-            <TokenIconFigure>
+            <tokenIconFigure>
               <Icon src={auction.tokenOut?.icon} alt={auction.tokenOut?.name} />
-            </TokenIconFigure>
+            </tokenIconFigure>
             <CardText fontSize="title">{auction.name}</CardText>
           </Flex>
           <BadgeFlex>

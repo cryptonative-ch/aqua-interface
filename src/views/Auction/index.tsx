@@ -167,13 +167,13 @@ export function AuctionView() {
                           : 'Final Price'
                       }
                       description={`${(1 / (clearingPrice?.tokenInAmount.toNumber() || 0)).toFixed(2)} DAI/${
-                        auction.tokenOut.symbol
+                        auction.tokenOut?.symbol
                       }`}
                     />
                     <HeaderItem
                       isMobile
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut.symbol}`}
+                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
                     />
                     {isAuctionClosed(auction) && (
                       <HeaderItem
@@ -203,12 +203,12 @@ export function AuctionView() {
                           : 'Final Price'
                       }
                       description={`${(1 / (clearingPrice?.tokenInAmount.toNumber() || 0)).toFixed(2)} DAI/${
-                        auction.tokenOut.symbol
+                        auction.tokenOut?.symbol
                       }`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut.symbol}`}
+                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
                     />
                     <Flex flex={1} />
                     {isAuctionClosed(auction) && (

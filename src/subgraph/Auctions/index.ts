@@ -13,12 +13,14 @@ const auctionsQuery = gql`
       updatedAt
       deletedAt
       status
-      tokenInAmount
-
+      startDate
+      endDate
+      sellAmount
+      minbiddingAmount
+      minBuyAmountPerOrder
       minFundingThreshold
       orderCancellationPeriod
       duration
-      mintokenOutAmountPerOrder
       isAtomicClosureAllowed
     }
     easyAuctions {
@@ -30,21 +32,16 @@ const auctionsQuery = gql`
       status
       startDate
       endDate
-
       tokenAmount
       tokenIn {
         id
-
         name
-
         symbol
         decimals
       }
       tokenOut {
         id
-
         name
-
         symbol
         decimals
       }
