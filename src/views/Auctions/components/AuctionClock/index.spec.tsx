@@ -73,7 +73,7 @@ describe('Testing AuctionClock', () => {
         startDate: addHours(dateUTC, -1).unix(),
         endDate: addHours(dateUTC, 24).unix(),
       })
-      expect(timerPercentage(auction)).toBe(4)
+      expect(timerPercentage(auction)).toBe(8)
     }),
     test('should display Starts when on mobile viewport', () => {
       resizeWindow(500, 1000)

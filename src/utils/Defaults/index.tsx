@@ -8,6 +8,7 @@ import { Auction, auctionType } from 'src/interfaces/Auction'
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 
+
 // query mocks
 
 const getEasyAuction = (): Auction => ({
@@ -67,12 +68,14 @@ const getFixedPriceAuction = (): Auction => ({
 export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'easyAuction'): Auction =>
   auctiontype == 'fixedPriceAuction'
     ? {
+      ...getFixedPriceAuction(),
         ...a,
-        ...getFixedPriceAuction(),
+        
       }
     : {
+      ...getEasyAuction(),
         ...a,
-        ...getEasyAuction(),
+       
       }
 
 // resize window mock function
@@ -86,3 +89,6 @@ export const resizeWindow = (x: number, y: number) => {
 export const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 export const utcDate = dayjs(new Date().toUTCString())
 export const dateUTC = dayjs.unix(utcDate.unix())
+
+
+// convert to local time

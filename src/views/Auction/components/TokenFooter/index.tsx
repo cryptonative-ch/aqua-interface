@@ -120,7 +120,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooter
 
   return (
     <Wrapper {...mobileWrapper}>
-      <FooterTitle>{`About ${auction.tokenOut?.name}`}</FooterTitle>
+      <FooterTitle>{`About ${auction.name}`}</FooterTitle>
       <FooterDescription marginY="16px" maxWidth={isMobile ? windowWidth - 48 : '578px'}>
         This can be a description for the project. Diam purus diam, nam sagittis risus. Nunc consequat felis tincidunt
         volutpat et. Malesuada tortor, auctor quis id nisl mattis platea.

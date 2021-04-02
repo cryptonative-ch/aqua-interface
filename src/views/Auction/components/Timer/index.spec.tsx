@@ -65,13 +65,13 @@ describe('converts unix seconds into local Date time format function', () => {
 describe('Timer', () => {
   test('when auction is open it should render the correct display', async () => {
     const auction = getAuctionDefault({
-      startDate: addHours(dateUTC, -0.01).unix(),
-      endDate: addHours(dateUTC, 0.05).unix(),
+      startDate: addHours(dateUTC, -1).unix(),
+      endDate: addHours(dateUTC, 2).unix(),
     })
 
     const { getByTestId } = wrapper(auction)
 
-    expect(await getByTestId('open')).toHaveTextContent('3m')
+    expect(await getByTestId('open')).toHaveTextContent('1h')
   }),
     test('when auction is upcoming, it displays the correct return', () => {
       const auction = getAuctionDefault({
@@ -89,6 +89,6 @@ describe('Timer', () => {
       })
 
       const { getByTestId } = wrapper(auction)
-      expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 20:02 GMT')
+      expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 19:02 GMT')
     })
 })
