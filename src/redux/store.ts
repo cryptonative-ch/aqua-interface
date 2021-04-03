@@ -1,5 +1,6 @@
 import { combineReducers, createStore, applyMiddleware, Action } from 'redux'
 import Thunk, { ThunkAction } from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 // Reducers
 import page from './page'
@@ -22,4 +23,4 @@ export type RootState = ReturnType<typeof rootReducer>
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>
 
-export const store = createStore(rootReducer, applyMiddleware(Thunk))
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(Thunk)))

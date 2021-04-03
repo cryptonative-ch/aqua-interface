@@ -126,7 +126,6 @@ const schema = `
  
 `
 const address = '0x###D####b########d###aA##e###c##eF##EE#c'
-const symbol = '###'
 
 const preserveResolvers = false
 

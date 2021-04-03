@@ -91,6 +91,7 @@ export function AuctionsView() {
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
+    console.log(auctions)
 
     if (auctions.length) {
       setLoading(false)
@@ -99,12 +100,12 @@ export function AuctionsView() {
     // remove this time component
     // will cause a request to the server every second
     // check what it does
-    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+    // const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
 
-    return () => {
-      clearInterval(interval)
-    }
-  }, [auctions, t, dispatch, time])
+    // return () => {
+    //   clearInterval(interval)
+    // }
+  }, [auctions, t, dispatch])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
