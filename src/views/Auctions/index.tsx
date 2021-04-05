@@ -3,14 +3,13 @@ import styled from 'styled-components'
 import React, { useEffect, useState, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
-
-// Hooks
-import { useAuctions } from 'src/hooks/useAuctions'
 
 // Redux
 import { setPageTitle } from 'src/redux/page'
+import { fetchAuctions } from 'src/redux/auctionListings'
+import { RootState } from 'src/redux/store'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -30,6 +29,7 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
+import { Auction } from 'src/interfaces/Auction'
 
 const AuctionSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -81,9 +81,12 @@ export function AuctionsView() {
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [AuctionShow, setAuctionShow] = useState<AuctionStatus>(AuctionStatus.LIVE)
   const dispatch = useDispatch()
-  const { auctions } = useAuctions()
   const [t] = useTranslation()
   const [time, setTime] = useState(0)
+  const fetchData = () => dispatch(fetchAuctions())
+  const auctions = useSelector<RootState, Auction[]>(state => {
+    return state.AuctionReducer.auctions
+  })
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -91,9 +94,9 @@ export function AuctionsView() {
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
-    console.log(auctions)
+    fetchData()
 
-    if (auctions.length) {
+    if (auctions) {
       setLoading(false)
     }
 
@@ -105,7 +108,7 @@ export function AuctionsView() {
     // return () => {
     //   clearInterval(interval)
     // }
-  }, [auctions, t, dispatch])
+  }, [t])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>

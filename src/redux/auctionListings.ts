@@ -1,56 +1,98 @@
 // Externals
-import { Action } from 'redux'
+import { Action, Dispatch } from 'redux'
+import { AppThunk } from './store'
 
 // interfaces
 import { Auction } from 'src/interfaces/Auction'
 
+// subgraph
+import { getAuctionsData } from 'src/subgraph'
+
 // ACTION
 enum ActionTypes {
-  GENERATE_AUCTIONS = 'GENERATE_AUCTION_PAGE',
-  UPDATE_AUCTIONS = 'UPDATE_AUCTION_PAGE',
+  GENERATE_AUCTIONS_REQUEST = 'GENERATE_AUCTIONS_REQUEST',
+  GENERATE_AUCTIONS_SUCCESS = 'GENERATE_AUCTIONS_SUCCESS',
+  GENERATE_AUCTIONS_FAILURE = 'GENERATE_AUCTIONS_FAILURE',
 }
 
-interface GenerateAuctionAction extends Action<ActionTypes.GENERATE_AUCTIONS> {
+interface GenerateRequestAction extends Action<ActionTypes.GENERATE_AUCTIONS_REQUEST> {
+  payload: boolean
+}
+
+interface GenerateSucessAction extends Action<ActionTypes.GENERATE_AUCTIONS_SUCCESS> {
   payload: Auction[]
 }
 
-interface UpdateAuctionsAction extends Action<ActionTypes.UPDATE_AUCTIONS> {
-  payload: Auction[]
+interface GenerateFailureAction extends Action<ActionTypes.GENERATE_AUCTIONS_FAILURE> {
+  payload: Error
 }
 
-type AuctionActionTypes = GenerateAuctionAction | UpdateAuctionsAction
+type AuctionActionTypes = GenerateRequestAction | GenerateSucessAction | GenerateFailureAction
 
-export const generateAuctions = (payload: Auction[]) => ({
+export const generateAuctionsRequest = (payload: boolean) => ({
   payload,
-  type: ActionTypes.GENERATE_AUCTIONS,
+  type: ActionTypes.GENERATE_AUCTIONS_REQUEST,
 })
 
-export const updateAuctions = (payload: Auction[]) => ({
+export const generateAuctionsSuccess = (payload: Auction[]) => ({
   payload,
-  type: ActionTypes.UPDATE_AUCTIONS,
+  type: ActionTypes.GENERATE_AUCTIONS_SUCCESS,
 })
+
+export const generateAuctionsFailure = (payload: Error) => ({
+  payload,
+  type: ActionTypes.GENERATE_AUCTIONS_FAILURE,
+})
+
+// fetch data
+
+export const fetchAuctions = (): AppThunk => {
+  return async dispatch => {
+    dispatch(generateAuctionsRequest(true))
+    try {
+      dispatch(generateAuctionsSuccess(await getAuctionsData()))
+    } catch (error) {
+      console.log(error)
+      dispatch(generateAuctionsFailure(error))
+    }
+  }
+}
 
 // STATE
 
 interface AuctionState {
+  isLoading: boolean
   auctions: Auction[]
+  error: Error | null
 }
 
 const defaultState: AuctionState = {
+  isLoading: false,
   auctions: [],
+  error: null,
 }
 
 //REDUCER
 
 export function AuctionReducer(state: AuctionState = defaultState, action: AuctionActionTypes): AuctionState {
   switch (action.type) {
-    case ActionTypes.GENERATE_AUCTIONS:
+    case ActionTypes.GENERATE_AUCTIONS_REQUEST:
       return {
+        ...state,
+        isLoading: action.payload,
+      }
+    case ActionTypes.GENERATE_AUCTIONS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
         auctions: action.payload,
       }
-    case ActionTypes.UPDATE_AUCTIONS:
+    case ActionTypes.GENERATE_AUCTIONS_FAILURE:
       return {
-        auctions: [...state.auctions, ...action.payload],
+        ...state,
+        isLoading: false,
+        error: action.payload,
+        auctions: [],
       }
     default:
       return state

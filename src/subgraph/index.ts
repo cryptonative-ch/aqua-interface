@@ -25,7 +25,7 @@ export const getAuctionsData = async (): Promise<Auction[]> => {
   const fixedPriceAuctions: Auction[] = (await auctionsRequest).fixedPriceAuctions
   const addFixedPriceAuctionsType = fixedPriceAuctions.map(item => ({ ...item, type: fixedPriceAuction }))
   const auctionsArray = [...addEasyAuctionType, ...addFixedPriceAuctionsType]
-  console.log(auctionsArray)
+
   return auctionsArray
 }
 

@@ -7,6 +7,9 @@ import page from './page'
 import { BidReducer } from './bidData'
 import { AuctionReducer } from './auctionListings'
 
+// interface
+import { Auction } from 'src/interfaces/Auction'
+
 // Extend the RootState for useSelector
 declare module 'react-redux' {
   // eslint-disable-next-line
