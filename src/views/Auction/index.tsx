@@ -54,12 +54,8 @@ import { NotFoundView } from 'src/views/NotFound'
 import { AuctionBid, Auction } from 'src/interfaces/Auction'
 
 //redux
-
 import { RootState } from 'src/redux/store'
-
-//subgraph
-import { selectAuctiontype, generateInitialAuctionData } from 'src/subgraph'
-import { startBid } from 'src/redux/bidData'
+import { fetchAuctionBids } from 'src/redux/bidData'
 
 /**
  *
@@ -93,7 +89,7 @@ export function AuctionView() {
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
-  const { auction } = useAuction(params.auctionId)
+  // const { auction } = useAuction(params.auctionId)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
@@ -102,16 +98,24 @@ export function AuctionView() {
     return state.BidReducer.bids
   })
 
-  const auctionReduxStore = useSelector<RootState, Auction[]>(state => {
-    return state.AuctionReducer.auctions
+  const auction = useSelector<RootState, Auction>(state => {
+    const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
+    console.log(auctions)
+    return auctions
   })
 
+  const auctionRedux = useSelector<RootState, Auction[]>(state => {
+    const auctions = state.AuctionReducer.auctions
+    return auctions
+  })
+
+  const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auctionRedux))
   const toggleModal = () => {
     setModalVisible(true)
   }
 
   const toggleGraph = () => {
-    if (showGraph || (auction && auction.bids && auction.bids.length > 0)) {
+    if (showGraph || (auction && bids && bids.length > 0)) {
       setShowGraph(!showGraph)
     }
   }
@@ -121,19 +125,14 @@ export function AuctionView() {
       setUserAddress(walletAddress || getRandomWallet().address)
     }
 
-    const FetchData = async () => {
-      dispatch(setPageTitle(t(auction?.name as string)))
-      dispatch(
-        startBid(
-          await generateInitialAuctionData(params.auctionId, selectAuctiontype(params.auctionId, auctionReduxStore))
-        )
-      )
-      // check this
-      setClearingPrice(calculateClearingPrice(bids))
-    }
+    dispatch(setPageTitle(t(auction?.name as string)))
+
+    // check this
+    setClearingPrice(calculateClearingPrice(bids))
 
     if (auction) {
-      FetchData()
+      fetchBids()
+      console.log(auction)
     }
   }, [auction, t, dispatch, bids])
 
@@ -228,12 +227,12 @@ export function AuctionView() {
                   </Flex>
                 )}
               </CardBody>
-              {isAuctionOpen(auction) && auction.bids && auction.bids.length > 0 && (
+              {isAuctionOpen(auction) && bids && bids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl showGraph={showGraph} toggleGraph={toggleGraph} />
                 </CardBody>
               )}
-              {isAuctionClosed(auction) && (!auction.bids || auction.bids.length === 0) && (
+              {isAuctionClosed(auction) && (!bids || bids.length === 0) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     showGraph={showGraph}
@@ -270,7 +269,7 @@ export function AuctionView() {
                 </CardBody>
               )}
             </Card>
-            {auction.bids && auction.bids.length > 0 && (
+            {bids && bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
                 <CardBody
                   display="flex"
@@ -334,7 +333,7 @@ export function AuctionView() {
                       console.log('Add to Auction')
                     }}
                     auction={auction}
-                    currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
+                    currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
                   />
                 </CardBody>
               </Card>

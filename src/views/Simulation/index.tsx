@@ -48,7 +48,7 @@ import { BidModalContext } from 'src/contexts'
 
 //redux
 
-import { generateBid, startBid } from 'src/redux/bidData'
+import { generateBid } from 'src/redux/bidData'
 import { RootState } from 'src/redux/store'
 
 // Data
@@ -147,7 +147,7 @@ export function SimulationView() {
         // Add 1 random bids every second
 
         if (bids.length == 0) {
-          dispatch(startBid(initialBid))
+          // dispatch(startBid(initialBid))
         }
 
         if (bids.length >= 30) {

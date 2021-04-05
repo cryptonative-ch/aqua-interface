@@ -17,6 +17,8 @@ import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
 export const ENDPOINT = 'http://localhost:8000/subgraphs/name/adamazad/mesa'
 
+export const FAKER = 'http://localhost:9002/graphql'
+
 export const getAuctionsData = async (): Promise<Auction[]> => {
   const easyAuction: auctionType = 'easyAuction'
   const fixedPriceAuction: auctionType = 'fixedPriceAuction'
@@ -38,7 +40,7 @@ export const generateInitialAuctionData = async (
   id: string,
   auctionType: 'fixedPriceAuction' | 'easyAuction'
 ): Promise<AuctionBid[]> => {
-  const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(id, auctionType))
+  const auctionBidsRequest = request(FAKER, auctionBidsQuery(id, auctionType))
 
   // converts buy/sell numbers from type number to type bignumbers
   const auctionBids: AuctionBid[] = (await auctionBidsRequest).easyauctionbids.map((item: AuctionBid) => ({

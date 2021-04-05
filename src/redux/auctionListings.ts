@@ -1,5 +1,5 @@
 // Externals
-import { Action, Dispatch } from 'redux'
+import { Action } from 'redux'
 import { AppThunk } from './store'
 
 // interfaces
