@@ -98,12 +98,13 @@ const IconImg = styled.img<IconImgProps>(
 
 interface SelfBidListProps {
   auction: Auction
+  bids: AuctionBid[]
   clearingPrice?: AuctionBid
   status: string
   showGraph: boolean
 }
 
-export function SelfBidList({ auction, clearingPrice }: SelfBidListProps) {
+export function SelfBidList({ auction, clearingPrice, bids }: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
   // use walletaddress to filter userbids
   // connect bid data to bidlist
@@ -152,7 +153,7 @@ export function SelfBidList({ auction, clearingPrice }: SelfBidListProps) {
         )}
       </Flex>
 
-      {auction.bids.map((bid: AuctionBid, index: number) => {
+      {bids.map((bid: AuctionBid, index: number) => {
         const bidPrice = bid.tokenInAmount.toNumber() / bid.tokenOutAmount.toNumber()
         return (
           <Flex

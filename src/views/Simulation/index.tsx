@@ -48,11 +48,7 @@ import { BidModalContext } from 'src/contexts'
 
 //redux
 
-import { generateBid } from 'src/redux/bidData'
 import { RootState } from 'src/redux/store'
-
-// Data
-import { initialBid } from 'src/data/initialbids'
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
@@ -119,7 +115,7 @@ export function SimulationView() {
 
   const addBid = useCallback(
     (newAuctionBid: AuctionBid) => {
-      dispatch(generateBid(newAuctionBid))
+      console.log(newAuctionBid)
     },
     [dispatch]
   )
@@ -227,7 +223,7 @@ export function SimulationView() {
                     {t('texts.yourBids')}
                   </CardTitle>
                 </CardBody>
-                <SelfBidList auction={{ ...auction, bids: bids }} clearingPrice={clearingPrice} />
+                <SelfBidList auction={{ ...auction }} clearingPrice={clearingPrice} bids={bids} />
               </Card>
               <TokenFooter auction={auction} />
             </Flex>

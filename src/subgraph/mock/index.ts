@@ -135,7 +135,7 @@ export const preserveResolvers = false
 
 export const mocks = {
   ID: () => casual.numerify(address),
-  int: () => casual.integer(1, 1000),
+  Int: () => casual.integer(1, 1000),
   String: () => casual.name,
   Boolean: () => casual.boolean,
   EasyAuction: () => ({

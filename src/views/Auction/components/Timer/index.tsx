@@ -1,5 +1,5 @@
 // External
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
 // Components
@@ -50,6 +50,16 @@ export const timeFrame = (unixSeconds: number) => {
 }
 
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [time])
+
   const localTimeStamp = dayjs(Date.now()).unix()
 
   const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endDate))

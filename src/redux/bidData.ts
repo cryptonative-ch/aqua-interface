@@ -6,7 +6,7 @@ import { AppThunk } from './store'
 import { AuctionBid } from 'src/interfaces/Auction'
 
 // subgraph
-import { FAKER, generateInitialAuctionData, selectAuctiontype } from 'src/subgraph'
+import { FAKER, generateInitialAuctionData } from 'src/subgraph'
 import request from 'graphql-request'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 

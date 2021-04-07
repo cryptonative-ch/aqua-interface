@@ -46,4 +46,4 @@ const auctionsQuery = gql`
   }
 `
 
-export const auctionsRequest = request('http://localhost:9002/graphql', auctionsQuery)
+export const auctionsRequest = request('http://localhost:4000/graphql', auctionsQuery)

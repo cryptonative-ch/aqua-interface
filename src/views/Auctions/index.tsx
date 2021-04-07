@@ -82,7 +82,6 @@ export function AuctionsView() {
   const [AuctionShow, setAuctionShow] = useState<AuctionStatus>(AuctionStatus.LIVE)
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const [time, setTime] = useState(0)
   const fetchData = () => dispatch(fetchAuctions())
   const auctions = useSelector<RootState, Auction[]>(state => {
     return state.AuctionReducer.auctions
@@ -99,15 +98,6 @@ export function AuctionsView() {
     if (auctions) {
       setLoading(false)
     }
-
-    // remove this time component
-    // will cause a request to the server every second
-    // check what it does
-    // const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
-
-    // return () => {
-    //   clearInterval(interval)
-    // }
   }, [t])
 
   if (loading) {

@@ -19,6 +19,7 @@ export function useAuctions(): UseAuctionsReturn {
     // Populate with fake data
     // startDate and endDate assumes that there are 6000 blocks per 24 hours interval
     // push data once
+    setAuctions(auctions)
 
     setLoading(false)
   }, [auctions])

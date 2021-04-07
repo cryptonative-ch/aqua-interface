@@ -11,7 +11,6 @@ import styled from 'styled-components'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
-import { useAuction } from 'src/hooks/useAuction'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Actions
@@ -58,12 +57,6 @@ import { RootState } from 'src/redux/store'
 import { fetchAuctionBids } from 'src/redux/bidData'
 import { selectAuctiontype } from 'src/subgraph'
 
-/**
- *
- * @todo initial load, pulls all data
- * subsequent loads in individial bids
- */
-
 const ChartDescription = styled.div({
   fontStyle: 'normal',
   fontWeight: 400,
@@ -90,7 +83,6 @@ export function AuctionView() {
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
   const params = useParams<AuctionViewParams>()
-  // const { auction } = useAuction(params.auctionId)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
@@ -316,7 +308,7 @@ export function AuctionView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList auction={auction} clearingPrice={clearingPrice} />
+                <SelfBidList auction={auction} clearingPrice={clearingPrice} bids={bids} />
               </Card>
             )}
             <TokenFooter auction={auction} />
