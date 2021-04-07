@@ -14,7 +14,7 @@ describe('SelfBidList', () => {
       startDate: addHours(dateUTC, -24).unix(),
       endDate: addHours(dateUTC, +24).unix(),
     })
-    const { getByText } = render(<SelfBidList auction={auction} />)
+    const { getByText } = render(<SelfBidList auction={auction} bids={auction.bids} />)
     expect(getByText('Token Price')).toBeInTheDocument()
     expect(getByText('Amount')).toBeInTheDocument()
     expect(getByText('Est. Invested')).toBeInTheDocument()

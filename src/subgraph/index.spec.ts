@@ -8,6 +8,7 @@ import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
 //mocks
 import { schemaString, queryAuctions, mocks, preserveResolvers } from './mock'
+import { BigNumber } from '@ethersproject/bignumber'
 
 //clean up
 
@@ -44,18 +45,7 @@ describe('testing subgraph integration', () => {
       const auction = await getAuctionsData(auctionsRequest.data)
       const id = auction[0].id //emulate params.id
       const auctionBidsRequest = await server.query(auctionBidsQuery(id, selectAuctiontype(id, auction)))
-      const test = await generateInitialAuctionData(auctionBidsRequest, selectAuctiontype(id, auction))
-      expect(test).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            tokenInAmount: {
-              type: 'BigNumber',
-            },
-            tokenOutAmount: {
-              type: 'BigNumber',
-            },
-          }),
-        ])
-      )
+      const test = await generateInitialAuctionData(auctionBidsRequest.data, selectAuctiontype(id, auction))
+      expect(test[0].tokenInAmount._isBigNumber).toBeTruthy
     })
 })
