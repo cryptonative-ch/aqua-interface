@@ -56,6 +56,7 @@ import { AuctionBid, Auction } from 'src/interfaces/Auction'
 //redux
 import { RootState } from 'src/redux/store'
 import { fetchAuctionBids } from 'src/redux/bidData'
+import { selectAuctiontype } from 'src/subgraph'
 
 /**
  *
@@ -95,12 +96,13 @@ export function AuctionView() {
   const theme = useTheme()
 
   const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bids
+    const bid = state.BidReducer.bids
+    console.log(bid)
+    return bid
   })
 
   const auction = useSelector<RootState, Auction>(state => {
     const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
-    console.log(auctions)
     return auctions
   })
 
@@ -109,7 +111,8 @@ export function AuctionView() {
     return auctions
   })
 
-  const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auctionRedux))
+  const fetchBids = () =>
+    dispatch(fetchAuctionBids(params.auctionId, selectAuctiontype(params.auctionId, auctionRedux)))
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -132,9 +135,8 @@ export function AuctionView() {
 
     if (auction) {
       fetchBids()
-      console.log(auction)
     }
-  }, [auction, t, dispatch, bids])
+  }, [])
 
   if (!auction) {
     return <NotFoundView />

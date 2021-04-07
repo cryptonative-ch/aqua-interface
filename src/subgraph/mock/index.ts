@@ -1,11 +1,10 @@
 // Externals
-import { mockServer } from 'graphql-tools'
+import { MockList } from 'graphql-tools'
 import casual from 'casual-browserify'
-import { graphql } from 'graphql'
 
 // schema
 
-const schema = `  
+export const schemaString = `  
   # Base Auction schema
   interface Auction {
     # Contract address
@@ -23,7 +22,7 @@ const schema = `
   }
   
   # EasyAuction entity
-  type EasyAuction implements Auction @entity {
+  type EasyAuction implements Auction  {
     # Base fields from Auction interface
     id: ID!
     name: String
@@ -53,7 +52,7 @@ const schema = `
   }
   
   # FixedPriceAuction
-  type FixedPriceAuction implements Auction @entity {
+  type FixedPriceAuction implements Auction  {
     # Base fields from Auction interface
     id: ID!
     name: String
@@ -77,7 +76,7 @@ const schema = `
   }
   
   # AuctionBid
-  type EasyAuctionBid @entity {
+  type EasyAuctionBid  {
     id: ID!
     # submitted/settled/cancelled/claimed
     status: String
@@ -95,7 +94,7 @@ const schema = `
     address: String
   }
   
-  type FixedPriceAuctionPurchase @entity {
+  type FixedPriceAuctionPurchase  {
     id: ID!
     # The UTC timestamp at which the bid was placed
     createdAt: Int
@@ -110,7 +109,7 @@ const schema = `
   }
   
   # AuctionToken
-  type AuctionToken @entity {
+  type AuctionToken  {
     # Token address
     id: ID!
     # Token name, from the smart contract ERC20.name()
@@ -122,27 +121,35 @@ const schema = `
     # Decimal, from ERC.decimals()
     decimals: Int
   }
-  
- 
+
+  type Query {
+    easyAuctions (id: ID): [EasyAuction]
+    fixedPriceAuctions (id: ID): [FixedPriceAuction]
+    easyAuction (id: ID): EasyAuction
+    fixedPriceAuction (id: ID): FixedPriceAuction
+  }
 `
 const address = '0x###D####b########d###aA##e###c##eF##EE#c'
 
-const preserveResolvers = false
+export const preserveResolvers = false
 
-const mocks = {
+export const mocks = {
   ID: () => casual.numerify(address),
   int: () => casual.integer(1, 1000),
   String: () => casual.name,
   Boolean: () => casual.boolean,
   EasyAuction: () => ({
+    status: () => casual.random_element(['live', 'upcoming', 'closed']),
     name: () => casual.company_name,
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
     startDate: () => casual.unix_time,
     endDate: () => casual.unix_time,
+    tokenAmount: () => casual.integer(1, 1000),
   }),
   FixedPriceAuction: () => ({
+    status: () => casual.random_element(['live', 'upcoming', 'closed']),
     name: () => casual.company_name,
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
@@ -150,9 +157,9 @@ const mocks = {
     startDate: () => casual.unix_time,
     endDate: () => casual.unix_time,
     sellAmount: () => casual.integer(1, 100).toString(),
+    tokenInAmount: () => casual.integer(1, 1000),
   }),
   EasyAuctionBid: () => ({
-    status: () => casual.random_element(['live', 'upcoming', 'closed']),
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
@@ -168,12 +175,15 @@ const mocks = {
     address: () => casual.numerify(address),
     name: () => casual.company_name,
     symbol: () => casual.state_abbr,
+    decimals: () => casual.integer(1, 18),
+  }),
+  Query: () => ({
+    easyAuctions: () => new MockList(10),
+    fixedPriceAuctions: () => new MockList(10),
   }),
 }
 
-const server = mockServer(schema, mocks, preserveResolvers)
-
-server.query(`
+export const queryAuctions = `
 {
     fixedPriceAuctions {
       id
@@ -216,4 +226,4 @@ server.query(`
       }
     }
   }
-`)
+`

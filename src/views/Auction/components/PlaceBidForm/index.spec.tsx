@@ -20,11 +20,6 @@ import { PlaceBidForm } from './index'
 //defaults
 import { getAuctionDefault } from 'src/utils/Defaults'
 
-// variables
-const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
-const utcDate = dayjs(new Date().toUTCString())
-const dateUTC = dayjs.unix(utcDate.unix())
-
 describe('PlaceBidForm', () => {
   test('should display texts', () => {
     i18n.init({

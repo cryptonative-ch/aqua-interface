@@ -1,26 +1,18 @@
 // Externals
 import { gql } from 'graphql-request'
 
-// no subscriptions
-// switch to long polling
+// fix this
 
 export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
   if (auctionType == 'fixedPriceAuction') {
     return gql`
-    @live 
-  
       {
-        fixedPriceAuction (id: ${auctionid}) {
+        fixedPriceAuction (id: ${JSON.stringify(auctionid)}) {
           id
     bids {
       id
-      status
-      createdAt
-      updatedAt
-      deletedAt
       tokenInAmount
       tokenOutAmount
-      address
     }
    }
  }
@@ -28,19 +20,13 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
   }
 
   return gql`
-  @live 
 {
-  easyAuction (id: ${auctionid}) {
+  easyAuction (id: ${JSON.stringify(auctionid)}) {
     id
     bids {
       id
-      status
-      createdAt
-      updatedAt
-      deletedAt
       tokenInAmount
       tokenOutAmount
-      address
     }
    }
  }

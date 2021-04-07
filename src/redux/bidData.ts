@@ -3,22 +3,24 @@ import { Action } from 'redux'
 import { AppThunk } from './store'
 
 // interface
-import { Auction, AuctionBid } from 'src/interfaces/Auction'
+import { AuctionBid } from 'src/interfaces/Auction'
 
 // subgraph
-import { generateInitialAuctionData, selectAuctiontype } from 'src/subgraph'
+import { FAKER, generateInitialAuctionData, selectAuctiontype } from 'src/subgraph'
+import request from 'graphql-request'
+import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
+
+// interface
+import { auctionType } from 'src/interfaces/Auction'
+
+//check if removebid is still needed
 
 // ACTION
 enum ActionTypes {
-  GENERATE_BID = 'GENERATE_BID',
   REMOVE_BID = 'REMOVE_BID',
   INITIAL_BID_REQUEST = 'INITIAL_BID_REQUEST',
   INITIAL_BID_SUCCESS = 'INITIAL_BID_SUCCESS',
   INITIAL_BID_FAILURE = 'INITIAL_BID_FAILURE',
-}
-
-interface generateBidAction extends Action<ActionTypes.GENERATE_BID> {
-  payload: AuctionBid
 }
 
 interface removeBidAction extends Action<ActionTypes.REMOVE_BID> {
@@ -37,17 +39,7 @@ interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE
   payload: Error
 }
 
-type BidActionTypes =
-  | generateBidAction
-  | removeBidAction
-  | InitialBidRequestAction
-  | InitialBidSuccessAction
-  | InitialBidFailureAction
-
-export const generateBid = (payload: AuctionBid) => ({
-  payload,
-  type: ActionTypes.GENERATE_BID,
-})
+type BidActionTypes = removeBidAction | InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
 
 export const removeBid = (payload: AuctionBid) => ({
   payload,
@@ -84,11 +76,12 @@ const defaultState: BidState = {
 }
 
 // fetch Data
-export const fetchAuctionBids = (id: string, auctions: Auction[]): AppThunk => {
+export const fetchAuctionBids = (id: string, auctionType: auctionType): AppThunk => {
   return async dispatch => {
     dispatch(initialBidRequest(true))
     try {
-      dispatch(initialBidSuccess(await generateInitialAuctionData(id, selectAuctiontype(id, auctions))))
+      const auctionBidsRequest = request(FAKER, auctionBidsQuery(id, auctionType))
+      dispatch(initialBidSuccess(await generateInitialAuctionData(auctionBidsRequest, auctionType)))
     } catch (error) {
       console.log(error)
       dispatch(initialBidFailure(error))
@@ -100,11 +93,6 @@ export const fetchAuctionBids = (id: string, auctions: Auction[]): AppThunk => {
 
 export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
-    case ActionTypes.GENERATE_BID:
-      return {
-        ...state,
-        bids: [...state.bids, action.payload],
-      }
     case ActionTypes.REMOVE_BID:
       return {
         ...state,

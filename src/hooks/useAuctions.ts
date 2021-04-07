@@ -20,7 +20,6 @@ export function useAuctions(): UseAuctionsReturn {
     // startDate and endDate assumes that there are 6000 blocks per 24 hours interval
     // push data once
 
-    console.log(auctions)
     setLoading(false)
   }, [auctions])
 

@@ -46,7 +46,11 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">Auction Type</CardText>
-            <CardText>Point Dutch</CardText>
+            {auction.type == 'fixedPriceAuction' ? (
+              <CardText>Fixed Price Auction</CardText>
+            ) : (
+              <CardText>Easy Auction</CardText>
+            )}
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">Current Price</CardText>

@@ -31,7 +31,6 @@ describe('testing Auction Summary Card', () => {
       </ThemeProvider>
     )
     expect(getByText('Auction Type')).toBeInTheDocument()
-    expect(getByText('Point Dutch')).toBeInTheDocument()
     expect(getByText('Current Price')).toBeInTheDocument()
     expect(getByText('Amount for Sale')).toBeInTheDocument()
     expect(getByText('Pre-sale')).toBeInTheDocument()

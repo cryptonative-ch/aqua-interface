@@ -38,15 +38,15 @@ interface Auction {
 # EasyAuction entity
 type EasyAuction implements Auction {
   # Base fields from Auction interface
-  id: ID!
+  id: ID!  @fake(type: word)
   name: String
   createdAt: Int!
   updatedAt: Int
   deletedAt: Int
   status: String
   # Specific to the EasyAuction
-  startDate: Int # Open timestamp
-  endDate: Int # Close timestamp
+  startDate: Int @examples(values: [1586110287]) # Open timestamp
+  endDate: Int @examples(values: [1649182287])# Close timestamp
   # Int of seconds after the endTime of the auction
   gracePeriodStartDate: Int
   # Int of seconds after the endTime of the auction
@@ -68,15 +68,15 @@ type EasyAuction implements Auction {
 # FixedPriceAuction
 type FixedPriceAuction implements Auction {
   # Base fields from Auction interface
-  id: ID!
+  id: ID! @fake(type: word)
   name: String
   createdAt: Int!
   updatedAt: Int
   deletedAt: Int
   status: String
   # Specific to the FixedPriceAuction
-  startDate: Int # Open timestamp
-  endDate: Int # Close timestamp
+  startDate: Int @examples(values: [1586110287]) # Open timestamp
+  endDate: Int @examples(values: [1649182287])# Close timestamp
   # Amount to sell
   sellAmount: String
   # Minimum amount per bid
@@ -91,7 +91,7 @@ type FixedPriceAuction implements Auction {
 
 # AuctionBid
 type EasyAuctionBid {
-  id: ID!
+  id: ID! 
   # submitted/settled/cancelled/claimed
   status: String
   # The UTC timestamp at which the bid was placed
@@ -162,6 +162,6 @@ type AuctionTemplate {
 }
 
 type Query {
-  easyAuctions: [EasyAuction]
-  fixedPriceAuctions: [FixedPriceAuction]
+  easyAuctions (id: ID): [EasyAuction]
+  fixedPriceAuctions (id: ID): [FixedPriceAuction]
 }

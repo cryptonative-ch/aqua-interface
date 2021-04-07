@@ -7,6 +7,7 @@ import { Auction } from 'src/interfaces/Auction'
 
 // subgraph
 import { getAuctionsData } from 'src/subgraph'
+import { auctionsRequest } from 'src/subgraph/Auctions'
 
 // ACTION
 enum ActionTypes {
@@ -50,7 +51,7 @@ export const fetchAuctions = (): AppThunk => {
   return async dispatch => {
     dispatch(generateAuctionsRequest(true))
     try {
-      dispatch(generateAuctionsSuccess(await getAuctionsData()))
+      dispatch(generateAuctionsSuccess(await getAuctionsData(auctionsRequest)))
     } catch (error) {
       console.log(error)
       dispatch(generateAuctionsFailure(error))

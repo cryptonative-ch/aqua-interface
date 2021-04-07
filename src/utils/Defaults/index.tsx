@@ -86,5 +86,3 @@ export const resizeWindow = (x: number, y: number) => {
 export const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 export const utcDate = dayjs(new Date().toUTCString())
 export const dateUTC = dayjs.unix(utcDate.unix())
-
-// convert to local time

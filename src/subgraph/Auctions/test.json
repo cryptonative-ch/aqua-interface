@@ -1,0 +1,236 @@
+{
+  "data": {
+    "easyAuctions": [
+      {
+        "createdAt": 1089155116,
+        "deletedAt": 1063946146,
+        "endDate": 860365543,
+        "id": "0x553D2888b62120630d118aA45e125c04eF17EE7c",
+        "name": "Will LLC",
+        "startDate": 1326887672,
+        "status": "live",
+        "tokenAmount": 22,
+        "tokenIn": {
+          "decimals": 15,
+          "id": "0x898D5119b77372984d354aA48e108c15eF55EE0c",
+          "name": "Howe PLC",
+          "symbol": "ND"
+        },
+        "tokenOut": {
+          "decimals": 2,
+          "id": "0x066D9742b53585367d813aA01e899c31eF79EE4c",
+          "name": "Keebler LLC",
+          "symbol": "OR"
+        },
+        "updatedAt": 1411330450
+      },
+      {
+        "createdAt": 201180375,
+        "deletedAt": 221736155,
+        "endDate": 1442979580,
+        "id": "0x270D9157b83434114d885aA29e811c01eF42EE3c",
+        "name": "Stoltenberg Inc",
+        "startDate": 863324572,
+        "status": "upcoming",
+        "tokenAmount": -52,
+        "tokenIn": {
+          "decimals": 16,
+          "id": "0x329D6629b18367149d748aA11e754c67eF82EE7c",
+          "name": "Runolfsson Group",
+          "symbol": "MI"
+        },
+        "tokenOut": {
+          "decimals": 10,
+          "id": "0x853D9913b74938015d256aA12e738c88eF72EE2c",
+          "name": "Schinner Group",
+          "symbol": "NV"
+        },
+        "updatedAt": 1141233624
+      },
+      {
+        "createdAt": 330485890,
+        "deletedAt": 100253926,
+        "endDate": 913496356,
+        "id": "0x394D8511b84628611d507aA96e910c62eF21EE3c",
+        "name": "Moore Group",
+        "startDate": 1340205135,
+        "status": "upcoming",
+        "tokenAmount": 78,
+        "tokenIn": {
+          "decimals": 11,
+          "id": "0x924D0151b76484407d446aA59e006c49eF59EE3c",
+          "name": "Boyer and Sons",
+          "symbol": "ND"
+        },
+        "tokenOut": {
+          "decimals": 6,
+          "id": "0x779D4008b19847393d609aA75e176c47eF66EE8c",
+          "name": "Feest Group",
+          "symbol": "SD"
+        },
+        "updatedAt": 1184181664
+      },
+      {
+        "createdAt": 57061716,
+        "deletedAt": 1326658155,
+        "endDate": 890182140,
+        "id": "0x410D3231b54802290d330aA24e182c05eF92EE4c",
+        "name": "Ryan and Sons",
+        "startDate": 1094163005,
+        "status": "live",
+        "tokenAmount": -87,
+        "tokenIn": {
+          "decimals": 3,
+          "id": "0x354D2617b16524785d815aA80e687c70eF56EE0c",
+          "name": "Mraz Inc",
+          "symbol": "VT"
+        },
+        "tokenOut": {
+          "decimals": 4,
+          "id": "0x479D1803b52415277d629aA37e806c70eF36EE6c",
+          "name": "Funk Inc",
+          "symbol": "FL"
+        },
+        "updatedAt": 696403455
+      }
+    ],
+    "fixedPriceAuctions": [
+      {
+        "createdAt": 1069589063,
+        "deletedAt": 1249298828,
+        "duration": -100,
+        "endDate": 465680442,
+        "id": "0x175D7733b73862640d371aA93e059c12eF70EE6c",
+        "isAtomicClosureAllowed": true,
+        "minBuyAmountPerOrder": 15,
+        "minFundingThreshold": 8,
+        "minbiddingAmount": 99,
+        "name": "Adams Inc",
+        "orderCancellationPeriod": 51,
+        "sellAmount": "47",
+        "startDate": 143053084,
+        "status": "upcoming",
+        "updatedAt": 999605795
+      },
+      {
+        "createdAt": 865610880,
+        "deletedAt": 396748878,
+        "duration": -86,
+        "endDate": 425099078,
+        "id": "0x769D5395b98074532d891aA69e697c83eF32EE2c",
+        "isAtomicClosureAllowed": true,
+        "minBuyAmountPerOrder": 79,
+        "minFundingThreshold": -13,
+        "minbiddingAmount": 59,
+        "name": "Sauer Inc",
+        "orderCancellationPeriod": -48,
+        "sellAmount": "78",
+        "startDate": 426043933,
+        "status": "live",
+        "updatedAt": 171253426
+      },
+      {
+        "createdAt": 1072322786,
+        "deletedAt": 164345915,
+        "duration": -42,
+        "endDate": 1414345692,
+        "id": "0x684D2939b45135884d024aA14e191c31eF72EE8c",
+        "isAtomicClosureAllowed": false,
+        "minBuyAmountPerOrder": 97,
+        "minFundingThreshold": -86,
+        "minbiddingAmount": -78,
+        "name": "Turcotte LLC",
+        "orderCancellationPeriod": 93,
+        "sellAmount": "37",
+        "startDate": 839099128,
+        "status": "live",
+        "updatedAt": 905276948
+      },
+      {
+        "createdAt": 832148298,
+        "deletedAt": 812202504,
+        "duration": -48,
+        "endDate": 633460461,
+        "id": "0x862D9171b58592195d616aA74e998c56eF43EE4c",
+        "isAtomicClosureAllowed": false,
+        "minBuyAmountPerOrder": 49,
+        "minFundingThreshold": 40,
+        "minbiddingAmount": 57,
+        "name": "Paucek Inc",
+        "orderCancellationPeriod": -82,
+        "sellAmount": "49",
+        "startDate": 317664246,
+        "status": "closed",
+        "updatedAt": 980340035
+      },
+      {
+        "createdAt": 836124557,
+        "deletedAt": 1369475744,
+        "duration": -39,
+        "endDate": 1218384576,
+        "id": "0x943D5925b94476099d900aA27e127c02eF51EE6c",
+        "isAtomicClosureAllowed": false,
+        "minBuyAmountPerOrder": -52,
+        "minFundingThreshold": 89,
+        "minbiddingAmount": -51,
+        "name": "Moen Ltd",
+        "orderCancellationPeriod": 5,
+        "sellAmount": "64",
+        "startDate": 1208602083,
+        "status": "upcoming",
+        "updatedAt": 1387275007
+      },
+      {
+        "createdAt": 44977506,
+        "deletedAt": 497731266,
+        "duration": -30,
+        "endDate": 1315323868,
+        "id": "0x707D0363b25331278d829aA96e290c01eF98EE3c",
+        "isAtomicClosureAllowed": true,
+        "minBuyAmountPerOrder": -77,
+        "minFundingThreshold": -89,
+        "minbiddingAmount": -40,
+        "name": "Nienow LLC",
+        "orderCancellationPeriod": 48,
+        "sellAmount": "55",
+        "startDate": 676657955,
+        "status": "live",
+        "updatedAt": 369181102
+      },
+      {
+        "createdAt": 1116931181,
+        "deletedAt": 206260635,
+        "duration": -13,
+        "endDate": 887395738,
+        "id": "0x318D1952b78896557d729aA93e268c12eF43EE1c",
+        "isAtomicClosureAllowed": false,
+        "minBuyAmountPerOrder": 51,
+        "minFundingThreshold": -46,
+        "minbiddingAmount": 77,
+        "name": "Johns Group",
+        "orderCancellationPeriod": 90,
+        "sellAmount": "55",
+        "startDate": 195579639,
+        "status": "upcoming",
+        "updatedAt": 1123905312
+      },
+      {
+        "createdAt": 644175603,
+        "deletedAt": 996684974,
+        "duration": -9,
+        "endDate": 1288481338,
+        "id": "0x645D8377b97810769d487aA93e480c74eF20EE0c",
+        "isAtomicClosureAllowed": false,
+        "minBuyAmountPerOrder": 12,
+        "minFundingThreshold": -42,
+        "minbiddingAmount": 53,
+        "name": "Crona Ltd",
+        "orderCancellationPeriod": 50,
+        "sellAmount": "97",
+        "startDate": 343515692,
+        "status": "upcoming",
+        "updatedAt": 641629305
+      }
+    ]
+  }
+}
