@@ -140,7 +140,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
       <HeaderContainer isMobile={isMobile}>
         <MobileTokenContainer src={auction.tokenOut?.icon} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
-          <MobileHeaderText>{`${auction.tokenOut?.name} Initial Auction`}</MobileHeaderText>
+          <MobileHeaderText>{`${auction.name} Initial Auction`}</MobileHeaderText>
           <MobileStatusText>Private</MobileStatusText>
         </Flex>
       </HeaderContainer>
@@ -150,7 +150,7 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
   return (
     <HeaderContainer isMobile={isMobile}>
       <TokenIconContainer src={auction.tokenOut?.icon} />
-      <HeaderText>{`${auction.tokenOut?.name} Initial Auction`}</HeaderText>
+      <HeaderText>{`${auction.name} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>
       {isAuctionOpen(auction) && <TimeText data-testid="format_time">{format_time}</TimeText>}
     </HeaderContainer>

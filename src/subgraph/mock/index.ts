@@ -144,8 +144,8 @@ export const mocks = {
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
-    startDate: () => casual.unix_time,
-    endDate: () => casual.unix_time,
+    startDate: () => casual.random_element([1586276387, 1583601587]),
+    endDate: () => casual.random_element([1646673587, 1644254387]),
     tokenAmount: () => casual.integer(1, 1000),
   }),
   FixedPriceAuction: () => ({
@@ -154,8 +154,8 @@ export const mocks = {
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
-    startDate: () => casual.unix_time,
-    endDate: () => casual.unix_time,
+    startDate: () => casual.random_element([1586276387, 1583601587]),
+    endDate: () => casual.random_element([1646673587, 1644254387]),
     sellAmount: () => casual.integer(1, 100).toString(),
     tokenInAmount: () => casual.integer(1, 1000),
   }),
@@ -178,8 +178,8 @@ export const mocks = {
     decimals: () => casual.integer(1, 18),
   }),
   Query: () => ({
-    easyAuctions: () => new MockList(10),
-    fixedPriceAuctions: () => new MockList(10),
+    easyAuctions: () => new MockList(3),
+    fixedPriceAuctions: () => new MockList(3),
   }),
 }
 

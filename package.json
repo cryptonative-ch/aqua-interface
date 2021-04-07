@@ -65,6 +65,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "server": "TS_NODE_PROJECT='src/subgraph/mock/tsconfig.commonjs.json' ts-node src/subgraph/mock/server.ts ",
     "test": "react-scripts test",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "lint": "eslint src/ --ext .js,.ts,.tsx",

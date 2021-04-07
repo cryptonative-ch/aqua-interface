@@ -5,11 +5,7 @@ import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { ThemeProvider } from 'styled-components'
 import numeral from 'numeral'
-import dayjs, { Dayjs } from 'dayjs'
 import i18n from 'i18next'
-
-// Icons
-import Compound from 'src/assets/svg/Compound.svg'
 
 import { calculateClearingPrice } from 'src/mesa/price'
 

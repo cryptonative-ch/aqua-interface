@@ -21,7 +21,7 @@ describe('testing subgraph integration', () => {
     auctionsRequest = await server.query(queryAuctions)
   })
   test('should check if queryAuctions object contains type easyAuction', async () => {
-    const test = await getAuctionsData(auctionsRequest)
+    const test = await getAuctionsData(auctionsRequest.data)
     expect(test).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -31,7 +31,7 @@ describe('testing subgraph integration', () => {
     )
   }),
     test('should check if queryAuctions object contains type fixedPriceAuction', async () => {
-      const test = await getAuctionsData(auctionsRequest)
+      const test = await getAuctionsData(auctionsRequest.data)
       expect(test).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -41,19 +41,21 @@ describe('testing subgraph integration', () => {
       )
     }),
     test('should display correct auctionBids', async () => {
-      const auction = await getAuctionsData(auctionsRequest)
+      const auction = await getAuctionsData(auctionsRequest.data)
       const id = auction[0].id //emulate params.id
       const auctionBidsRequest = await server.query(auctionBidsQuery(id, selectAuctiontype(id, auction)))
       const test = await generateInitialAuctionData(auctionBidsRequest, selectAuctiontype(id, auction))
-      expect.arrayContaining([
-        expect.objectContaining({
-          tokenInAmount: {
-            type: 'BigNumber',
-          },
-          tokenOutAmount: {
-            type: 'BigNumber',
-          },
-        }),
-      ])
+      expect(test).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tokenInAmount: {
+              type: 'BigNumber',
+            },
+            tokenOutAmount: {
+              type: 'BigNumber',
+            },
+          }),
+        ])
+      )
     })
 })

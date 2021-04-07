@@ -1,4 +1,5 @@
 // Externals
+
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from 'graphql'
@@ -27,4 +28,4 @@ app.use(
   })
 )
 
-app.listen(4000, () => console.log('Example app listening on port 4000!'))
+app.listen(4000, () => console.log('Mock Graphql server is listening on port 4000!'))

@@ -23,10 +23,6 @@ enum ActionTypes {
   INITIAL_BID_FAILURE = 'INITIAL_BID_FAILURE',
 }
 
-interface removeBidAction extends Action<ActionTypes.REMOVE_BID> {
-  payload: AuctionBid
-}
-
 interface InitialBidRequestAction extends Action<ActionTypes.INITIAL_BID_REQUEST> {
   payload: boolean
 }
@@ -39,12 +35,7 @@ interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE
   payload: Error
 }
 
-type BidActionTypes = removeBidAction | InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
-
-export const removeBid = (payload: AuctionBid) => ({
-  payload,
-  type: ActionTypes.REMOVE_BID,
-})
+type BidActionTypes = InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
 
 export const initialBidRequest = (payload: boolean) => ({
   payload,
@@ -93,16 +84,6 @@ export const fetchAuctionBids = (id: string, auctionType: auctionType): AppThunk
 
 export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
-    case ActionTypes.REMOVE_BID:
-      return {
-        ...state,
-        bids: state.bids.filter(
-          bid =>
-            bid.address !== action.payload.address &&
-            bid.tokenInAmount !== action.payload.tokenInAmount &&
-            bid.tokenOutAmount !== action.payload.tokenOutAmount
-        ),
-      }
     case ActionTypes.INITIAL_BID_REQUEST:
       return {
         ...state,
