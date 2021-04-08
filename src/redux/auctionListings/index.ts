@@ -1,16 +1,16 @@
 // Externals
-import { Action } from 'redux'
-import { AppThunk } from './store'
+import { Action, AnyAction } from 'redux'
+import { AppThunk } from '../store'
 
 // interfaces
 import { Auction } from 'src/interfaces/Auction'
 
 // subgraph
 import { getAuctionsData } from 'src/subgraph'
-import { auctionsRequest } from 'src/subgraph/Auctions'
+import { ThunkDispatch } from 'redux-thunk'
 
 // ACTION
-enum ActionTypes {
+export enum ActionTypes {
   GENERATE_AUCTIONS_REQUEST = 'GENERATE_AUCTIONS_REQUEST',
   GENERATE_AUCTIONS_SUCCESS = 'GENERATE_AUCTIONS_SUCCESS',
   GENERATE_AUCTIONS_FAILURE = 'GENERATE_AUCTIONS_FAILURE',
@@ -28,7 +28,7 @@ interface GenerateFailureAction extends Action<ActionTypes.GENERATE_AUCTIONS_FAI
   payload: Error
 }
 
-type AuctionActionTypes = GenerateRequestAction | GenerateSucessAction | GenerateFailureAction
+export type AuctionActionTypes = GenerateRequestAction | GenerateSucessAction | GenerateFailureAction
 
 export const generateAuctionsRequest = (payload: boolean) => ({
   payload,
@@ -47,7 +47,7 @@ export const generateAuctionsFailure = (payload: Error) => ({
 
 // fetch data
 
-export const fetchAuctions = (): AppThunk => {
+export const fetchAuctions = (auctionsRequest: Promise<any>): AppThunk => {
   return async dispatch => {
     dispatch(generateAuctionsRequest(true))
     try {

@@ -1,6 +1,6 @@
 // Externals
 import { Action } from 'redux'
-import { AppThunk } from './store'
+import { AppThunk } from '../store'
 
 // interface
 import { AuctionBid } from 'src/interfaces/Auction'

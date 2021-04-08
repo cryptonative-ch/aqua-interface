@@ -8,7 +8,6 @@ import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
 //mocks
 import { schemaString, queryAuctions, mocks, preserveResolvers } from './mock'
-import { BigNumber } from '@ethersproject/bignumber'
 
 //clean up
 

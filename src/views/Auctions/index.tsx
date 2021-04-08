@@ -31,6 +31,9 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 import { Auction } from 'src/interfaces/Auction'
 
+//subgraph
+import { auctionsRequest } from 'src/subgraph/Auctions'
+
 const AuctionSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
 })
@@ -82,7 +85,7 @@ export function AuctionsView() {
   const [AuctionShow, setAuctionShow] = useState<AuctionStatus>(AuctionStatus.LIVE)
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const fetchData = () => dispatch(fetchAuctions())
+  const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
   const auctions = useSelector<RootState, Auction[]>(state => {
     return state.AuctionReducer.auctions
   })
