@@ -28,6 +28,7 @@ export const timerPercentage = (auction: Auction) => {
 }
 
 export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
+  const [time, setTime] = useState(0)
   const [isMobile, setMobile] = useState(window.innerWidth < 770)
 
   const updateMedia = () => {
@@ -35,9 +36,11 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   }
 
   useEffect(() => {
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
     window.addEventListener('resize', updateMedia)
-    return () => window.removeEventListener('resize', updateMedia)
-  })
+    return () => {window.removeEventListener('resize', updateMedia) 
+    clearInterval(interval)}
+  }, [time])
 
   const color = '#304ffe'
 

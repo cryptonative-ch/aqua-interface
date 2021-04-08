@@ -33,7 +33,6 @@ describe('testing Auction Summary Card', () => {
     expect(getByText('Auction Type')).toBeInTheDocument()
     expect(getByText('Current Price')).toBeInTheDocument()
     expect(getByText('Amount for Sale')).toBeInTheDocument()
-    expect(getByText('Pre-sale')).toBeInTheDocument()
     expect(getByText('Private')).toBeInTheDocument()
   })
 })
