@@ -1,6 +1,9 @@
 // Externals
 import { request, gql } from 'graphql-request'
 
+//subgraph
+import { ENDPOINT } from 'src/subgraph/index'
+
 const auctionsQuery = gql`
   {
     fixedPriceAuctions {
@@ -46,4 +49,4 @@ const auctionsQuery = gql`
   }
 `
 
-export const auctionsRequest = request('http://localhost:4000/graphql', auctionsQuery)
+export const auctionsRequest = request(ENDPOINT, auctionsQuery)

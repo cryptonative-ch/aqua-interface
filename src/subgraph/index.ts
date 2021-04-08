@@ -9,9 +9,10 @@ import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
  * @todo create seperate deployment and production variables
  */
 
-export const ENDPOINT = 'http://localhost:8000/subgraphs/name/adamazad/mesa'
-
-export const FAKER = 'http://localhost:4000/graphql'
+export const ENDPOINT =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:4000/graphql'
+    : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   // refactor array to make sure that it only makes a single request to server

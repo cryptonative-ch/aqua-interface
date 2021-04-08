@@ -63,7 +63,7 @@
     "use-wallet": "^0.8.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
     "server": "TS_NODE_PROJECT='src/subgraph/mock/tsconfig.commonjs.json' ts-node src/subgraph/mock/server.ts ",
     "test": "react-scripts test",

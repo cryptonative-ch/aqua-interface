@@ -23,4 +23,7 @@ export type RootState = ReturnType<typeof rootReducer>
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>
 
-export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(Thunk)))
+export const store =
+  process.env.NODE_ENV === 'development'
+    ? createStore(rootReducer, composeWithDevTools(applyMiddleware(Thunk)))
+    : createStore(rootReducer, applyMiddleware(Thunk))

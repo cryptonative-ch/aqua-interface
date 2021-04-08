@@ -39,7 +39,7 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
           </Flex>
           <BadgeFlex>
             <BadgeCard saleType="private" />
-            <BadgeCard saleType="presale" />
+            {/* <BadgeCard saleType="presale" /> */}
           </BadgeFlex>
         </Flex>
         <Divider />

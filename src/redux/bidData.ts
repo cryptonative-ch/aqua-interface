@@ -6,7 +6,7 @@ import { AppThunk } from './store'
 import { AuctionBid } from 'src/interfaces/Auction'
 
 // subgraph
-import { FAKER, generateInitialAuctionData } from 'src/subgraph'
+import { ENDPOINT, generateInitialAuctionData } from 'src/subgraph'
 import request from 'graphql-request'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
@@ -71,7 +71,7 @@ export const fetchAuctionBids = (id: string, auctionType: auctionType): AppThunk
   return async dispatch => {
     dispatch(initialBidRequest(true))
     try {
-      const auctionBidsRequest = request(FAKER, auctionBidsQuery(id, auctionType))
+      const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(id, auctionType))
       dispatch(initialBidSuccess(await generateInitialAuctionData(auctionBidsRequest, auctionType)))
     } catch (error) {
       console.log(error)
