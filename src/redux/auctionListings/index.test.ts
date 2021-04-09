@@ -43,9 +43,6 @@ describe('async Auction Actions and Reducers', () => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   }),
-    test('reducer should return initial state', () => {
-      expect(AuctionReducer(undefined, [])).toEqual({ auctions: [], isLoading: false, error: null })
-    }),
     test('reducer should handle GENERATE_AUCTIONS_REQUEST', () => {
       const startAction: AuctionActionTypes = {
         type: ActionTypes.GENERATE_AUCTIONS_REQUEST,

@@ -80,6 +80,7 @@ export type AuctionContextType = {
 export const AuctionContext = createContext<AuctionContextType>({} as AuctionContextType)
 
 export function AuctionsView() {
+  //replace loading states with redux states
   const [loading, setLoading] = useState<boolean>(true)
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [AuctionShow, setAuctionShow] = useState<AuctionStatus>(AuctionStatus.LIVE)

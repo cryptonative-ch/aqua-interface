@@ -48,9 +48,6 @@ describe('Async Bid Data Actions and Reducers', () => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   }),
-    test('reducer should return initial state ', async () => {
-      expect(BidReducer(undefined, [])).toEqual({ bids: [], isLoading: false, error: null })
-    }),
     test('reducer should handle INITIAL_BID_REQUEST', () => {
       const startAction: BidActionTypes = {
         type: ActionTypes.INITIAL_BID_REQUEST,

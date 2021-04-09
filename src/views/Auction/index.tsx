@@ -55,9 +55,17 @@ import { AuctionBid, Auction } from 'src/interfaces/Auction'
 //redux
 import { RootState } from 'src/redux/store'
 import { fetchAuctionBids } from 'src/redux/bidData'
-import { ENDPOINT, selectAuctiontype } from 'src/subgraph'
+import { ENDPOINT } from 'src/subgraph'
 import request from 'graphql-request'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
+
+//subgraph
+import { auctionsRequest } from 'src/subgraph/Auctions'
+import { fetchAuctions } from 'src/redux/auctionListings'
+
+/**
+ * @todo fix notfoundview render not appearing bug
+ */
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -89,29 +97,26 @@ export function AuctionView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
+  const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
+
   const bids = useSelector<RootState, AuctionBid[]>(state => {
     const bid = state.BidReducer.bids
-    console.log(bid)
     return bid
   })
 
   const auction = useSelector<RootState, Auction>(state => {
     const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
+    if (!auctions) {
+      fetchData()
+      return auctions
+    }
     return auctions
   })
 
-  const auctionRedux = useSelector<RootState, Auction[]>(state => {
-    const auctions = state.AuctionReducer.auctions
-    return auctions
-  })
+  const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
 
-  const auctionBidsRequest = request(
-    ENDPOINT,
-    auctionBidsQuery(params.auctionId, selectAuctiontype(params.auctionId, auctionRedux))
-  )
+  const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
 
-  const fetchBids = () =>
-    dispatch(fetchAuctionBids(params.auctionId, selectAuctiontype(params.auctionId, auctionRedux), auctionBidsRequest))
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -129,11 +134,9 @@ export function AuctionView() {
 
     dispatch(setPageTitle(t(auction?.name as string)))
 
-    // check this
-    setClearingPrice(calculateClearingPrice(bids))
-
     if (auction) {
       fetchBids()
+      setClearingPrice(calculateClearingPrice(bids))
     }
   }, [])
 
