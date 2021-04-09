@@ -37,9 +37,6 @@ export const generateInitialAuctionData = async (
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {
-  console.log(await auctionBidsRequest)
-  // use mock tests to test functions
-  // converts buy/sell numbers from type number to type bignumbers
   const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].bids.map((item: AuctionBid) => ({
     ...item,
     tokenOutAmount: BigNumber.from(item.tokenOutAmount),

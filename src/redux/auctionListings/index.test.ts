@@ -13,7 +13,7 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const store = mockStore({})
 
-describe('async Actions', () => {
+describe('async Auction Actions and Reducers', () => {
   let server: any
   let auctionsRequest: any
   beforeEach(async () => {

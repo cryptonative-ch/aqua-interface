@@ -8,7 +8,7 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
     return gql`
       {
         fixedPriceAuction (id: ${JSON.stringify(auctionid)}) {
-          id
+       
     bids {
       id
       tokenInAmount
@@ -22,7 +22,7 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
   return gql`
 {
   easyAuction (id: ${JSON.stringify(auctionid)}) {
-    id
+   
     bids {
       id
       tokenInAmount

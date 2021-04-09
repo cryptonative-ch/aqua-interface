@@ -1,5 +1,5 @@
 // Externals
-import { Action, AnyAction } from 'redux'
+import { Action } from 'redux'
 import { AppThunk } from '../store'
 
 // interfaces
@@ -7,7 +7,6 @@ import { Auction } from 'src/interfaces/Auction'
 
 // subgraph
 import { getAuctionsData } from 'src/subgraph'
-import { ThunkDispatch } from 'redux-thunk'
 
 // ACTION
 export enum ActionTypes {

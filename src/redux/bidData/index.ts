@@ -6,9 +6,7 @@ import { AppThunk } from '../store'
 import { AuctionBid } from 'src/interfaces/Auction'
 
 // subgraph
-import { ENDPOINT, generateInitialAuctionData } from 'src/subgraph'
-import request from 'graphql-request'
-import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
+import { generateInitialAuctionData } from 'src/subgraph'
 
 // interface
 import { auctionType } from 'src/interfaces/Auction'
@@ -16,7 +14,7 @@ import { auctionType } from 'src/interfaces/Auction'
 //check if removebid is still needed
 
 // ACTION
-enum ActionTypes {
+export enum ActionTypes {
   REMOVE_BID = 'REMOVE_BID',
   INITIAL_BID_REQUEST = 'INITIAL_BID_REQUEST',
   INITIAL_BID_SUCCESS = 'INITIAL_BID_SUCCESS',
@@ -35,7 +33,7 @@ interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE
   payload: Error
 }
 
-type BidActionTypes = InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
+export type BidActionTypes = InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
 
 export const initialBidRequest = (payload: boolean) => ({
   payload,
@@ -67,11 +65,10 @@ const defaultState: BidState = {
 }
 
 // fetch Data
-export const fetchAuctionBids = (id: string, auctionType: auctionType): AppThunk => {
+export const fetchAuctionBids = (id: string, auctionType: auctionType, auctionBidsRequest: Promise<any>): AppThunk => {
   return async dispatch => {
     dispatch(initialBidRequest(true))
     try {
-      const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(id, auctionType))
       dispatch(initialBidSuccess(await generateInitialAuctionData(auctionBidsRequest, auctionType)))
     } catch (error) {
       console.log(error)

@@ -55,7 +55,9 @@ import { AuctionBid, Auction } from 'src/interfaces/Auction'
 //redux
 import { RootState } from 'src/redux/store'
 import { fetchAuctionBids } from 'src/redux/bidData'
-import { selectAuctiontype } from 'src/subgraph'
+import { ENDPOINT, selectAuctiontype } from 'src/subgraph'
+import request from 'graphql-request'
+import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -103,8 +105,13 @@ export function AuctionView() {
     return auctions
   })
 
+  const auctionBidsRequest = request(
+    ENDPOINT,
+    auctionBidsQuery(params.auctionId, selectAuctiontype(params.auctionId, auctionRedux))
+  )
+
   const fetchBids = () =>
-    dispatch(fetchAuctionBids(params.auctionId, selectAuctiontype(params.auctionId, auctionRedux)))
+    dispatch(fetchAuctionBids(params.auctionId, selectAuctiontype(params.auctionId, auctionRedux), auctionBidsRequest))
   const toggleModal = () => {
     setModalVisible(true)
   }
