@@ -143,7 +143,11 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
   const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
     const tokenAmount = parseInt(event.target.value || '0')
     setTokenAmount(tokenAmount)
-    validateForm([tokenAmount, tokenPrice])
+    if (isFixed) {
+      validateForm([tokenAmount])
+    } else {
+      validateForm([tokenAmount, tokenPrice])
+    }
   }
 
   // Submission handler
@@ -176,16 +180,19 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
           <FormLabel>Token Price</FormLabel>
           <Flex flexDirection="column" flex={1}>
             <FormContainer>
-              <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+              <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
               <FormInput
-                aria-label="tokenAmount"
-                id="tokenAmount"
+                aria-label="tokenPrice"
+                id="tokenPrice"
                 type="number"
-                value={Number(tokenAmount).toString()}
-                onChange={onTokenAmountChange}
+                value={Number(tokenPrice).toString()}
+                onChange={onTokenPriceChange}
               />
+              <MaxButton>Max</MaxButton>
             </FormContainer>
-            <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
+            <FormDescription>
+              {isFixed ? 'You have 123,456 DAI.' : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
+            </FormDescription>
           </Flex>
         </FormGroup>
       )}
@@ -193,19 +200,16 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
+            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
             <FormInput
-              aria-label="tokenPrice"
-              id="tokenPrice"
+              aria-label="tokenAmount"
+              id="tokenAmount"
               type="number"
-              value={Number(tokenPrice).toString()}
-              onChange={onTokenPriceChange}
+              value={Number(tokenAmount).toString()}
+              onChange={onTokenAmountChange}
             />
-            <MaxButton>Max</MaxButton>
           </FormContainer>
-          <FormDescription>
-            {isFixed ? 'You have 123,456 DAI.' : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
-          </FormDescription>
+          <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
       </FormGroup>
       {isFixed && (

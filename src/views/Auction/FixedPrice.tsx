@@ -1,6 +1,7 @@
 // External
 import React, { useEffect, useRef, useState } from 'react'
 import { useWallet } from 'use-wallet'
+import { ethers } from 'ethers'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -53,6 +54,10 @@ import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
 import { AuctionBid } from 'src/interfaces/Auction'
 
+// Constants
+import { FixedPriceSaleContractAddress } from 'src/constants'
+import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
+
 const ChartDescription = styled.div({
   fontStyle: 'normal',
   fontWeight: 400,
@@ -70,6 +75,11 @@ const FixedFormMax = styled.div({
   color: '#7B7F93',
 })
 
+type BidFormProps = {
+  tokenAmount: number
+  tokenPrice: number
+}
+
 interface FixedPriceAuctionViewParams {
   auctionId: string
 }
@@ -77,8 +87,8 @@ interface FixedPriceAuctionViewParams {
 export function FixedPriceAuctionView() {
   const wallet = useWallet()
   const { isMobile } = useWindowSize()
-
   const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
+  const [fixedPriceContract, setFixedPriceContract] = useState<ethers.Contract>()
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
@@ -101,6 +111,28 @@ export function FixedPriceAuctionView() {
       setShowGraph(!showGraph)
     }
   }
+
+  const buyToken = async ({tokenAmount}: BidFormProps) => {
+    if (fixedPriceContract) {
+      try {
+        const closed = await fixedPriceContract.buyTokens(tokenAmount)
+        console.log(closed)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (!wallet.chainId || !wallet.ethereum || !wallet.account) {
+      return;
+    }
+    // An example Provider
+    const provider = new ethers.providers.Web3Provider(wallet.ethereum as ethers.providers.ExternalProvider);
+    // An example Signer
+    const signer = provider.getSigner(0)
+    setFixedPriceContract(new ethers.Contract(FixedPriceSaleContractAddress, FixedPriceSaleABI, signer));
+  }, [wallet])
 
   useEffect(() => {
     if (!userAddress) {
@@ -298,9 +330,7 @@ export function FixedPriceAuctionView() {
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
                   <PlaceBidForm
-                    onSubmit={() => {
-                      console.log('Add to Auction')
-                    }}
+                    onSubmit={(val: BidFormProps) => buyToken(val)}
                     auction={auction}
                     currentSettlementPrice={numeral(calculateClearingPrice(auction.bids)).value()}
                     isFixed
