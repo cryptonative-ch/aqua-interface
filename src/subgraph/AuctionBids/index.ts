@@ -1,11 +1,6 @@
-// Externals
-import { gql } from 'graphql-request'
-
-// fix this
-
 export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
   if (auctionType == 'fixedPriceAuction') {
-    return gql`
+    return `
       {
         fixedPriceAuction (id: ${JSON.stringify(auctionid)}) {
     bids {
@@ -18,7 +13,7 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
       `
   }
 
-  return gql`
+  return `
 {
   easyAuction (id: ${JSON.stringify(auctionid)}) {
     bids {

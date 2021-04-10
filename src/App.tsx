@@ -17,6 +17,7 @@ import { Modal } from 'src/components/Modal'
 import { ConfirmButton } from 'src/components/ConfirmButton'
 import { SANCTION_LIST } from 'src/constants'
 import { SanctionContext } from 'src/contexts'
+import { Center } from './layouts/Center'
 
 export const App = () => {
   const { isShown, toggle } = useModal()
@@ -54,7 +55,7 @@ export const App = () => {
       <SanctionContext.Provider value={sanction}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Suspense fallback={<>loading</>}>
+          <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
             <BrowserRouter>
               <UseWalletProvider
                 chainId={42}

@@ -1,10 +1,7 @@
-// Externals
-import { request, gql } from 'graphql-request'
-
 //subgraph
-import { ENDPOINT } from 'src/subgraph/index'
+import { ENDPOINT, subgraphCall } from 'src/subgraph/index'
 
-const auctionsQuery = gql`
+const auctionsQuery = `
   {
     fixedPriceAuctions {
       id
@@ -49,4 +46,4 @@ const auctionsQuery = gql`
   }
 `
 
-export const auctionsRequest = request(ENDPOINT, auctionsQuery)
+export const auctionsRequest = subgraphCall(ENDPOINT, auctionsQuery)

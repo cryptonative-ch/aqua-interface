@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { Auction } from 'src/interfaces/Auction'
 
 // Utils
-import { convertUtcTimestampToLocal } from 'src/utils/date'
+import { convertUtcTimestampToLocal, convertTimestampWithMoment } from 'src/utils/date'
 import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { Flex } from 'src/components/Flex'

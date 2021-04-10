@@ -12,7 +12,6 @@ interface AuctionAmountprops {
   auction: Auction
 }
 /**
- *
  * @todo update these when adam finishes subgraph
  */
 export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {

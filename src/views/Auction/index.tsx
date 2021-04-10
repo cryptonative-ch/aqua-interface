@@ -55,17 +55,12 @@ import { AuctionBid, Auction } from 'src/interfaces/Auction'
 //redux
 import { RootState } from 'src/redux/store'
 import { fetchAuctionBids } from 'src/redux/bidData'
-import { ENDPOINT } from 'src/subgraph'
-import request from 'graphql-request'
+import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 
 //subgraph
 import { auctionsRequest } from 'src/subgraph/Auctions'
 import { fetchAuctions } from 'src/redux/auctionListings'
-
-/**
- * @todo fix notfoundview render not appearing bug
- */
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -113,10 +108,6 @@ export function AuctionView() {
     return auctions
   })
 
-  const auctionBidsRequest = request(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
-
-  const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
-
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -135,6 +126,8 @@ export function AuctionView() {
     dispatch(setPageTitle(t(auction?.name as string)))
 
     if (auction) {
+      const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
+      const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }

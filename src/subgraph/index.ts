@@ -1,13 +1,9 @@
 // Externals
+import axios from 'axios'
 import { BigNumber } from 'ethers'
 
 //interface
 import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
-
-// variables
-/**
- * @todo create seperate deployment and production variables
- */
 
 export const ENDPOINT =
   process.env.NODE_ENV === 'development'
@@ -44,4 +40,11 @@ export const generateInitialAuctionData = async (
   }))
 
   return auctionBids
+}
+
+export async function subgraphCall(endpoint: string, query: string) {
+  const apiCall = await axios.post(endpoint, {
+    query,
+  })
+  return apiCall.data.data
 }
