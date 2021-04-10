@@ -11,10 +11,8 @@ export const ENDPOINT =
     : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
-  // refactor array to make sure that it only makes a single request to server
   const easyAuction: auctionType = 'easyAuction'
   const fixedPriceAuction: auctionType = 'fixedPriceAuction'
-
   const easyAuctions: Auction[] = (await auctionsRequest).easyAuctions
   const addEasyAuctionType = easyAuctions.map(item => ({ ...item, type: easyAuction }))
   const fixedPriceAuctions: Auction[] = (await auctionsRequest).fixedPriceAuctions

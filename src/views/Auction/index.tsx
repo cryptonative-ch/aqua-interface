@@ -95,16 +95,11 @@ export function AuctionView() {
   const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
 
   const bids = useSelector<RootState, AuctionBid[]>(state => {
-    const bid = state.BidReducer.bids
-    return bid
+    return state.BidReducer.bids
   })
 
   const auction = useSelector<RootState, Auction>(state => {
     const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
-    if (!auctions) {
-      fetchData()
-      return auctions
-    }
     return auctions
   })
 
@@ -134,7 +129,10 @@ export function AuctionView() {
   }, [])
 
   if (!auction) {
-    return <NotFoundView />
+    fetchData()
+    if (!auction) {
+      return <NotFoundView />
+    }
   }
 
   return (
