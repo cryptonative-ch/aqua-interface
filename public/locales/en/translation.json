@@ -3,7 +3,14 @@
     "name": "Mesa"
   },
   "pagesTitles": {
-    "home": "Home"
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "navTitles": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
   },
   "texts": {
     "bid": "Bid",
