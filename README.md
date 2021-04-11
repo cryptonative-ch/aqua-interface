@@ -16,6 +16,12 @@ To run a development instance, run
 $ npm run start
 ```
 
+## Views
+
+Fixed Price Auction, currently not linked:
+
+http://localhost:3000/auctions/fixed/0x142
+
 ## Scripts
 
 `package.json` has the following commands, you can run them using `yarn <command>` or `npm run <command>`
