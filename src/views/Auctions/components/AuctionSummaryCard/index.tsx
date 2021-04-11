@@ -1,6 +1,8 @@
 // External
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import React from 'react'
+
 
 // Components
 import { AuctionFinalPrice } from '../AuctionFinalPrice'
@@ -27,6 +29,7 @@ interface AuctionSummaryProps {
 }
 
 export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
+  const [t] = useTranslation()
   return (
     <Card>
       <CardBody>
@@ -45,15 +48,15 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">Auction Type</CardText>
-            <CardText>Point Dutch</CardText>
+            <CardText color="grey">{t('texts.salesType')}</CardText>
+            <CardText>FairSale</CardText>
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">Current Price</CardText>
+            <CardText color="grey">{t('texts.currentPrice')}</CardText>
             <AuctionFinalPrice auction={auction} />
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">Amount for Sale</CardText>
+            <CardText color="grey">{t('texts.amountForSale')}</CardText>
             <AuctionAmount auction={auction} />
           </Flex>
           <AuctionClock auction={auction} />

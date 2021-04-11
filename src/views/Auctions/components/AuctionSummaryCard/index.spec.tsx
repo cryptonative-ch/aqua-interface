@@ -24,6 +24,12 @@ afterEach(cleanup)
 
 describe('testing Auction Summary Card', () => {
   test('should display the correct styling', () => {
+    i18n.init({
+      fallbackLng: 'en',
+      react: {
+        useSuspense: false,
+      },
+    })
     const auction = getAuctionDefault({
       startBlock: 1646500442,
       endBlock: 1678036442,
