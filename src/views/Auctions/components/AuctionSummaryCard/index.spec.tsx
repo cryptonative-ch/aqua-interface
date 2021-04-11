@@ -1,8 +1,11 @@
 // External
-
 import React from 'react'
 import { cleanup, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
+import '../../../../i18n'
+import i18n from 'i18next'
+
+
 // Components
 import { AuctionSummaryCard } from './index'
 
@@ -30,10 +33,9 @@ describe('testing Auction Summary Card', () => {
         <AuctionSummaryCard auction={auction} />
       </ThemeProvider>
     )
-    expect(getByText('Auction Type')).toBeInTheDocument()
-    expect(getByText('Point Dutch')).toBeInTheDocument()
-    expect(getByText('Current Price')).toBeInTheDocument()
-    expect(getByText('Amount for Sale')).toBeInTheDocument()
+    expect(getByText('texts.salesType')).toBeInTheDocument()
+    expect(getByText('texts.currentPrice')).toBeInTheDocument()
+    expect(getByText('texts.amountForSale')).toBeInTheDocument()
     expect(getByText('Pre-sale')).toBeInTheDocument()
     expect(getByText('Private')).toBeInTheDocument()
   })
