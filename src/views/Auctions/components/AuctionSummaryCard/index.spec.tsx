@@ -1,8 +1,10 @@
 // External
-
 import React from 'react'
 import { cleanup, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
+import '../../../../i18n'
+import i18n from 'i18next'
+
 // Components
 import { AuctionSummaryCard } from './index'
 
@@ -21,6 +23,12 @@ afterEach(cleanup)
 
 describe('testing Auction Summary Card', () => {
   test('should display the correct styling', () => {
+    i18n.init({
+      fallbackLng: 'en',
+      react: {
+        useSuspense: false,
+      },
+    })
     const auction = getAuctionDefault({
       startDate: 1646500442,
       endDate: 1678036442,
@@ -30,9 +38,9 @@ describe('testing Auction Summary Card', () => {
         <AuctionSummaryCard auction={auction} />
       </ThemeProvider>
     )
-    expect(getByText('Auction Type')).toBeInTheDocument()
-    expect(getByText('Current Price')).toBeInTheDocument()
-    expect(getByText('Amount for Sale')).toBeInTheDocument()
+    expect(getByText('texts.salesType')).toBeInTheDocument()
+    expect(getByText('texts.currentPrice')).toBeInTheDocument()
+    expect(getByText('texts.amountForSale')).toBeInTheDocument()
     expect(getByText('Private')).toBeInTheDocument()
   })
 })

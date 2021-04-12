@@ -3,7 +3,14 @@
     "name": "Mesa"
   },
   "pagesTitles": {
-    "home": "Home"
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "navTitles": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
   },
   "texts": {
     "bid": "Bid",
@@ -16,12 +23,17 @@
     "notFound": "Not Found",
     "yourBids": "Your Bids",
     "placeBid": "Place Bid",
+    "salesType": "Sales Type",
+    "currentPrice": "Current Price",
+    "amountForSale": "Amount for Sale",
     "noBidsMessage": "There are no bids",
     "runningAuctions": "Running Auctions",
     "upcomingAuctions": "Upcoming Auctions",
     "calculatedVirtualPrice": "Virtual Settlement Price",
     "bidMaybeTooLow": "Bid may be too low to be included",
-    "doYouWishToContinue": "Do you wish to continue?"
+    "doYouWishToContinue": "Do you wish to continue?",
+    "yourActivity": "Your Activity",
+    "placeBuyOrder": "Place Buy Order"
   },
   "buttons": {
     "back": "Back",

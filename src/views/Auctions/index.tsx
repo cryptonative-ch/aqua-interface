@@ -33,6 +33,7 @@ import { Auction } from 'src/interfaces/Auction'
 
 //subgraph
 import { auctionsRequest } from 'src/subgraph/Auctions'
+import { useWindowSize } from 'src/hooks/useWindowSize'
 
 const AuctionSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -80,6 +81,7 @@ export type AuctionContextType = {
 export const AuctionContext = createContext<AuctionContextType>({} as AuctionContextType)
 
 export function AuctionsView() {
+  const { isMobile } = useWindowSize()
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [AuctionShow, setAuctionShow] = useState<AuctionStatus>(AuctionStatus.LIVE)
   const dispatch = useDispatch()
@@ -145,7 +147,7 @@ export function AuctionsView() {
           metamaskImage={MetamaskImage}
           walletImage={WalletImage}
         ></WalletConnector>
-        <Footer />
+        {!isMobile && <Footer />}
       </AbsoluteContainer>
     </AuctionContext.Provider>
   )

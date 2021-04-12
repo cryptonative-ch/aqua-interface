@@ -58,7 +58,7 @@ export const App = () => {
           <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
             <BrowserRouter>
               <UseWalletProvider
-                chainId={42}
+                chainId={4}
                 connectors={{
                   walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
                   walletlink: {

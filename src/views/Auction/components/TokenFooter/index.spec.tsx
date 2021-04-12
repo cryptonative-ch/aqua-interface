@@ -17,7 +17,7 @@ describe('TokenFooter', () => {
 
     const { getByText } = render(
       <UseWalletProvider
-        chainId={42}
+        chainId={4}
         connectors={{
           walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
           walletlink: {
