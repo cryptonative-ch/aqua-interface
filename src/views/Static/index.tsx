@@ -96,7 +96,7 @@ export function StaticView() {
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1}>
-                    <HeaderItem title="Place a Bid" description="" color="#000629" />
+                    <HeaderItem title="Side Content" description="" color="#000629" />
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
