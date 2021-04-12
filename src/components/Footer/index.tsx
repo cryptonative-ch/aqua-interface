@@ -4,12 +4,14 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
 
+
 // Components
 import { Link } from 'src/components/Link'
 
 //Internal
 import { Wrapper } from './style'
 import { Row, Title } from 'src/components/Header/style'
+import { FE_VERSION, SC_VERSION } from 'src/constants'
 
 export interface FooterProps {
   onClick?: () => void
@@ -45,9 +47,9 @@ export const Footer: React.FC<FooterProps> = ({}) => {
       </Row>
       <Row>
         <Title isFooter>Docs</Title>
-        <a href="https://github.com/cryptonative-ch"><IconImg src={GithubSVG} height="21px" margin="0 16px 0 0" /></a>
-        <a href="https://github.com/cryptonative-ch/mesa-interface/releases"><Title isFooter>UI V 0.0.1</Title></a>
-        <a href="https://github.com/cryptonative-ch/mesa-smartcontracts/releases"><Title isFooter>SC V 0.0.1</Title></a>
+        <a href="https://github.com/cryptonative-ch"><IconImg src={GithubSVG} height="21px" /></a>
+        <a href={"https://github.com/cryptonative-ch/mesa-interface/releases/tag/v" + FE_VERSION }><Title isFooter>FE V { FE_VERSION }</Title></a>
+        <a href={"https://github.com/cryptonative-ch/mesa-smartcontracts/releases/tag/v" + SC_VERSION }><Title isFooter>SC V { SC_VERSION }</Title></a>
       </Row>
     </Wrapper>
   )
