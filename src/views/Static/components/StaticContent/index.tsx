@@ -4,9 +4,6 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
 
-// Interface
-import { Auction } from 'src/interfaces/Auction'
-
 // Component
 import { Flex } from 'src/components/Flex'
 
@@ -14,7 +11,6 @@ import { Flex } from 'src/components/Flex'
 import ExternalLinkSVG from 'src/assets/svg/External-Link.svg'
 import TwitterSVG from 'src/assets/svg/Twitter.svg'
 import TelegramSVG from 'src/assets/svg/Telegram.svg'
-import GithubSVG from 'src/assets/svg/Github.svg'
 import DiscordSVG from 'src/assets/svg/Discord.svg'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
@@ -26,12 +22,10 @@ const Wrapper = styled.div<WrapperProps>(
   () => ({
     marginTop: '16px',
     width: '100%',
-    padding: '32px 0',
+    padding: '32px 24px',
     outline: 0,
     display: 'flex',
     flexDirection: 'column',
-    border: '1px dashed #DDDDE3',
-    borderWidth: '1px 0 0 0',
   }),
   space,
   layout,
@@ -48,7 +42,7 @@ const Row = styled(Flex)<DivProps>(
   space
 )
 
-const FooterTitle = styled.div({
+const ContentTitle = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '16px',
@@ -56,7 +50,7 @@ const FooterTitle = styled.div({
   color: '#000629',
 })
 
-const FooterDescription = styled.div<DivProps>(
+const ContentDescription = styled.div<DivProps>(
   () => ({
     fontStyle: 'normal',
     fontWeight: 400,
@@ -97,12 +91,8 @@ const IconImg = styled.img<IconImgProps>(
   layout
 )
 
-interface TokenFooterProps {
-  onClick?: () => void
-  auction: Auction
-}
 
-export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooterProps) => {
+export const StaticContent: React.FC = () => {
   const wallet = useWallet()
   const {
     isMobile,
@@ -120,11 +110,11 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooter
 
   return (
     <Wrapper {...mobileWrapper}>
-      <FooterTitle>{`About ${auction.tokenName}`}</FooterTitle>
-      <FooterDescription marginY="16px" maxWidth={isMobile ? windowWidth - 48 : '578px'}>
+      <ContentTitle>What is Mesa?</ContentTitle>
+      <ContentDescription marginY="16px" maxWidth={isMobile ? windowWidth - 48 : '578px'}>
         This can be a description for the project. Diam purus diam, nam sagittis risus. Nunc consequat felis tincidunt
         volutpat et. Malesuada tortor, auctor quis id nisl mattis platea.
-      </FooterDescription>
+      </ContentDescription>
       <Row
         flexDirection={isMobile ? 'column' : 'row'}
         maxWidth={isMobile ? windowWidth - 48 : '578px'}
@@ -134,10 +124,9 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooter
           <Flex paddingRight="40px" flexDirection="column">
             <Title marginBottom="8px">Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://github.com/cryptonative-ch"><IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+             <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              <IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" />
               <a href="https://twitter.com/mesa_eth"><IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://discord.com/invite/4QXEJQkvHH"><IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://t.me/dxDAO"><IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
             </Flex>
           </Flex>
         )}
@@ -145,7 +134,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooter
           <Title>Website</Title>
           <Flex flexDirection="row" alignItems="center">
             <Title color="#000629" margin="0 8px 0 0">
-              exwhyzed.finance
+             <a href="https://dxdao.eth.link">dxdao.eth.link</a>
             </Title>
             <IconImg src={ExternalLinkSVG} />
           </Flex>
@@ -165,10 +154,9 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooter
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://github.com/cryptonative-ch"><IconImg src={GithubSVG} height="21px" margin="0 16px 0 0" /></a>
-              <a href="https://twitter.com/mesa_eth"><IconImg src={TwitterSVG} height="21px" margin="0 16px 0 0" /></a>
+              <a href="https://twitter.com/mesa_eth"><IconImg src={TwitterSVG}  height="21px" margin="0 16px 0 0" /></a>
               <a href="https://discord.com/invite/4QXEJQkvHH"><IconImg src={DiscordSVG} height="21px" margin="0 16px 0 0" /></a>
-              <a href="https://t.me/dxDAO"><IconImg src={TelegramSVG} height="21px" margin="0 16px 0 0" /></a>
+              <IconImg src={TelegramSVG} height="21px" margin="0 16px 0 0" />
             </Flex>
           </Flex>
         )}
