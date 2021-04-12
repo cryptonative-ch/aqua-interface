@@ -3,7 +3,7 @@ import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Components
-import { AuctionClock, timerPercentage } from './index'
+import { AuctionClock } from './index'
 
 // defaults
 import { getAuctionDefault, addHours, dateUTC, resizeWindow } from 'src/utils/Defaults'

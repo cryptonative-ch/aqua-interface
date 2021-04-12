@@ -1,4 +1,5 @@
 // Externals
+
 import axios from 'axios'
 import { BigNumber } from 'ethers'
 
@@ -10,6 +11,7 @@ export const ENDPOINT =
     ? 'http://localhost:4000/graphql'
     : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
+// eslint-disable-next-line
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   const fairSale: auctionType = 'fairSale'
   const fixedPriceAuction: auctionType = 'fixedPriceAuction'
@@ -28,6 +30,7 @@ export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType 
 }
 
 export const generateInitialAuctionData = async (
+  // eslint-disable-next-line
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {

@@ -65,6 +65,7 @@ const defaultState: BidState = {
 }
 
 // fetch Data
+// eslint-disable-next-line
 export const fetchAuctionBids = (id: string, auctionType: auctionType, auctionBidsRequest: Promise<any>): AppThunk => {
   return async dispatch => {
     dispatch(initialBidRequest(true))

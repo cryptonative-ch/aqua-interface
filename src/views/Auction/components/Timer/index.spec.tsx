@@ -1,37 +1,13 @@
 // Externals
-
-import React from 'react'
-import { render, cleanup } from '@testing-library/react'
+import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { secondsTohms, timeFrame, Timer } from './index'
-
-// default
-
-import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
-
-// theme
-
-import { theme } from 'src/styles/theme'
-import { ThemeProvider } from 'styled-components'
-
-// interfaces
-import { Auction } from 'src/interfaces/Auction'
+import { secondsTohms, timeFrame } from './index'
 
 //clean up
 
 afterEach(cleanup)
-
-//wrapper
-
-const wrapper = (auction: Auction) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      <Timer auction={auction} />
-    </ThemeProvider>
-  )
-}
 
 // tests
 
@@ -52,9 +28,9 @@ describe('seconds to HMS function', () => {
 })
 
 describe('converts unix seconds into local Date time format function', () => {
-    test('test negative input', () => {
-      expect(() => {
-        timeFrame(-100)
-      }).toThrow('seconds cannot be negative')
-    })
+  test('test negative input', () => {
+    expect(() => {
+      timeFrame(-100)
+    }).toThrow('seconds cannot be negative')
+  })
 })
