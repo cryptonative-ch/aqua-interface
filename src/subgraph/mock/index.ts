@@ -64,13 +64,13 @@ export const schemaString = `
     startDate: Int # Open timestamp
     endDate: Int # Close timestamp
     # Amount to sell
-    sellAmount: String
+    tokenInAmount: String
     # Minimum amount per bid
     minbiddingAmount: Int
     minFundingThreshold: Int
     orderCancellationPeriod: Int
     duration: Int
-    minBuyAmountPerOrder: Int
+    mintokenOutAmountPerOrder: Int
     isAtomicClosureAllowed: Boolean
     bids: [FixedPriceAuctionPurchase!]
   }
@@ -156,8 +156,8 @@ export const mocks = {
     deletedAt: () => casual.unix_time,
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
-    sellAmount: () => casual.integer(1, 100).toString(),
-    tokenInAmount: () => casual.integer(1, 1000),
+    tokenInAmount: () => casual.integer(1, 100).toString(),
+    tokenOutAmount: () => casual.integer(1, 1000),
   }),
   EasyAuctionBid: () => ({
     createdAt: () => casual.unix_time,
@@ -194,9 +194,9 @@ export const queryAuctions = `
       status
       startDate
       endDate
-      sellAmount
+      tokenInAmount
       minbiddingAmount
-      minBuyAmountPerOrder
+      mintokenOutAmountPerOrder
       minFundingThreshold
       orderCancellationPeriod
       duration

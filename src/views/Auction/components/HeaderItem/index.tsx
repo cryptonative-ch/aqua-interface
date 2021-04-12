@@ -78,7 +78,7 @@ export function HeaderItem({
     if (auctionLive && !!auction) {
       const interval = setInterval(() => {
         setTime(PrevTime => (PrevTime + 1) % 2)
-        setDescriptionText(calculateTimeDifference(auction.endBlock))
+        setDescriptionText(calculateTimeDifference(auction.endDate))
       }, 1000)
 
       return () => {

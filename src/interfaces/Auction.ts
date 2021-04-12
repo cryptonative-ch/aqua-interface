@@ -62,13 +62,14 @@ export interface FixedPriceAuction extends BaseAuction {
   // Specific to the FixedPriceAuction
   // Amount to sell
   tokenInAmount?: string
+  //bidding and sale tokens
+  tokenIn?: AuctionToken
+  tokenOut?: AuctionToken
   // Minimum amount per bid
   minbiddingAmount?: number
-  minFundingThreshold?: number
-  orderCancellationPeriod?: number
-  duration?: number
-  mintokenOutAmountPerOrder?: number
-  isAtomicClosureAllowed?: boolean
+  //Minimum and maxmimum token per order
+  allocationMin?: number
+  allocationMax?: number
   bids: AuctionBid[]
 }
 

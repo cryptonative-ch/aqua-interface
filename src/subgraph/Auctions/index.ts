@@ -12,9 +12,9 @@ const auctionsQuery = `
       status
       startDate
       endDate
-      sellAmount
+      tokenInAmount
       minbiddingAmount
-      minBuyAmountPerOrder
+      mintokenOutAmountPerOrder
       minFundingThreshold
       orderCancellationPeriod
       duration

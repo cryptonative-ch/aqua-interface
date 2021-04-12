@@ -189,7 +189,7 @@ export function AuctionView() {
                       <HeaderItem
                         isMobile
                         title="Ends In"
-                        description={calculateTimeDifference(auction.endBlock)}
+                        description={calculateTimeDifference(auction.endDate)}
                         textAlign="right"
                         auctionLive={true}
                         auction={auction}
@@ -232,7 +232,7 @@ export function AuctionView() {
                     {isAuctionOpen(auction) && (
                       <HeaderItem
                         title="Ends In"
-                        description={calculateTimeDifference(auction.endBlock)}
+                        description={calculateTimeDifference(auction.endDate)}
                         textAlign="right"
                         auctionLive={true}
                         auction={auction}
