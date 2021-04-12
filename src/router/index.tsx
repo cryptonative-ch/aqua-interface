@@ -7,6 +7,7 @@ import { SimulationView } from 'src/views/Simulation'
 import { AuctionView } from 'src/views/Auction'
 import { AuctionsView } from 'src/views/Auctions'
 import { FixedPriceAuctionView } from 'src/views/Auction/FixedPrice'
+import { StaticView } from 'src/views/Static'
 import { SanctionContext } from 'src/contexts'
 import { NotFoundView } from 'src/views/NotFound'
 
@@ -28,7 +29,7 @@ export const AppRouter = () => {
       <Route exact path="/auctions/:auctionId" component={AuctionView} />
       <Route exact path="/auctions/demo" component={SimulationView} />
       <Route exact path="/auctions/fixed/:auctionId" component={FixedPriceAuctionView} />
-      <Route exact path="/about" component={AuctionsView} />
+      <Route exact path="/about" component={StaticView} />
       <Route exact path="/contact" component={AuctionsView} />
       <Route exact path="*" component={NotFoundView} />
     </Switch>

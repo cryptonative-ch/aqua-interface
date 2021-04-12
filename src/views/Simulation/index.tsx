@@ -18,7 +18,7 @@ import { AuctionBid } from 'src/interfaces/Auction'
 // Components
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { BackButton } from '../Auction/components/BackButton'
+import { BackButton } from 'src/components/BackButton'
 import { AuctionHeader } from '../Auction/components/AuctionHeader'
 import { PlaceBidForm } from '../Auction/components/PlaceBidForm'
 import { Container } from 'src/components/Container'

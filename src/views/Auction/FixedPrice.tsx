@@ -21,7 +21,7 @@ import { setPageTitle } from 'src/redux/page'
 // Components
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { BackButton } from './components/BackButton'
+import { BackButton } from 'src/components/BackButton'
 import { AuctionHeader } from './components/AuctionHeader'
 import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
