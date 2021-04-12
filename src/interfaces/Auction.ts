@@ -16,8 +16,8 @@ export interface AuctionBid {
   createdAt?: number // The UTC timestamp at which the bid was placed
   updatedAt?: number // The UTC timestamp at which the bid was updated
   deletedAt?: number // The UTC timestamp at which the bid was deleted
-  tokenInAmount: BigNumber // number of tokens the investor wants to buy
-  tokenOutAmount: BigNumber // number of tokens the investor wants to buy
+  tokenIn: BigNumber // number of tokens the investor wants to buy
+  tokenOut: BigNumber // number of tokens the investor wants to buy
   address: string // The bidder's Ethereum address
 }
 
@@ -61,7 +61,7 @@ export interface EasyAuction extends BaseAuction {
 export interface FixedPriceAuction extends BaseAuction {
   // Specific to the FixedPriceAuction
   // Amount to sell
-  tokenInAmount?: string
+  sellAmount?: string
   //bidding and sale tokens
   tokenIn?: AuctionToken
   tokenOut?: AuctionToken

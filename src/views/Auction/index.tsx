@@ -160,7 +160,7 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenInAmount.toNumber() || 0)).toFixed(2)} DAI/${
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
                         auction.tokenOut?.symbol
                       }`}
                     />
@@ -206,7 +206,7 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenInAmount.toNumber() || 0)).toFixed(2)} DAI/${
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
                         auction.tokenOut?.symbol
                       }`}
                     />
@@ -279,7 +279,7 @@ export function AuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice?.tokenInAmount.toNumber() || 0}
+                    vsp={clearingPrice?.tokenIn.toNumber() || 0}
                   />
                 </CardBody>
               )}

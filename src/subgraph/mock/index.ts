@@ -64,15 +64,14 @@ export const schemaString = `
     startDate: Int # Open timestamp
     endDate: Int # Close timestamp
     # Amount to sell
-    tokenInAmount: String
+    sellAmount: String
+    tokenIn: AuctionToken
+    tokenOut: AuctionToken
     # Minimum amount per bid
     minbiddingAmount: Int
-    minFundingThreshold: Int
-    orderCancellationPeriod: Int
-    duration: Int
-    mintokenOutAmountPerOrder: Int
-    isAtomicClosureAllowed: Boolean
-    bids: [FixedPriceAuctionPurchase!]
+    allocationMin: Int
+    allocationMax: Int
+    bids: [EasyAuctionBid!]
   }
   
   # AuctionBid
@@ -87,9 +86,9 @@ export const schemaString = `
     # The UTC timestamp at which the bid was deleted
     deletedAt: Int
     # Int of tokens the investor wants to buy
-    tokenInAmount: Int
+    tokenIn: Int
     # Int of tokens the investor wants to buy
-    tokenOutAmount: Int
+    tokenOut: Int
     # The bidder's Ethereum address
     address: String
   }
@@ -156,8 +155,7 @@ export const mocks = {
     deletedAt: () => casual.unix_time,
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
-    tokenInAmount: () => casual.integer(1, 100).toString(),
-    tokenOutAmount: () => casual.integer(1, 1000),
+    sellAmount: () => casual.integer(1, 100).toString(),
   }),
   EasyAuctionBid: () => ({
     createdAt: () => casual.unix_time,
@@ -194,13 +192,22 @@ export const queryAuctions = `
       status
       startDate
       endDate
-      tokenInAmount
+      tokenIn {
+        id
+        name
+        symbol
+        decimals
+      }
+      tokenOut {
+        id
+        name
+        symbol
+        decimals
+      }
+      sellAmount
       minbiddingAmount
-      mintokenOutAmountPerOrder
-      minFundingThreshold
-      orderCancellationPeriod
-      duration
-      isAtomicClosureAllowed
+      allocationMin
+      allocationMax
     }
     easyAuctions {
       id

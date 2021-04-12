@@ -42,8 +42,8 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
       bids: [
         {
           address: '0xf1',
-          tokenOutAmount: BigNumber.from(30),
-          tokenInAmount: BigNumber.from(100),
+          tokenOut: BigNumber.from(30),
+          tokenIn: BigNumber.from(100),
         },
       ],
     },
@@ -69,8 +69,8 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
       bids: [
         {
           address: '0xf1',
-          tokenOutAmount: BigNumber.from(30),
-          tokenInAmount: BigNumber.from(100),
+          tokenOut: BigNumber.from(30),
+          tokenIn: BigNumber.from(100),
         },
       ],
     },
@@ -96,8 +96,8 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
       bids: [
         {
           address: '',
-          tokenOutAmount: BigNumber.from(30),
-          tokenInAmount: BigNumber.from(100),
+          tokenOut: BigNumber.from(30),
+          tokenIn: BigNumber.from(100),
         },
       ],
     },
@@ -147,8 +147,8 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
       bids: [
         {
           address: '0xf1',
-          tokenOutAmount: BigNumber.from(30),
-          tokenInAmount: BigNumber.from(100),
+          tokenOut: BigNumber.from(30),
+          tokenIn: BigNumber.from(100),
         },
       ],
     },

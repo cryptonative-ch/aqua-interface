@@ -45,6 +45,6 @@ describe('testing subgraph integration', () => {
       const id = auction[0].id //emulate params.id
       const auctionBidsRequest = await server.query(auctionBidsQuery(id, selectAuctiontype(id, auction)))
       const test = await generateInitialAuctionData(auctionBidsRequest.data, selectAuctiontype(id, auction))
-      expect(test[0].tokenInAmount._isBigNumber).toBeTruthy
+      expect(test[0].tokenIn._isBigNumber).toBeTruthy
     })
 })

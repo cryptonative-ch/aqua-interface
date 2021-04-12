@@ -52,7 +52,6 @@ export const fetchAuctions = (auctionsRequest: Promise<any>): AppThunk => {
     try {
       dispatch(generateAuctionsSuccess(await getAuctionsData(auctionsRequest)))
     } catch (error) {
-      console.log(error)
       dispatch(generateAuctionsFailure(error))
     }
   }

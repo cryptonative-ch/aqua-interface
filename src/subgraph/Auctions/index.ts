@@ -12,13 +12,22 @@ const auctionsQuery = `
       status
       startDate
       endDate
-      tokenInAmount
+      tokenIn {
+        id
+        name
+        symbol
+        decimals
+      }
+      tokenOut {
+        id
+        name
+        symbol
+        decimals
+      }
+      sellAmount
       minbiddingAmount
-      mintokenOutAmountPerOrder
-      minFundingThreshold
-      orderCancellationPeriod
-      duration
-      isAtomicClosureAllowed
+      allocationMin
+      allocationMax
     }
     easyAuctions {
       id

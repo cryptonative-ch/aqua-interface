@@ -18,11 +18,9 @@ export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {
   return (
     <Flex>
       <CardText>
-        {numeral(auction.type == 'easyAuction' ? auction.tokenAmount : auction.minFundingThreshold).format('0,0')}
+        {numeral(auction.type == 'easyAuction' ? auction.tokenAmount : auction.sellAmount).format('0,0')}
       </CardText>
-      <CardText fontWeight="light">
-        &nbsp;{auction.type == 'easyAuction' ? auction.tokenOut?.symbol : auction.tokenInAmount}
-      </CardText>
+      <CardText fontWeight="light">&nbsp;{auction.tokenOut?.symbol}</CardText>
     </Flex>
   )
 }

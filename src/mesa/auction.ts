@@ -45,7 +45,7 @@ export const isAuctionClosed = ({ endDate }: Auction) => {
 export const isBidActive = ({ bids }: Auction, bid: AuctionBid) => {
   const clearingPriceOrder = calculateClearingPrice(bids)
 
-  return bid.tokenInAmount < clearingPriceOrder.tokenInAmount
+  return bid.tokenIn < clearingPriceOrder.tokenIn
 }
 
 /**

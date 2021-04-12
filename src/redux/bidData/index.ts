@@ -71,7 +71,6 @@ export const fetchAuctionBids = (id: string, auctionType: auctionType, auctionBi
     try {
       dispatch(initialBidSuccess(await generateInitialAuctionData(auctionBidsRequest, auctionType)))
     } catch (error) {
-      console.log(error)
       dispatch(initialBidFailure(error))
     }
   }

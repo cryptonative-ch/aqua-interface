@@ -12,7 +12,6 @@ import styled from 'styled-components'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
-import { useAuction } from 'src/hooks/useAuction'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Actions
@@ -52,12 +51,17 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
+import { Auction, AuctionBid } from 'src/interfaces/Auction'
 
 // Constants
 import { FixedPriceSaleContractAddress } from 'src/constants'
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
 import { RootState } from 'src/redux/store'
+import { fetchAuctions } from 'src/redux/auctionListings'
+import { auctionsRequest } from 'src/subgraph/Auctions'
+import { ENDPOINT, subgraphCall } from 'src/subgraph'
+import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
+import { fetchAuctionBids } from 'src/redux/bidData'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -98,7 +102,6 @@ export function FixedPriceAuctionView() {
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
   const params = useParams<FixedPriceAuctionViewParams>()
-  const { auction } = useAuction(params.auctionId)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
@@ -106,6 +109,15 @@ export function FixedPriceAuctionView() {
   const bids = useSelector<RootState, AuctionBid[]>(state => {
     return state.BidReducer.bids
   })
+
+  const auction = useSelector<RootState, Auction>(state => {
+    const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
+    return auctions
+  })
+
+  const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
+
+  console.log(bids)
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -146,13 +158,19 @@ export function FixedPriceAuctionView() {
 
     //Calculate the virtual
     if (auction) {
+      const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
+      const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
+      fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
     dispatch(setPageTitle(t(auction?.name as string)))
-  }, [auction, t, dispatch])
+  }, [t])
 
   if (!auction) {
-    return <NotFoundView />
+    fetchData()
+    if (!auction) {
+      return <NotFoundView />
+    }
   }
 
   return (
@@ -174,14 +192,14 @@ export function FixedPriceAuctionView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenInAmount.toNumber() || 0)).toFixed(2)} DAI/${
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
                         auction.tokenOut?.symbol
                       }`}
                     />
                     <HeaderItem
                       isMobile
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
+                      description={`${numeral(auction.sellAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
                     />
                     {isAuctionClosed(auction) && (
                       <HeaderItem
@@ -214,13 +232,13 @@ export function FixedPriceAuctionView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenInAmount.toNumber() || 1)).toFixed(2)} DAI/${
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 1)).toFixed(2)} DAI/${
                         auction.tokenOut?.symbol
                       }`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`100 - ${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
+                      description={`100 - ${numeral(auction.sellAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
                       flexAmount={1.5}
                     />
                     {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && <Flex flex={0.2} />}
@@ -289,7 +307,7 @@ export function FixedPriceAuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice?.tokenInAmount.toNumber() || 0}
+                    vsp={clearingPrice?.tokenIn.toNumber() || 0}
                   />
                 </CardBody>
               )}

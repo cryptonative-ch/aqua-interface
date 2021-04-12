@@ -5,8 +5,8 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
         fixedPriceAuction (id: ${JSON.stringify(auctionid)}) {
     bids {
       id
-      tokenInAmount
-      tokenOutAmount
+      tokenIn
+      tokenOut
     }
    }
  }
@@ -18,8 +18,8 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
   easyAuction (id: ${JSON.stringify(auctionid)}) {
     bids {
       id
-      tokenInAmount
-      tokenOutAmount
+      tokenIn
+      tokenOut
     }
    }
  }

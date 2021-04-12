@@ -18,7 +18,7 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
   const fixedPriceAuctions: Auction[] = (await auctionsRequest).fixedPriceAuctions
   const addFixedPriceAuctionsType = fixedPriceAuctions.map(item => ({ ...item, type: fixedPriceAuction }))
   const auctionsArray = [...addEasyAuctionType, ...addFixedPriceAuctionsType]
-
+  console.log(auctionsArray)
   return auctionsArray
 }
 
@@ -33,8 +33,8 @@ export const generateInitialAuctionData = async (
 ): Promise<AuctionBid[]> => {
   const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].bids.map((item: AuctionBid) => ({
     ...item,
-    tokenOutAmount: BigNumber.from(item.tokenOutAmount),
-    tokenInAmount: BigNumber.from(item.tokenInAmount),
+    tokenOut: BigNumber.from(item.tokenOut),
+    tokenIn: BigNumber.from(item.tokenIn),
   }))
 
   return auctionBids

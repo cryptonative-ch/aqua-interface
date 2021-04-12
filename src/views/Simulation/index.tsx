@@ -153,8 +153,8 @@ export function SimulationView() {
           () =>
             addBid({
               address: getRandomWallet().address,
-              tokenInAmount: BigNumber.from(getRandomInteger(1, 30)), // DAI
-              tokenOutAmount: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
+              tokenIn: BigNumber.from(getRandomInteger(1, 30)), // DAI
+              tokenOut: BigNumber.from(getRandomInteger(1, 300)), // SIM/ERC20
             }),
           1000
         )
@@ -212,7 +212,7 @@ export function SimulationView() {
                       height={400}
                       data={bids}
                       userAddress={userAddress}
-                      vsp={(clearingPrice?.tokenInAmount.toNumber() || 0) / 5}
+                      vsp={(clearingPrice?.tokenIn.toNumber() || 0) / 5}
                     />
                   </CardBody>
                 )}
