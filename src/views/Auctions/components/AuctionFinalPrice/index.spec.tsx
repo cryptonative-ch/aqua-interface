@@ -36,7 +36,7 @@ const wrapper = (auction: Auction) => {
 
 describe('testing AuctionFinalPrice', () => {
   test('should display final price correctly', () => {
-    const auction = getAuctionDefault('easyAuction', {
+    const auction = getAuctionDefault('fairSale', {
       startDate: addHours(dateUTC, -24).unix(),
       endDate: addHours(dateUTC, +24).unix(),
     })

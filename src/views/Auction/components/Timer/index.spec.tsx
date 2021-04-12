@@ -61,34 +61,3 @@ describe('converts unix seconds into local Date time format function', () => {
       }).toThrow('seconds cannot be negative')
     })
 })
-
-describe('Timer', () => {
-  test('when auction is open it should render the correct display', async () => {
-    const auction = getAuctionDefault({
-      startDate: addHours(dateUTC, -1).unix(),
-      endDate: addHours(dateUTC, 2).unix(),
-    })
-
-    const { getByTestId } = wrapper(auction)
-
-    expect(await getByTestId('open')).toHaveTextContent('1h')
-  }),
-    test('when auction is upcoming, it displays the correct return', () => {
-      const auction = getAuctionDefault({
-        startDate: addHours(dateUTC, 14).unix(),
-        endDate: addHours(dateUTC, 114).unix(),
-      })
-
-      const { getByText } = wrapper(auction)
-      expect(getByText('to')).toBeInTheDocument()
-    }),
-    test('when auction is closed, it should return the correct display', async () => {
-      const auction = getAuctionDefault({
-        startDate: 1520798525,
-        endDate: 1552334525,
-      })
-
-      const { getByTestId } = wrapper(auction)
-      expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 19:02 GMT')
-    })
-})

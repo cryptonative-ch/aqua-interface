@@ -36,9 +36,9 @@ export interface AuctionUser {
   address: string // The bidder's Ethereum address
 }
 
-// EasyAuction entity
-export interface EasyAuction extends BaseAuction {
-  // Specific to the EasyAuction
+// FairSale entity
+export interface FairSale extends BaseAuction {
+  // Specific to the FairSale
   // number of seconds after the endTime of the BaseAuction
   gracePeriodStartDate?: number
   // number of seconds after the endTime of the BaseAuction
@@ -73,9 +73,9 @@ export interface FixedPriceAuction extends BaseAuction {
   bids: AuctionBid[]
 }
 
-export type auctionType = 'fixedPriceAuction' | 'easyAuction'
+export type auctionType = 'fixedPriceAuction' | 'fairSale'
 
-export interface Auction extends FixedPriceAuction, EasyAuction {
+export interface Auction extends FixedPriceAuction, FairSale {
   type: auctionType
   startDate: number // Open timestamp
   endDate: number // Close timestamp
@@ -101,14 +101,14 @@ export interface MesaFactory {
 }
 
 export enum BaseAuctionTemplateName {
-  EasyAuction,
+  FairSale,
   FixedPriceAuction,
 }
 
 export interface BaseAuctionTemplate {
   // TemplatesId from the event
   id: string
-  // Address of the BaseAuctionTemplate contract: either EasyAuction or FixedPriceAuction
+  // Address of the BaseAuctionTemplate contract: either FairSale or FixedPriceAuction
   address: string
   // Address of the MesaFactory
   factory: string

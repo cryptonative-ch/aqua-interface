@@ -10,7 +10,7 @@ import Dai from 'src/assets/svg/DAI.svg'
 
 // query mocks
 
-const getEasyAuction = (): Auction => ({
+const getFairSale = (): Auction => ({
   id: '0x141',
   createdAt: 1585481341,
   updatedAt: null,
@@ -40,7 +40,7 @@ const getEasyAuction = (): Auction => ({
   gracePeriodStartDate: 100,
   gracePeriodEndDate: 100,
   bids: [],
-  type: 'easyAuction',
+  type: 'fairSale',
 })
 
 const getFixedPriceAuction = (): Auction => ({
@@ -78,14 +78,14 @@ const getFixedPriceAuction = (): Auction => ({
   bids: [],
 })
 
-export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'easyAuction'): Auction =>
+export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'fairSale'): Auction =>
   auctiontype == 'fixedPriceAuction'
     ? {
         ...getFixedPriceAuction(),
         ...a,
       }
     : {
-        ...getEasyAuction(),
+        ...getFairSale(),
         ...a,
       }
 

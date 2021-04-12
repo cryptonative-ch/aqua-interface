@@ -1,4 +1,4 @@
-export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuction' | 'easyAuction') => {
+export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuction' | 'fairSale') => {
   if (auctionType == 'fixedPriceAuction') {
     return `
       {
@@ -15,7 +15,7 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
 
   return `
 {
-  easyAuction (id: ${JSON.stringify(auctionid)}) {
+  fairSale (id: ${JSON.stringify(auctionid)}) {
     bids {
       id
       tokenIn

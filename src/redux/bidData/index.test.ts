@@ -69,7 +69,7 @@ describe('Async Bid Data Actions and Reducers', () => {
       }
       expect(BidReducer({ isLoading: false, bids: [], error: null }, expectedActions)).toEqual({
         bids: expect.objectContaining({
-          easyAuction: expect.objectContaining({
+          fairSale: expect.objectContaining({
             bids: expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),

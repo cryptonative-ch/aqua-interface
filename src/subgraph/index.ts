@@ -11,13 +11,13 @@ export const ENDPOINT =
     : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
-  const easyAuction: auctionType = 'easyAuction'
+  const fairSale: auctionType = 'fairSale'
   const fixedPriceAuction: auctionType = 'fixedPriceAuction'
-  const easyAuctions: Auction[] = (await auctionsRequest).easyAuctions
-  const addEasyAuctionType = easyAuctions.map(item => ({ ...item, type: easyAuction }))
+  const fairSales: Auction[] = (await auctionsRequest).fairSales
+  const addFairSaleType = fairSales.map(item => ({ ...item, type: fairSale }))
   const fixedPriceAuctions: Auction[] = (await auctionsRequest).fixedPriceAuctions
   const addFixedPriceAuctionsType = fixedPriceAuctions.map(item => ({ ...item, type: fixedPriceAuction }))
-  const auctionsArray = [...addEasyAuctionType, ...addFixedPriceAuctionsType]
+  const auctionsArray = [...addFairSaleType, ...addFixedPriceAuctionsType]
   console.log(auctionsArray)
   return auctionsArray
 }

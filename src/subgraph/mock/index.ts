@@ -21,8 +21,8 @@ export const schemaString = `
     status: String
   }
   
-  # EasyAuction entity
-  type EasyAuction implements Auction  {
+  # FairSale entity
+  type FairSale implements Auction  {
     # Base fields from Auction interface
     id: ID!
     name: String
@@ -30,7 +30,7 @@ export const schemaString = `
     updatedAt: Int
     deletedAt: Int
     status: String
-    # Specific to the EasyAuction
+    # Specific to the FairSale
     startDate: Int # Open timestamp
     endDate: Int # Close timestamp
     # Int of seconds after the endTime of the auction
@@ -46,7 +46,7 @@ export const schemaString = `
     # Auctioning token
     tokenOut: AuctionToken
     # List of bids
-    bids: [EasyAuctionBid!]
+    bids: [FairSaleBid!]
     # The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
     minFundingThreshold: Int
   }
@@ -71,11 +71,11 @@ export const schemaString = `
     minbiddingAmount: Int
     allocationMin: Int
     allocationMax: Int
-    bids: [EasyAuctionBid!]
+    bids: [FairSaleBid!]
   }
   
   # AuctionBid
-  type EasyAuctionBid  {
+  type FairSaleBid  {
     id: ID!
     # submitted/settled/cancelled/claimed
     status: String
@@ -122,9 +122,9 @@ export const schemaString = `
   }
 
   type Query {
-    easyAuctions (id: ID): [EasyAuction]
+    fairSales (id: ID): [FairSale]
     fixedPriceAuctions (id: ID): [FixedPriceAuction]
-    easyAuction (id: ID): EasyAuction
+    fairSale (id: ID): FairSale
     fixedPriceAuction (id: ID): FixedPriceAuction
   }
 `
@@ -137,7 +137,7 @@ export const mocks = {
   Int: () => casual.integer(1, 1000),
   String: () => casual.name,
   Boolean: () => casual.boolean,
-  EasyAuction: () => ({
+  FairSale: () => ({
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
     name: () => casual.company_name,
     createdAt: () => casual.unix_time,
@@ -157,7 +157,7 @@ export const mocks = {
     endDate: () => casual.random_element([1646673587, 1644254387]),
     sellAmount: () => casual.integer(1, 100).toString(),
   }),
-  EasyAuctionBid: () => ({
+  FairSaleBid: () => ({
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
@@ -176,7 +176,7 @@ export const mocks = {
     decimals: () => casual.integer(1, 18),
   }),
   Query: () => ({
-    easyAuctions: () => new MockList(3),
+    fairSales: () => new MockList(3),
     fixedPriceAuctions: () => new MockList(3),
   }),
 }
@@ -209,7 +209,7 @@ export const queryAuctions = `
       allocationMin
       allocationMax
     }
-    easyAuctions {
+    fairSales {
       id
       name
       createdAt

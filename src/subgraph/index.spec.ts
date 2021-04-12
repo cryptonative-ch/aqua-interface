@@ -20,12 +20,12 @@ describe('testing subgraph integration', () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
     auctionsRequest = await server.query(queryAuctions)
   })
-  test('should check if queryAuctions object contains type easyAuction', async () => {
+  test('should check if queryAuctions object contains type fairSale', async () => {
     const test = await getAuctionsData(auctionsRequest.data)
     expect(test).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: 'easyAuction',
+          type: 'fairSale',
         }),
       ])
     )

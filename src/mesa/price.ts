@@ -63,8 +63,8 @@ export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): n
  * Calculates the clearing price using the auction bids
  * @param auctionBids
  */
-export function calculateClearingPrice(easyAuctionBids: AuctionBid[]): AuctionBid {
-  if (!easyAuctionBids.length) {
+export function calculateClearingPrice(fairSaleBids: AuctionBid[]): AuctionBid {
+  if (!fairSaleBids.length) {
     return {
       address: '0x',
       tokenOut: BigNumber.from(0),
@@ -72,8 +72,8 @@ export function calculateClearingPrice(easyAuctionBids: AuctionBid[]): AuctionBi
     }
   }
 
-  const sortedSellOrders = easyAuctionBids.sort(hasLowerClearingPrice)
-  const initialOrder = easyAuctionBids[0]
+  const sortedSellOrders = fairSaleBids.sort(hasLowerClearingPrice)
+  const initialOrder = fairSaleBids[0]
 
   const clearingPriceOrder = findClearingPrice(sortedSellOrders, initialOrder)
   return clearingPriceOrder

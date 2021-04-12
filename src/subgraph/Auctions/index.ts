@@ -29,7 +29,7 @@ const auctionsQuery = `
       allocationMin
       allocationMax
     }
-    easyAuctions {
+    fairSales {
       id
       name
       createdAt

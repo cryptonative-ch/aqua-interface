@@ -36,7 +36,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
         decimals: 18,
         symbol: 'DXD',
       },
-      type: 'easyAuction',
+      type: 'fairSale',
       tokenAmount: 5000,
       name: 'Omen',
       bids: [
@@ -63,7 +63,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
         decimals: 18,
         symbol: 'GEL',
       },
-      type: 'easyAuction',
+      type: 'fairSale',
       name: 'Gelato',
       tokenAmount: 2500,
       bids: [
@@ -90,7 +90,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
         decimals: 18,
         symbol: 'MESA',
       },
-      type: 'easyAuction',
+      type: 'fairSale',
       name: 'Mesa',
       tokenAmount: 10000,
       bids: [
@@ -119,7 +119,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
         symbol: 'COMP',
       },
       name: 'Compound',
-      type: 'easyAuction',
+      type: 'fairSale',
       tokenAmount: 150000,
       bids: [],
     },
@@ -140,7 +140,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
         decimals: 18,
         symbol: 'COMP',
       },
-      type: 'easyAuction',
+      type: 'fairSale',
       tokenAmount: 1500,
       name: 'Closed',
 
@@ -168,7 +168,7 @@ export async function generateAuctionData(unixTimestamp: number): Promise<Auctio
         decimals: 18,
         symbol: 'CLOSE',
       },
-      type: 'easyAuction',
+      type: 'fairSale',
       tokenAmount: 1500,
       name: 'ClosedWithout',
       bids: [],
