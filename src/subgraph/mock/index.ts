@@ -146,6 +146,7 @@ export const mocks = {
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
     tokenAmount: () => casual.integer(1, 1000),
+    bids: () => new MockList(10),
   }),
   FixedPriceAuction: () => ({
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
@@ -156,6 +157,7 @@ export const mocks = {
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
     sellAmount: () => casual.integer(1, 100).toString(),
+    bids: () => new MockList(10),
   }),
   FairSaleBid: () => ({
     createdAt: () => casual.unix_time,
