@@ -134,10 +134,10 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ auction }: TokenFooter
           <Flex paddingRight="40px" flexDirection="column">
             <Title marginBottom="8px">Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://github.com/cryptonative-ch"><IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://twitter.com/mesa_eth"><IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://discord.com/invite/4QXEJQkvHH"><IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://t.me/dxDAO"><IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://twitter.com/"r target="_blank"><IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://discord.com/invite/" target="_blank"><IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://t.me/" target="_blank"><IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://github.com/" target="_blank"><IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
             </Flex>
           </Flex>
         )}

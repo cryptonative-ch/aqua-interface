@@ -131,7 +131,7 @@ export function FixedPriceAuctionView() {
     const provider = new ethers.providers.Web3Provider(wallet.ethereum as ethers.providers.ExternalProvider);
     // An example Signer
     const signer = provider.getSigner(0)
-    setFixedPriceContract(new ethers.Contract(FixedPriceSaleContractAddress, FixedPriceSaleABI, signer));
+    setFixedPriceContract(new ethers.Contract(FIXED_PRICE_SALE_CONTRACT_ADDRESS, FixedPriceSaleABI, signer));
   }, [wallet])
 
   useEffect(() => {
