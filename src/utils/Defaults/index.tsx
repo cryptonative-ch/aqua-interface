@@ -8,6 +8,18 @@ import { Auction, auctionType } from 'src/interfaces/Auction'
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 
+// resize window mock function
+export const resizeWindow = (x: number, y: number) => {
+  Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: x })
+  Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: y })
+  window.dispatchEvent(new Event('resize'))
+}
+
+// variables
+export const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
+export const utcDate = dayjs(new Date().toUTCString())
+export const dateUTC = dayjs.unix(utcDate.unix())
+
 // query mocks
 
 const getFairSale = (): Auction => ({
@@ -88,15 +100,3 @@ export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType
         ...getFairSale(),
         ...a,
       }
-
-// resize window mock function
-export const resizeWindow = (x: number, y: number) => {
-  Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: x })
-  Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: y })
-  window.dispatchEvent(new Event('resize'))
-}
-
-// variables
-export const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
-export const utcDate = dayjs(new Date().toUTCString())
-export const dateUTC = dayjs.unix(utcDate.unix())

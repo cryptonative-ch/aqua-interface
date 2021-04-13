@@ -12,12 +12,17 @@ import { isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
+import moment from 'moment-timezone'
 
 interface TimerComponentProps {
   auction: Auction
 }
 
 export const secondsTohms = (seconds: number) => {
+  if (seconds < 0) {
+    throw Error('seconds cannot be negative')
+  }
+
   const d = Math.floor(seconds / 86400)
   const h = Math.floor((seconds % 86400) / 3600)
   const m = Math.floor(((seconds % 86400) % 3600) / 60)
@@ -28,24 +33,19 @@ export const secondsTohms = (seconds: number) => {
   const mDisplay = m > 0 ? m + 'm ' : ''
   const sDisplay = s > 0 ? s + 's' : ''
 
-  if (seconds < 0) {
-    throw Error('seconds cannot be negative')
-  }
-
   return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
 export const timeFrame = (unixSeconds: number) => {
-  const diff = new Date().getTimezoneOffset()
-  const endDateDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
-  const endDate = endDateDateTime.slice(4, 10)
-  const endTime = endDateDateTime.slice(15, 21)
-  const timeZoneStamp = endDateDateTime.slice(25, 28)
-
   if (unixSeconds < 0) {
     throw Error('seconds cannot be negative')
   }
 
+  const diff = new Date().getTimezoneOffset()
+  const endDateDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
+  const endDate = endDateDateTime.slice(4, 10)
+  const endTime = endDateDateTime.slice(15, 21)
+  const timeZoneStamp = moment().tz(moment.tz.guess()).format('z')
   return `${endDate}, ${endTime} ${timeZoneStamp}`
 }
 
@@ -67,9 +67,9 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   if (isAuctionUpcoming(auction)) {
     return (
       <Flex>
-        <CardText data-testid="open">{timeFrame(convertUtcTimestampToLocal(auction.startDate))}</CardText>
+        <CardText data-testid="open">{timeFrame(auction.startDate)}</CardText>
         <CardText color="grey">&nbsp;to&nbsp;</CardText>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endDate))}</CardText>
+        <CardText>{timeFrame(auction.endDate)}</CardText>
       </Flex>
     )
   } else if (isAuctionOpen(auction)) {

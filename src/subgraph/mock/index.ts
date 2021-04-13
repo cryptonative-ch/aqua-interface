@@ -1,6 +1,7 @@
 // Externals
 import { MockList } from 'graphql-tools'
 import casual from 'casual-browserify'
+import dayjs, { Dayjs } from 'dayjs'
 
 // schema
 
@@ -128,6 +129,12 @@ export const schemaString = `
     fixedPriceAuction (id: ID): FixedPriceAuction
   }
 `
+
+// variables
+const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
+const utcDate = dayjs(new Date().toUTCString())
+const dateUTC = dayjs.unix(utcDate.unix())
+
 const address = '0x###D####b########d###aA##e###c##eF##EE#c'
 
 export const preserveResolvers = false
@@ -154,8 +161,8 @@ export const mocks = {
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
-    startDate: () => casual.random_element([1586276387, 1583601587]),
-    endDate: () => casual.random_element([1646673587, 1644254387]),
+    startDate: () => casual.random_element([addHours(dateUTC, 2).unix()]),
+    endDate: () => casual.random_element([addHours(dateUTC, 4).unix()]),
     sellAmount: () => casual.integer(1, 100).toString(),
     bids: () => new MockList(10),
   }),
@@ -169,7 +176,7 @@ export const mocks = {
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
-    buyer: () => casual.numerify(address),
+    address: () => casual.numerify(address),
   }),
   AuctionToken: () => ({
     address: () => casual.numerify(address),
