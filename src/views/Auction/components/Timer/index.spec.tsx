@@ -59,17 +59,7 @@ describe('converts unix seconds into local Date time format function', () => {
       expect(() => {
         timeFrame(-100)
       }).toThrow('seconds cannot be negative')
-    }),
-    test('calculate time differences between time zones accurately', async () => {
-      const auction = getAuctionDefault({
-        // 6 hour time difference
-        startDate: addHours(dateUTC, 1).unix(),
-        endDate: addHours(dateUTC, 7).unix(),
-      })
-
-      const { getByTestId } = wrapper(auction)
-      expect(await getByTestId('Upcoming')).toHaveTextContent('Mar 11, 20:02 GMT')
-    })
+    })   
 })
 
 describe('Timer', () => {
