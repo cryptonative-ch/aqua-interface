@@ -55,7 +55,7 @@ import { NotFoundView } from 'src/views/NotFound'
 import { AuctionBid } from 'src/interfaces/Auction'
 
 // Constants
-import { FixedPriceSaleContractAddress } from 'src/constants'
+import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
 
 const ChartDescription = styled.div({

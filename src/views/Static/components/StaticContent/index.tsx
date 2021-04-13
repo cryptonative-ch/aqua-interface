@@ -156,10 +156,10 @@ export const StaticContent: React.FC = () => {
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://discord.com/invite/4QXEJQkvHH" target="_blank"><IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://twitter.com/mesa_eth" target="_blank"><IconImg src={TwitterSVG}  height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://t.me/dxDAO" target="_blank"><IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://github.com/cryptonative-ch/" target="_blank"><IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://discord.com/invite/4QXEJQkvHH" target="_blank" rel="noreferrer"><IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://twitter.com/mesa_eth" target="_blank" rel="noreferrer"><IconImg src={TwitterSVG}  height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://t.me/dxDAO" target="_blank" rel="noreferrer"><IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://github.com/cryptonative-ch/" target="_blank" rel="noreferrer"><IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
             </Flex>
           </Flex>
         )}
