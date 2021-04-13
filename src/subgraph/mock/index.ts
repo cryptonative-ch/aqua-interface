@@ -1,6 +1,7 @@
 // Externals
 import { MockList } from 'graphql-tools'
 import casual from 'casual-browserify'
+import { initialBid } from '../../data/initialbids'
 
 // schema
 
@@ -146,6 +147,7 @@ export const mocks = {
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
     tokenAmount: () => casual.integer(1, 1000),
+    bids: () => initialBid,
   }),
   FixedPriceAuction: () => ({
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
