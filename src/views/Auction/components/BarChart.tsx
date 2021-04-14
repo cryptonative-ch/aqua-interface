@@ -22,6 +22,8 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
   const getBidPricePerShare = (bid: AuctionBid) =>
     Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))
 
+  //const setBidPricePerShare = (bid: AuctionBid) => bid.price = bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
+
   const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
     return `${(Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))).toFixed(2)}${
       Number(utils.formatEther(bid.tokenOut)) >= fontSize * 4
@@ -36,13 +38,15 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
     }`
   }
 
+
   const draw = () => {
     if (width <= 232) {
       return
     }
     const svg = d3.select(ref.current)
+
     const sortedData = data.sort(
-      (first, second) => Number(utils.formatEther(second.tokenOut)) - Number(utils.formatEther(first.tokenOut))
+      (first, second) => getBidPricePerShare(second) - getBidPricePerShare(first)
     )
     const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
     const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
