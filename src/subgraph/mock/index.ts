@@ -4,7 +4,6 @@ import casual from 'casual-browserify'
 import { initialBid } from '../../data/initialbids'
 import { isTemplateExpression } from 'typescript'
 
-console.log(initialBid[0].tokenIn)
 // schema
 
 export const schemaString = `  
