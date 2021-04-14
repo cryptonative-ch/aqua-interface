@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 import React, { useRef, useEffect } from 'react'
 
 // Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
+import { Auction, AuctionBid } from 'src/interfaces/Auction'
 
 interface BarChartComponentProps {
   width: number
@@ -12,21 +12,22 @@ interface BarChartComponentProps {
   data: AuctionBid[]
   userAddress: string
   vsp: number
+  auction: Auction
 }
 
-export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp }) => {
+export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp, auction}) => {
   const ref = useRef<SVGSVGElement>(null)
 
   const getBidPricePerShare = (bid: AuctionBid) => bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
 
   const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
     return `${(bid.tokenIn.toNumber() / bid.tokenOut.toNumber()).toFixed(2)}${
-      bid.tokenOut.toNumber() >= fontSize * 4 ? ' DAI/XYZ' : ''
+      bid.tokenOut.toNumber() >= fontSize * 4 ?  ` ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} ` : ''
     }`
   }
 
   const getBidAmountText = (bid: AuctionBid, fontSize: number) => {
-    return `${bid.tokenOut.toNumber().toFixed(0)}${bid.tokenOut.toNumber() >= fontSize * 3 ? ' XYZ' : ''}`
+    return `${bid.tokenOut.toNumber().toFixed(0)}${bid.tokenOut.toNumber() >= fontSize * 3 ? `${auction.tokenOut?.symbol}`  : ''}`
   }
 
   const draw = () => {
@@ -111,7 +112,7 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       .attr('font-size', fontSize)
       .attr('dy', '.71em')
       .attr('text-anchor', 'middle')
-      .text(() => `CP ${vsp.toFixed(2)} DAI`)
+      .text(() => `CP ${vsp.toFixed(2)} ${auction.tokenIn?.symbol}`)
 
     if (inactiveChartData.length > 0) {
       const inactiveSelection = svg

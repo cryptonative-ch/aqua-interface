@@ -160,9 +160,8 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -206,9 +205,8 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
@@ -280,6 +278,7 @@ export function AuctionView() {
                     data={bids}
                     userAddress={userAddress}
                     vsp={clearingPrice?.tokenIn.toNumber() || 0}
+                    auction={auction}
                   />
                 </CardBody>
               )}

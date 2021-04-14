@@ -192,9 +192,8 @@ export function FixedPriceAuctionView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -232,9 +231,8 @@ export function FixedPriceAuctionView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 1)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 1)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
@@ -308,6 +306,7 @@ export function FixedPriceAuctionView() {
                     data={bids}
                     userAddress={userAddress}
                     vsp={clearingPrice?.tokenIn.toNumber() || 0}
+                    auction={auction}
                   />
                 </CardBody>
               )}

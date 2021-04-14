@@ -180,7 +180,7 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
           <FormLabel>Token Price</FormLabel>
           <Flex flexDirection="column" flex={1}>
             <FormContainer>
-              <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
+              <FormText data-testid="price-value">{`${tokenPrice.toString()} ${auction.tokenIn?.symbol}`}</FormText>
               <FormInput
                 aria-label="tokenPrice"
                 id="tokenPrice"
@@ -192,8 +192,8 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
             </FormContainer>
             <FormDescription>
               {isFixed
-                ? 'You have 123,456 DAI.'
-                : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
+                ? `You have 123,456 ${auction.tokenIn?.symbol}.`
+                : `Enter the amount of ${auction.tokenIn?.symbol} you would like to trade. You have 123,456 ${auction.tokenIn?.symbol}.`}
             </FormDescription>
           </Flex>
         </FormGroup>
@@ -202,7 +202,7 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+            <FormText data-testid="amount-value">{`${tokenAmount.toString()} ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} `}</FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
@@ -211,7 +211,7 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
               onChange={onTokenAmountChange}
             />
           </FormContainer>
-          <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
+          <FormDescription>Enter the price you pay per {`${auction.tokenOut?.symbol}`} token.</FormDescription>
         </Flex>
       </FormGroup>
       {isFixed && <FixedTerm>{`You'll get 1,000 ${auction.tokenOut?.symbol}`}</FixedTerm>}

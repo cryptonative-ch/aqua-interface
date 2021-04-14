@@ -20,7 +20,7 @@ export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
   return (
     <Flex>
       <CardText data-testid="openprice">{pricePerToken}</CardText>
-      <CardText fontWeight="light">&nbsp;DAI/{auction.tokenOut?.symbol}</CardText>
+      <CardText fontWeight="light">&nbsp;{auction.tokenIn?.symbol}/{auction.tokenOut?.symbol}</CardText>
     </Flex>
   )
 }

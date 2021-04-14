@@ -213,6 +213,7 @@ export function SimulationView() {
                       data={bids}
                       userAddress={userAddress}
                       vsp={(clearingPrice?.tokenIn.toNumber() || 0) / 5}
+                      auction={auction}
                     />
                   </CardBody>
                 )}
