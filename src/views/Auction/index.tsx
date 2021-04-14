@@ -281,7 +281,7 @@ export function AuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice?.tokenIn.toNumber() || 0}
+                    vsp={clearingPrice ?  Number(utils.formatEther(clearingPrice.tokenIn)) : 0}
                     auction={auction}
                   />
                 </CardBody>
