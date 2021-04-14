@@ -1,114 +1,115 @@
-import { BigNumber } from 'ethers'
+import { utils} from 'ethers'
+
 
 export const initialBid = [
   {
     address: '0xf1',
-    tokenOut: BigNumber.from(1000), // price: 1.3
-    tokenIn: BigNumber.from(769.230769230769),
+    tokenOut: utils.parseUnits('1000', 18), // price: 1.3
+    tokenIn: utils.parseUnits('769.230769230769', 18),
   },
   {
     address: '0xf2',
-    tokenOut: BigNumber.from(15000), // price: 1.2
-    tokenIn: BigNumber.from(12500),
+    tokenOut: utils.parseUnits('15000', 18), // price: 1.2
+    tokeinIn: utils.parseUnits('12500', 18),
   },
   {
     address: '0xf3',
-    tokenOut: BigNumber.from(1000), // price: 1.2
-    tokenIn: BigNumber.from(833.333333333333),
+    tokenOut: utils.parseUnits('1000', 18), // price: 1.2
+    tokeinIn: utils.parseUnits('833.333333333333', 18),
   },
   {
     address: '0xf4',
-    tokenOut: BigNumber.from(1000), // price: 1.15
-    tokenIn: BigNumber.from(869.565217391304),
+    tokenOut: utils.parseUnits('1000', 18), // price: 1.15
+    tokeinIn: utils.parseUnits('869.565217391304', 18),
   },
   {
     address: '0xf5',
-    tokenOut: BigNumber.from(1000), // price: 1.1
-    tokenIn: BigNumber.from(909.090909090909),
+    tokenOut: utils.parseUnits('1000', 18), // price: 1.1
+    tokeinIn: utils.parseUnits('909.090909090909', 18),
   },
   {
     address: '0xf6',
-    tokenOut: BigNumber.from(10000), // price: 1.05
-    tokenIn: BigNumber.from(9523.80952380952),
+    tokenOut: utils.parseUnits('10000', 18), // price: 1.05
+    tokeinIn: utils.parseUnits('9523.80952380952', 18),
   },
   {
     address: '0xf7',
-    tokenOut: BigNumber.from(1000), // price: 1.05
-    tokenIn: BigNumber.from(952.380952380952),
+    tokenOut: utils.parseUnits('1000', 18), // price: 1.05
+    tokeinIn: utils.parseUnits('952.380952380952', 18),
   },
   {
     address: '0xf8',
-    tokenOut: BigNumber.from(5000), // price: 0.95
-    tokenIn: BigNumber.from(5263.15789473684),
+    tokenOut: utils.parseUnits('5000', 18), // price: 0.95
+    tokeinIn: utils.parseUnits('5263.15789473684', 18),
   },
   {
     address: '0xf9',
-    tokenOut: BigNumber.from(500), // price: 0.91
-    tokenIn: BigNumber.from(549.450549450549),
+    tokenOut: utils.parseUnits('500', 18), // price: 0.91
+    tokeinIn: utils.parseUnits('549.450549450549', 18),
   },
   {
     address: '0xf10',
-    tokenOut: BigNumber.from(10000), // price: 0.85
-    tokenIn: BigNumber.from(11764.7058823529),
+    tokenOut: utils.parseUnits('10000', 18), // price: 0.85
+    tokeinIn: utils.parseUnits('11764.7058823529', 18),
   },
   {
     address: '0xf11',
-    tokenOut: BigNumber.from(2000), // price: 0.77
-    tokenIn: BigNumber.from(2597.4025974026),
+    tokenOut: utils.parseUnits('2000', 18), // price: 0.77
+    tokeinIn: utils.parseUnits('2597.4025974026', 18),
   },
   {
     address: '0xf12',
-    tokenOut: BigNumber.from(2000), // price: 0.765
-    tokenIn: BigNumber.from(2614.37908496732),
+    tokenOut: utils.parseUnits('2000', 18), // price: 0.765
+    tokeinIn: utils.parseUnits('2614.37908496732', 18),
   },
   {
     address: '0xf13',
-    tokenOut: BigNumber.from(2000), // price: 0.76
-    tokenIn: BigNumber.from(2631.57894736842),
+    tokenOut: utils.parseUnits('2000', 18), // price: 0.76
+    tokeinIn: utils.parseUnits('2631.57894736842', 18),
   },
   {
     address: '0xf14',
-    tokenOut: BigNumber.from(2000), // price: 0.755
-    tokenIn: BigNumber.from(2649.00662251656),
+    tokenOut: utils.parseUnits('2000', 18), // price: 0.755
+    tokeinIn: utils.parseUnits('2649.00662251656', 18),
   },
   {
     address: '0xf15',
-    tokenOut: BigNumber.from(10000), // price: 0.75
-    tokenIn: BigNumber.from(13333.3333333333),
+    tokenOut: utils.parseUnits('10000', 18), // price: 0.75
+    tokeinIn: utils.parseUnits('13333.3333333333', 18),
   },
   {
     address: '0xf16',
-    tokenOut: BigNumber.from(2000), // price: 0.75
-    tokenIn: BigNumber.from(2666.66666666667),
+    tokenOut: utils.parseUnits('2000', 18), // price: 0.75
+    tokeinIn: utils.parseUnits('2666.66666666667', 18),
   },
   {
     address: '0xf17',
-    tokenOut: BigNumber.from(1000), // price: 0.7
-    tokenIn: BigNumber.from(1428.57142857143),
+    tokenOut: utils.parseUnits('1000', 18), // price: 0.7
+    tokeinIn: utils.parseUnits('1428.57142857143', 18),
   },
   {
     address: '0xf18',
-    tokenOut: BigNumber.from(5000), // price: 0.65
-    tokenIn: BigNumber.from(7692.30769230769),
+    tokenOut: utils.parseUnits('5000', 18), // price: 0.65
+    tokeinIn: utils.parseUnits('7692.30769230769', 18),
   },
   {
     address: '0xf19',
-    tokenOut: BigNumber.from(1000), // price: 0.6
-    tokenIn: BigNumber.from(1666.66666666667),
+    tokenOut: utils.parseUnits('1000', 18), // price: 0.6
+    tokeinIn: utils.parseUnits('1666.66666666667', 18),
   },
   {
     address: '0xf20',
-    tokenOut: BigNumber.from(1000), // price: 0.5
-    tokenIn: BigNumber.from(2000),
+    tokenOut: utils.parseUnits('1000', 18), // price: 0.5
+    tokeinIn: utils.parseUnits('2000', 18),
   },
   {
     address: '0xf21',
-    tokenOut: BigNumber.from(1000), // price: 0.5
-    tokenIn: BigNumber.from(2000),
+    tokenOut: utils.parseUnits('1000', 18), // price: 0.5
+    tokeinIn: utils.parseUnits('2000', 18),
   },
   {
     address: '0xf22',
-    tokenOut: BigNumber.from(1000), // price: 0.2
-    tokenIn: BigNumber.from(5000),
+    tokenOut: utils.parseUnits('1000', 18), // price: 0.2
+    tokeinIn: utils.parseUnits('5000', 18),
   },
 ]

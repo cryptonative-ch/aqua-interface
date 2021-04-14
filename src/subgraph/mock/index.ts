@@ -3,6 +3,7 @@ import { MockList } from 'graphql-tools'
 import casual from 'casual-browserify'
 import { initialBid } from '../../data/initialbids'
 
+console.log(initialBid[0].tokenIn)
 // schema
 
 export const schemaString = `  
@@ -178,8 +179,9 @@ export const mocks = {
     decimals: () => casual.integer(1, 18),
   }),
   Query: () => ({
-    fairSales: () => new MockList(3),
-    fixedPriceAuctions: () => new MockList(3),
+    // Mocklist is outdated, I did see this by incident,  remove this hint next time you see it: https://www.graphql-tools.com/docs/mocking#deprecated-mocklist
+    fairSales: [...new Array(casual.integer(3))],
+    fixedPriceAuctions: [...new Array(casual.integer(3))],
   }),
 }
 
