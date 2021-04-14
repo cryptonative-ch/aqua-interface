@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
 import numeral from 'numeral'
-import { BigNumber, utils } from 'ethers'
+import {  utils } from 'ethers'
 
 // Components
 import { Flex } from 'src/components/Flex'

@@ -163,7 +163,7 @@ export function AuctionView() {
                           : isAuctionOpen(auction)
                           ? 'Current Price'
                           : 'Final Price'
-                      }
+                      } // toFixed(2)
                       description={clearingPrice ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn))|| 0)).toFixed(2)} 
                       ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}` : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
