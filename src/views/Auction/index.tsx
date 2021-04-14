@@ -61,6 +61,7 @@ import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 //subgraph
 import { auctionsRequest } from 'src/subgraph/Auctions'
 import { fetchAuctions } from 'src/redux/auctionListings'
+import { utils } from 'ethers'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -123,7 +124,7 @@ export function AuctionView() {
     if (bids.length) {
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [bids])
+  }, [])
 
   const toggleGraph = () => {
     if (showGraph || (auction && bids && bids.length > 0)) {
@@ -163,8 +164,8 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} 
-                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
+                      description={clearingPrice ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn))|| 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}` : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -208,8 +209,8 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} 
-                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
+                      description={clearingPrice ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn))|| 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}` : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
