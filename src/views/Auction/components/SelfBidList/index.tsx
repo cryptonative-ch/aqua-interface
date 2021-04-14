@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
 import numeral from 'numeral'
-import {  utils } from 'ethers'
+import { utils } from 'ethers'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -19,8 +19,6 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 
 // Interfaces
 import { Auction, AuctionBid } from 'src/interfaces/Auction'
-
-
 
 type ColumnLabelProps = SpaceProps
 
@@ -212,8 +210,8 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
       </Flex>
 
       {bids.map((bid: AuctionBid, index: number) => {
-       const bidPrice = Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))
-       console.log(bidPrice)
+        const bidPrice = Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))
+        console.log(bidPrice)
         return (
           <Flex
             key={index}

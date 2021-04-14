@@ -164,8 +164,12 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       } // toFixed(2)
-                      description={clearingPrice ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn))|| 0)).toFixed(2)} 
-                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}` : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
+                      description={
+                        clearingPrice
+                          ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn)) || 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                          : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                      }
                     />
                     <HeaderItem
                       isMobile
@@ -209,8 +213,12 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={clearingPrice ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn))|| 0)).toFixed(2)} 
-                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}` : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
+                      description={
+                        clearingPrice
+                          ? `${(1 / (Number(utils.formatEther(clearingPrice.tokenIn)) || 0)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                          : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                      }
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
@@ -281,7 +289,7 @@ export function AuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice ?  Number(utils.formatEther(clearingPrice.tokenIn)) : 0}
+                    vsp={clearingPrice ? Number(utils.formatEther(clearingPrice.tokenIn)) : 0}
                     auction={auction}
                   />
                 </CardBody>

@@ -19,17 +19,20 @@ interface BarChartComponentProps {
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp, auction }) => {
   const ref = useRef<SVGSVGElement>(null)
 
-  const getBidPricePerShare = (bid: AuctionBid) =>  Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))
+  const getBidPricePerShare = (bid: AuctionBid) =>
+    Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))
 
   const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
     return `${(Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))).toFixed(2)}${
-      Number(utils.formatEther(bid.tokenOut))>= fontSize * 4 ? ` ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} ` : ''
+      Number(utils.formatEther(bid.tokenOut)) >= fontSize * 4
+        ? ` ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} `
+        : ''
     }`
   }
 
   const getBidAmountText = (bid: AuctionBid, fontSize: number) => {
-    return `${ Number(utils.formatEther(bid.tokenOut)).toFixed(0)}${
-      Number(utils.formatEther(bid.tokenOut))>= fontSize * 3 ? `${auction.tokenOut?.symbol}` : ''
+    return `${Number(utils.formatEther(bid.tokenOut)).toFixed(0)}${
+      Number(utils.formatEther(bid.tokenOut)) >= fontSize * 3 ? `${auction.tokenOut?.symbol}` : ''
     }`
   }
 
@@ -38,11 +41,13 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       return
     }
     const svg = d3.select(ref.current)
-    const sortedData = data.sort((first, second) =>  Number(utils.formatEther(second.tokenOut)) -  Number(utils.formatEther(first.tokenOut)))
+    const sortedData = data.sort(
+      (first, second) => Number(utils.formatEther(second.tokenOut)) - Number(utils.formatEther(first.tokenOut))
+    )
     const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
     const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
-    const activeChartData: any[] = activeBids.map(item =>  Number(utils.formatEther(item.tokenOut)))
-    const inactiveChartData: any[] = inactiveBids.map(item =>  Number(utils.formatEther(item.tokenOut)))
+    const activeChartData: any[] = activeBids.map(item => Number(utils.formatEther(item.tokenOut)))
+    const inactiveChartData: any[] = inactiveBids.map(item => Number(utils.formatEther(item.tokenOut)))
 
     svg.selectAll('g').remove()
     const activeSelection = svg.append('g').attr('class', 'activeSelection').selectAll('rect').data(activeChartData)
