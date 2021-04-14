@@ -64,13 +64,13 @@ export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): n
  * @param auctionBids
  */
 export function calculateClearingPrice(fairSaleBids: AuctionBid[]): AuctionBid {
-  if (!fairSaleBids.length) {
-    return {
-      address: '0x',
-      tokenOut: BigNumber.from(0),
-      tokenIn: BigNumber.from(0),
-    }
-  }
+  // if (!fairSaleBids.length) {
+  //   return {
+  //     address: '0x',
+  //     tokenOut: BigNumber.from(0),
+  //     tokenIn: BigNumber.from(0),
+  //   }
+  // }
 
   const sortedSellOrders = fairSaleBids.sort(hasLowerClearingPrice)
   const initialOrder = fairSaleBids[0]

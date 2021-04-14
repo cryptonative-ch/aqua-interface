@@ -2,6 +2,7 @@
 import { MockList } from 'graphql-tools'
 import casual from 'casual-browserify'
 import { initialBid } from '../../data/initialbids'
+import { isTemplateExpression } from 'typescript'
 
 console.log(initialBid[0].tokenIn)
 // schema
@@ -88,9 +89,9 @@ export const schemaString = `
     # The UTC timestamp at which the bid was deleted
     deletedAt: Int
     # Int of tokens the investor wants to buy
-    tokenIn: Int
+    tokenIn: Float
     # Int of tokens the investor wants to buy
-    tokenOut: Int
+    tokenOut: Float
     # The bidder's Ethereum address
     address: String
   }

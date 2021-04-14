@@ -15,19 +15,21 @@ interface BarChartComponentProps {
   auction: Auction
 }
 
-export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp, auction}) => {
+export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp, auction }) => {
   const ref = useRef<SVGSVGElement>(null)
 
   const getBidPricePerShare = (bid: AuctionBid) => bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
 
   const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
     return `${(bid.tokenIn.toNumber() / bid.tokenOut.toNumber()).toFixed(2)}${
-      bid.tokenOut.toNumber() >= fontSize * 4 ?  ` ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} ` : ''
+      bid.tokenOut.toNumber() >= fontSize * 4 ? ` ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} ` : ''
     }`
   }
 
   const getBidAmountText = (bid: AuctionBid, fontSize: number) => {
-    return `${bid.tokenOut.toNumber().toFixed(0)}${bid.tokenOut.toNumber() >= fontSize * 3 ? `${auction.tokenOut?.symbol}`  : ''}`
+    return `${bid.tokenOut.toNumber().toFixed(0)}${
+      bid.tokenOut.toNumber() >= fontSize * 3 ? `${auction.tokenOut?.symbol}` : ''
+    }`
   }
 
   const draw = () => {

@@ -202,7 +202,9 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">{`${tokenAmount.toString()} ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol} `}</FormText>
+            <FormText data-testid="amount-value">{`${tokenAmount.toString()} ${auction.tokenIn?.symbol}/${
+              auction.tokenOut?.symbol
+            } `}</FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
