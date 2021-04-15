@@ -54,7 +54,7 @@ import { NotFoundView } from 'src/views/NotFound'
 import { Auction, AuctionBid } from 'src/interfaces/Auction'
 
 // Constants
-import { FixedPriceSaleContractAddress } from 'src/constants'
+import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
 import { RootState } from 'src/redux/store'
 import { fetchAuctions } from 'src/redux/auctionListings'
@@ -148,7 +148,7 @@ export function FixedPriceAuctionView() {
     const provider = new ethers.providers.Web3Provider(wallet.ethereum as ethers.providers.ExternalProvider)
     // An example Signer
     const signer = provider.getSigner(0)
-    setFixedPriceContract(new ethers.Contract(FixedPriceSaleContractAddress, FixedPriceSaleABI, signer))
+    setFixedPriceContract(new ethers.Contract(FIXED_PRICE_SALE_CONTRACT_ADDRESS, FixedPriceSaleABI, signer))
   }, [wallet])
 
   useEffect(() => {

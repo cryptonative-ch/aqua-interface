@@ -11,7 +11,9 @@ import { Flex } from 'src/components/Flex'
 import ExternalLinkSVG from 'src/assets/svg/External-Link.svg'
 import TwitterSVG from 'src/assets/svg/Twitter.svg'
 import TelegramSVG from 'src/assets/svg/Telegram.svg'
+import GithubSVG from 'src/assets/svg/Github.svg'
 import DiscordSVG from 'src/assets/svg/Discord.svg'
+
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 type WrapperProps = SpaceProps & BorderProps & LayoutProps
@@ -155,13 +157,18 @@ export const StaticContent: React.FC = () => {
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://twitter.com/mesa_eth">
-                <IconImg src={TwitterSVG} height="21px" margin="0 16px 0 0" />
+              <a href="https://discord.com/invite/4QXEJQkvHH" target="_blank" rel="noreferrer">
+                <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
               </a>
-              <a href="https://discord.com/invite/4QXEJQkvHH">
-                <IconImg src={DiscordSVG} height="21px" margin="0 16px 0 0" />
+              <a href="https://twitter.com/mesa_eth" target="_blank" rel="noreferrer">
+                <IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" />
               </a>
-              <IconImg src={TelegramSVG} height="21px" margin="0 16px 0 0" />
+              <a href="https://t.me/dxDAO" target="_blank" rel="noreferrer">
+                <IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
+              <a href="https://github.com/cryptonative-ch/" target="_blank" rel="noreferrer">
+                <IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
             </Flex>
           </Flex>
         )}

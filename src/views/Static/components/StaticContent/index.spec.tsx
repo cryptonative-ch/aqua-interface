@@ -1,11 +1,10 @@
 // Externals
-
 import React from 'react'
 import { render } from '@testing-library/react'
 import { UseWalletProvider } from 'use-wallet'
 import '@testing-library/jest-dom/extend-expect'
 
-// Component
+// Components
 import { StaticContent } from './index'
 
 describe('StaticContent', () => {
