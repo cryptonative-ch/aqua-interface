@@ -38,16 +38,13 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
     }`
   }
 
-
   const draw = () => {
     if (width <= 232) {
       return
     }
     const svg = d3.select(ref.current)
 
-    const sortedData = data.sort(
-      (first, second) => getBidPricePerShare(second) - getBidPricePerShare(first)
-    )
+    const sortedData = data.sort((first, second) => getBidPricePerShare(second) - getBidPricePerShare(first))
     const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
     const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
     const activeChartData: any[] = activeBids.map(item => Number(utils.formatEther(item.tokenOut)))

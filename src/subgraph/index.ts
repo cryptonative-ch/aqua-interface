@@ -28,6 +28,7 @@ export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType 
   return auctionType.type
 }
 
+// change this to check for other units like USDC and USDT
 export const generateInitialAuctionData = async (
   // eslint-disable-next-line
   auctionBidsRequest: Promise<any>,

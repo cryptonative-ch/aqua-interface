@@ -176,7 +176,7 @@ export const mocks = {
     address: () => casual.numerify(address),
     name: () => casual.company_name,
     symbol: () => casual.state_abbr,
-    decimals: () => casual.integer(1, 18),
+    decimals: () => 18,
   }),
   Query: () => ({
     // Mocklist is outdated, I did see this by incident,  remove this hint next time you see it: https://www.graphql-tools.com/docs/mocking#deprecated-mocklist

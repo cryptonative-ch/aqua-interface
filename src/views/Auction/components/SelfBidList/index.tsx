@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
 import numeral from 'numeral'
-import { utils } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -106,6 +106,48 @@ interface SelfBidListProps {
   isFixed?: boolean
 }
 
+export const getZeros = (decimals: number) => {
+  let zeros = '0'
+  while (zeros.length < 256) {
+    zeros += zeros
+  }
+  if (decimals >= 0 && decimals <= 256 && !(decimals % 1)) {
+    return '1' + zeros.substring(0, decimals)
+  }
+
+  throw new Error('invalid decimal')
+}
+
+export const convertToNumber = (number: BigNumberish, decimals = 18): number => {
+  // big number checks & convert if not
+  let value: BigNumberish = BigNumber.from(number)
+
+  const addedZeros = getZeros(decimals)
+
+  // negative check
+  const negative = value.lt(BigNumber.from(0))
+  if (negative) {
+    value = value.mul(BigNumber.from(-1))
+  }
+
+  let fraction = value.mod(addedZeros).toString()
+  while (fraction.length < addedZeros.length - 1) {
+    fraction = '0' + fraction
+  }
+
+  fraction = fraction.match(/^([0-9]*[1-9]|0)(0*)/)![1]
+
+  const whole = value.div(addedZeros).toString()
+
+  value = whole + '.' + fraction
+
+  if (negative) {
+    value = '-' + value
+  }
+
+  return Number(value)
+}
+
 export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
 
@@ -119,7 +161,9 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
     setBidMenu(index)
   }
 
-  const vsp = clearingPrice ? Number(utils.formatEther(clearingPrice.tokenIn.div(clearingPrice.tokenOut))) : 0
+  const vsp = clearingPrice
+    ? convertToNumber(clearingPrice.tokenIn.div(clearingPrice.tokenOut), auction.tokenIn?.decimals)
+    : 0
 
   if (isFixed && isAuctionOpen(auction)) {
     return (
@@ -137,7 +181,7 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
         </Flex>
 
         {bids.map((bid: AuctionBid, index: number) => {
-          const bidPrice = Number(utils.formatEther(bid.tokenIn.div(bid.tokenOut)))
+          const bidPrice = convertToNumber(bid.tokenIn.div(bid.tokenOut), auction.tokenIn?.decimals)
           return (
             <Flex
               key={index}
@@ -153,12 +197,12 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
                 </TokenPriceLabel>
               </Flex>
               <Flex flex={3}>
-                <TokenPriceLabel>{`${numeral(bid.tokenIn.toNumber()).format('0')} ${
+                <TokenPriceLabel>{`${numeral(convertToNumber(bid.tokenOut, auction.tokenOut?.decimals)).format('0')} ${
                   auction.tokenOut?.symbol
                 }`}</TokenPriceLabel>
               </Flex>
               <Flex flex={6}>
-                <TokenPriceLabel>{`${numeral(bid.tokenIn.toNumber()).format('0')} ${
+                <TokenPriceLabel>{`${numeral(convertToNumber(bid.tokenIn, auction.tokenIn?.decimals)).format('0')} ${
                   auction.tokenIn?.symbol
                 }`}</TokenPriceLabel>
                 <Flex flex={1} />
@@ -210,7 +254,9 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
       </Flex>
 
       {bids.map((bid: AuctionBid, index: number) => {
-        const bidPrice = Number(utils.formatEther(bid.tokenIn)) / Number(utils.formatEther(bid.tokenOut))
+        const bidPrice =
+          convertToNumber(bid.tokenIn, auction.tokenIn?.decimals) /
+          convertToNumber(bid.tokenOut, auction.tokenIn?.decimals)
         console.log(bidPrice)
         return (
           <Flex
@@ -227,13 +273,13 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
               </TokenPriceLabel>
             </Flex>
             <Flex flex={3}>
-              <TokenPriceLabel>{`${numeral(Number(utils.formatEther(bid.tokenIn))).format('0')} ${
+              <TokenPriceLabel>{`${numeral(convertToNumber(bid.tokenIn, auction.tokenIn?.decimals)).format('0')} ${
                 auction.tokenOut?.symbol
               }`}</TokenPriceLabel>
             </Flex>
             {isAuctionOpen(auction) && (
               <Flex flex={3}>
-                <TokenPriceLabel>{`${numeral(Number(utils.formatEther(bid.tokenIn))).format('0')} ${
+                <TokenPriceLabel>{`${numeral(convertToNumber(bid.tokenIn, auction.tokenIn?.decimals)).format('0')} ${
                   auction.tokenIn?.symbol
                 }`}</TokenPriceLabel>
               </Flex>
@@ -242,7 +288,9 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
               vsp <= bidPrice ? (
                 <Flex flex={3} flexDirection="row" alignItems="center">
                   <TokenPriceLabel>
-                    {`${numeral(Number(utils.formatEther(bid.tokenOut))).format('0.[00]')} ${auction.tokenOut?.symbol}`}
+                    {`${numeral(convertToNumber(bid.tokenOut, auction.tokenOut?.decimals)).format('0.[00]')} ${
+                      auction.tokenOut?.symbol
+                    }`}
                   </TokenPriceLabel>
                   <Flex flex={1} />
                   <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
