@@ -63,6 +63,9 @@ import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 import { fetchAuctionBids } from 'src/redux/bidData'
 
+// utils
+import { convertToNumber } from 'src/utils/Defaults'
+
 const ChartDescription = styled.div({
   fontStyle: 'normal',
   fontWeight: 400,
@@ -192,8 +195,12 @@ export function FixedPriceAuctionView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} 
-                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
+                      description={
+                        clearingPrice
+                          ? `${(1 / convertToNumber(clearingPrice?.tokenIn, auction.tokenIn?.decimals)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                          : `0 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                      }
                     />
                     <HeaderItem
                       isMobile
@@ -231,8 +238,12 @@ export function FixedPriceAuctionView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 1)).toFixed(2)} 
-                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`}
+                      description={
+                        clearingPrice
+                          ? `${(1 / convertToNumber(clearingPrice.tokenIn)).toFixed(2)} 
+                      ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                          : `1 ${auction.tokenIn?.symbol}/${auction.tokenOut?.symbol}`
+                      }
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
@@ -305,7 +316,7 @@ export function FixedPriceAuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice?.tokenIn.toNumber() || 0}
+                    vsp={clearingPrice ? convertToNumber(clearingPrice.tokenIn) : 0}
                     auction={auction}
                   />
                 </CardBody>

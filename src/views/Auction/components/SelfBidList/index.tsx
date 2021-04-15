@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
 import numeral from 'numeral'
-import { BigNumber, BigNumberish } from 'ethers'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -19,6 +18,9 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 
 // Interfaces
 import { Auction, AuctionBid } from 'src/interfaces/Auction'
+
+//utils
+import { convertToNumber } from 'src/utils/Defaults'
 
 type ColumnLabelProps = SpaceProps
 
@@ -104,48 +106,6 @@ interface SelfBidListProps {
   status: string
   showGraph: boolean
   isFixed?: boolean
-}
-
-export const getZeros = (decimals: number) => {
-  let zeros = '0'
-  while (zeros.length < 256) {
-    zeros += zeros
-  }
-  if (decimals >= 0 && decimals <= 256 && !(decimals % 1)) {
-    return '1' + zeros.substring(0, decimals)
-  }
-
-  throw new Error('invalid decimal')
-}
-
-export const convertToNumber = (number: BigNumberish, decimals = 18): number => {
-  // big number checks & convert if not
-  let value: BigNumberish = BigNumber.from(number)
-
-  const addedZeros = getZeros(decimals)
-
-  // negative check
-  const negative = value.lt(BigNumber.from(0))
-  if (negative) {
-    value = value.mul(BigNumber.from(-1))
-  }
-
-  let fraction = value.mod(addedZeros).toString()
-  while (fraction.length < addedZeros.length - 1) {
-    fraction = '0' + fraction
-  }
-
-  fraction = fraction.match(/^([0-9]*[1-9]|0)(0*)/)![1]
-
-  const whole = value.div(addedZeros).toString()
-
-  value = whole + '.' + fraction
-
-  if (negative) {
-    value = '-' + value
-  }
-
-  return Number(value)
 }
 
 export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidListProps) {

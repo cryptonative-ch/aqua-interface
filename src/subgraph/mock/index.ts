@@ -2,7 +2,6 @@
 import { MockList } from 'graphql-tools'
 import casual from 'casual-browserify'
 import { initialBid } from '../../data/initialbids'
-import { isTemplateExpression } from 'typescript'
 
 // schema
 
@@ -159,6 +158,7 @@ export const mocks = {
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
     sellAmount: () => casual.integer(1, 100).toString(),
+    bids: () => initialBid,
   }),
   FairSaleBid: () => ({
     createdAt: () => casual.unix_time,
@@ -179,7 +179,6 @@ export const mocks = {
     decimals: () => 18,
   }),
   Query: () => ({
-    // Mocklist is outdated, I did see this by incident,  remove this hint next time you see it: https://www.graphql-tools.com/docs/mocking#deprecated-mocklist
     fairSales: [...new Array(casual.integer(3))],
     fixedPriceAuctions: [...new Array(casual.integer(3))],
   }),

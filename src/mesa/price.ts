@@ -64,11 +64,12 @@ export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): n
  * @param auctionBids
  */
 export function calculateClearingPrice(fairSaleBids: AuctionBid[]): AuctionBid {
+  // placeholder to division by zero
   if (!fairSaleBids.length) {
     return {
       address: '0x',
-      tokenOut: BigNumber.from(0),
-      tokenIn: BigNumber.from(0),
+      tokenOut: BigNumber.from(1),
+      tokenIn: BigNumber.from(1),
     }
   }
 
