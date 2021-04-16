@@ -4,7 +4,15 @@ import axios from 'axios'
 import { BigNumber } from 'ethers'
 
 //interface
-import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
+import {
+  Auction,
+  AuctionBid,
+  auctionType,
+  FairSale,
+  FairSaleBid,
+  FixedPriceAuction,
+  FixedPriceSalePurchase,
+} from '../interfaces/Auction'
 
 export const ENDPOINT =
   process.env.NODE_ENV === 'development'
@@ -31,6 +39,7 @@ export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType 
 
 export const generateInitialAuctionData = async (
   // eslint-disable-next-line
+  // extend interface
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {
@@ -38,8 +47,8 @@ export const generateInitialAuctionData = async (
     ...item,
     tokenOut: BigNumber.from(item.tokenOut),
     tokenIn: BigNumber.from(item.tokenIn),
+    amount: BigNumber.from(item.tokenIn),
   }))
-
   return auctionBids
 }
 

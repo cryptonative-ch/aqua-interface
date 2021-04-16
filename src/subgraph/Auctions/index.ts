@@ -25,7 +25,7 @@ const auctionsQuery = `
         decimals
       }
       sellAmount
-      minbiddingAmount
+      minimumRaise
       allocationMin
       allocationMax
     }

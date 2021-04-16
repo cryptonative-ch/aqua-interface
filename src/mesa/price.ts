@@ -2,13 +2,13 @@
 import { BigNumber } from 'ethers'
 
 // Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
+import { FairSaleBid, FairBidPick } from 'src/interfaces/Auction'
 
 /**
  * source: https://github.com/gnosis/ido-contracts/blob/main/src/priceCalculation.ts
  */
 
-function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: AuctionBid): AuctionBid {
+function findClearingPrice(sellOrders: FairSaleBid[], initialAuctionOrder: FairSaleBid): FairBidPick {
   let totalSellVolume = BigNumber.from(0)
 
   for (const order of sellOrders) {
@@ -49,9 +49,9 @@ function findClearingPrice(sellOrders: AuctionBid[], initialAuctionOrder: Auctio
 
 /**
  *
- * @param auctionBids
+ * @param FairSaleBids
  */
-export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): number {
+export function hasLowerClearingPrice(order1: FairSaleBid, order2: FairSaleBid): number {
   if (order1.tokenOut.mul(order2.tokenIn).lt(order2.tokenOut.mul(order1.tokenIn))) return -1
   if (order1.tokenOut.mul(order2.tokenIn).eq(order2.tokenOut.mul(order1.tokenIn))) {
     if (order1.address < order2.address) return -1
@@ -61,9 +61,9 @@ export function hasLowerClearingPrice(order1: AuctionBid, order2: AuctionBid): n
 
 /**
  * Calculates the clearing price using the auction bids
- * @param auctionBids
+ * @param FairSaleBids
  */
-export function calculateClearingPrice(fairSaleBids: AuctionBid[]): AuctionBid {
+export function calculateClearingPrice(fairSaleBids: FairSaleBid[]): FairBidPick {
   if (!fairSaleBids.length) {
     return {
       address: '0x',

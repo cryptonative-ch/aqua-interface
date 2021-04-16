@@ -4,12 +4,12 @@ import * as d3 from 'd3'
 import React, { useRef, useEffect } from 'react'
 
 // Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
+import { FairSaleBid } from 'src/interfaces/Auction'
 
 interface BarChartComponentProps {
   width: number
   height: number
-  data: AuctionBid[]
+  data: FairSaleBid[]
   userAddress: string
   vsp: number
 }
@@ -17,15 +17,15 @@ interface BarChartComponentProps {
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp }) => {
   const ref = useRef<SVGSVGElement>(null)
 
-  const getBidPricePerShare = (bid: AuctionBid) => bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
+  const getBidPricePerShare = (bid: FairSaleBid) => bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
 
-  const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
+  const getBidPriceText = (bid: FairSaleBid, fontSize: number) => {
     return `${(bid.tokenIn.toNumber() / bid.tokenOut.toNumber()).toFixed(2)}${
       bid.tokenOut.toNumber() >= fontSize * 4 ? ' DAI/XYZ' : ''
     }`
   }
 
-  const getBidAmountText = (bid: AuctionBid, fontSize: number) => {
+  const getBidAmountText = (bid: FairSaleBid, fontSize: number) => {
     return `${bid.tokenOut.toNumber().toFixed(0)}${bid.tokenOut.toNumber() >= fontSize * 3 ? ' XYZ' : ''}`
   }
 

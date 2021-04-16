@@ -2,15 +2,16 @@
 import dayjs, { Dayjs } from 'dayjs'
 
 // Interface
-import { Auction, auctionType } from 'src/interfaces/Auction'
+import { Auction, auctionType, FairSale, FixedPriceAuction } from 'src/interfaces/Auction'
 
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
+import { BigNumber } from '@ethersproject/bignumber'
 
 // query mocks
 
-const getFairSale = (): Auction => ({
+const getFairSale = (): FairSale => ({
   id: '0x141',
   createdAt: 1585481341,
   updatedAt: null,
@@ -18,7 +19,7 @@ const getFairSale = (): Auction => ({
   status: 'closed',
   startDate: 1585654141,
   endDate: 1617193741,
-  tokenAmount: 5000,
+  tokenAmount: BigNumber.from(5000),
   name: 'Omen',
   tokenIn: {
     id: '0x141',
@@ -37,13 +38,12 @@ const getFairSale = (): Auction => ({
     symbol: 'DXD',
   },
   minimumBidAmount: 10,
-  gracePeriodStartDate: 100,
-  gracePeriodEndDate: 100,
   bids: [],
   type: 'fairSale',
+  minFundingThreshold: 100,
 })
 
-const getFixedPriceAuction = (): Auction => ({
+const getFixedPriceAuction = (): FixedPriceAuction => ({
   id: '0x141',
   createdAt: 1585481341,
   updatedAt: null,
@@ -51,12 +51,10 @@ const getFixedPriceAuction = (): Auction => ({
   status: 'closed',
   startDate: 1585654141,
   endDate: 1617193741,
-  tokenAmount: 5000,
   name: 'Omen',
   type: 'fixedPriceAuction',
-  sellAmount: '0x2A',
+  sellAmount: BigNumber.from('0x2A'),
   minbiddingAmount: 10,
-  minFundingThreshold: 1000,
   tokenIn: {
     id: '0x141',
     name: 'DAI',
@@ -78,7 +76,7 @@ const getFixedPriceAuction = (): Auction => ({
   bids: [],
 })
 
-export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'fairSale'): Auction =>
+export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'fairSale') =>
   auctiontype == 'fixedPriceAuction'
     ? {
         ...getFixedPriceAuction(),

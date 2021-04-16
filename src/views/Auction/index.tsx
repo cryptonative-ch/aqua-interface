@@ -50,7 +50,7 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { AuctionBid, Auction } from 'src/interfaces/Auction'
+import { Auction, FairSaleBid, FairBidPick } from 'src/interfaces/Auction'
 
 //redux
 import { RootState } from 'src/redux/store'
@@ -83,7 +83,7 @@ export function AuctionView() {
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
-  const [clearingPrice, setClearingPrice] = useState<AuctionBid>()
+  const [clearingPrice, setClearingPrice] = useState<FairBidPick>()
   const ref = useRef<HTMLElement>()
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
@@ -94,7 +94,7 @@ export function AuctionView() {
 
   const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
 
-  const bids = useSelector<RootState, AuctionBid[]>(state => {
+  const bids = useSelector<RootState, FairSaleBid[]>(state => {
     return state.BidReducer.bids
   })
 
@@ -121,12 +121,12 @@ export function AuctionView() {
     dispatch(setPageTitle(t(auction?.name as string)))
 
     if (auction) {
-      const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
-      const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
+      const FairSaleBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
+      const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, FairSaleBidsRequest))
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [])
+  }, [t, bids])
 
   if (!auction) {
     fetchData()

@@ -7,28 +7,43 @@ interface BaseAuction {
   updatedAt: number | null // The UTC timestamp at which the BaseAuction was updated
   deletedAt: number | null // The UTC timestamp at which the BaseAuction was deleted
   status: string // open/ended/settled/upcoming
+  startDate: number // Open timestamp
+  endDate: number // Close timestamp
+  type: auctionType // auction type, i.e fairsale or fixedPriceSale
 }
 
-export interface AuctionBid {
-  id?: string
-  status?: string // submitted/settled/cancelled/claimed
-  BaseAuction?: BaseAuction
-  createdAt?: number // The UTC timestamp at which the bid was placed
-  updatedAt?: number // The UTC timestamp at which the bid was updated
-  deletedAt?: number // The UTC timestamp at which the bid was deleted
+interface Bid {
+  id: string
+  status: string // submitted/settled/cancelled/claimed
+  BaseAuction: string
+  createdAt: number // The UTC timestamp at which the bid was placed
+  updatedAt: number | null // The UTC timestamp at which the bid was updated
+  deletedAt: number | null // The UTC timestamp at which the bid was deleted
+}
+
+export interface FairSaleBid extends Bid {
   tokenIn: BigNumber // number of tokens the investor wants to buy
   tokenOut: BigNumber // number of tokens the investor wants to buy
   address: string // The bidder's Ethereum address
 }
 
-export interface AuctionToken {
+export type FairBidPick = Pick<FairSaleBid, 'address' | 'tokenOut' | 'tokenIn'>
+
+export interface FixedPriceSalePurchase extends Bid {
+  amount: BigNumber // number of tokens the investor wants to buy
+  buyer: string // The bidder's Ethereum address
+}
+
+export type AuctionBid = FairSaleBid & FixedPriceSalePurchase
+
+export type Auction = FixedPriceAuction & FairSale
+export interface Token {
   id: string
-  BaseAuction?: BaseAuction // references the BaseAuction
   name: string // Token name, from the smart contract ERC20.name()
-  icon: string // Token icon, preferably are URL on the IPFS
   address: string // ERC20 Token's contract address
   symbol: string // Symbol, from ERC20.symbol()
   decimals: number // Decimal, from ERC.decimals()
+  icon: string
 }
 
 export interface AuctionUser {
@@ -39,47 +54,38 @@ export interface AuctionUser {
 // FairSale entity
 export interface FairSale extends BaseAuction {
   // Specific to the FairSale
-  // number of seconds after the endTime of the BaseAuction
-  gracePeriodStartDate?: number
-  // number of seconds after the endTime of the BaseAuction
-  gracePeriodEndDate?: number
   // Total amount of tokens available for BaseAuctioning
-  tokenAmount?: number
+  tokenAmount: BigNumber
   // Minimum amount per bid
-  minimumBidAmount?: number
+  minimumBidAmount: number
   // Bidding token (ie: DAI, USDC)
-  tokenIn?: AuctionToken
+  tokenIn: Token
   // BaseAuctioning token
-  tokenOut?: AuctionToken
+  tokenOut: Token
   // List of bids
-  bids: AuctionBid[]
+  bids: FairSaleBid[]
   // The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
-  minFundingThreshold?: number
+  minFundingThreshold: number
+  //
 }
 
 // FixedPriceAuction
 export interface FixedPriceAuction extends BaseAuction {
   // Specific to the FixedPriceAuction
   // Amount to sell
-  sellAmount?: string
+  sellAmount: BigNumber
   //bidding and sale tokens
-  tokenIn?: AuctionToken
-  tokenOut?: AuctionToken
+  tokenIn: Token
+  tokenOut: Token
   // Minimum amount per bid
-  minbiddingAmount?: number
+  minbiddingAmount: number
   //Minimum and maxmimum token per order
-  allocationMin?: number
-  allocationMax?: number
-  bids: AuctionBid[]
+  allocationMin: number
+  allocationMax: number
+  bids: FixedPriceSalePurchase[]
 }
 
 export type auctionType = 'fixedPriceAuction' | 'fairSale'
-
-export interface Auction extends FixedPriceAuction, FairSale {
-  type: auctionType
-  startDate: number // Open timestamp
-  endDate: number // Close timestamp
-}
 
 export interface MesaFactory {
   // ID: should be a unique easy-to-reference
