@@ -98,8 +98,8 @@ const IconImg = styled.img<IconImgProps>(
 
 interface SelfBidListProps {
   auction: Auction
-  bids: FairSaleBid[] & FixedPriceSalePurchase[]
-  clearingPrice?: FairBidPick & FixedPriceSalePurchase
+  bids: AuctionBid[]
+  clearingPrice?: FairBidPick
   status: string
   showGraph: boolean
   isFixed?: boolean
@@ -118,6 +118,7 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
     setBidMenu(index)
   }
 
+  // no need for VSP for isFixed
   const vsp = clearingPrice ? clearingPrice.tokenIn.toNumber() / clearingPrice.tokenOut.toNumber() : 0
 
   if (isFixed && isAuctionOpen(auction)) {
@@ -136,7 +137,8 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
         </Flex>
 
         {bids.map((bid: FixedPriceSalePurchase, index: number) => {
-          const bidPrice = bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
+          const bidPrice = auction.tokenPrice.toNumber()
+          const bidValue = auction.tokenPrice.mul(bid.amount).toNumber()
           return (
             <Flex
               key={index}
@@ -157,7 +159,7 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
                 }`}</TokenPriceLabel>
               </Flex>
               <Flex flex={6}>
-                <TokenPriceLabel>{`${numeral(bid.tokenIn.toNumber()).format('0')} DAI`}</TokenPriceLabel>
+                <TokenPriceLabel>{`${numeral(bidValue).format('0')} DAI`}</TokenPriceLabel>
                 <Flex flex={1} />
                 <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
               </Flex>
@@ -223,7 +225,7 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
               </TokenPriceLabel>
             </Flex>
             <Flex flex={3}>
-              <TokenPriceLabel>{`${numeral(bid.tokenIn.toNumber()).format('0')} ${
+              <TokenPriceLabel>{`${numeral(bid.tokenOut.toNumber()).format('0')} ${
                 auction.tokenOut?.symbol
               }`}</TokenPriceLabel>
             </Flex>

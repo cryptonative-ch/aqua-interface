@@ -1,12 +1,12 @@
-export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuction' | 'fairSale') => {
-  if (auctionType == 'fixedPriceAuction') {
+export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceSale' | 'fairSale') => {
+  if (auctionType == 'fixedPriceSale') {
     return `
       {
-        fixedPriceAuction (id: ${JSON.stringify(auctionid)}) {
-    bids {
+        fixedPriceSale (id: ${JSON.stringify(auctionid)}) {
+    purchases {
       id
-      tokenIn
-      tokenOut
+      buyer
+      amount
     }
    }
  }
@@ -18,8 +18,8 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceAuct
   fairSale (id: ${JSON.stringify(auctionid)}) {
     bids {
       id
-      tokenIn
-      tokenOut
+      tokenInAmount
+      tokenOutAmount
     }
    }
  }

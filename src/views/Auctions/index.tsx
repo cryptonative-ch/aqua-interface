@@ -122,9 +122,7 @@ export function AuctionsView() {
                   .map(auction => (
                     <AuctionSummaryWrapper
                       to={
-                        auction.type == 'fixedPriceAuction'
-                          ? `/auctions/fixed/${auction.id}`
-                          : `/auctions/${auction.id}`
+                        auction.type == 'fixedPriceSale' ? `/auctions/fixed/${auction.id}` : `/auctions/${auction.id}`
                       }
                       key={auction.id}
                     >
@@ -137,9 +135,7 @@ export function AuctionsView() {
                   .map(auction => (
                     <AuctionSummaryWrapper
                       to={
-                        auction.type == 'fixedPriceAuction'
-                          ? `/auctions/fixed/${auction.id}`
-                          : `/auctions/${auction.id}`
+                        auction.type == 'fixedPriceSale' ? `/auctions/fixed/${auction.id}` : `/auctions/${auction.id}`
                       }
                       key={auction.id}
                     >
@@ -151,9 +147,7 @@ export function AuctionsView() {
                   .map(auction => (
                     <AuctionSummaryWrapper
                       to={
-                        auction.type == 'fixedPriceAuction'
-                          ? `/auctions/fixed/${auction.id}`
-                          : `/auctions/${auction.id}`
+                        auction.type == 'fixedPriceSale' ? `/auctions/fixed/${auction.id}` : `/auctions/${auction.id}`
                       }
                       key={auction.id}
                     >

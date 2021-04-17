@@ -113,6 +113,7 @@ type FixedPriceSale implements EntityMetadata  {
   endDate: Int! # Close timestamp
   # Amount to sell
   sellAmount: Int!
+  tokenPrice: Int!
   # Minimum amount per bid
   minimumRaise: Int!
   # Minimum and maxmimum token per order
@@ -254,7 +255,7 @@ export const mocks = {
 
 export const queryAuctions = `
 {
-    fixedPriceAuctions {
+    fixedPriceSales {
       id
       name
       createdAt

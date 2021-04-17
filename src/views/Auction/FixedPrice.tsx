@@ -1,5 +1,5 @@
 // External
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
 import { ethers } from 'ethers'
 import { useTheme } from 'styled-components'
@@ -11,7 +11,6 @@ import numeral from 'numeral'
 import styled from 'styled-components'
 
 // Hooks
-import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Actions
@@ -27,7 +26,6 @@ import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { MobileFooter } from 'src/components/MobileFooter'
-import { BarChart } from './components/BarChart'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 import { FormButton } from 'src/components/FormButton'
@@ -51,7 +49,7 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { Auction, AuctionBid, FixedPriceSalePurchase } from 'src/interfaces/Auction'
+import { Auction, AuctionBid } from 'src/interfaces/Auction'
 
 // Constants
 import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
@@ -62,15 +60,6 @@ import { auctionsRequest } from 'src/subgraph/Auctions'
 import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 import { fetchAuctionBids } from 'src/redux/bidData'
-
-const ChartDescription = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 400,
-  fontSize: '14px',
-  lineHeight: '21px',
-  color: '#7B7F93',
-  margin: '0 16px 16px',
-})
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -101,9 +90,6 @@ export function FixedPriceAuctionView() {
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
-  const [clearingPrice, setClearingPrice] = useState<FixedPriceSalePurchase>()
-  const ref = useRef<HTMLElement>()
-  const { width: containerWidth, setWidth } = useElementWidth(ref)
 
   const params = useParams<FixedPriceAuctionViewParams>()
   const dispatch = useDispatch()
@@ -165,8 +151,6 @@ export function FixedPriceAuctionView() {
       const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
-      // find out how the price is calculated
-      setClearingPrice(calculateClearingPrice(bids))
     }
     dispatch(setPageTitle(t(auction?.name as string)))
   }, [t, bids])
@@ -197,9 +181,7 @@ export function FixedPriceAuctionView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${auction.tokenPrice.toNumber().toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -239,9 +221,7 @@ export function FixedPriceAuctionView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 1)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${auction.tokenPrice.toNumber().toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
@@ -339,7 +319,7 @@ export function FixedPriceAuctionView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList auction={auction} clearingPrice={clearingPrice} isFixed={true} bids={bids} />
+                <SelfBidList auction={auction} isFixed={true} bids={bids} />
               </Card>
             )}
             <TokenFooter auction={auction} />

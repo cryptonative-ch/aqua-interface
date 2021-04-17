@@ -50,7 +50,7 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { Auction, FairSaleBid, FairBidPick } from 'src/interfaces/Auction'
+import { Auction, FairBidPick, AuctionBid } from 'src/interfaces/Auction'
 
 //redux
 import { RootState } from 'src/redux/store'
@@ -94,7 +94,7 @@ export function AuctionView() {
 
   const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
 
-  const bids = useSelector<RootState, FairSaleBid[]>(state => {
+  const bids = useSelector<RootState, AuctionBid[]>(state => {
     return state.BidReducer.bids
   })
 

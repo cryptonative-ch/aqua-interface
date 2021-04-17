@@ -4,15 +4,7 @@ import axios from 'axios'
 import { BigNumber } from 'ethers'
 
 //interface
-import {
-  Auction,
-  AuctionBid,
-  auctionType,
-  FairSale,
-  FairSaleBid,
-  FixedPriceAuction,
-  FixedPriceSalePurchase,
-} from '../interfaces/Auction'
+import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
 
 export const ENDPOINT =
   process.env.NODE_ENV === 'development'
@@ -22,13 +14,25 @@ export const ENDPOINT =
 // eslint-disable-next-line
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   const fairSale: auctionType = 'fairSale'
-  const fixedPriceAuction: auctionType = 'fixedPriceAuction'
+  const fixedPriceSale: auctionType = 'fixedPriceSale'
   const fairSales: Auction[] = (await auctionsRequest).fairSales
-  const addFairSaleType = fairSales.map(item => ({ ...item, type: fairSale }))
-  const fixedPriceAuctions: Auction[] = (await auctionsRequest).fixedPriceAuctions
-  const addFixedPriceAuctionsType = fixedPriceAuctions.map(item => ({ ...item, type: fixedPriceAuction }))
-  const auctionsArray = [...addFairSaleType, ...addFixedPriceAuctionsType]
-  console.log(auctionsArray)
+  console.log(await auctionsRequest)
+  const addFairSaleType = fairSales.map(item => ({
+    ...item,
+    tokenAmount: BigNumber.from(item.tokenAmount),
+    type: fairSale,
+  }))
+
+  const fixedPriceSales: Auction[] = (await auctionsRequest).fixedPriceSales
+  const addFixedPriceSalesType = fixedPriceSales.map(item => ({
+    ...item,
+    sellAmount: BigNumber.from(item.sellAmount),
+    tokenPrice: BigNumber.from(item.tokenPrice),
+    type: fixedPriceSale,
+  }))
+
+  console.log(addFairSaleType, addFixedPriceSalesType)
+  const auctionsArray = [...addFairSaleType, ...addFixedPriceSalesType]
   return auctionsArray
 }
 
@@ -39,7 +43,6 @@ export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType 
 
 export const generateInitialAuctionData = async (
   // eslint-disable-next-line
-  // extend interface
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {
@@ -47,7 +50,7 @@ export const generateInitialAuctionData = async (
     ...item,
     tokenOut: BigNumber.from(item.tokenOut),
     tokenIn: BigNumber.from(item.tokenIn),
-    amount: BigNumber.from(item.tokenIn),
+    amount: BigNumber.from(item.amount),
   }))
   return auctionBids
 }

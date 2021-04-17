@@ -30,12 +30,12 @@ describe('testing subgraph integration', () => {
       ])
     )
   }),
-    test('should check if queryAuctions object contains type fixedPriceAuction', async () => {
+    test('should check if queryAuctions object contains type fixedPriceSale', async () => {
       const test = await getAuctionsData(auctionsRequest.data)
       expect(test).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            type: 'fixedPriceAuction',
+            type: 'fixedPriceSale',
           }),
         ])
       )

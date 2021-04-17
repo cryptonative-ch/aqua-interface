@@ -3,7 +3,7 @@ import { ENDPOINT, subgraphCall } from 'src/subgraph/index'
 
 const auctionsQuery = `
   {
-    fixedPriceAuctions {
+    fixedPriceSales {
       id
       name
       createdAt
@@ -28,6 +28,7 @@ const auctionsQuery = `
       minimumRaise
       allocationMin
       allocationMax
+      tokenPrice
     }
     fairSales {
       id

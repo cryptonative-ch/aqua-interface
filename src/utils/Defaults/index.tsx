@@ -2,7 +2,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 
 // Interface
-import { Auction, auctionType, FairSale, FixedPriceAuction } from 'src/interfaces/Auction'
+import { Auction, auctionType, FairSale, FixedPriceSale } from 'src/interfaces/Auction'
 
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
@@ -43,7 +43,7 @@ const getFairSale = (): FairSale => ({
   minFundingThreshold: 100,
 })
 
-const getFixedPriceAuction = (): FixedPriceAuction => ({
+const getFixedPriceSales = (): FixedPriceSale => ({
   id: '0x141',
   createdAt: 1585481341,
   updatedAt: null,
@@ -52,7 +52,8 @@ const getFixedPriceAuction = (): FixedPriceAuction => ({
   startDate: 1585654141,
   endDate: 1617193741,
   name: 'Omen',
-  type: 'fixedPriceAuction',
+  type: 'fixedPriceSale',
+  tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
   minbiddingAmount: 10,
   tokenIn: {
@@ -77,9 +78,9 @@ const getFixedPriceAuction = (): FixedPriceAuction => ({
 })
 
 export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'fairSale') =>
-  auctiontype == 'fixedPriceAuction'
+  auctiontype == 'fixedPriceSale'
     ? {
-        ...getFixedPriceAuction(),
+        ...getFixedPriceSales(),
         ...a,
       }
     : {

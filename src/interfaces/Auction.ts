@@ -36,7 +36,7 @@ export interface FixedPriceSalePurchase extends Bid {
 
 export type AuctionBid = FairSaleBid & FixedPriceSalePurchase
 
-export type Auction = FixedPriceAuction & FairSale
+export type Auction = FixedPriceSale & FairSale
 export interface Token {
   id: string
   name: string // Token name, from the smart contract ERC20.name()
@@ -70,13 +70,14 @@ export interface FairSale extends BaseAuction {
 }
 
 // FixedPriceAuction
-export interface FixedPriceAuction extends BaseAuction {
+export interface FixedPriceSale extends BaseAuction {
   // Specific to the FixedPriceAuction
   // Amount to sell
   sellAmount: BigNumber
   //bidding and sale tokens
   tokenIn: Token
   tokenOut: Token
+  tokenPrice: BigNumber
   // Minimum amount per bid
   minbiddingAmount: number
   //Minimum and maxmimum token per order
@@ -85,7 +86,7 @@ export interface FixedPriceAuction extends BaseAuction {
   bids: FixedPriceSalePurchase[]
 }
 
-export type auctionType = 'fixedPriceAuction' | 'fairSale'
+export type auctionType = 'fixedPriceSale' | 'fairSale'
 
 export interface MesaFactory {
   // ID: should be a unique easy-to-reference

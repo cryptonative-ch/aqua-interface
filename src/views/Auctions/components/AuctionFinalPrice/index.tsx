@@ -15,7 +15,7 @@ interface AuctionFinalPriceProps {
 }
 
 export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
-  const pricePerToken = auction.type == 'fixedPriceAuction' ? auction.minbiddingAmount : auction.minimumBidAmount
+  const pricePerToken = auction.type == 'fixedPriceSale' ? auction.minbiddingAmount : auction.minimumBidAmount
 
   return (
     <Flex>
