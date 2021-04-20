@@ -16,7 +16,7 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
   const fairSale: auctionType = 'fairSale'
   const fixedPriceSale: auctionType = 'fixedPriceSale'
   const fairSales: Auction[] = (await auctionsRequest).fairSales
-  console.log(await auctionsRequest)
+
   const addFairSaleType = fairSales.map(item => ({
     ...item,
     tokenAmount: BigNumber.from(item.tokenAmount),
@@ -31,7 +31,6 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
     type: fixedPriceSale,
   }))
 
-  console.log(addFairSaleType, addFixedPriceSalesType)
   const auctionsArray = [...addFairSaleType, ...addFixedPriceSalesType]
   return auctionsArray
 }
@@ -46,12 +45,24 @@ export const generateInitialAuctionData = async (
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {
-  const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].bids.map((item: AuctionBid) => ({
+  if (auctiontypes == 'fixedPriceSale') {
+    const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].purchases.map((item: AuctionBid) => ({
+      ...item,
+
+      amount: BigNumber.from(item.amount),
+    }))
+    console.log(auctionBids)
+
+    return auctionBids
+  }
+
+  const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
     ...item,
-    tokenOut: BigNumber.from(item.tokenOut),
-    tokenIn: BigNumber.from(item.tokenIn),
-    amount: BigNumber.from(item.amount),
+    tokenOut: BigNumber.from(item.tokenOutAmount),
+    tokenIn: BigNumber.from(item.tokenInAmount),
   }))
+  console.log(auctionBids)
+
   return auctionBids
 }
 

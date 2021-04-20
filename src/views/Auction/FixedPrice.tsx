@@ -38,7 +38,6 @@ import MetamaskImage from 'src/assets/svg/metamask.svg'
 import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 // Mesa Utils
-import { calculateClearingPrice } from 'src/mesa/price'
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 import { convertTimestampWithMoment, calculateTimeDifference } from 'src/utils/date'
 
@@ -60,6 +59,7 @@ import { auctionsRequest } from 'src/subgraph/Auctions'
 import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 import { fetchAuctionBids } from 'src/redux/bidData'
+import { Center } from 'src/layouts/Center'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -96,18 +96,21 @@ export function FixedPriceAuctionView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bids
-  })
+  const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
 
   const auction = useSelector<RootState, Auction>(state => {
     const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
     return auctions
   })
 
-  const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
+  const loading = useSelector<RootState, boolean>(state => {
+    return state.BidReducer.isLoading
+  })
 
-  console.log(bids)
+  // component does not initialise useEffect
+  const bids = useSelector<RootState, AuctionBid[]>(state => {
+    return state.BidReducer.bids.filter(auction => auction.id == params.auctionId)
+  })
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -151,9 +154,14 @@ export function FixedPriceAuctionView() {
       const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
+      // loading stuck on initial load because of no bids
     }
     dispatch(setPageTitle(t(auction?.name as string)))
-  }, [t, bids])
+  }, [t, auction])
+
+  if (loading) {
+    return <Center minHeight="100%">LOADING</Center>
+  }
 
   if (!auction) {
     fetchData()
@@ -337,7 +345,7 @@ export function FixedPriceAuctionView() {
                   <PlaceBidForm
                     onSubmit={(val: BidFormProps) => buyToken(val)}
                     auction={auction}
-                    currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
+                    currentSettlementPrice={auction.tokenPrice.toNumber()}
                     isFixed
                   />
                 </CardBody>

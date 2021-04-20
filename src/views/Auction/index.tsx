@@ -34,6 +34,8 @@ import { HeaderItem } from './components/HeaderItem'
 import { HeaderControl } from './components/HeaderControl'
 import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
+import { Center } from 'src/layouts/Center'
+
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
 import WalletImage from 'src/assets/svg/wallet_connect.svg'
@@ -94,13 +96,17 @@ export function AuctionView() {
 
   const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
 
+  const auction = useSelector<RootState, Auction>(state => {
+    const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
+    return auctions
+  })
+
   const bids = useSelector<RootState, AuctionBid[]>(state => {
     return state.BidReducer.bids
   })
 
-  const auction = useSelector<RootState, Auction>(state => {
-    const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
-    return auctions
+  const loading = useSelector<RootState, boolean>(state => {
+    return state.BidReducer.isLoading
   })
 
   const toggleModal = () => {
@@ -121,12 +127,17 @@ export function AuctionView() {
     dispatch(setPageTitle(t(auction?.name as string)))
 
     if (auction) {
+      // this does not update
       const FairSaleBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, FairSaleBidsRequest))
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [t, bids])
+  }, [t, auction])
+
+  if (loading) {
+    return <Center minHeight="100%">LOADING</Center>
+  }
 
   if (!auction) {
     fetchData()

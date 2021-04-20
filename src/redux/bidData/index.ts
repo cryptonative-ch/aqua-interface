@@ -11,11 +11,8 @@ import { generateInitialAuctionData } from 'src/subgraph'
 // interface
 import { auctionType } from 'src/interfaces/Auction'
 
-//check if removebid is still needed
-
 // ACTION
 export enum ActionTypes {
-  REMOVE_BID = 'REMOVE_BID',
   INITIAL_BID_REQUEST = 'INITIAL_BID_REQUEST',
   INITIAL_BID_SUCCESS = 'INITIAL_BID_SUCCESS',
   INITIAL_BID_FAILURE = 'INITIAL_BID_FAILURE',
@@ -51,7 +48,6 @@ export const initialBidFailure = (payload: Error) => ({
 })
 
 // State
-
 interface BidState {
   isLoading: boolean
   bids: AuctionBid[]
@@ -59,7 +55,7 @@ interface BidState {
 }
 
 const defaultState: BidState = {
-  isLoading: false,
+  isLoading: true,
   bids: [],
   error: null,
 }
@@ -72,6 +68,7 @@ export const fetchAuctionBids = (id: string, auctionType: auctionType, auctionBi
     try {
       dispatch(initialBidSuccess(await generateInitialAuctionData(auctionBidsRequest, auctionType)))
     } catch (error) {
+      console.log(error)
       dispatch(initialBidFailure(error))
     }
   }
@@ -96,7 +93,6 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
       return {
         ...state,
         isLoading: false,
-        bids: [],
         error: action.payload,
       }
 

@@ -75,7 +75,7 @@ export function HeaderItem({
 
   // re-renders component every second
   useEffect(() => {
-    if (auctionLive && !!auction) {
+    if (auctionLive && auction) {
       const interval = setInterval(() => {
         setTime(PrevTime => (PrevTime + 1) % 2)
         setDescriptionText(calculateTimeDifference(auction.endDate))
@@ -85,7 +85,7 @@ export function HeaderItem({
         clearInterval(interval)
       }
     }
-  }, [])
+  }, [descriptionText])
 
   return (
     <Flex

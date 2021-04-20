@@ -17,7 +17,7 @@ import MoreSVG from 'src/assets/svg/More-Icon.svg'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 
 // Interfaces
-import { Auction, AuctionBid, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Auction'
+import { Auction, AuctionBid, FairBidPick } from 'src/interfaces/Auction'
 
 type ColumnLabelProps = SpaceProps
 
@@ -136,9 +136,10 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
           </Flex>
         </Flex>
 
-        {bids.map((bid: FixedPriceSalePurchase, index: number) => {
+        {bids.map((bid: AuctionBid, index: number) => {
           const bidPrice = auction.tokenPrice.toNumber()
           const bidValue = auction.tokenPrice.mul(bid.amount).toNumber()
+
           return (
             <Flex
               key={index}
@@ -208,7 +209,7 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
         )}
       </Flex>
 
-      {bids.map((bid: FairSaleBid, index: number) => {
+      {bids.map((bid: AuctionBid, index: number) => {
         const bidPrice = bid.tokenIn.toNumber() / bid.tokenOut.toNumber()
         return (
           <Flex
