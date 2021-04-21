@@ -8,6 +8,7 @@ import { Auction, auctionType, FairSale, FixedPriceSale } from 'src/interfaces/A
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumberish } from 'ethers'
 
 // query mocks
 
@@ -99,3 +100,79 @@ export const resizeWindow = (x: number, y: number) => {
 export const addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
 export const utcDate = dayjs(new Date().toUTCString())
 export const dateUTC = dayjs.unix(utcDate.unix())
+
+// helpers
+
+// helpers
+export const getZeros = (decimals: number) => {
+  let zeros = '0'
+  while (zeros.length < 256) {
+    zeros += zeros
+  }
+  if (decimals >= 0 && decimals <= 256 && !(decimals % 1)) {
+    return '1' + zeros.substring(0, decimals)
+  }
+
+  throw new Error('invalid decimal')
+}
+
+export const convertToNumber = (number: BigNumberish, decimals = 18): number => {
+  // big number checks & convert if not
+  let value: BigNumberish = BigNumber.from(number)
+
+  const addedZeros = getZeros(decimals)
+
+  // negative check
+  const negative = value.lt(BigNumber.from(0))
+
+  if (negative) {
+    value = value.mul(BigNumber.from(-1))
+  }
+
+  let fraction = value.mod(addedZeros).toString()
+  while (fraction.length < addedZeros.length - 1) {
+    fraction = '0' + fraction
+  }
+
+  // eslint-disable-next-line
+  fraction = fraction.match(/^([0-9]*[1-9]|0)(0*)/)![1]
+
+  const whole = value.div(addedZeros).toString()
+
+  value = whole + '.' + fraction
+
+  if (negative) {
+    value = '-' + value
+  }
+
+  return Number(value)
+}
+
+export const fromBigDecimalToBigInt = (input: string): string => {
+  // regex split the string between decimals and exponential
+  // reform into BigInt string
+  // assumes all bigdecimals are all in the smallest unit
+  // no decimal numbers
+
+  const exponent = input.match(/(?<=e)(.*)/)![1]
+
+  const fraction = input.match(/(?<=\.)(.*)(?=e)/)![1]
+
+  const sign = exponent[1]
+
+  const power = Number(exponent.slice(1))
+
+  const addedZeros = getZeros(power)
+
+  const whole = input.match(/(.*)(?=\.)/)![1]
+
+  const zeros = addedZeros.slice(fraction.length + 1)
+
+  const value = whole + fraction + zeros
+
+  return value
+}
+
+export const formatDecimal = (bigDecimal: string): BigNumber => {
+  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal))
+}
