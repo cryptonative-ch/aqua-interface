@@ -62,9 +62,9 @@ type FairSale implements EntityMetadata  {
   # Date of the sale end
   endDate: Int!
   # Total amount of tokens available for sale
-  tokenAmount: Int!
+  tokenAmount: String!
   # Minimum amount per bid
-  minimumBidAmount: Int!
+  minimumBidAmount: String!
   # Bidding token (ie: DAI, USDC)
   tokenIn: Token!
   # Auctioning token
@@ -89,9 +89,9 @@ type FairSaleBid implements EntityMetadata  {
   # The UTC timestamp at which the bid was deleted
   deletedAt: Int
   # Int of tokens the investor wants to buy
-  tokenInAmount: Int!
+  tokenInAmount: String!
   # Int of tokens the investor wants to buy
-  tokenOutAmount: Int!
+  tokenOutAmount: String!
   # The bidder's Ethereum address
   address: String!
 }
@@ -112,13 +112,13 @@ type FixedPriceSale implements EntityMetadata  {
   startDate: Int! # Open timestamp
   endDate: Int! # Close timestamp
   # Amount to sell
-  sellAmount: Int!
+  sellAmount: String!
   tokenPrice: Int!
   # Minimum amount per bid
-  minimumRaise: Int!
+  minimumRaise: String!
   # Minimum and maxmimum token per order
-  allocationMin: Int!
-  allocationMax: Int!
+  allocationMin: String!
+  allocationMax: String!
   # bidding and sale tokens
   tokenIn: Token!
   tokenOut: Token!
@@ -136,7 +136,7 @@ type FixedPriceSalePurchase implements EntityMetadata  {
   # Address of buyer
   buyer: String!
   # Amount this purchase took
-  amount: Int!
+  amount: String!
 }
 
 #################################################
@@ -202,6 +202,8 @@ type Query {
 `
 const address = '0x###D####b########d###aA##e###c##eF##EE#c'
 
+const bigDecimal = '#.#######e+18'
+
 export const preserveResolvers = false
 
 export const mocks = {
@@ -217,7 +219,8 @@ export const mocks = {
     deletedAt: () => casual.unix_time,
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
-    tokenAmount: () => casual.integer(1, 1000),
+    tokenAmount: () => casual.numerify(bigDecimal),
+    minimumBidAmount: () => casual.numerify(bigDecimal),
   }),
   FixedPriceSale: () => ({
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
@@ -227,19 +230,25 @@ export const mocks = {
     deletedAt: () => casual.unix_time,
     startDate: () => casual.random_element([1586276387, 1583601587]),
     endDate: () => casual.random_element([1646673587, 1644254387]),
-    sellAmount: () => casual.integer(1, 100),
+    sellAmount: () => casual.numerify(bigDecimal),
+    minimumRaise: () => casual.numerify(bigDecimal),
+    allocationMin: () => casual.numerify(bigDecimal),
+    allocationMax: () => casual.numerify(bigDecimal),
   }),
   FairSaleBid: () => ({
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
     address: () => casual.numerify(address),
+    tokenInAmount: () => casual.numerify(bigDecimal),
+    tokenOutAmount: () => casual.numerify(bigDecimal),
   }),
   FixedPriceSalePurchase: () => ({
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
     buyer: () => casual.numerify(address),
+    amount: () => casual.numerify(bigDecimal),
   }),
   Token: () => ({
     address: () => casual.numerify(address),
