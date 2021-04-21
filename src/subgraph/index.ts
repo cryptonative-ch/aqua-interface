@@ -6,6 +6,9 @@ import { BigNumber } from 'ethers'
 //interface
 import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
 
+// utils
+import { formatDecimal } from 'src/utils/Defaults'
+
 export const ENDPOINT =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:4000/graphql'
@@ -17,16 +20,16 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
   const fixedPriceSale: auctionType = 'fixedPriceSale'
   const fairSales: Auction[] = (await auctionsRequest).fairSales
 
-  const addFairSaleType = fairSales.map(item => ({
+  const addFairSaleType = fairSales.map((item: any) => ({
     ...item,
-    tokenAmount: BigNumber.from(item.tokenAmount),
+    tokenAmount: formatDecimal(item.tokenAmount),
     type: fairSale,
   }))
 
   const fixedPriceSales: Auction[] = (await auctionsRequest).fixedPriceSales
-  const addFixedPriceSalesType = fixedPriceSales.map(item => ({
+  const addFixedPriceSalesType = fixedPriceSales.map((item: any) => ({
     ...item,
-    sellAmount: BigNumber.from(item.sellAmount),
+    sellAmount: formatDecimal(item.sellAmount),
     tokenPrice: BigNumber.from(item.tokenPrice),
     type: fixedPriceSale,
   }))
@@ -46,10 +49,10 @@ export const generateInitialAuctionData = async (
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {
   if (auctiontypes == 'fixedPriceSale') {
-    const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].purchases.map((item: AuctionBid) => ({
+    const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].purchases.map((item: any) => ({
       ...item,
 
-      amount: BigNumber.from(item.amount),
+      amount: formatDecimal(item.amount),
     }))
     console.log(auctionBids)
 
@@ -58,8 +61,8 @@ export const generateInitialAuctionData = async (
 
   const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
     ...item,
-    tokenOut: BigNumber.from(item.tokenOutAmount),
-    tokenIn: BigNumber.from(item.tokenInAmount),
+    tokenOut: formatDecimal(item.tokenOutAmount),
+    tokenIn: formatDecimal(item.tokenInAmount),
   }))
   console.log(auctionBids)
 

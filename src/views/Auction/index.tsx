@@ -127,7 +127,6 @@ export function AuctionView() {
     dispatch(setPageTitle(t(auction?.name as string)))
 
     if (auction) {
-      // this does not update
       const FairSaleBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, FairSaleBidsRequest))
       fetchBids()

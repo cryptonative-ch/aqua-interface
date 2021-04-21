@@ -7,8 +7,9 @@ import { Auction, auctionType, FairSale, FixedPriceSale } from 'src/interfaces/A
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
-import { BigNumber } from '@ethersproject/bignumber'
-import { BigNumberish } from 'ethers'
+import { BigNumberish, BigNumber } from 'ethers'
+import { formatUnits } from '@ethersproject/units'
+formatUnits
 
 // query mocks
 
@@ -116,7 +117,7 @@ export const getZeros = (decimals: number) => {
   throw new Error('invalid decimal')
 }
 
-export const convertToNumber = (number: BigNumberish, decimals = 18): number => {
+export const formatBigInt = (number: BigNumberish, decimals = 18): number => {
   // big number checks & convert if not
   let value: BigNumberish = BigNumber.from(number)
 
@@ -154,17 +155,18 @@ export const fromBigDecimalToBigInt = (input: string): string => {
   // assumes all bigdecimals are all in the smallest unit
   // no decimal numbers
 
-  const exponent = input.match(/(?<=e)(.*)/)![1]
+  const number = String(input)
+  console.log(number)
 
-  const fraction = input.match(/(?<=\.)(.*)(?=e)/)![1]
+  const exponent = number.match(/(?<=e)(.*)/)![1]
 
-  const sign = exponent[1]
+  const fraction = number.match(/(?<=\.)(.*)(?=e)/)![1]
 
   const power = Number(exponent.slice(1))
 
   const addedZeros = getZeros(power)
 
-  const whole = input.match(/(.*)(?=\.)/)![1]
+  const whole = number.match(/(.*)(?=\.)/)![1]
 
   const zeros = addedZeros.slice(fraction.length + 1)
 
