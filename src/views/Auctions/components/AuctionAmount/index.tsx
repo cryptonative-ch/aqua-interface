@@ -8,6 +8,9 @@ import { Flex } from 'src/components/Flex'
 // Interface
 import { Auction } from 'src/interfaces/Auction'
 
+// Mesa utils
+import { formatBigInt } from 'src/utils/Defaults'
+
 interface AuctionAmountprops {
   auction: Auction
 }
@@ -18,7 +21,9 @@ export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {
   return (
     <Flex>
       <CardText>
-        {numeral(auction.type == 'fairSale' ? auction.tokenAmount : auction.sellAmount).format('0,0')}
+        {numeral(
+          auction.type == 'fairSale' ? formatBigInt(auction.tokenAmount) : formatBigInt(auction.sellAmount)
+        ).format('0,0')}
       </CardText>
       <CardText fontWeight="light">&nbsp;{auction.tokenOut?.symbol}</CardText>
     </Flex>

@@ -57,7 +57,7 @@ export interface FairSale extends BaseAuction {
   // Total amount of tokens available for BaseAuctioning
   tokenAmount: BigNumber
   // Minimum amount per bid
-  minimumBidAmount: number
+  minimumBidAmount: BigNumber
   // Bidding token (ie: DAI, USDC)
   tokenIn: Token
   // BaseAuctioning token
@@ -78,8 +78,6 @@ export interface FixedPriceSale extends BaseAuction {
   tokenIn: Token
   tokenOut: Token
   tokenPrice: BigNumber
-  // Minimum amount per bid
-  minbiddingAmount: number
   //Minimum and maxmimum token per order
   allocationMin: number
   allocationMax: number

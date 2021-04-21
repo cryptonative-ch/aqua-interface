@@ -44,6 +44,7 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 import { calculateClearingPrice } from 'src/mesa/price'
 import { isAuctionClosed, isAuctionOpen, isAuctionUpcoming } from 'src/mesa/auction'
 import { convertTimestampWithMoment, calculateTimeDifference } from 'src/utils/date'
+import { formatBigInt } from 'src/utils/Defaults'
 
 // Wallet Utils
 import { getRandomWallet } from 'src/utils/wallets'
@@ -170,14 +171,16 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
+                      description={`${(1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn) : 0)).toFixed(2)} DAI/${
                         auction.tokenOut?.symbol
                       }`}
                     />
                     <HeaderItem
                       isMobile
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
+                      description={`${numeral(formatBigInt(auction.tokenAmount)).format('0,0')} ${
+                        auction.tokenOut?.symbol
+                      }`}
                     />
                     {isAuctionClosed(auction) && (
                       <HeaderItem
@@ -216,13 +219,15 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice?.tokenIn.toNumber() || 0)).toFixed(2)} DAI/${
+                      description={`${(1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn) : 0)).toFixed(2)} DAI/${
                         auction.tokenOut?.symbol
                       }`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(auction.tokenAmount).format('0,0')} ${auction.tokenOut?.symbol}`}
+                      description={`${numeral(formatBigInt(auction.tokenAmount)).format('0,0')} ${
+                        auction.tokenOut?.symbol
+                      }`}
                     />
                     {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && <Flex flex={0.2} />}
                     {isAuctionClosed(auction) && (
@@ -289,7 +294,7 @@ export function AuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice?.tokenIn.toNumber() || 0}
+                    vsp={clearingPrice ? formatBigInt(clearingPrice.tokenIn) : 0}
                   />
                 </CardBody>
               )}

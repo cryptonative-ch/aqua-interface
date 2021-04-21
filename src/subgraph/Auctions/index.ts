@@ -40,6 +40,7 @@ const auctionsQuery = `
       startDate
       endDate
       tokenAmount
+      minimumBidAmount
       tokenIn {
         id
         name

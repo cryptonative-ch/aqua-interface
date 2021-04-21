@@ -113,7 +113,7 @@ type FixedPriceSale implements EntityMetadata  {
   endDate: Int! # Close timestamp
   # Amount to sell
   sellAmount: String!
-  tokenPrice: Int!
+  tokenPrice: String!
   # Minimum amount per bid
   minimumRaise: String!
   # Minimum and maxmimum token per order
@@ -234,6 +234,7 @@ export const mocks = {
     minimumRaise: () => casual.numerify(bigDecimal),
     allocationMin: () => casual.numerify(bigDecimal),
     allocationMax: () => casual.numerify(bigDecimal),
+    tokenPrice: () => casual.numerify(bigDecimal),
   }),
   FairSaleBid: () => ({
     createdAt: () => casual.unix_time,
@@ -285,8 +286,8 @@ export const queryAuctions = `
         symbol
         decimals
       }
+      tokenPrice
       sellAmount
-      minbiddingAmount
       allocationMin
       allocationMax
     }

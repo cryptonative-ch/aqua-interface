@@ -31,6 +31,9 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
 import { Auction } from 'src/interfaces/Auction'
 
+// Mesa utils
+import { formatBigInt } from 'src/utils/Defaults'
+
 //subgraph
 import { auctionsRequest } from 'src/subgraph/Auctions'
 import { useWindowSize } from 'src/hooks/useWindowSize'

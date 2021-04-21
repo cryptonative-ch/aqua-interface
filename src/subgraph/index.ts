@@ -23,14 +23,17 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
   const addFairSaleType = fairSales.map((item: any) => ({
     ...item,
     tokenAmount: formatDecimal(item.tokenAmount),
+    minimumBidAmount: formatDecimal(item.minimumBidAmount),
     type: fairSale,
   }))
 
   const fixedPriceSales: Auction[] = (await auctionsRequest).fixedPriceSales
   const addFixedPriceSalesType = fixedPriceSales.map((item: any) => ({
     ...item,
+    allocationMin: formatDecimal(item.allocationMin),
+    allocationMax: formatDecimal(item.allocationMax),
     sellAmount: formatDecimal(item.sellAmount),
-    tokenPrice: BigNumber.from(item.tokenPrice),
+    tokenPrice: formatDecimal(item.tokenPrice),
     type: fixedPriceSale,
   }))
 

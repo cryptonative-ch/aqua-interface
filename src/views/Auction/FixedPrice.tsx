@@ -61,6 +61,9 @@ import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 import { fetchAuctionBids } from 'src/redux/bidData'
 import { Center } from 'src/layouts/Center'
 
+// Mesa Utils
+import { formatBigInt } from 'src/utils/Defaults'
+
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
@@ -189,14 +192,14 @@ export function FixedPriceAuctionView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${auction.tokenPrice.toNumber().toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
+                      description={`${formatBigInt(auction.tokenPrice).toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(auction.sellAmount.toString()).format('0,0')} ${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${numeral(formatBigInt(auction.allocationMin)).format('0,0')} - ${numeral(
+                        formatBigInt(auction.allocationMax)
+                      ).format('0,0')} ${auction.tokenOut?.symbol}`}
                     />
                     {isAuctionClosed(auction) && (
                       <HeaderItem
@@ -229,13 +232,13 @@ export function FixedPriceAuctionView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${auction.tokenPrice.toNumber().toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
+                      description={`${formatBigInt(auction.tokenPrice).toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`100 - ${numeral(auction.sellAmount.toString()).format('0,0')} ${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${numeral(formatBigInt(auction.allocationMin)).format('0,0')} - ${numeral(
+                        formatBigInt(auction.allocationMax)
+                      ).format('0,0')} ${auction.tokenOut?.symbol}`}
                       flexAmount={1.5}
                     />
                     {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && <Flex flex={0.2} />}
@@ -345,7 +348,7 @@ export function FixedPriceAuctionView() {
                   <PlaceBidForm
                     onSubmit={(val: BidFormProps) => buyToken(val)}
                     auction={auction}
-                    currentSettlementPrice={auction.tokenPrice.toNumber()}
+                    currentSettlementPrice={formatBigInt(auction.tokenPrice)}
                     isFixed
                   />
                 </CardBody>
