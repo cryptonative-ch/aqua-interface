@@ -1,13 +1,37 @@
 // Externals
-import { cleanup } from '@testing-library/react'
+
+import React from 'react'
+import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { secondsTohms, timeFrame } from './index'
+import { secondsTohms, timeFrame, Timer } from './index'
+
+// default
+
+import { getAuctionDefault, addHours, dateUTC } from 'src/utils/Defaults'
+
+// theme
+
+import { theme } from 'src/styles/theme'
+import { ThemeProvider } from 'styled-components'
+
+// interfaces
+import { Auction } from 'src/interfaces/Auction'
 
 //clean up
 
 afterEach(cleanup)
+
+//wrapper
+
+const wrapper = (auction: Auction) => {
+  return render(
+    <ThemeProvider theme={theme}>
+      <Timer auction={auction} />
+    </ThemeProvider>
+  )
+}
 
 // tests
 
@@ -28,9 +52,43 @@ describe('seconds to HMS function', () => {
 })
 
 describe('converts unix seconds into local Date time format function', () => {
-  test('test negative input', () => {
-    expect(() => {
-      timeFrame(-100)
-    }).toThrow('seconds cannot be negative')
-  })
+  test('convert seconds into local time', () => {
+    expect(timeFrame(1614766339)).toBe('Mar 03,  10:12 GMT')
+  }),
+    test('test negative input', () => {
+      expect(() => {
+        timeFrame(-100)
+      }).toThrow('seconds cannot be negative')
+    })   
+})
+
+describe('Timer', () => {
+  test('when auction is open it should render the correct display', async () => {
+    const auction = getAuctionDefault({
+      startDate: addHours(dateUTC, -0.01).unix(),
+      endDate: addHours(dateUTC, 0.05).unix(),
+    })
+
+    const { getByTestId } = wrapper(auction)
+
+    expect(await getByTestId('open')).toHaveTextContent('3m')
+  }),
+    test('when auction is upcoming, it displays the correct return', () => {
+      const auction = getAuctionDefault({
+        startDate: addHours(dateUTC, 14).unix(),
+        endDate: addHours(dateUTC, 114).unix(),
+      })
+
+      const { getByText } = wrapper(auction)
+      expect(getByText('to')).toBeInTheDocument()
+    }),
+    test('when auction is closed, it should return the correct display', async () => {
+      const auction = getAuctionDefault({
+        startDate: 1520798525,
+        endDate: 1552334525,
+      })
+
+      const { getByTestId } = wrapper(auction)
+      expect(await getByTestId('closed')).toHaveTextContent('Mar 11, 20:02 GMT')
+    })
 })

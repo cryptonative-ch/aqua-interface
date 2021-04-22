@@ -117,8 +117,6 @@ export function FixedPriceAuctionView() {
 
   const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
 
-  console.log(bids)
-
   const toggleModal = () => {
     setModalVisible(true)
   }
