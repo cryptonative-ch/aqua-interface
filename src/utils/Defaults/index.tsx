@@ -9,8 +9,52 @@ import { Auction, auctionType, FairSale, FixedPriceSale } from 'src/interfaces/A
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumberish, BigNumber } from 'ethers'
-import { formatUnits } from '@ethersproject/units'
-formatUnits
+
+// helpers
+export const getZeros = (decimals: number) => {
+  let zeros = '0'
+  while (zeros.length < 256) {
+    zeros += zeros
+  }
+  if (decimals >= 0 && decimals <= 256 && !(decimals % 1)) {
+    return '1' + zeros.substring(0, decimals)
+  }
+
+  throw new Error('invalid decimal')
+}
+
+export const fromBigDecimalToBigInt = (input: string): string => {
+  // regex split the string between decimals and exponential
+  // reform into BigInt string
+  // assumes all bigdecimals are all in the smallest unit
+  // no decimal numbers
+
+  const number = String(input)
+  console.log(number)
+
+  const exponent = number.match(/(?<=e)(.*)/)![1]
+
+  const fraction = number.match(/(?<=\.)(.*)(?=e)/)
+
+  const power = Number(exponent.slice(1))
+
+  const addedZeros = getZeros(power)
+
+  const whole = number.match(/(.*)(?=\.)/)![1]
+
+  let value = whole + addedZeros
+
+  if (fraction != null) {
+    const zeros = addedZeros.slice(fraction[1].length + 1)
+    value = whole + fraction[1] + zeros
+  }
+
+  return value
+}
+
+export const formatDecimal = (bigDecimal: string): BigNumber => {
+  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal))
+}
 
 // query mocks
 
@@ -40,7 +84,7 @@ const getFairSale = (): FairSale => ({
     decimals: 18,
     symbol: 'DXD',
   },
-  minimumBidAmount: BigNumber.from(10),
+  minimumBidAmount: formatDecimal('10.0e+18'),
   bids: [],
   type: 'fairSale',
   minFundingThreshold: 100,
@@ -105,19 +149,6 @@ export const dateUTC = dayjs.unix(utcDate.unix())
 
 // helpers
 
-// helpers
-export const getZeros = (decimals: number) => {
-  let zeros = '0'
-  while (zeros.length < 256) {
-    zeros += zeros
-  }
-  if (decimals >= 0 && decimals <= 256 && !(decimals % 1)) {
-    return '1' + zeros.substring(0, decimals)
-  }
-
-  throw new Error('invalid decimal')
-}
-
 export const formatBigInt = (number: BigNumberish, decimals = 18): number => {
   // big number checks & convert if not
   let value: BigNumberish = BigNumber.from(number)
@@ -136,7 +167,6 @@ export const formatBigInt = (number: BigNumberish, decimals = 18): number => {
     fraction = '0' + fraction
   }
 
-  // eslint-disable-next-line
   fraction = fraction.match(/^([0-9]*[1-9]|0)(0*)/)![1]
 
   const whole = value.div(addedZeros).toString()
@@ -148,34 +178,4 @@ export const formatBigInt = (number: BigNumberish, decimals = 18): number => {
   }
 
   return Number(value)
-}
-
-export const fromBigDecimalToBigInt = (input: string): string => {
-  // regex split the string between decimals and exponential
-  // reform into BigInt string
-  // assumes all bigdecimals are all in the smallest unit
-  // no decimal numbers
-
-  const number = String(input)
-  console.log(number)
-
-  const exponent = number.match(/(?<=e)(.*)/)![1]
-
-  const fraction = number.match(/(?<=\.)(.*)(?=e)/)![1]
-
-  const power = Number(exponent.slice(1))
-
-  const addedZeros = getZeros(power)
-
-  const whole = number.match(/(.*)(?=\.)/)![1]
-
-  const zeros = addedZeros.slice(fraction.length + 1)
-
-  const value = whole + fraction + zeros
-
-  return value
-}
-
-export const formatDecimal = (bigDecimal: string): BigNumber => {
-  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal))
 }

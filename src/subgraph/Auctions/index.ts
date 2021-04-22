@@ -1,7 +1,7 @@
 //subgraph
 import { ENDPOINT, subgraphCall } from 'src/subgraph/index'
 
-const auctionsQuery = `
+export const auctionsQuery = `
   {
     fixedPriceSales {
       id

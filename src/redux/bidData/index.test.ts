@@ -4,7 +4,10 @@ import { mockServer } from 'graphql-tools'
 import thunk from 'redux-thunk'
 
 // mocks
-import { schemaString, queryAuctions, mocks, preserveResolvers } from 'src/subgraph/mock'
+import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
+
+// Mesa Utils
+import { auctionsQuery } from 'src/subgraph/Auctions'
 
 // components
 import { ActionTypes, BidActionTypes, BidReducer, fetchAuctionBids } from './index'
@@ -20,7 +23,7 @@ describe('Async Bid Data Actions and Reducers', () => {
   let auctionsRequest: any
   beforeEach(async () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
-    auctionsRequest = await server.query(queryAuctions)
+    auctionsRequest = await server.query(auctionsQuery)
   })
   afterEach(() => {
     store.clearActions()

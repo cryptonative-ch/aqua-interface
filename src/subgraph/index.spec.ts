@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Externals
 import { mockServer } from 'graphql-tools'
 import { cleanup } from '@testing-library/react'
@@ -5,9 +7,10 @@ import { cleanup } from '@testing-library/react'
 //components
 import { generateInitialAuctionData, getAuctionsData, selectAuctiontype } from './index'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
+import { auctionsQuery } from 'src/subgraph/Auctions'
 
 //mocks
-import { schemaString, queryAuctions, mocks, preserveResolvers } from './mock'
+import { schemaString, mocks, preserveResolvers } from './mock'
 
 //clean up
 
@@ -18,9 +21,9 @@ describe('testing subgraph integration', () => {
   let auctionsRequest: any
   beforeEach(async () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
-    auctionsRequest = await server.query(queryAuctions)
+    auctionsRequest = await server.query(auctionsQuery)
   })
-  test('should check if queryAuctions object contains type fairSale', async () => {
+  test('should check if auctionsQuery object contains type fairSale', async () => {
     const test = await getAuctionsData(auctionsRequest.data)
     expect(test).toEqual(
       expect.arrayContaining([
@@ -30,7 +33,7 @@ describe('testing subgraph integration', () => {
       ])
     )
   }),
-    test('should check if queryAuctions object contains type fixedPriceSale', async () => {
+    test('should check if auctionsQuery object contains type fixedPriceSale', async () => {
       const test = await getAuctionsData(auctionsRequest.data)
       expect(test).toEqual(
         expect.arrayContaining([

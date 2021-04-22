@@ -36,10 +36,13 @@ const wrapper = (auction: Auction) => {
 
 describe('testing AuctionFinalPrice', () => {
   test('should display final price correctly', () => {
-    const auction = getAuctionDefault('fairSale', {
-      startDate: addHours(dateUTC, -24).unix(),
-      endDate: addHours(dateUTC, +24).unix(),
-    })
+    const auction = getAuctionDefault(
+      {
+        startDate: addHours(dateUTC, -24).unix(),
+        endDate: addHours(dateUTC, +24).unix(),
+      },
+      'fairSale'
+    )
     const { getByTestId } = wrapper(auction)
     expect(getByTestId('openprice')).toHaveTextContent('10')
   })

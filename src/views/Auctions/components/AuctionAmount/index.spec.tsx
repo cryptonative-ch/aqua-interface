@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { AuctionAmount } from './index'
 
 // defaults
-import { getAuctionDefault } from 'src/utils/Defaults'
+import { formatDecimal, getAuctionDefault } from 'src/utils/Defaults'
 
 // theme
 
@@ -32,7 +32,7 @@ const wrapper = (auction: Auction) => {
 
 // tests
 
-const auction = getAuctionDefault({ tokenAmount: 5000 })
+const auction = getAuctionDefault({ sellAmount: formatDecimal('5000.0e+18') }, 'fixedPriceSale')
 
 describe('AuctionAmount tests', () => {
   test('should display correct Amount', () => {

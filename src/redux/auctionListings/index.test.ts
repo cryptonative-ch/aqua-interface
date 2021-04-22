@@ -4,7 +4,10 @@ import { mockServer } from 'graphql-tools'
 import thunk from 'redux-thunk'
 
 //mocks
-import { schemaString, queryAuctions, mocks, preserveResolvers } from 'src/subgraph/mock'
+import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
+
+// Components
+import { auctionsQuery } from 'src/subgraph/Auctions'
 
 // components
 import { fetchAuctions, AuctionReducer, ActionTypes, AuctionActionTypes } from './index'
@@ -18,7 +21,7 @@ describe('async Auction Actions and Reducers', () => {
   let auctionsRequest: any
   beforeEach(async () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
-    auctionsRequest = await server.query(queryAuctions)
+    auctionsRequest = await server.query(auctionsQuery)
   })
   afterEach(() => {
     store.clearActions()

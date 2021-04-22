@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Externals
 import { Action } from 'redux'
 import { AppThunk } from '../store'
