@@ -78,6 +78,7 @@ export interface FixedPriceSale extends BaseAuction {
   tokenIn: Token
   tokenOut: Token
   tokenPrice: BigNumber
+  tokensSold: BigNumber
   //Minimum and maxmimum token per order
   allocationMin: number
   allocationMax: number

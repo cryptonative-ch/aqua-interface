@@ -1,7 +1,7 @@
-// Externals
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+// Externals
 import axios from 'axios'
-import { BigNumber } from 'ethers'
 
 //interface
 import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
@@ -14,7 +14,6 @@ export const ENDPOINT =
     ? 'http://localhost:4000/graphql'
     : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
-// eslint-disable-next-line
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   const fairSale: auctionType = 'fairSale'
   const fixedPriceSale: auctionType = 'fixedPriceSale'
@@ -34,6 +33,7 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
     allocationMax: formatDecimal(item.allocationMax),
     sellAmount: formatDecimal(item.sellAmount),
     tokenPrice: formatDecimal(item.tokenPrice),
+    tokensSold: formatDecimal(item.tokensSold),
     type: fixedPriceSale,
   }))
 
@@ -47,7 +47,6 @@ export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType 
 }
 
 export const generateInitialAuctionData = async (
-  // eslint-disable-next-line
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
 ): Promise<AuctionBid[]> => {
@@ -57,7 +56,6 @@ export const generateInitialAuctionData = async (
 
       amount: formatDecimal(item.amount),
     }))
-    console.log(auctionBids)
 
     return auctionBids
   }
@@ -67,7 +65,6 @@ export const generateInitialAuctionData = async (
     tokenOut: formatDecimal(item.tokenOutAmount),
     tokenIn: formatDecimal(item.tokenInAmount),
   }))
-  console.log(auctionBids)
 
   return auctionBids
 }

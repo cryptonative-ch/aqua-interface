@@ -2,6 +2,7 @@
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 import React from 'react'
+import numeral from 'numeral'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -12,6 +13,12 @@ import LogoSVG from 'src/assets/svg/Logo.svg'
 import DownSVG from 'src/assets/svg/Down-Arrow.svg'
 import UpSVG from 'src/assets/svg/Up-Arrow.svg'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+
+// Interfaces
+import { Auction } from 'src/interfaces/Auction'
+
+// Mesa Utils
+import { formatBigInt } from 'src/utils/Defaults'
 
 const ControlTitle = styled.div({
   fontStyle: 'normal',
@@ -102,19 +109,24 @@ interface HeaderControlProps {
   showGraph: boolean
   isFixed?: boolean
   toggleGraph: () => void
+  auction: Auction
 }
 
-export function HeaderControl({ status, showGraph, toggleGraph, isFixed }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
+
   if (isFixed && status === 'active') {
+    const tokenSold = formatBigInt(auction.tokensSold)
+    const totalSupply = formatBigInt(auction.sellAmount)
+    const percentageSold = tokenSold / totalSupply
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>Sale Progress</FixedTitle>
           <FixedDescription>
-            9,000
-            <FixedDescription2>(9%)</FixedDescription2>
-            <FixedDescription3>/ 100,000</FixedDescription3>
+            {numeral(tokenSold).format('0')}
+            <FixedDescription2>{`(${numeral(percentageSold).format('0')}%)`}</FixedDescription2>
+            <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
           </FixedDescription>
         </Flex>
         <BarContainer>

@@ -25,6 +25,7 @@ const auctionsQuery = `
         decimals
       }
       sellAmount
+      tokensSold
       minimumRaise
       allocationMin
       allocationMax
@@ -41,6 +42,7 @@ const auctionsQuery = `
       endDate
       tokenAmount
       minimumBidAmount
+      
       tokenIn {
         id
         name

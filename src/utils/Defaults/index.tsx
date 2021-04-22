@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // Externals
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -57,6 +58,7 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   type: 'fixedPriceSale',
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
+  tokensSold: BigNumber.from(5000),
   tokenIn: {
     id: '0x141',
     name: 'DAI',

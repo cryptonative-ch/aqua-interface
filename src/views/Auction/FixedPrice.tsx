@@ -80,11 +80,7 @@ type BidFormProps = {
 interface FixedPriceAuctionViewParams {
   auctionId: string
 }
-/**
- *
- * @todo remove dependency on calculating the price of the FixedPriceAuction
- * @todo what is the fixedprice Auction supposed to do
- */
+
 export function FixedPriceAuctionView() {
   const wallet = useWallet()
   const { isMobile } = useWindowSize()
@@ -110,9 +106,8 @@ export function FixedPriceAuctionView() {
     return state.BidReducer.isLoading
   })
 
-  // component does not initialise useEffect
   const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bids.filter(auction => auction.id == params.auctionId)
+    return state.BidReducer.bids
   })
 
   const toggleModal = () => {
@@ -152,15 +147,13 @@ export function FixedPriceAuctionView() {
       setUserAddress(walletAddress || getRandomWallet().address)
     }
 
-    //Calculate the virtual
     if (auction) {
       const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
-      // loading stuck on initial load because of no bids
     }
     dispatch(setPageTitle(t(auction?.name as string)))
-  }, [t, auction])
+  }, [t])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
@@ -271,12 +264,13 @@ export function FixedPriceAuctionView() {
               </CardBody>
               {isAuctionOpen(auction) && bids && bids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
-                  <HeaderControl showGraph={showGraph} toggleGraph={toggleGraph} isFixed={true} />
+                  <HeaderControl auction={auction} showGraph={showGraph} toggleGraph={toggleGraph} isFixed={true} />
                 </CardBody>
               )}
               {isAuctionClosed(auction) && (!bids || bids.length === 0) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
+                    auction={auction}
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
