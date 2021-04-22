@@ -32,8 +32,6 @@ export const CardText = styled.p<CardTextProps>(
   font-weight: ${props.fontWeight === 'light' ? 400 : 500};
   line-height: ${props.fontSize === 'title' ? '19px' : '17px'};
   height: ${props.fontSize === 'title' ? '19px' : '17px'};
-
-
 }
 `
 )

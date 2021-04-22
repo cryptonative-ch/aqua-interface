@@ -20,9 +20,9 @@ describe('About', () => {
       },
     })
     const { getByText, getByTestId } = render(
-        <Router>
-          <Footer />
-        </Router>
+      <Router>
+        <Footer />
+      </Router>
     )
     expect(getByText('navTitles.about')).toBeInTheDocument()
     expect((getByTestId('about-ref') as HTMLLinkElement).href).toContain('/about')

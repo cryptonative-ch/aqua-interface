@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
 
-
 // Components
 import { AuctionFinalPrice } from '../AuctionFinalPrice'
 import { CardBody } from 'src/components/CardSaleBody'
@@ -36,20 +35,23 @@ export function AuctionSummaryCard({ auction }: AuctionSummaryProps) {
         <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <Flex width="70%" alignItems="center">
             <TokenIconFigure>
-              <Icon src={auction.tokenIcon} alt={auction.tokenName} />
+              <Icon src={auction.tokenOut?.icon} alt={auction.tokenOut?.name} />
             </TokenIconFigure>
-            <CardText fontSize="title">{auction.tokenName}</CardText>
+            <CardText fontSize="title">{auction.name}</CardText>
           </Flex>
           <BadgeFlex>
             <BadgeCard saleType="private" />
-            <BadgeCard saleType="presale" />
           </BadgeFlex>
         </Flex>
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.salesType')}</CardText>
-            <CardText>FairSale</CardText>
+            {auction.type == 'fixedPriceSale' ? (
+              <CardText>Fixed Price Auction</CardText>
+            ) : (
+              <CardText>Fair Sale</CardText>
+            )}
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.currentPrice')}</CardText>

@@ -16,7 +16,7 @@ import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
 
 const FormBody = styled.form({
-  flex: 1
+  flex: 1,
 })
 
 const FormLabel = styled.div({
@@ -66,7 +66,7 @@ const FixedTerm = styled.div({
   fontSize: '14px',
   lineHeight: '21px',
   color: '#7B7F93',
-  fontWeight: 400
+  fontWeight: 400,
 })
 
 const MaxButton = styled.div({
@@ -191,7 +191,9 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
               <MaxButton>Max</MaxButton>
             </FormContainer>
             <FormDescription>
-              {isFixed ? 'You have 123,456 DAI.' : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
+              {isFixed
+                ? 'You have 123,456 DAI.'
+                : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
             </FormDescription>
           </Flex>
         </FormGroup>
@@ -212,11 +214,7 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
           <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
         </Flex>
       </FormGroup>
-      {isFixed && (
-        <FixedTerm>
-          {`You'll get 1,000 ${auction.tokenSymbol}`}
-        </FixedTerm>
-      )}
+      {isFixed && <FixedTerm>{`You'll get 1,000 ${auction.tokenOut?.symbol}`}</FixedTerm>}
       <Button
         disabled={isDisabled}
         data-testid="submit-button"
@@ -240,5 +238,5 @@ export const PlaceBidForm = ({ auction, onSubmit, currentSettlementPrice, isFixe
 }
 
 PlaceBidForm.defaultProps = {
-  isFixed: false
+  isFixed: false,
 }

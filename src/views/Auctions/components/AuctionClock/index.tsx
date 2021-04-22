@@ -20,14 +20,15 @@ interface AuctionClockProps {
 
 export const timerPercentage = (auction: Auction) => {
   const localTimeStamp = dayjs(Date.now()).unix()
-  const startTime = convertUtcTimestampToLocal(auction.startBlock)
-  const endTime = convertUtcTimestampToLocal(auction.endBlock)
+  const startTime = convertUtcTimestampToLocal(auction.startDate)
+  const endTime = convertUtcTimestampToLocal(auction.endDate)
   const totalTime = Math.abs(startTime - endTime)
   const percentage = Math.round((1 - Math.abs(localTimeStamp - endTime) / totalTime) * 100)
   return percentage
 }
 
 export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
+  const [time, setTime] = useState(0)
   const [isMobile, setMobile] = useState(window.innerWidth < 770)
 
   const updateMedia = () => {
@@ -35,9 +36,13 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
   }
 
   useEffect(() => {
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
     window.addEventListener('resize', updateMedia)
-    return () => window.removeEventListener('resize', updateMedia)
-  })
+    return () => {
+      window.removeEventListener('resize', updateMedia)
+      clearInterval(interval)
+    }
+  }, [time])
 
   const color = '#304ffe'
 
@@ -59,11 +64,11 @@ export const AuctionClock: React.FC<AuctionClockProps> = ({ auction }) => {
           <Flex flexDirection="column" justifyContent="space-between">
             <Flex flexDirection="row" justifyContent="space-between">
               <CardText color="grey">Starts</CardText>
-              <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
+              <CardText>{timeFrame(convertUtcTimestampToLocal(auction.startDate))}</CardText>
             </Flex>
             <Flex flexDirection="row" justifyContent="space-between">
               <CardText color="grey">Ends</CardText>
-              <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
+              <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endDate))}</CardText>
             </Flex>
           </Flex>
         ) : (

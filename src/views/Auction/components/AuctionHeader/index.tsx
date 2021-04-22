@@ -81,7 +81,7 @@ const TokenIconContainer = styled.img({
   borderRadius: '60px',
 })
 
-const MobileTokenIconContainer = styled.img({
+const MobileTokenContainer = styled.img({
   width: '48px',
   height: '48px',
   borderRadius: '48px',
@@ -113,8 +113,8 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
   const { isMobile } = useWindowSize()
 
   // calculating time difference between local persons time and the start and end block times
-  const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startBlock))
-  const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endBlock))
+  const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.startDate))
+  const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(auction.endDate))
 
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState(0)
@@ -138,9 +138,9 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
   if (isMobile) {
     return (
       <HeaderContainer isMobile={isMobile}>
-        <MobileTokenIconContainer src={auction.tokenIcon} />
+        <MobileTokenContainer src={auction.tokenOut?.icon} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
-          <MobileHeaderText>{`${auction.tokenName} Initial Auction`}</MobileHeaderText>
+          <MobileHeaderText>{`${auction.name} Initial Auction`}</MobileHeaderText>
           <MobileStatusText>Private</MobileStatusText>
         </Flex>
       </HeaderContainer>
@@ -149,8 +149,8 @@ export const AuctionHeader: React.FC<AuctionHeaderProps> = ({ auction }) => {
 
   return (
     <HeaderContainer isMobile={isMobile}>
-      <TokenIconContainer src={auction.tokenIcon} />
-      <HeaderText>{`${auction.tokenName} Initial Auction`}</HeaderText>
+      <TokenIconContainer src={auction.tokenOut?.icon} />
+      <HeaderText>{`${auction.name} Initial Auction`}</HeaderText>
       <StatusText>Private</StatusText>
       {isAuctionOpen(auction) && <TimeText data-testid="format_time">{format_time}</TimeText>}
     </HeaderContainer>

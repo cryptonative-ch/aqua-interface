@@ -25,6 +25,7 @@
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
     "currentPrice": "Current Price",
+    "minPrice": "Minumum Price",
     "amountForSale": "Amount for Sale",
     "noBidsMessage": "There are no bids",
     "runningAuctions": "Running Auctions",

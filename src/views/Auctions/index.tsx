@@ -3,14 +3,13 @@ import styled from 'styled-components'
 import React, { useEffect, useState, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import WalletConnector from 'cryptowalletconnector'
 
-// Hooks
-import { useAuctions } from 'src/hooks/useAuctions'
-
-// Redux Actions
+// Redux
 import { setPageTitle } from 'src/redux/page'
+import { fetchAuctions } from 'src/redux/auctionListings'
+import { RootState } from 'src/redux/store'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -30,6 +29,10 @@ import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 // interface
 import { isAuctionOpen, isAuctionClosed, isAuctionUpcoming } from 'src/mesa/auction'
+import { Auction } from 'src/interfaces/Auction'
+
+//subgraph
+import { auctionsRequest } from 'src/subgraph/Auctions'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 const AuctionSummaryWrapper = styled(NavLink)(Card, {
@@ -78,14 +81,19 @@ export type AuctionContextType = {
 export const AuctionContext = createContext<AuctionContextType>({} as AuctionContextType)
 
 export function AuctionsView() {
-  const [loading, setLoading] = useState<boolean>(true)
   const { isMobile } = useWindowSize()
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [AuctionShow, setAuctionShow] = useState<AuctionStatus>(AuctionStatus.LIVE)
   const dispatch = useDispatch()
-  const { auctions } = useAuctions()
   const [t] = useTranslation()
-  const [time, setTime] = useState(0)
+  const fetchData = () => dispatch(fetchAuctions(auctionsRequest))
+
+  const auctions = useSelector<RootState, Auction[]>(state => {
+    return state.AuctionReducer.auctions
+  })
+  const loading = useSelector<RootState, boolean>(state => {
+    return state.AuctionReducer.isLoading
+  })
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -93,16 +101,8 @@ export function AuctionsView() {
 
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
-
-    if (auctions.length) {
-      setLoading(false)
-    }
-    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [auctions, t, dispatch, time])
+    fetchData()
+  }, [t])
 
   if (loading) {
     return <Center minHeight="100%">LOADING</Center>
@@ -120,7 +120,12 @@ export function AuctionsView() {
               ? auctions
                   .filter(auction => isAuctionUpcoming(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+                    <AuctionSummaryWrapper
+                      to={
+                        auction.type == 'fixedPriceSale' ? `/auctions/fixed/${auction.id}` : `/auctions/${auction.id}`
+                      }
+                      key={auction.id}
+                    >
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))
@@ -128,14 +133,24 @@ export function AuctionsView() {
               ? auctions
                   .filter(auction => isAuctionClosed(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+                    <AuctionSummaryWrapper
+                      to={
+                        auction.type == 'fixedPriceSale' ? `/auctions/fixed/${auction.id}` : `/auctions/${auction.id}`
+                      }
+                      key={auction.id}
+                    >
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))
               : auctions
                   .filter(auction => isAuctionOpen(auction))
                   .map(auction => (
-                    <AuctionSummaryWrapper to={`/auctions/${auction.id}`} key={auction.id}>
+                    <AuctionSummaryWrapper
+                      to={
+                        auction.type == 'fixedPriceSale' ? `/auctions/fixed/${auction.id}` : `/auctions/${auction.id}`
+                      }
+                      key={auction.id}
+                    >
                       <AuctionSummaryCard auction={auction} />
                     </AuctionSummaryWrapper>
                   ))}
@@ -147,7 +162,7 @@ export function AuctionsView() {
           metamaskImage={MetamaskImage}
           walletImage={WalletImage}
         ></WalletConnector>
-        {!isMobile && (<Footer />)}
+        {!isMobile && <Footer />}
       </AbsoluteContainer>
     </AuctionContext.Provider>
   )

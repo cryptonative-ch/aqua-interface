@@ -93,7 +93,6 @@ const IconImg = styled.img<IconImgProps>(
   layout
 )
 
-
 export const StaticContent: React.FC = () => {
   const wallet = useWallet()
   const {
@@ -126,9 +125,11 @@ export const StaticContent: React.FC = () => {
           <Flex paddingRight="40px" flexDirection="column">
             <Title marginBottom="8px">Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-             <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
               <IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" />
-              <a href="https://twitter.com/mesa_eth"><IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://twitter.com/mesa_eth">
+                <IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
             </Flex>
           </Flex>
         )}
@@ -136,7 +137,7 @@ export const StaticContent: React.FC = () => {
           <Title>Website</Title>
           <Flex flexDirection="row" alignItems="center">
             <Title color="#000629" margin="0 8px 0 0">
-             <a href="https://dxdao.eth.link">dxdao.eth.link</a>
+              <a href="https://dxdao.eth.link">dxdao.eth.link</a>
             </Title>
             <IconImg src={ExternalLinkSVG} />
           </Flex>
@@ -156,10 +157,18 @@ export const StaticContent: React.FC = () => {
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://discord.com/invite/4QXEJQkvHH" target="_blank" rel="noreferrer"><IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://twitter.com/mesa_eth" target="_blank" rel="noreferrer"><IconImg src={TwitterSVG}  height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://t.me/dxDAO" target="_blank" rel="noreferrer"><IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
-              <a href="https://github.com/cryptonative-ch/" target="_blank" rel="noreferrer"><IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" /></a>
+              <a href="https://discord.com/invite/4QXEJQkvHH" target="_blank" rel="noreferrer">
+                <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
+              <a href="https://twitter.com/mesa_eth" target="_blank" rel="noreferrer">
+                <IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
+              <a href="https://t.me/dxDAO" target="_blank" rel="noreferrer">
+                <IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
+              <a href="https://github.com/cryptonative-ch/" target="_blank" rel="noreferrer">
+                <IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" />
+              </a>
             </Flex>
           </Flex>
         )}

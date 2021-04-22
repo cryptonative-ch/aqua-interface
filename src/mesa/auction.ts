@@ -10,31 +10,31 @@ import { calculateClearingPrice } from './price'
 /**
  * Determines if the auction is active
  */
-export const isAuctionOpen = ({ startBlock, endBlock }: Auction) => {
+export const isAuctionOpen = ({ startDate, endDate }: Auction) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endBlockLocal = convertUtcTimestampToLocal(endBlock)
-  const startBlockLocal = convertUtcTimestampToLocal(startBlock)
-  return startBlockLocal <= currentTimestamp && currentTimestamp < endBlockLocal
+  const endDateLocal = convertUtcTimestampToLocal(endDate)
+  const startDateLocal = convertUtcTimestampToLocal(startDate)
+  return startDateLocal <= currentTimestamp && currentTimestamp < endDateLocal
 }
 
 /**
  * Determines if the auction is upcoming
  */
-export const isAuctionUpcoming = ({ startBlock }: Auction) => {
+export const isAuctionUpcoming = ({ startDate }: Auction) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const startBlockLocal = convertUtcTimestampToLocal(startBlock)
+  const startDateLocal = convertUtcTimestampToLocal(startDate)
 
-  return currentTimestamp < startBlockLocal
+  return currentTimestamp < startDateLocal
 }
 
 /**
  * Determines if the auction is closed
  */
-export const isAuctionClosed = ({ endBlock }: Auction) => {
+export const isAuctionClosed = ({ endDate }: Auction) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endBlockLocal = convertUtcTimestampToLocal(endBlock)
+  const endDateLocal = convertUtcTimestampToLocal(endDate)
 
-  return currentTimestamp >= endBlockLocal
+  return currentTimestamp >= endDateLocal
 }
 
 /**
@@ -45,7 +45,7 @@ export const isAuctionClosed = ({ endBlock }: Auction) => {
 export const isBidActive = ({ bids }: Auction, bid: AuctionBid) => {
   const clearingPriceOrder = calculateClearingPrice(bids)
 
-  return bid.sellAmount < clearingPriceOrder.sellAmount
+  return bid.tokenIn < clearingPriceOrder.tokenIn
 }
 
 /**

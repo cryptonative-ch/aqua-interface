@@ -9,11 +9,9 @@ import { StaticHeader } from './index'
 
 // Utils
 
-
 describe('StaticHeader', () => {
   test('it should render the correct static header', async () => {
-
-    const { getByText, getByTestId } = render(<StaticHeader />)
+    const { getByText } = render(<StaticHeader />)
     expect(getByText('About Mesa')).toBeInTheDocument()
   })
 })

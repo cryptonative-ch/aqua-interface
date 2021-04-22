@@ -3,7 +3,7 @@ import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Components
-import { AuctionClock, timerPercentage } from './index'
+import { AuctionClock } from './index'
 
 // defaults
 import { getAuctionDefault, addHours, dateUTC, resizeWindow } from 'src/utils/Defaults'
@@ -35,8 +35,8 @@ const wrapper = (auction: Auction) => {
 describe('Testing AuctionClock', () => {
   test('should display Timeframe when auction is upcoming', () => {
     const auction = getAuctionDefault({
-      startBlock: 1646500442,
-      endBlock: 1678036442,
+      startDate: 1646500442,
+      endDate: 1678036442,
     })
 
     const { getByText } = wrapper(auction)
@@ -44,8 +44,8 @@ describe('Testing AuctionClock', () => {
   }),
     test('should display closed when auction is Closed', () => {
       const auction = getAuctionDefault({
-        startBlock: 1520270042,
-        endBlock: 1551806042,
+        startDate: 1520270042,
+        endDate: 1551806042,
       })
 
       const { getByText } = wrapper(auction)
@@ -53,34 +53,27 @@ describe('Testing AuctionClock', () => {
     }),
     test('should display Time remaining when auction is open', () => {
       const auction = getAuctionDefault({
-        startBlock: 1551806042,
-        endBlock: 1646500442,
+        startDate: 1551806042,
+        endDate: 1646500442,
       })
       const { getByText } = wrapper(auction)
       expect(getByText('Time Remaining')).toBeInTheDocument()
     }),
     test('should display SVG circle', () => {
       const auction = getAuctionDefault({
-        startBlock: addHours(dateUTC, -1).unix(),
-        endBlock: addHours(dateUTC, 24).unix(),
+        startDate: addHours(dateUTC, -1).unix(),
+        endDate: addHours(dateUTC, 24).unix(),
       })
       const { container } = wrapper(auction)
       const circle = container.querySelector('circle')
       expect(circle).not.toBe(null)
     }),
-    test('should calculate percentage of slice according to timer', () => {
-      const auction = getAuctionDefault({
-        startBlock: addHours(dateUTC, -1).unix(),
-        endBlock: addHours(dateUTC, 24).unix(),
-      })
-      expect(timerPercentage(auction)).toBe(4)
-    }),
     test('should display Starts when on mobile viewport', () => {
       resizeWindow(500, 1000)
 
       const auction = getAuctionDefault({
-        startBlock: 1646500442,
-        endBlock: 1678036442,
+        startDate: 1646500442,
+        endDate: 1678036442,
       })
 
       const { getByText } = wrapper(auction)
@@ -90,8 +83,8 @@ describe('Testing AuctionClock', () => {
       resizeWindow(500, 1000)
 
       const auction = getAuctionDefault({
-        startBlock: 1646500442,
-        endBlock: 1678036442,
+        startDate: 1646500442,
+        endDate: 1678036442,
       })
 
       const { getByText } = wrapper(auction)

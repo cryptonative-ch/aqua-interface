@@ -4,12 +4,13 @@ import * as d3 from 'd3'
 import React, { useRef, useEffect } from 'react'
 
 // Interfaces
-import { AuctionBid } from 'src/interfaces/Auction'
+import { FairSaleBid } from 'src/interfaces/Auction'
+import { formatBigInt } from 'src/utils/Defaults'
 
 interface BarChartComponentProps {
   width: number
   height: number
-  data: AuctionBid[]
+  data: FairSaleBid[]
   userAddress: string
   vsp: number
 }
@@ -17,16 +18,16 @@ interface BarChartComponentProps {
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp }) => {
   const ref = useRef<SVGSVGElement>(null)
 
-  const getBidPricePerShare = (bid: AuctionBid) => bid.sellAmount.toNumber() / bid.buyAmount.toNumber()
+  const getBidPricePerShare = (bid: FairSaleBid) => formatBigInt(bid.tokenIn) / formatBigInt(bid.tokenOut)
 
-  const getBidPriceText = (bid: AuctionBid, fontSize: number) => {
-    return `${(bid.sellAmount.toNumber() / bid.buyAmount.toNumber()).toFixed(2)}${
-      bid.buyAmount.toNumber() >= fontSize * 4 ? ' DAI/XYZ' : ''
+  const getBidPriceText = (bid: FairSaleBid, fontSize: number) => {
+    return `${(formatBigInt(bid.tokenIn) / formatBigInt(bid.tokenOut)).toFixed(2)}${
+      formatBigInt(bid.tokenOut) >= fontSize * 4 ? ' DAI/XYZ' : ''
     }`
   }
 
-  const getBidAmountText = (bid: AuctionBid, fontSize: number) => {
-    return `${bid.buyAmount.toNumber().toFixed(0)}${bid.buyAmount.toNumber() >= fontSize * 3 ? ' XYZ' : ''}`
+  const getBidAmountText = (bid: FairSaleBid, fontSize: number) => {
+    return `${formatBigInt(bid.tokenOut).toFixed(0)}${formatBigInt(bid.tokenOut) >= fontSize * 3 ? ' XYZ' : ''}`
   }
 
   const draw = () => {
@@ -34,11 +35,11 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       return
     }
     const svg = d3.select(ref.current)
-    const sortedData = data.sort((first, second) => second.sellAmount.toNumber() - first.sellAmount.toNumber())
+    const sortedData = data.sort((first, second) => formatBigInt(second.tokenIn) - formatBigInt(first.tokenIn))
     const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
     const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
-    const activeChartData: any[] = activeBids.map(item => item.buyAmount.toNumber())
-    const inactiveChartData: any[] = inactiveBids.map(item => item.buyAmount.toNumber())
+    const activeChartData: any[] = activeBids.map(item => formatBigInt(item.tokenOut))
+    const inactiveChartData: any[] = inactiveBids.map(item => formatBigInt(item.tokenOut))
 
     svg.selectAll('g').remove()
     const activeSelection = svg.append('g').attr('class', 'activeSelection').selectAll('rect').data(activeChartData)

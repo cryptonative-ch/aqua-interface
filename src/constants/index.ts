@@ -4,4 +4,3 @@ export const SANCTION_LIST = ['BY', 'CU', 'IR', 'IQ', 'CI', 'LR', 'KP', 'SD', 'S
 export const FIXED_PRICE_SALE_CONTRACT_ADDRESS = '0x60536376d81d7f3db47231b70b127817ef249027'
 export const FE_VERSION = '0.0.1'
 export const SC_VERSION = '0.0.1'
-

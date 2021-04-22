@@ -59,24 +59,33 @@ interface HeaderItemProps {
   flexAmount?: number
 }
 
-export function HeaderItem({ title, description, color, textAlign, isMobile, flexAmount, auctionLive, auction }: HeaderItemProps) {
+export function HeaderItem({
+  title,
+  description,
+  color,
+  textAlign,
+  isMobile,
+  flexAmount,
+  auctionLive,
+  auction,
+}: HeaderItemProps) {
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState<number>(0)
   const [descriptionText, setDescriptionText] = useState<string>(description)
 
   // re-renders component every second
   useEffect(() => {
-    if (auctionLive && !!auction) {
+    if (auctionLive && auction) {
       const interval = setInterval(() => {
         setTime(PrevTime => (PrevTime + 1) % 2)
-        setDescriptionText(calculateTimeDifference(auction.endBlock))
+        setDescriptionText(calculateTimeDifference(auction.endDate))
       }, 1000)
 
       return () => {
         clearInterval(interval)
       }
     }
-  }, [])
+  }, [descriptionText])
 
   return (
     <Flex
@@ -90,9 +99,13 @@ export function HeaderItem({ title, description, color, textAlign, isMobile, fle
         {title}
       </HeaderTitle>
       {isMobile ? (
-        <MobileHeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>{descriptionText}</MobileHeaderDescription>
+        <MobileHeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>
+          {descriptionText}
+        </MobileHeaderDescription>
       ) : (
-          descriptionText.length > 0 && <HeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>{descriptionText}</HeaderDescription>
+        descriptionText.length > 0 && (
+          <HeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>{descriptionText}</HeaderDescription>
+        )
       )}
     </Flex>
   )
@@ -103,5 +116,5 @@ HeaderItem.defaultProps = {
   textAlign: 'left',
   isMobile: false,
   flexAmount: 1,
-  auctionLive: false
+  auctionLive: false,
 }

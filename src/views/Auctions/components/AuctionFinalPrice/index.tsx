@@ -1,5 +1,6 @@
 // External
 
+import numeral from 'numeral'
 import React from 'react'
 
 // Components
@@ -11,32 +12,21 @@ import { Flex } from 'src/components/Flex'
 import { Auction } from 'src/interfaces/Auction'
 
 // Mesa Utils
-import { calculateClearingPrice } from 'src/mesa/price'
-import { isAuctionUpcoming } from 'src/mesa/auction'
+import { formatBigInt } from 'src/utils/Defaults'
 
 interface AuctionFinalPriceProps {
   auction: Auction
 }
 
 export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
-  if (isAuctionUpcoming(auction)) {
-    // or some other minimum reserve price
-    return (
-      <Flex>
-        <CardText>N/A</CardText>
-        <CardText fontWeight="light">&nbsp;DAI/{auction.tokenSymbol}</CardText>
-      </Flex>
-    )
-  }
-
-  const pricePerDAI: number = calculateClearingPrice(auction.bids).sellAmount.toNumber()
-
-  const pricePerToken: number = 1 / pricePerDAI
+  const pricePerToken = numeral(
+    auction.type == 'fixedPriceSale' ? formatBigInt(auction.tokenPrice) : formatBigInt(auction.minimumBidAmount)
+  ).format('0.00')
 
   return (
     <Flex>
       <CardText data-testid="openprice">{pricePerToken}</CardText>
-      <CardText fontWeight="light">&nbsp;DAI/{auction.tokenSymbol}</CardText>
+      <CardText fontWeight="light">&nbsp;DAI/{auction.tokenOut?.symbol}</CardText>
     </Flex>
   )
 }

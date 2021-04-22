@@ -2,6 +2,7 @@
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 import React from 'react'
+import numeral from 'numeral'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -12,6 +13,12 @@ import LogoSVG from 'src/assets/svg/Logo.svg'
 import DownSVG from 'src/assets/svg/Down-Arrow.svg'
 import UpSVG from 'src/assets/svg/Up-Arrow.svg'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+
+// Interfaces
+import { Auction } from 'src/interfaces/Auction'
+
+// Mesa Utils
+import { formatBigInt } from 'src/utils/Defaults'
 
 const ControlTitle = styled.div({
   fontStyle: 'normal',
@@ -47,12 +54,12 @@ const FixedDescription = styled.div({
   textAlign: 'right',
   flex: 1,
   display: 'flex',
-  justifyContent: 'flex-end'
+  justifyContent: 'flex-end',
 })
 
 const FixedDescription2 = styled.div({
   color: '#7B7F93',
-  margin: '0 5px'
+  margin: '0 5px',
 })
 
 const FixedDescription3 = styled.div({
@@ -66,7 +73,7 @@ const BarContainer = styled.div({
   display: 'flex',
   margin: '16px 0 8px 0',
   alignItems: 'center',
-  position: 'relative'
+  position: 'relative',
 })
 
 const BarMarker = styled.div({
@@ -82,7 +89,7 @@ const BarActive = styled.div({
   height: '8px',
   borderRadius: '8px',
   width: '10%',
-  backgroundColor: '#304FFE'
+  backgroundColor: '#304FFE',
 })
 
 const LogoImg = styled.img({
@@ -102,33 +109,31 @@ interface HeaderControlProps {
   showGraph: boolean
   isFixed?: boolean
   toggleGraph: () => void
+  auction: Auction
 }
 
-export function HeaderControl({ status, showGraph, toggleGraph, isFixed }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
+
   if (isFixed && status === 'active') {
+    const tokenSold = formatBigInt(auction.tokensSold)
+    const totalSupply = formatBigInt(auction.sellAmount)
+    const percentageSold = tokenSold / totalSupply
     return (
       <Flex flexDirection="column" flex={1}>
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="flex-start"
-          flex={1}
-        >
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>Sale Progress</FixedTitle>
           <FixedDescription>
-            9,000
-            <FixedDescription2>(9%)</FixedDescription2>
-            <FixedDescription3>/ 100,000</FixedDescription3>
+            {numeral(tokenSold).format('0')}
+            <FixedDescription2>{`(${numeral(percentageSold).format('0')}%)`}</FixedDescription2>
+            <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
           </FixedDescription>
         </Flex>
         <BarContainer>
           <BarActive></BarActive>
           <BarMarker></BarMarker>
         </BarContainer>
-        <ControlButton ml="calc(20% - 66px)">
-          {'Min. Threshold 20%'}
-        </ControlButton>
+        <ControlButton ml="calc(20% - 66px)">{'Min. Threshold 20%'}</ControlButton>
       </Flex>
     )
   }

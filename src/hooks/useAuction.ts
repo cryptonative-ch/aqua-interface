@@ -18,6 +18,10 @@ interface UseAuctionReturn {
  * @param auctionId
  */
 export function useAuction(auctionId: string): UseAuctionReturn {
+  /**
+   * @todo refactor this function
+   * function puts another request to the server
+   */
   const { auctions } = useAuctions()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error | null>(null)

@@ -17,7 +17,8 @@ import MoreSVG from 'src/assets/svg/More-Icon.svg'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 
 // Interfaces
-import { Auction, AuctionBid } from 'src/interfaces/Auction'
+import { Auction, AuctionBid, FairBidPick } from 'src/interfaces/Auction'
+import { formatBigInt } from 'src/utils/Defaults'
 
 type ColumnLabelProps = SpaceProps
 
@@ -98,14 +99,16 @@ const IconImg = styled.img<IconImgProps>(
 
 interface SelfBidListProps {
   auction: Auction
-  clearingPrice?: AuctionBid
+  bids: AuctionBid[]
+  clearingPrice?: FairBidPick
   status: string
   showGraph: boolean
   isFixed?: boolean
 }
 
-export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProps) {
+export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidListProps) {
   const [bidMenu, setBidMenu] = useState<number>(-1)
+
   const { isMobile } = useWindowSize()
 
   const toggleBidMenu = (index: number) => {
@@ -116,7 +119,7 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
     setBidMenu(index)
   }
 
-  const vsp = clearingPrice ? clearingPrice.sellAmount.toNumber() / clearingPrice.buyAmount.toNumber() : 0
+  const vsp = clearingPrice ? formatBigInt(clearingPrice.tokenIn) / formatBigInt(clearingPrice.tokenOut) : 0
 
   if (isFixed && isAuctionOpen(auction)) {
     return (
@@ -133,8 +136,10 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
           </Flex>
         </Flex>
 
-        {auction.bids.map((bid: AuctionBid, index: number) => {
-          const bidPrice = bid.sellAmount.toNumber() / bid.buyAmount.toNumber()
+        {bids.map((bid: AuctionBid, index: number) => {
+          const bidPrice = formatBigInt(auction.tokenPrice)
+          const bidValue = formatBigInt(auction.tokenPrice) * formatBigInt(bid.amount)
+          console.log(bidPrice)
           return (
             <Flex
               key={index}
@@ -150,10 +155,12 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
                 </TokenPriceLabel>
               </Flex>
               <Flex flex={3}>
-                <TokenPriceLabel>{`${numeral(bid.sellAmount.toNumber()).format('0')} ${auction.tokenSymbol}`}</TokenPriceLabel>
+                <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount)).format('0')} ${
+                  auction.tokenOut?.symbol
+                }`}</TokenPriceLabel>
               </Flex>
               <Flex flex={6}>
-                <TokenPriceLabel>{`${numeral(bid.sellAmount.toNumber()).format('0')} DAI`}</TokenPriceLabel>
+                <TokenPriceLabel>{`${numeral(bidValue).format('0')} DAI`}</TokenPriceLabel>
                 <Flex flex={1} />
                 <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
               </Flex>
@@ -193,7 +200,7 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
 
         {isAuctionOpen(auction) ? (
           <Flex flex={3} flexDirection="row" alignItems="center">
-            <ColumnLabel>{auction.tokenSymbol}</ColumnLabel>
+            <ColumnLabel>{auction.tokenOut?.symbol}</ColumnLabel>
           </Flex>
         ) : (
           <Flex flex={isMobile ? 1 : 3} flexDirection="row" alignItems="center" justifyContent="flex-end">
@@ -202,8 +209,8 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
         )}
       </Flex>
 
-      {auction.bids.map((bid: AuctionBid, index: number) => {
-        const bidPrice = bid.sellAmount.toNumber() / bid.buyAmount.toNumber()
+      {bids.map((bid: AuctionBid, index: number) => {
+        const bidPrice = formatBigInt(bid.tokenIn) / formatBigInt(bid.tokenOut)
         return (
           <Flex
             key={index}
@@ -219,18 +226,20 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
               </TokenPriceLabel>
             </Flex>
             <Flex flex={3}>
-              <TokenPriceLabel>{`${numeral(bid.sellAmount.toNumber()).format('0')} ${auction.tokenSymbol}`}</TokenPriceLabel>
+              <TokenPriceLabel>{`${numeral(formatBigInt(bid.tokenOut)).format('0')} ${
+                auction.tokenOut?.symbol
+              }`}</TokenPriceLabel>
             </Flex>
             {isAuctionOpen(auction) && (
               <Flex flex={3}>
-                <TokenPriceLabel>{`${numeral(bid.sellAmount.toNumber()).format('0')} DAI`}</TokenPriceLabel>
+                <TokenPriceLabel>{`${numeral(formatBigInt(bid.tokenIn)).format('0')} DAI`}</TokenPriceLabel>
               </Flex>
             )}
             {isAuctionOpen(auction) ? (
               vsp <= bidPrice ? (
                 <Flex flex={3} flexDirection="row" alignItems="center">
                   <TokenPriceLabel>
-                    {`${numeral(bid.buyAmount.toNumber()).format('0.[00]')} ${auction.tokenSymbol}`}
+                    {`${numeral(formatBigInt(bid.tokenOut)).format('0.[00]')} ${auction.tokenOut?.symbol}`}
                   </TokenPriceLabel>
                   <Flex flex={1} />
                   <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
@@ -275,5 +284,5 @@ export function SelfBidList({ auction, clearingPrice, isFixed }: SelfBidListProp
 SelfBidList.defaultProps = {
   status: 'active',
   showGraph: false,
-  isFixed: false
+  isFixed: false,
 }

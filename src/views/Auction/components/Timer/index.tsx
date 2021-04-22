@@ -1,5 +1,5 @@
 // External
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
 // Components
@@ -37,10 +37,10 @@ export const secondsTohms = (seconds: number) => {
 
 export const timeFrame = (unixSeconds: number) => {
   const diff = new Date().getTimezoneOffset()
-  const endBlockDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
-  const endDate = endBlockDateTime.slice(4, 10)
-  const endTime = endBlockDateTime.slice(15, 21)
-  const timeZoneStamp = endBlockDateTime.slice(25, 28)
+  const endDateDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
+  const endDate = endDateDateTime.slice(4, 10)
+  const endTime = endDateDateTime.slice(15, 21)
+  const timeZoneStamp = endDateDateTime.slice(25, 28)
 
   if (unixSeconds < 0) {
     throw Error('seconds cannot be negative')
@@ -50,16 +50,26 @@ export const timeFrame = (unixSeconds: number) => {
 }
 
 export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponentProps) => {
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [time])
+
   const localTimeStamp = dayjs(Date.now()).unix()
 
-  const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endBlock))
+  const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(auction.endDate))
 
   if (isAuctionUpcoming(auction)) {
     return (
       <Flex>
-        <CardText data-testid="open">{timeFrame(convertUtcTimestampToLocal(auction.startBlock))}</CardText>
+        <CardText data-testid="open">{timeFrame(convertUtcTimestampToLocal(auction.startDate))}</CardText>
         <CardText color="grey">&nbsp;to&nbsp;</CardText>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endBlock))}</CardText>
+        <CardText>{timeFrame(convertUtcTimestampToLocal(auction.endDate))}</CardText>
       </Flex>
     )
   } else if (isAuctionOpen(auction)) {
@@ -73,7 +83,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ auction }: TimerComponent
   }
   return (
     <Flex>
-      <CardText data-testid="closed">{timeFrame(auction.endBlock)}</CardText>
+      <CardText data-testid="closed">{timeFrame(auction.endDate)}</CardText>
     </Flex>
   )
 }

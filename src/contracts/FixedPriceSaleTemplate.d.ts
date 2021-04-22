@@ -14,208 +14,167 @@ import {
   Overrides,
   PayableOverrides,
   CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+} from 'ethers'
+import { BytesLike } from '@ethersproject/bytes'
+import { Listener, Provider } from '@ethersproject/providers'
+import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
+import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
 
 interface FixedPriceSaleTemplateInterface extends ethers.utils.Interface {
   functions: {
-    "createSale()": FunctionFragment;
-    "init(bytes)": FunctionFragment;
-    "mesaFactory()": FunctionFragment;
-    "saleLauncher()": FunctionFragment;
-    "saleTemplateId()": FunctionFragment;
-    "templateName()": FunctionFragment;
-  };
+    'createSale()': FunctionFragment
+    'init(bytes)': FunctionFragment
+    'mesaFactory()': FunctionFragment
+    'saleLauncher()': FunctionFragment
+    'saleTemplateId()': FunctionFragment
+    'templateName()': FunctionFragment
+  }
 
-  encodeFunctionData(
-    functionFragment: "createSale",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "init", values: [BytesLike]): string;
-  encodeFunctionData(
-    functionFragment: "mesaFactory",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "saleLauncher",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "saleTemplateId",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "templateName",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: 'createSale', values?: undefined): string
+  encodeFunctionData(functionFragment: 'init', values: [BytesLike]): string
+  encodeFunctionData(functionFragment: 'mesaFactory', values?: undefined): string
+  encodeFunctionData(functionFragment: 'saleLauncher', values?: undefined): string
+  encodeFunctionData(functionFragment: 'saleTemplateId', values?: undefined): string
+  encodeFunctionData(functionFragment: 'templateName', values?: undefined): string
 
-  decodeFunctionResult(functionFragment: "createSale", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "mesaFactory",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "saleLauncher",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "saleTemplateId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "templateName",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'createSale', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'init', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'mesaFactory', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'saleLauncher', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'saleTemplateId', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'templateName', data: BytesLike): Result
 
   events: {
-    "TemplateInitialized(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)": EventFragment;
-  };
+    'TemplateInitialized(address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)': EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "TemplateInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TemplateInitialized'): EventFragment
 }
 
 export class FixedPriceSaleTemplate extends Contract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
   listeners<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
+  ): Array<TypedListener<EventArgsArray, EventArgsObject>>
   off<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+  ): this
   on<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+  ): this
   once<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+  ): this
   removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+  ): this
   removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): this;
+  ): this
 
-  listeners(eventName?: string): Array<Listener>;
-  off(eventName: string, listener: Listener): this;
-  on(eventName: string, listener: Listener): this;
-  once(eventName: string, listener: Listener): this;
-  removeListener(eventName: string, listener: Listener): this;
-  removeAllListeners(eventName?: string): this;
+  listeners(eventName?: string): Array<Listener>
+  off(eventName: string, listener: Listener): this
+  on(eventName: string, listener: Listener): this
+  once(eventName: string, listener: Listener): this
+  removeListener(eventName: string, listener: Listener): this
+  removeAllListeners(eventName?: string): this
 
   queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
     event: TypedEventFilter<EventArgsArray, EventArgsObject>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
+  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
 
-  interface: FixedPriceSaleTemplateInterface;
+  interface: FixedPriceSaleTemplateInterface
 
   functions: {
-    createSale(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    createSale(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-    "createSale()"(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    'createSale()'(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-    init(
+    init(_data: BytesLike, overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
+
+    'init(bytes)'(
       _data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
-    "init(bytes)"(
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    mesaFactory(overrides?: CallOverrides): Promise<[string]>
 
-    mesaFactory(overrides?: CallOverrides): Promise<[string]>;
+    'mesaFactory()'(overrides?: CallOverrides): Promise<[string]>
 
-    "mesaFactory()"(overrides?: CallOverrides): Promise<[string]>;
+    saleLauncher(overrides?: CallOverrides): Promise<[string]>
 
-    saleLauncher(overrides?: CallOverrides): Promise<[string]>;
+    'saleLauncher()'(overrides?: CallOverrides): Promise<[string]>
 
-    "saleLauncher()"(overrides?: CallOverrides): Promise<[string]>;
+    saleTemplateId(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    saleTemplateId(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'saleTemplateId()'(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    "saleTemplateId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    templateName(overrides?: CallOverrides): Promise<[string]>
 
-    templateName(overrides?: CallOverrides): Promise<[string]>;
+    'templateName()'(overrides?: CallOverrides): Promise<[string]>
+  }
 
-    "templateName()"(overrides?: CallOverrides): Promise<[string]>;
-  };
+  createSale(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-  createSale(
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  'createSale()'(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-  "createSale()"(
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  init(_data: BytesLike, overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
-  init(
+  'init(bytes)'(
     _data: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
-  "init(bytes)"(
-    _data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  mesaFactory(overrides?: CallOverrides): Promise<string>
 
-  mesaFactory(overrides?: CallOverrides): Promise<string>;
+  'mesaFactory()'(overrides?: CallOverrides): Promise<string>
 
-  "mesaFactory()"(overrides?: CallOverrides): Promise<string>;
+  saleLauncher(overrides?: CallOverrides): Promise<string>
 
-  saleLauncher(overrides?: CallOverrides): Promise<string>;
+  'saleLauncher()'(overrides?: CallOverrides): Promise<string>
 
-  "saleLauncher()"(overrides?: CallOverrides): Promise<string>;
+  saleTemplateId(overrides?: CallOverrides): Promise<BigNumber>
 
-  saleTemplateId(overrides?: CallOverrides): Promise<BigNumber>;
+  'saleTemplateId()'(overrides?: CallOverrides): Promise<BigNumber>
 
-  "saleTemplateId()"(overrides?: CallOverrides): Promise<BigNumber>;
+  templateName(overrides?: CallOverrides): Promise<string>
 
-  templateName(overrides?: CallOverrides): Promise<string>;
-
-  "templateName()"(overrides?: CallOverrides): Promise<string>;
+  'templateName()'(overrides?: CallOverrides): Promise<string>
 
   callStatic: {
-    createSale(overrides?: CallOverrides): Promise<string>;
+    createSale(overrides?: CallOverrides): Promise<string>
 
-    "createSale()"(overrides?: CallOverrides): Promise<string>;
+    'createSale()'(overrides?: CallOverrides): Promise<string>
 
-    init(_data: BytesLike, overrides?: CallOverrides): Promise<void>;
+    init(_data: BytesLike, overrides?: CallOverrides): Promise<void>
 
-    "init(bytes)"(_data: BytesLike, overrides?: CallOverrides): Promise<void>;
+    'init(bytes)'(_data: BytesLike, overrides?: CallOverrides): Promise<void>
 
-    mesaFactory(overrides?: CallOverrides): Promise<string>;
+    mesaFactory(overrides?: CallOverrides): Promise<string>
 
-    "mesaFactory()"(overrides?: CallOverrides): Promise<string>;
+    'mesaFactory()'(overrides?: CallOverrides): Promise<string>
 
-    saleLauncher(overrides?: CallOverrides): Promise<string>;
+    saleLauncher(overrides?: CallOverrides): Promise<string>
 
-    "saleLauncher()"(overrides?: CallOverrides): Promise<string>;
+    'saleLauncher()'(overrides?: CallOverrides): Promise<string>
 
-    saleTemplateId(overrides?: CallOverrides): Promise<BigNumber>;
+    saleTemplateId(overrides?: CallOverrides): Promise<BigNumber>
 
-    "saleTemplateId()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'saleTemplateId()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    templateName(overrides?: CallOverrides): Promise<string>;
+    templateName(overrides?: CallOverrides): Promise<string>
 
-    "templateName()"(overrides?: CallOverrides): Promise<string>;
-  };
+    'templateName()'(overrides?: CallOverrides): Promise<string>
+  }
 
   filters: {
     TemplateInitialized(
@@ -230,104 +189,74 @@ export class FixedPriceSaleTemplate extends Contract {
       minimumRaise: null,
       owner: null
     ): TypedEventFilter<
-      [
-        string,
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        string
-      ],
+      [string, string, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, string],
       {
-        tokenOut: string;
-        tokenIn: string;
-        tokenPrice: BigNumber;
-        tokensForSale: BigNumber;
-        startDate: BigNumber;
-        endDate: BigNumber;
-        allocationMin: BigNumber;
-        allocationMax: BigNumber;
-        minimumRaise: BigNumber;
-        owner: string;
+        tokenOut: string
+        tokenIn: string
+        tokenPrice: BigNumber
+        tokensForSale: BigNumber
+        startDate: BigNumber
+        endDate: BigNumber
+        allocationMin: BigNumber
+        allocationMax: BigNumber
+        minimumRaise: BigNumber
+        owner: string
       }
-    >;
-  };
+    >
+  }
 
   estimateGas: {
-    createSale(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    createSale(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    "createSale()"(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    'createSale()'(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    init(
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    init(_data: BytesLike, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    "init(bytes)"(
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    'init(bytes)'(_data: BytesLike, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
-    mesaFactory(overrides?: CallOverrides): Promise<BigNumber>;
+    mesaFactory(overrides?: CallOverrides): Promise<BigNumber>
 
-    "mesaFactory()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'mesaFactory()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    saleLauncher(overrides?: CallOverrides): Promise<BigNumber>;
+    saleLauncher(overrides?: CallOverrides): Promise<BigNumber>
 
-    "saleLauncher()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'saleLauncher()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    saleTemplateId(overrides?: CallOverrides): Promise<BigNumber>;
+    saleTemplateId(overrides?: CallOverrides): Promise<BigNumber>
 
-    "saleTemplateId()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'saleTemplateId()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    templateName(overrides?: CallOverrides): Promise<BigNumber>;
+    templateName(overrides?: CallOverrides): Promise<BigNumber>
 
-    "templateName()"(overrides?: CallOverrides): Promise<BigNumber>;
-  };
+    'templateName()'(overrides?: CallOverrides): Promise<BigNumber>
+  }
 
   populateTransaction: {
-    createSale(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    createSale(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 
-    "createSale()"(
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    'createSale()'(overrides?: PayableOverrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 
-    init(
+    init(_data: BytesLike, overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
+
+    'init(bytes)'(
       _data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
-    "init(bytes)"(
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    mesaFactory(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    mesaFactory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'mesaFactory()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    "mesaFactory()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    saleLauncher(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    saleLauncher(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'saleLauncher()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    "saleLauncher()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    saleTemplateId(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    saleTemplateId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'saleTemplateId()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    "saleTemplateId()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    templateName(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    templateName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "templateName()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-  };
+    'templateName()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+  }
 }
