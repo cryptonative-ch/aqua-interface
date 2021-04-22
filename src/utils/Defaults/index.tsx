@@ -30,21 +30,15 @@ export const fromBigDecimalToBigInt = (input: string): string => {
   // no decimal numbers
 
   const number = String(input)
-  console.log(number)
 
-  const exponent = number.match(/(?<=e)(.*)/)![1]
-
-  const fraction = number.match(/(?<=\.)(.*)(?=e)/)
-
-  const power = Number(exponent.slice(1))
-
-  const addedZeros = getZeros(power)
+  const fraction = number.match(/(?<=\.)(.*)/)
 
   const whole = number.match(/(.*)(?=\.)/)![1]
 
-  let value = whole + addedZeros
+  let value = whole
 
   if (fraction != null) {
+    const addedZeros = getZeros(fraction[1].length)
     const zeros = addedZeros.slice(fraction[1].length + 1)
     value = whole + fraction[1] + zeros
   }
@@ -84,7 +78,7 @@ const getFairSale = (): FairSale => ({
     decimals: 18,
     symbol: 'DXD',
   },
-  minimumBidAmount: formatDecimal('10.0e+18'),
+  minimumBidAmount: formatDecimal('10.000000000000000000'),
   bids: [],
   type: 'fairSale',
   minFundingThreshold: 100,

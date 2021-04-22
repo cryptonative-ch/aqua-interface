@@ -139,7 +139,7 @@ export function SelfBidList({ auction, clearingPrice, bids, isFixed }: SelfBidLi
         {bids.map((bid: AuctionBid, index: number) => {
           const bidPrice = formatBigInt(auction.tokenPrice)
           const bidValue = formatBigInt(auction.tokenPrice) * formatBigInt(bid.amount)
-          console.log(bidPrice)
+
           return (
             <Flex
               key={index}

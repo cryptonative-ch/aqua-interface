@@ -11,14 +11,13 @@ import { formatDecimal } from 'src/utils/Defaults'
 
 export const ENDPOINT =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4000/graphql'
+    ? 'http://localhost:8000/subgraphs/name/adamazad/mesa'
     : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   const fairSale: auctionType = 'fairSale'
   const fixedPriceSale: auctionType = 'fixedPriceSale'
   const fairSales: Auction[] = (await auctionsRequest).fairSales
-
   const addFairSaleType = fairSales.map((item: any) => ({
     ...item,
     tokenAmount: formatDecimal(item.tokenAmount),

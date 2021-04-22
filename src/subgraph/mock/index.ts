@@ -203,7 +203,7 @@ type Query {
 `
 const address = '0x###D####b########d###aA##e###c##eF##EE#c'
 
-const bigDecimal = '#.#######e+18'
+const bigDecimal = '###.##################'
 
 export const preserveResolvers = false
 
