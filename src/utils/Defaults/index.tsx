@@ -33,14 +33,18 @@ export const fromBigDecimalToBigInt = (input: string): string => {
 
   const fraction = number.match(/(?<=\.)(.*)/)
 
-  const whole = number.match(/(.*)(?=\.)/)![1]
+  const whole = number.match(/(.*)(?=\.)/)
 
-  let value = whole
+  let value = number
 
-  if (fraction != null) {
+  if (whole != null) {
+    value = whole[1]
+  }
+
+  if (fraction != null && whole != null) {
     const addedZeros = getZeros(fraction[1].length)
     const zeros = addedZeros.slice(fraction[1].length + 1)
-    value = whole + fraction[1] + zeros
+    value = whole[1] + fraction[1] + zeros
   }
 
   return value

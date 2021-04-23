@@ -24,7 +24,7 @@ export const auctionsQuery = `
         symbol
         decimals
       }
-      tokensSold
+      
       sellAmount
       minimumRaise
       allocationMin
