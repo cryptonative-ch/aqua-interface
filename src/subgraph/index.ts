@@ -17,24 +17,31 @@ export const ENDPOINT =
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   const fairSale: auctionType = 'fairSale'
   const fixedPriceSale: auctionType = 'fixedPriceSale'
+  console.log(await auctionsRequest)
   const fairSales: Auction[] = (await auctionsRequest).fairSales
-  const addFairSaleType = fairSales.map((item: any) => ({
-    ...item,
-    tokenAmount: formatDecimal(item.tokenAmount),
-    minimumBidAmount: formatDecimal(item.minimumBidAmount),
-    type: fairSale,
-  }))
+  const addFairSaleType =
+    fairSales.length != 0
+      ? fairSales.map((item: any) => ({
+          ...item,
+          tokenAmount: formatDecimal(item.tokenAmount),
+          minimumBidAmount: formatDecimal(item.minimumBidAmount),
+          type: fairSale,
+        }))
+      : []
 
   const fixedPriceSales: Auction[] = (await auctionsRequest).fixedPriceSales
-  const addFixedPriceSalesType = fixedPriceSales.map((item: any) => ({
-    ...item,
-    allocationMin: formatDecimal(item.allocationMin),
-    allocationMax: formatDecimal(item.allocationMax),
-    sellAmount: formatDecimal(item.sellAmount),
-    tokenPrice: formatDecimal(item.tokenPrice),
-    tokensSold: formatDecimal(item.tokensSold),
-    type: fixedPriceSale,
-  }))
+  const addFixedPriceSalesType =
+    fixedPriceSales.length != 0
+      ? fixedPriceSales.map((item: any) => ({
+          ...item,
+          allocationMin: formatDecimal(item.allocationMin),
+          allocationMax: formatDecimal(item.allocationMax),
+          sellAmount: formatDecimal(item.sellAmount),
+          tokenPrice: formatDecimal(item.tokenPrice),
+          tokensSold: formatDecimal(item.tokensSold),
+          type: fixedPriceSale,
+        }))
+      : []
 
   const auctionsArray = [...addFairSaleType, ...addFixedPriceSalesType]
   return auctionsArray
