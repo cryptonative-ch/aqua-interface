@@ -26,8 +26,6 @@ export const getZeros = (decimals: number) => {
 export const fromBigDecimalToBigInt = (input: string, decimal = 18): string => {
   // regex split the string between decimals and exponential
   // reform into BigInt string
-  // assumes all bigdecimals are all in the smallest unit
-  // no decimal numbers
 
   const number = String(input)
 

@@ -24,7 +24,6 @@ export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
       ? formatBigInt(auction.tokenPrice, auction.tokenOut.decimals)
       : formatBigInt(auction.minimumBidAmount, auction.tokenOut.decimals)
   ).format('0.00')
-  console.log(formatBigInt(auction.tokenPrice, auction.tokenOut.decimals))
 
   return (
     <Flex>
