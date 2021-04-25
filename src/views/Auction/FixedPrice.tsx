@@ -185,14 +185,18 @@ export function FixedPriceAuctionView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${formatBigInt(auction.tokenPrice).toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
+                      description={`${formatBigInt(auction.tokenPrice, auction.tokenOut.decimals).toFixed(2)} DAI/${
+                        auction.tokenOut?.symbol
+                      }`}
                     />
                     <HeaderItem
                       isMobile
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(auction.allocationMin)).format('0,0')} - ${numeral(
-                        formatBigInt(auction.allocationMax)
-                      ).format('0,0')} ${auction.tokenOut?.symbol}`}
+                      description={`${numeral(formatBigInt(auction.allocationMin, auction.tokenOut.decimals)).format(
+                        '0,0'
+                      )} - ${numeral(formatBigInt(auction.allocationMax, auction.tokenOut.decimals)).format('0,0')} ${
+                        auction.tokenOut?.symbol
+                      }`}
                     />
                     {isAuctionClosed(auction) && (
                       <HeaderItem
@@ -225,7 +229,9 @@ export function FixedPriceAuctionView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${formatBigInt(auction.tokenPrice).toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
+                      description={`${formatBigInt(auction.tokenPrice, auction.tokenOut.decimals).toFixed(2)} DAI/${
+                        auction.tokenOut?.symbol
+                      }`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Min. - Max. Allocation'}
@@ -342,7 +348,7 @@ export function FixedPriceAuctionView() {
                   <PlaceBidForm
                     onSubmit={(val: BidFormProps) => buyToken(val)}
                     auction={auction}
-                    currentSettlementPrice={formatBigInt(auction.tokenPrice)}
+                    currentSettlementPrice={formatBigInt(auction.tokenPrice, auction.tokenOut.decimals)}
                     isFixed
                   />
                 </CardBody>

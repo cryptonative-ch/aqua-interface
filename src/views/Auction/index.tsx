@@ -171,9 +171,9 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn) : 1)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${(
+                        1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, auction.tokenIn.decimals) : 1)
+                      ).toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -219,15 +219,15 @@ export function AuctionView() {
                           ? 'Current Price'
                           : 'Final Price'
                       }
-                      description={`${(1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn) : 1)).toFixed(2)} DAI/${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${(
+                        1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, auction.tokenIn.decimals) : 1)
+                      ).toFixed(2)} DAI/${auction.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isAuctionClosed(auction) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(formatBigInt(auction.tokenAmount)).format('0,0')} ${
-                        auction.tokenOut?.symbol
-                      }`}
+                      description={`${numeral(formatBigInt(auction.tokenAmount, auction.tokenOut.decimals)).format(
+                        '0,0'
+                      )} ${auction.tokenOut?.symbol}`}
                     />
                     {(isAuctionClosed(auction) || isAuctionUpcoming(auction)) && <Flex flex={0.2} />}
                     {isAuctionClosed(auction) && (
@@ -295,7 +295,8 @@ export function AuctionView() {
                     height={400}
                     data={bids}
                     userAddress={userAddress}
-                    vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn) : 0}
+                    vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn, auction.tokenIn.decimals) : 0}
+                    auction={auction}
                   />
                 </CardBody>
               )}

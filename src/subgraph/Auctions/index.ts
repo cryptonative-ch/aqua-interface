@@ -26,6 +26,7 @@ export const auctionsQuery = `
       }
       
       sellAmount
+      soldAmount
       minimumRaise
       allocationMin
       allocationMax

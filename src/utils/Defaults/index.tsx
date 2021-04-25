@@ -23,7 +23,7 @@ export const getZeros = (decimals: number) => {
   throw new Error('invalid decimal')
 }
 
-export const fromBigDecimalToBigInt = (input: string): string => {
+export const fromBigDecimalToBigInt = (input: string, decimal = 18): string => {
   // regex split the string between decimals and exponential
   // reform into BigInt string
   // assumes all bigdecimals are all in the smallest unit
@@ -35,14 +35,15 @@ export const fromBigDecimalToBigInt = (input: string): string => {
 
   const whole = number.match(/(.*)(?=\.)/)
 
-  let value = number
+  const addedZeros = getZeros(decimal)
+
+  let value = number + addedZeros.slice(number.length)
 
   if (whole != null) {
     value = whole[1]
   }
 
   if (fraction != null && whole != null) {
-    const addedZeros = getZeros(fraction[1].length)
     const zeros = addedZeros.slice(fraction[1].length + 1)
     value = whole[1] + fraction[1] + zeros
   }
@@ -50,8 +51,8 @@ export const fromBigDecimalToBigInt = (input: string): string => {
   return value
 }
 
-export const formatDecimal = (bigDecimal: string): BigNumber => {
-  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal))
+export const formatDecimal = (bigDecimal: string, decimal = 18): BigNumber => {
+  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal, decimal))
 }
 
 // query mocks
@@ -100,7 +101,7 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   type: 'fixedPriceSale',
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
-  tokensSold: BigNumber.from(5000),
+  soldAmount: BigNumber.from(5000),
   tokenIn: {
     id: '0x141',
     name: 'DAI',

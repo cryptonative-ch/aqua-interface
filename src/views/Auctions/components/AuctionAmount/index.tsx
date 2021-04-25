@@ -16,11 +16,14 @@ interface AuctionAmountprops {
 }
 
 export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {
+  console.log(formatBigInt(auction.sellAmount, auction.tokenOut.decimals))
   return (
     <Flex>
       <CardText>
         {numeral(
-          auction.type == 'fairSale' ? formatBigInt(auction.tokenAmount) : formatBigInt(auction.sellAmount)
+          auction.type == 'fairSale'
+            ? formatBigInt(auction.tokenAmount, auction.tokenOut.decimals)
+            : formatBigInt(auction.sellAmount, auction.tokenOut.decimals)
         ).format('0,0')}
       </CardText>
       <CardText fontWeight="light">&nbsp;{auction.tokenOut?.symbol}</CardText>
