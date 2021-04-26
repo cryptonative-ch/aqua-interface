@@ -128,7 +128,7 @@ export function AuctionView() {
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [t])
+  }, [t, auction])
 
   if (!auction) {
     fetchData()
