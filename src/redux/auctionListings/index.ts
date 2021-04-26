@@ -68,7 +68,7 @@ interface AuctionState {
 }
 
 const defaultState: AuctionState = {
-  isLoading: true,
+  isLoading: false,
   auctions: [],
   error: null,
 }

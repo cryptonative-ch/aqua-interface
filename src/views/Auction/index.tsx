@@ -34,7 +34,6 @@ import { HeaderItem } from './components/HeaderItem'
 import { HeaderControl } from './components/HeaderControl'
 import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
-import { Center } from 'src/layouts/Center'
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
@@ -106,10 +105,6 @@ export function AuctionView() {
     return state.BidReducer.bids
   })
 
-  const loading = useSelector<RootState, boolean>(state => {
-    return state.BidReducer.isLoading
-  })
-
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -124,7 +119,7 @@ export function AuctionView() {
     if (!userAddress) {
       setUserAddress(walletAddress || getRandomWallet().address)
     }
-
+    fetchData()
     dispatch(setPageTitle(t(auction?.name as string)))
 
     if (auction) {
@@ -133,11 +128,7 @@ export function AuctionView() {
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [t, auction])
-
-  if (loading) {
-    return <Center minHeight="100%">LOADING</Center>
-  }
+  }, [t])
 
   if (!auction) {
     fetchData()

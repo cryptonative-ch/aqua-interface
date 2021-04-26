@@ -91,9 +91,6 @@ export function AuctionsView() {
   const auctions = useSelector<RootState, Auction[]>(state => {
     return state.AuctionReducer.auctions
   })
-  const loading = useSelector<RootState, boolean>(state => {
-    return state.AuctionReducer.isLoading
-  })
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -103,10 +100,6 @@ export function AuctionsView() {
     dispatch(setPageTitle(t('pagesTitles.home')))
     fetchData()
   }, [t])
-
-  if (loading) {
-    return <Center minHeight="100%">LOADING</Center>
-  }
 
   return (
     <AuctionContext.Provider value={{ AuctionShow, setAuctionShow }}>
