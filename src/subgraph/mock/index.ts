@@ -222,6 +222,12 @@ export const mocks = {
     endDate: () => casual.random_element([1646673587, 1644254387]),
     tokenAmount: () => casual.numerify(bigDecimal),
     minimumBidAmount: () => casual.numerify(bigDecimal),
+    tokenIn: () => ({
+      decimals: () => 18,
+    }),
+    tokenOut: () => ({
+      decimals: () => 18,
+    }),
   }),
   FixedPriceSale: () => ({
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
@@ -237,6 +243,12 @@ export const mocks = {
     allocationMax: () => casual.numerify(bigDecimal),
     tokenPrice: () => casual.numerify(bigDecimal),
     soldAmount: () => casual.numerify(bigDecimal),
+    tokenIn: () => ({
+      decimals: () => 18,
+    }),
+    tokenOut: () => ({
+      decimals: () => 18,
+    }),
   }),
   FairSaleBid: () => ({
     createdAt: () => casual.unix_time,

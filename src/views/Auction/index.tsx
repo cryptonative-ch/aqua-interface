@@ -119,7 +119,7 @@ export function AuctionView() {
     if (!userAddress) {
       setUserAddress(walletAddress || getRandomWallet().address)
     }
-    fetchData()
+
     dispatch(setPageTitle(t(auction?.name as string)))
 
     if (auction) {
