@@ -32,11 +32,11 @@ const wrapper = (auction: Auction) => {
 
 // tests
 
-const auction = getAuctionDefault({ sellAmount: formatDecimal('5000.0e+18') }, 'fixedPriceSale')
+const auction = getAuctionDefault({ sellAmount: formatDecimal('4978.999999999999999999') }, 'fixedPriceSale')
 
 describe('AuctionAmount tests', () => {
   test('should display correct Amount', () => {
     const { getByText } = wrapper(auction)
-    expect(getByText('5,000')).toBeInTheDocument()
+    expect(getByText('4,979')).toBeInTheDocument()
   })
 })

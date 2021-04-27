@@ -47,7 +47,6 @@ export const generateAuctionsFailure = (payload: Error) => ({
 })
 
 // fetch data
-// eslint-disable-next-line
 export const fetchAuctions = (auctionsRequest: Promise<any>): AppThunk => {
   return async dispatch => {
     dispatch(generateAuctionsRequest(true))

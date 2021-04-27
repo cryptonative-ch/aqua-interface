@@ -116,9 +116,9 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction
   const { isMobile } = useWindowSize()
 
   if (isFixed && status === 'active') {
-    const tokenSold = formatBigInt(auction.tokensSold)
-    const totalSupply = formatBigInt(auction.sellAmount)
-    const percentageSold = tokenSold / totalSupply
+    const tokenSold = formatBigInt(auction.soldAmount, auction.tokenOut.decimals)
+    const totalSupply = formatBigInt(auction.sellAmount, auction.tokenOut.decimals)
+    const percentageSold = (tokenSold / totalSupply) * 100
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>

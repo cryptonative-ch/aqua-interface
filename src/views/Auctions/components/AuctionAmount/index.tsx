@@ -14,15 +14,15 @@ import { formatBigInt } from 'src/utils/Defaults'
 interface AuctionAmountprops {
   auction: Auction
 }
-/**
- * @todo update these when adam finishes subgraph
- */
+
 export const AuctionAmount: React.FC<AuctionAmountprops> = ({ auction }) => {
   return (
     <Flex>
       <CardText>
         {numeral(
-          auction.type == 'fairSale' ? formatBigInt(auction.tokenAmount) : formatBigInt(auction.sellAmount)
+          auction.type == 'fairSale'
+            ? formatBigInt(auction.tokenAmount, auction.tokenOut.decimals)
+            : formatBigInt(auction.sellAmount, auction.tokenOut.decimals)
         ).format('0,0')}
       </CardText>
       <CardText fontWeight="light">&nbsp;{auction.tokenOut?.symbol}</CardText>

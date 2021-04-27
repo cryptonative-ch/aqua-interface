@@ -23,37 +23,34 @@ export const getZeros = (decimals: number) => {
   throw new Error('invalid decimal')
 }
 
-export const fromBigDecimalToBigInt = (input: string): string => {
+export const fromBigDecimalToBigInt = (input: string, decimal = 18): string => {
   // regex split the string between decimals and exponential
   // reform into BigInt string
-  // assumes all bigdecimals are all in the smallest unit
-  // no decimal numbers
 
   const number = String(input)
-  console.log(number)
 
-  const exponent = number.match(/(?<=e)(.*)/)![1]
+  const fraction = number.match(/(?<=\.)(.*)/)
 
-  const fraction = number.match(/(?<=\.)(.*)(?=e)/)
+  const whole = number.match(/(.*)(?=\.)/)
 
-  const power = Number(exponent.slice(1))
+  const addedZeros = getZeros(decimal)
 
-  const addedZeros = getZeros(power)
+  let value = number + addedZeros.slice(number.length)
 
-  const whole = number.match(/(.*)(?=\.)/)![1]
+  if (whole != null) {
+    value = whole[1]
+  }
 
-  let value = whole + addedZeros
-
-  if (fraction != null) {
+  if (fraction != null && whole != null) {
     const zeros = addedZeros.slice(fraction[1].length + 1)
-    value = whole + fraction[1] + zeros
+    value = whole[1] + fraction[1] + zeros
   }
 
   return value
 }
 
-export const formatDecimal = (bigDecimal: string): BigNumber => {
-  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal))
+export const formatDecimal = (bigDecimal: string, decimal = 18): BigNumber => {
+  return BigNumber.from(fromBigDecimalToBigInt(bigDecimal, decimal))
 }
 
 // query mocks
@@ -84,7 +81,7 @@ const getFairSale = (): FairSale => ({
     decimals: 18,
     symbol: 'DXD',
   },
-  minimumBidAmount: formatDecimal('10.0e+18'),
+  minimumBidAmount: formatDecimal('10.000000000000000000'),
   bids: [],
   type: 'fairSale',
   minFundingThreshold: 100,
@@ -102,7 +99,7 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   type: 'fixedPriceSale',
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
-  tokensSold: BigNumber.from(5000),
+  soldAmount: BigNumber.from(5000),
   tokenIn: {
     id: '0x141',
     name: 'DAI',

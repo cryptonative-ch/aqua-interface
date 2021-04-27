@@ -46,7 +46,7 @@ interface FixedPriceSaleInterface extends ethers.utils.Interface {
     'tokensForSale()': FunctionFragment
     'tokensPurchased(address)': FunctionFragment
     'tokensRemaining()': FunctionFragment
-    'tokensSold()': FunctionFragment
+    'soldAmount()': FunctionFragment
     'withdrawFunds()': FunctionFragment
     'withdrawFundsWithParams(bytes)': FunctionFragment
     'withdrawUnsoldFunds()': FunctionFragment
@@ -77,7 +77,7 @@ interface FixedPriceSaleInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'tokensForSale', values?: undefined): string
   encodeFunctionData(functionFragment: 'tokensPurchased', values: [string]): string
   encodeFunctionData(functionFragment: 'tokensRemaining', values?: undefined): string
-  encodeFunctionData(functionFragment: 'tokensSold', values?: undefined): string
+  encodeFunctionData(functionFragment: 'soldAmount', values?: undefined): string
   encodeFunctionData(functionFragment: 'withdrawFunds', values?: undefined): string
   encodeFunctionData(functionFragment: 'withdrawFundsWithParams', values: [BytesLike]): string
   encodeFunctionData(functionFragment: 'withdrawUnsoldFunds', values?: undefined): string
@@ -107,7 +107,7 @@ interface FixedPriceSaleInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'tokensForSale', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'tokensPurchased', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'tokensRemaining', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'tokensSold', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'soldAmount', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'withdrawFunds', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'withdrawFundsWithParams', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'withdrawUnsoldFunds', data: BytesLike): Result
@@ -296,9 +296,9 @@ export class FixedPriceSale extends Contract {
 
     'tokensRemaining()'(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    tokensSold(overrides?: CallOverrides): Promise<[BigNumber]>
+    soldAmount(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    'tokensSold()'(overrides?: CallOverrides): Promise<[BigNumber]>
+    'soldAmount()'(overrides?: CallOverrides): Promise<[BigNumber]>
 
     withdrawFunds(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
@@ -442,9 +442,9 @@ export class FixedPriceSale extends Contract {
 
   'tokensRemaining()'(overrides?: CallOverrides): Promise<BigNumber>
 
-  tokensSold(overrides?: CallOverrides): Promise<BigNumber>
+  soldAmount(overrides?: CallOverrides): Promise<BigNumber>
 
-  'tokensSold()'(overrides?: CallOverrides): Promise<BigNumber>
+  'soldAmount()'(overrides?: CallOverrides): Promise<BigNumber>
 
   withdrawFunds(overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>
 
@@ -565,9 +565,9 @@ export class FixedPriceSale extends Contract {
 
     'tokensRemaining()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    tokensSold(overrides?: CallOverrides): Promise<BigNumber>
+    soldAmount(overrides?: CallOverrides): Promise<BigNumber>
 
-    'tokensSold()'(overrides?: CallOverrides): Promise<BigNumber>
+    'soldAmount()'(overrides?: CallOverrides): Promise<BigNumber>
 
     withdrawFunds(overrides?: CallOverrides): Promise<void>
 
@@ -743,9 +743,9 @@ export class FixedPriceSale extends Contract {
 
     'tokensRemaining()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    tokensSold(overrides?: CallOverrides): Promise<BigNumber>
+    soldAmount(overrides?: CallOverrides): Promise<BigNumber>
 
-    'tokensSold()'(overrides?: CallOverrides): Promise<BigNumber>
+    'soldAmount()'(overrides?: CallOverrides): Promise<BigNumber>
 
     withdrawFunds(overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>
 
@@ -890,9 +890,9 @@ export class FixedPriceSale extends Contract {
 
     'tokensRemaining()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    tokensSold(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    soldAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    'tokensSold()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    'soldAmount()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     withdrawFunds(overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>
 

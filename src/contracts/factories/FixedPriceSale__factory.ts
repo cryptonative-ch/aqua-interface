@@ -476,7 +476,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'tokensSold',
+    name: 'soldAmount',
     outputs: [
       {
         internalType: 'uint256',

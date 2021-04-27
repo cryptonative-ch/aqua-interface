@@ -20,7 +20,9 @@ interface AuctionFinalPriceProps {
 
 export function AuctionFinalPrice({ auction }: AuctionFinalPriceProps) {
   const pricePerToken = numeral(
-    auction.type == 'fixedPriceSale' ? formatBigInt(auction.tokenPrice) : formatBigInt(auction.minimumBidAmount)
+    auction.type == 'fixedPriceSale'
+      ? formatBigInt(auction.tokenPrice, auction.tokenOut.decimals)
+      : formatBigInt(auction.minimumBidAmount, auction.tokenOut.decimals)
   ).format('0.00')
 
   return (

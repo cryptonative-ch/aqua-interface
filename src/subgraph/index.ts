@@ -11,31 +11,38 @@ import { formatDecimal } from 'src/utils/Defaults'
 
 export const ENDPOINT =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4000/graphql'
+    ? 'http://localhost:8000/subgraphs/name/adamazad/mesa'
     : 'https://api.thegraph.com/subgraphs/name/adamazad/mesa'
 
 export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
   const fairSale: auctionType = 'fairSale'
   const fixedPriceSale: auctionType = 'fixedPriceSale'
+
   const fairSales: Auction[] = (await auctionsRequest).fairSales
 
-  const addFairSaleType = fairSales.map((item: any) => ({
-    ...item,
-    tokenAmount: formatDecimal(item.tokenAmount),
-    minimumBidAmount: formatDecimal(item.minimumBidAmount),
-    type: fairSale,
-  }))
+  const addFairSaleType =
+    fairSales.length != 0
+      ? fairSales.map((item: any) => ({
+          ...item,
+          tokenAmount: formatDecimal(item.tokenAmount, item.tokenOut.decimal),
+          minimumBidAmount: formatDecimal(item.minimumBidAmount, item.tokenOut.decimal),
+          type: fairSale,
+        }))
+      : []
 
   const fixedPriceSales: Auction[] = (await auctionsRequest).fixedPriceSales
-  const addFixedPriceSalesType = fixedPriceSales.map((item: any) => ({
-    ...item,
-    allocationMin: formatDecimal(item.allocationMin),
-    allocationMax: formatDecimal(item.allocationMax),
-    sellAmount: formatDecimal(item.sellAmount),
-    tokenPrice: formatDecimal(item.tokenPrice),
-    tokensSold: formatDecimal(item.tokensSold),
-    type: fixedPriceSale,
-  }))
+  const addFixedPriceSalesType =
+    fixedPriceSales.length != 0
+      ? fixedPriceSales.map((item: any) => ({
+          ...item,
+          allocationMin: formatDecimal(item.allocationMin, item.tokenOut.decimal),
+          allocationMax: formatDecimal(item.allocationMax, item.tokenOut.decimal),
+          sellAmount: formatDecimal(item.sellAmount, item.tokenOut.decimal),
+          tokenPrice: formatDecimal(item.tokenPrice, item.tokenOut.decimal),
+          soldAmount: formatDecimal(item.soldAmount, item.tokenOut.decimal),
+          type: fixedPriceSale,
+        }))
+      : []
 
   const auctionsArray = [...addFairSaleType, ...addFixedPriceSalesType]
   return auctionsArray
