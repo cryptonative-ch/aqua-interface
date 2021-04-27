@@ -48,7 +48,7 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { Auction, AuctionBid } from 'src/interfaces/Auction'
+import { Auction } from 'src/interfaces/Auction'
 
 // Constants
 import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
@@ -62,6 +62,7 @@ import { fetchAuctionBids } from 'src/redux/bidData'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+import { Center } from 'src/layouts/Center'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -101,9 +102,11 @@ export function FixedPriceAuctionView() {
     return auctions
   })
 
-  const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bidsBySaleId[params.auctionId].bids
+  const bidsbySale = useSelector<RootState, any>(state => {
+    return state.BidReducer.bidsBySaleId[params.auctionId]
   })
+
+  const bids = bidsbySale ? bidsbySale.bids : []
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -157,6 +160,9 @@ export function FixedPriceAuctionView() {
     }
   }
 
+  if (!bids) {
+    return <Center>LOADING</Center>
+  }
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>

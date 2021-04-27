@@ -60,14 +60,13 @@ export const generateInitialAuctionData = async (
       ...item,
       amount: formatDecimal(item.amount),
     }))
+  } else {
+    auctionBids = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
+      ...item,
+      tokenOut: formatDecimal(item.tokenOutAmount),
+      tokenIn: formatDecimal(item.tokenInAmount),
+    }))
   }
-
-  auctionBids = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
-    ...item,
-    tokenOut: formatDecimal(item.tokenOutAmount),
-    tokenIn: formatDecimal(item.tokenInAmount),
-  }))
-
   const sales: BidsBySaleId = auctionBids.reduce(
     (a, x) => ({
       [x.sale.id]: {
@@ -77,7 +76,6 @@ export const generateInitialAuctionData = async (
     }),
     {}
   )
-  console.log(sales)
   return sales
   // [{}] --> {saleId: {lastupdated, bids[{}]}}
 }

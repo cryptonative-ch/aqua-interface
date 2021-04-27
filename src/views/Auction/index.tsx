@@ -52,7 +52,7 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { Auction, FairBidPick, AuctionBid } from 'src/interfaces/Auction'
+import { Auction, FairBidPick } from 'src/interfaces/Auction'
 
 //redux
 import { RootState } from 'src/redux/store'
@@ -101,9 +101,11 @@ export function AuctionView() {
     return auctions
   })
 
-  const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bidsBySaleId[params.auctionId].bids
+  const bidsbySale = useSelector<RootState, any>(state => {
+    return state.BidReducer.bidsBySaleId[params.auctionId]
   })
+
+  const bids = bidsbySale ? bidsbySale.bids : []
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -128,7 +130,7 @@ export function AuctionView() {
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [t, auction])
+  }, [t, auction, dispatch])
 
   if (!auction) {
     fetchData()

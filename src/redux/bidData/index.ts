@@ -92,6 +92,7 @@ export const fetchAuctionBids = (id: string, auctionType: auctionType, auctionBi
 // clear out store before switching auctions OR
 // use Redux loading to wait before props are changed OR
 // use Suspense to pause rendering of components
+// fetch and refetch data based upon time updated
 
 export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
@@ -104,7 +105,7 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
       return {
         ...state,
         isLoading: false,
-        bidsBySaleId: action.payload,
+        bidsBySaleId: { ...state.bidsBySaleId, ...action.payload },
       }
     case ActionTypes.INITIAL_BID_FAILURE:
       return {
