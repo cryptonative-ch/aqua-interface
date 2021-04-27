@@ -11,8 +11,6 @@ import { setPageTitle } from 'src/redux/page'
 import { fetchAuctions } from 'src/redux/auctionListings'
 import { RootState } from 'src/redux/store'
 
-// Layouts
-import { Center } from 'src/layouts/Center'
 
 // Components
 import { AuctionSummaryCard } from './components/AuctionSummaryCard'
@@ -91,9 +89,6 @@ export function AuctionsView() {
   const auctions = useSelector<RootState, Auction[]>(state => {
     return state.AuctionReducer.auctions
   })
-  const loading = useSelector<RootState, boolean>(state => {
-    return state.AuctionReducer.isLoading
-  })
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -103,10 +98,6 @@ export function AuctionsView() {
     dispatch(setPageTitle(t('pagesTitles.home')))
     fetchData()
   }, [t])
-
-  if (loading) {
-    return <Center minHeight="100%">LOADING</Center>
-  }
 
   return (
     <AuctionContext.Provider value={{ AuctionShow, setAuctionShow }}>

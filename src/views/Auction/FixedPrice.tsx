@@ -59,7 +59,6 @@ import { auctionsRequest } from 'src/subgraph/Auctions'
 import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { auctionBidsQuery } from 'src/subgraph/AuctionBids'
 import { fetchAuctionBids } from 'src/redux/bidData'
-import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
@@ -100,10 +99,6 @@ export function FixedPriceAuctionView() {
   const auction = useSelector<RootState, Auction>(state => {
     const auctions = state.AuctionReducer.auctions.filter(auction => auction.id == params.auctionId)[0]
     return auctions
-  })
-
-  const loading = useSelector<RootState, boolean>(state => {
-    return state.BidReducer.isLoading
   })
 
   const bids = useSelector<RootState, AuctionBid[]>(state => {
@@ -151,13 +146,10 @@ export function FixedPriceAuctionView() {
       const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
+      console.log('hi')
     }
     dispatch(setPageTitle(t(auction?.name as string)))
-  }, [t])
-
-  if (loading) {
-    return <Center minHeight="100%">LOADING</Center>
-  }
+  }, [t, auction])
 
   if (!auction) {
     fetchData()
