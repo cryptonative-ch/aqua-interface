@@ -28,4 +28,4 @@ jobs:
         run: npm test -- --coverage --passWithNoTests
 
       - name: Build
-        run: npm run build:ethereum
+        run: npm run build
