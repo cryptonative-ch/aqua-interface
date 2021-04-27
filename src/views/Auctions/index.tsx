@@ -11,7 +11,6 @@ import { setPageTitle } from 'src/redux/page'
 import { fetchAuctions } from 'src/redux/auctionListings'
 import { RootState } from 'src/redux/store'
 
-
 // Components
 import { AuctionSummaryCard } from './components/AuctionSummaryCard'
 import { Container } from 'src/components/Container'
