@@ -102,7 +102,7 @@ export function AuctionView() {
   })
 
   const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bids
+    return state.BidReducer.bidsBySaleId[params.auctionId].bids
   })
 
   const toggleModal = () => {

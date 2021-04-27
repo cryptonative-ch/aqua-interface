@@ -102,7 +102,7 @@ export function FixedPriceAuctionView() {
   })
 
   const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bids
+    return state.BidReducer.bidsBySaleId[params.auctionId].bids
   })
 
   const toggleModal = () => {
@@ -146,7 +146,6 @@ export function FixedPriceAuctionView() {
       const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
-      console.log('hi')
     }
     dispatch(setPageTitle(t(auction?.name as string)))
   }, [t, auction])

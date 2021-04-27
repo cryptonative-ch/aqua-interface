@@ -4,8 +4,9 @@
 import axios from 'axios'
 
 //interface
-import { Auction, AuctionBid, auctionType } from '../interfaces/Auction'
-;``
+import { Auction, auctionType } from '../interfaces/Auction'
+import { BidsBySaleId } from 'src/redux/bidData'
+
 // utils
 import { formatDecimal } from 'src/utils/Defaults'
 
@@ -52,24 +53,33 @@ export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType 
 export const generateInitialAuctionData = async (
   auctionBidsRequest: Promise<any>,
   auctiontypes: auctionType
-): Promise<AuctionBid[]> => {
+): Promise<BidsBySaleId> => {
+  let auctionBids: any[]
   if (auctiontypes == 'fixedPriceSale') {
-    const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].purchases.map((item: any) => ({
+    auctionBids = (await auctionBidsRequest)[auctiontypes].purchases.map((item: any) => ({
       ...item,
-
       amount: formatDecimal(item.amount),
     }))
-
-    return auctionBids
   }
 
-  const auctionBids: AuctionBid[] = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
+  auctionBids = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
     ...item,
     tokenOut: formatDecimal(item.tokenOutAmount),
     tokenIn: formatDecimal(item.tokenInAmount),
   }))
 
-  return auctionBids
+  const sales: BidsBySaleId = auctionBids.reduce(
+    (a, x) => ({
+      [x.sale.id]: {
+        lastUpdated: Date.now(),
+        bids: auctionBids,
+      },
+    }),
+    {}
+  )
+  console.log(sales)
+  return sales
+  // [{}] --> {saleId: {lastupdated, bids[{}]}}
 }
 
 export async function subgraphCall(endpoint: string, query: string) {
