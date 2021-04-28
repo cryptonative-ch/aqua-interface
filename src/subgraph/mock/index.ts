@@ -213,6 +213,7 @@ export const mocks = {
   String: () => casual.name,
   Boolean: () => casual.boolean,
   FairSale: () => ({
+    id: () => '0x092D3639b03826862d947aA58e031c79eF76EE9c',
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
     name: () => casual.company_name,
     createdAt: () => casual.unix_time,
@@ -230,6 +231,7 @@ export const mocks = {
     }),
   }),
   FixedPriceSale: () => ({
+    id: () => '0x257D5402b01056764d985aA44e154c07eF23EE6c',
     status: () => casual.random_element(['live', 'upcoming', 'closed']),
     name: () => casual.company_name,
     createdAt: () => casual.unix_time,
@@ -272,7 +274,7 @@ export const mocks = {
     decimals: () => casual.integer(1, 18),
   }),
   Query: () => ({
-    fairSales: () => new MockList(3),
-    fixedPriceSales: () => new MockList(3),
+    fairSales: () => new MockList(1),
+    fixedPriceSales: () => new MockList(1),
   }),
 }

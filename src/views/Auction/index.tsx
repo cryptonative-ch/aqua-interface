@@ -107,6 +107,9 @@ export function AuctionView() {
 
   const bids = bidsbySale ? bidsbySale.bids : []
 
+  console.log(bids)
+  console.log(bidsbySale)
+
   const toggleModal = () => {
     setModalVisible(true)
   }
