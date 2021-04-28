@@ -40,13 +40,10 @@ describe('Async Bid Data Actions and Reducers', () => {
       },
       {
         type: ActionTypes.INITIAL_BID_SUCCESS,
-        payload: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(String),
-          }),
-        ]),
+        payload: expect.objectContaining({}),
       },
     ]
+
     return store.dispatch(fetchAuctionBids(id, selectAuctiontype(id, auction), auctionBidsRequest.data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions)
     })
@@ -56,8 +53,8 @@ describe('Async Bid Data Actions and Reducers', () => {
         type: ActionTypes.INITIAL_BID_REQUEST,
         payload: true,
       }
-      expect(BidReducer({ isLoading: false, bids: [], error: null }, startAction)).toEqual({
-        bids: [],
+      expect(BidReducer({ isLoading: false, bidsBySaleId: {}, error: null }, startAction)).toEqual({
+        bidsBySaleId: {},
         isLoading: true,
         error: null,
       })
@@ -70,8 +67,8 @@ describe('Async Bid Data Actions and Reducers', () => {
         type: ActionTypes.INITIAL_BID_SUCCESS,
         payload: auctionBidsRequest.data,
       }
-      expect(BidReducer({ isLoading: false, bids: [], error: null }, expectedActions)).toEqual({
-        bids: expect.objectContaining({
+      expect(BidReducer({ isLoading: false, bidsBySaleId: {}, error: null }, expectedActions)).toEqual({
+        bidsBySaleId: expect.objectContaining({
           fairSale: expect.objectContaining({
             bids: expect.arrayContaining([
               expect.objectContaining({
@@ -89,8 +86,8 @@ describe('Async Bid Data Actions and Reducers', () => {
         type: ActionTypes.INITIAL_BID_FAILURE,
         payload: expect.any(Error),
       }
-      expect(BidReducer({ isLoading: false, bids: [], error: null }, startActions)).toEqual({
-        bids: [],
+      expect(BidReducer({ isLoading: false, bidsBySaleId: {}, error: null }, startActions)).toEqual({
+        bidsBySaleId: {},
         error: expect.any(Error),
         isLoading: false,
       })
