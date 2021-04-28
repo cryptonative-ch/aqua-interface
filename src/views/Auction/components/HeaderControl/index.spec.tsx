@@ -17,5 +17,11 @@ describe('HeaderControl', () => {
     test('should display graph image', () => {
       const { getByTestId } = render(<HeaderControl status="active" />)
       expect(getByTestId('graph-img')).toBeInTheDocument()
+    }),
+    test('should display progress bar based on auction', () => {
+      const { getByTestId } = render(<HeaderControl status="active" />)
+      expect(getByTestId('graph-img')).toBeInTheDocument()
+      
     })
+    
 })

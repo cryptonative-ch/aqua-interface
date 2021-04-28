@@ -1,6 +1,6 @@
 // External
 import styled from 'styled-components'
-import { space, SpaceProps, LayoutProps, ColorProps, BorderProps } from 'styled-system'
+import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
 import React from 'react'
 import numeral from 'numeral'
 
@@ -21,6 +21,8 @@ import { Auction } from 'src/interfaces/Auction'
 import { formatBigInt } from 'src/utils/Defaults'
 
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
+
+type BarBallMarker = BarActiveProps & MarginProps
 
 const ControlTitle = styled.div({
   fontStyle: 'normal',
@@ -78,14 +80,16 @@ const BarContainer = styled.div({
   position: 'relative',
 })
 
-const BarMarker = styled.div({
+const BarMarker = styled.div<BarBallMarker>(
+  props => ({
+  marginLeft: props.marginLeft?.toString() + "%",
   width: '6px',
   height: '6px',
   borderRadius: '6px',
   backgroundColor: '#7B7F93',
-  marginLeft: '20%',
   position: 'absolute',
 })
+)
 
 const BarActive = styled.div<BarActiveProps>(props => ({
   width: `${props.width}%`,
@@ -134,7 +138,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction
         </Flex>
         <BarContainer>
           <BarActive width={percentageSold}></BarActive>
-          <BarMarker></BarMarker>
+          <BarMarker marginLeft={auction.minFundingThreshold}></BarMarker>
         </BarContainer>
         <ControlButton ml="calc(20% - 66px)">{`Min. Threshold ${auction.minFundingThreshold}%`}</ControlButton>
       </Flex>
