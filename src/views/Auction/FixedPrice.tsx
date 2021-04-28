@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // External
 import React, { useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'

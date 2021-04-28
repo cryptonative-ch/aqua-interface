@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // External
 import React, { useEffect, useRef, useState } from 'react'
 import { useWallet } from 'use-wallet'
@@ -101,7 +103,7 @@ export function AuctionView() {
     return auctions
   })
 
-  const bidsbySale = useSelector<RootState, any>(state => {
+  const bidsbySale = useSelector<RootState, BidsBySaleId>(state => {
     return state.BidReducer.bidsBySaleId[params.auctionId]
   })
 
