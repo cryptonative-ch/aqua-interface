@@ -103,7 +103,7 @@ export function AuctionView() {
     return auctions
   })
 
-  const bidsbySale = useSelector<RootState, BidsBySaleId>(state => {
+  const bidsbySale = useSelector<RootState, any>(state => {
     return state.BidReducer.bidsBySaleId[params.auctionId]
   })
 
