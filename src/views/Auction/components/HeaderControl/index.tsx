@@ -1,6 +1,6 @@
 // External
 import styled from 'styled-components'
-import { space, SpaceProps } from 'styled-system'
+import { space, SpaceProps, LayoutProps, ColorProps, BorderProps } from 'styled-system'
 import React from 'react'
 import numeral from 'numeral'
 
@@ -19,6 +19,8 @@ import { Auction } from 'src/interfaces/Auction'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+
+type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
 const ControlTitle = styled.div({
   fontStyle: 'normal',
@@ -85,12 +87,12 @@ const BarMarker = styled.div({
   position: 'absolute',
 })
 
-const BarActive = styled.div({
+const BarActive = styled.div<BarActiveProps>(props => ({
+  width: `${props.width}%`,
   height: '8px',
   borderRadius: '8px',
-  width: '10%',
   backgroundColor: '#304FFE',
-})
+}))
 
 const LogoImg = styled.img({
   width: '60px',
@@ -118,6 +120,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction
   if (isFixed && status === 'active') {
     const tokenSold = formatBigInt(auction.soldAmount, auction.tokenOut.decimals)
     const totalSupply = formatBigInt(auction.sellAmount, auction.tokenOut.decimals)
+
     const percentageSold = (tokenSold / totalSupply) * 100
     return (
       <Flex flexDirection="column" flex={1}>
@@ -130,10 +133,10 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction
           </FixedDescription>
         </Flex>
         <BarContainer>
-          <BarActive></BarActive>
+          <BarActive width={percentageSold}></BarActive>
           <BarMarker></BarMarker>
         </BarContainer>
-        <ControlButton ml="calc(20% - 66px)">{'Min. Threshold 20%'}</ControlButton>
+        <ControlButton ml="calc(20% - 66px)">{`Min. Threshold ${auction.minFundingThreshold}%`}</ControlButton>
       </Flex>
     )
   }

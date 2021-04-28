@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // External
 import React, { useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
@@ -62,7 +64,6 @@ import { fetchAuctionBids } from 'src/redux/bidData'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
-import { Center } from 'src/layouts/Center'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -160,9 +161,6 @@ export function FixedPriceAuctionView() {
     }
   }
 
-  if (!bids) {
-    return <Center>LOADING</Center>
-  }
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
