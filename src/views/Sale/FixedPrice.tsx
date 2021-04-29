@@ -79,7 +79,7 @@ type BidFormProps = {
   tokenPrice: number
 }
 
-interface FixedPriceSaleViewParams {
+export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
@@ -104,13 +104,11 @@ export function FixedPriceSaleView() {
     return sales
   })
 
-  const bidsbySale = useSelector<RootState, any>(state => {
+  const bidsBySale = useSelector<RootState, any>(state => {
     return state.BidReducer.bidsBySaleId[params.saleId]
   })
 
-  const bids = bidsbySale ? bidsbySale.bids : []
-
-
+  const bids = bidsBySale ? bidsBySale.bids : []
 
   const toggleModal = () => {
     setModalVisible(true)

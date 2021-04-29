@@ -77,7 +77,6 @@ export const generateInitialSaleData = async (
     {}
   )
   return sales
-  // [{}] --> {saleId: {lastupdated, bids[{}]}}
 }
 
 export async function subgraphCall(endpoint: string, query: string) {

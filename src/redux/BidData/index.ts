@@ -87,13 +87,6 @@ export const fetchSaleBids = (id: string, saleType: saleType, saleBidsRequest: P
 
 //REDUCER
 
-// page loads before the data fetches the api
-// this occurs at every single sale switch
-// clear out store before switching sales OR
-// use Redux loading to wait before props are changed OR
-// use Suspense to pause rendering of components
-// fetch and refetch data based upon time updated
-
 export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
     case ActionTypes.INITIAL_BID_REQUEST:
@@ -105,7 +98,21 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
       return {
         ...state,
         isLoading: false,
-        bidsBySaleId: { ...state.bidsBySaleId, ...action.payload },
+        bidsBySaleId: {
+          ...state.bidsBySaleId,
+          [Object.keys(action.payload)[0]]: state.bidsBySaleId[Object.keys(action.payload)[0]]
+            ? {
+                lastUpdated: action.payload[Object.keys(action.payload)[0]].lastUpdated,
+                bids: [
+                  ...state.bidsBySaleId[Object.keys(action.payload)[0]].bids,
+                  ...action.payload[Object.keys(action.payload)[0]].bids,
+                ],
+              }
+            : {
+                lastUpdated: action.payload[Object.keys(action.payload)[0]].lastUpdated,
+                bids: [...action.payload[Object.keys(action.payload)[0]].bids],
+              },
+        },
       }
     case ActionTypes.INITIAL_BID_FAILURE:
       return {
