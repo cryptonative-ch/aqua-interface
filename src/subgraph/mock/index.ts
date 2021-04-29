@@ -10,11 +10,11 @@ export const schemaString = `
 interface EntityMetadata {
   # Contract address
   id: ID!
-  # The UTC timestamp at which the auction was placed
+  # The UTC timestamp at which the sale was placed
   createdAt: Int!
-  # The UTC timestamp at which the auction was updated
+  # The UTC timestamp at which the sale was updated
   updatedAt: Int!
-  # The UTC timestamp at which the auction was deleted
+  # The UTC timestamp at which the sale was deleted
   deletedAt: Int
 }
 
@@ -26,7 +26,7 @@ interface EntityMetadata {
 type MesaFactory  {
   # ID: should be a unique easy-to-reference
   id: ID!
-  # Auction
+  # Sale
   saleCount: Int!
   # Factory address
   address: String!
@@ -52,8 +52,8 @@ type FairSale implements EntityMetadata  {
   createdAt: Int!
   updatedAt: Int!
   deletedAt: Int
-  # Specific to the EasyAuction
-  # The auction name
+  # Specific to the EasySale
+  # The sale name
   name: String
   # open/ended/settled/upcoming
   status: String!
@@ -67,7 +67,7 @@ type FairSale implements EntityMetadata  {
   minimumBidAmount: String!
   # Bidding token (ie: DAI, USDC)
   tokenIn: Token!
-  # Auctioning token
+  # Saleing token
   tokenOut: Token!
   # List of bids
   # The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
@@ -75,7 +75,7 @@ type FairSale implements EntityMetadata  {
   bids: [FairSaleBid!]
 }
 
-# AuctionBid
+# SaleBid
 type FairSaleBid implements EntityMetadata  {
   id: ID!
   # Address of sale this bid is associated with
@@ -104,11 +104,11 @@ type FixedPriceSale implements EntityMetadata  {
   createdAt: Int!
   updatedAt: Int!
   deletedAt: Int
-  # The auction name
+  # The sale name
   name: String!
   # open/ended/settled/upcoming/cancelled/failed
   status: String!
-  # Specific to the FixedPriceAuction
+  # Specific to the FixedPriceSale
   startDate: Int! # Open timestamp
   endDate: Int! # Close timestamp
   # Amount to sell
@@ -174,7 +174,7 @@ type SaleTemplate  {
   createdAt: Int!
   updatedAt: Int!
   deletedAt: Int
-  # Address of the SaleTemplate contract: either EasyAuction or FixedPriceSale
+  # Address of the SaleTemplate contract: either EasySale or FixedPriceSale
   address: String!
   # Address of the MesaFactory
   factory: String!

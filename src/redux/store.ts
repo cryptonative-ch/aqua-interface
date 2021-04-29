@@ -4,8 +4,8 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 // Reducers
 import page from './page'
-import { BidReducer } from './bidData'
-import { AuctionReducer } from './auctionListings'
+import { BidReducer } from './BidData'
+import { SaleReducer } from './SaleListings'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
@@ -16,7 +16,7 @@ declare module 'react-redux' {
 const rootReducer = combineReducers({
   page,
   BidReducer,
-  AuctionReducer,
+  SaleReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

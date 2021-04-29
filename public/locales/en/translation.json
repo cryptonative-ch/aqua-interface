@@ -28,8 +28,8 @@
     "minPrice": "Minumum Price",
     "amountForSale": "Amount for Sale",
     "noBidsMessage": "There are no bids",
-    "runningAuctions": "Running Auctions",
-    "upcomingAuctions": "Upcoming Auctions",
+    "runningSales": "Running Sales",
+    "upcomingSales": "Upcoming Sales",
     "calculatedVirtualPrice": "Virtual Settlement Price",
     "bidMaybeTooLow": "Bid may be too low to be included",
     "doYouWishToContinue": "Do you wish to continue?",
@@ -41,8 +41,8 @@
     "goBack": "Go Back",
     "placeBid": "Place Bid",
     "addARandomBid": "Add A Random Bid",
-    "showClosedAuctions": "Show Closed Auctions",
-    "hideClosedAuctions": "Hide Closed Auctions",
+    "showClosedSales": "Show Closed Sales",
+    "hideClosedSales": "Hide Closed Sales",
     "backToSales": "Back to all sales"
   }
 }

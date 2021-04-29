@@ -3,9 +3,9 @@ import { Route, Switch } from 'react-router-dom'
 import React, { useContext } from 'react'
 
 // Views
-import { AuctionView } from 'src/views/Auction'
-import { AuctionsView } from 'src/views/Auctions'
-import { FixedPriceAuctionView } from 'src/views/Auction/FixedPrice'
+import { SaleView } from 'src/views/Sale'
+import { SalesView } from 'src/views/Sales'
+import { FixedPriceSaleView } from 'src/views/Sale/FixedPrice'
 import { StaticView } from 'src/views/Static'
 import { SanctionContext } from 'src/contexts'
 import { NotFoundView } from 'src/views/NotFound'
@@ -23,12 +23,12 @@ export const AppRouter = () => {
 
   return (
     <Switch>
-      <Route exact path="/" component={AuctionsView} />
-      <Route exact path="/auctions" component={AuctionsView} />
-      <Route exact path="/auctions/:auctionId" component={AuctionView} />
-      <Route exact path="/auctions/fixed/:auctionId" component={FixedPriceAuctionView} />
+      <Route exact path="/" component={SalesView} />
+      <Route exact path="/sales" component={SalesView} />
+      <Route exact path="/sales/:saleId" component={SaleView} />
+      <Route exact path="/sales/fixed/:saleId" component={FixedPriceSaleView} />
       <Route exact path="/about" component={StaticView} />
-      <Route exact path="/contact" component={AuctionsView} />
+      <Route exact path="/contact" component={SalesView} />
       <Route exact path="*" component={NotFoundView} />
     </Switch>
   )

@@ -2,21 +2,21 @@
 import { BigNumber } from 'ethers'
 
 // Interfaces
-import { FairSaleBid, FairBidPick } from 'src/interfaces/Auction'
+import { FairSaleBid, FairBidPick } from 'src/interfaces/Sale'
 
 /**
  * source: https://github.com/gnosis/ido-contracts/blob/main/src/priceCalculation.ts
  */
 
-function findClearingPrice(sellOrders: FairSaleBid[], initialAuctionOrder: FairSaleBid): FairBidPick {
+function findClearingPrice(sellOrders: FairSaleBid[], initialSaleOrder: FairSaleBid): FairBidPick {
   let totalSellVolume = BigNumber.from(0)
 
   for (const order of sellOrders) {
     // Increase total volume
     totalSellVolume = totalSellVolume.add(order.tokenIn)
 
-    if (totalSellVolume.mul(order.tokenOut).div(order.tokenIn).gte(initialAuctionOrder.tokenIn)) {
-      const coveredtokenOut = initialAuctionOrder.tokenIn.sub(
+    if (totalSellVolume.mul(order.tokenOut).div(order.tokenIn).gte(initialSaleOrder.tokenIn)) {
+      const coveredtokenOut = initialSaleOrder.tokenIn.sub(
         totalSellVolume.sub(order.tokenIn).mul(order.tokenOut).div(order.tokenIn)
       )
       const tokenInClearingOrder = coveredtokenOut.mul(order.tokenIn).div(order.tokenOut)
@@ -24,25 +24,25 @@ function findClearingPrice(sellOrders: FairSaleBid[], initialAuctionOrder: FairS
         return order
       } else {
         return {
-          address: initialAuctionOrder.address,
-          tokenOut: initialAuctionOrder.tokenIn,
+          address: initialSaleOrder.address,
+          tokenOut: initialSaleOrder.tokenIn,
           tokenIn: totalSellVolume.sub(order.tokenIn),
         }
       }
     }
   }
-  // otherwise, clearing price is initialAuctionOrder
-  if (totalSellVolume.gt(initialAuctionOrder.tokenOut)) {
+  // otherwise, clearing price is initialSaleOrder
+  if (totalSellVolume.gt(initialSaleOrder.tokenOut)) {
     return {
-      address: initialAuctionOrder.address,
-      tokenOut: initialAuctionOrder.tokenIn,
+      address: initialSaleOrder.address,
+      tokenOut: initialSaleOrder.tokenIn,
       tokenIn: totalSellVolume,
     }
   } else {
     return {
-      address: initialAuctionOrder.address,
-      tokenOut: initialAuctionOrder.tokenIn,
-      tokenIn: initialAuctionOrder.tokenOut,
+      address: initialSaleOrder.address,
+      tokenOut: initialSaleOrder.tokenIn,
+      tokenIn: initialSaleOrder.tokenOut,
     }
   }
 }
@@ -60,7 +60,7 @@ export function hasLowerClearingPrice(order1: FairSaleBid, order2: FairSaleBid):
 }
 
 /**
- * Calculates the clearing price using the auction bids
+ * Calculates the clearing price using the sale bids
  * @param FairSaleBids
  */
 export function calculateClearingPrice(fairSaleBids: FairSaleBid[]): FairBidPick {

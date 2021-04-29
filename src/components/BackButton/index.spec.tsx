@@ -24,6 +24,6 @@ describe('BackButton', () => {
       </Router>
     )
     expect(getByText('buttons.backToSales')).toBeInTheDocument()
-    expect((getByTestId('back-ref') as HTMLLinkElement).href).toContain('/auctions')
+    expect((getByTestId('back-ref') as HTMLLinkElement).href).toContain('/sales')
   })
 })

@@ -36,7 +36,7 @@ export function BackButton() {
   const [t] = useTranslation()
 
   return (
-    <BackLink to="/auctions" data-testid="back-ref">
+    <BackLink to="/sales" data-testid="back-ref">
       <ArrowImg src={LeftArrowSVG} />
       <ButtonText data-testid="back-button">{t('buttons.backToSales')}</ButtonText>
     </BackLink>

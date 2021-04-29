@@ -4,18 +4,18 @@
 import axios from 'axios'
 
 //interface
-import { Auction, auctionType } from '../interfaces/Auction'
-import { BidsBySaleId } from 'src/redux/bidData'
+import { Sale, saleType } from '../interfaces/Sale'
+import { BidsBySaleId } from 'src/redux/BidData'
 
 // utils
 import { formatDecimal } from 'src/utils/Defaults'
 
 export const ENDPOINT: string = process.env.REACT_APP_ENDPOINT as string
-export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Auction[]> => {
-  const fairSale: auctionType = 'fairSale'
-  const fixedPriceSale: auctionType = 'fixedPriceSale'
+export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> => {
+  const fairSale: saleType = 'fairSale'
+  const fixedPriceSale: saleType = 'fixedPriceSale'
 
-  const fairSales: Auction[] = (await auctionsRequest).fairSales
+  const fairSales: Sale[] = (await salesRequest).fairSales
 
   const addFairSaleType =
     fairSales.length != 0
@@ -27,7 +27,7 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
         }))
       : []
 
-  const fixedPriceSales: Auction[] = (await auctionsRequest).fixedPriceSales
+  const fixedPriceSales: Sale[] = (await salesRequest).fixedPriceSales
   const addFixedPriceSalesType =
     fixedPriceSales.length != 0
       ? fixedPriceSales.map((item: any) => ({
@@ -41,37 +41,37 @@ export const getAuctionsData = async (auctionsRequest: Promise<any>): Promise<Au
         }))
       : []
 
-  const auctionsArray = [...addFairSaleType, ...addFixedPriceSalesType]
-  return auctionsArray
+  const salesArray = [...addFairSaleType, ...addFixedPriceSalesType]
+  return salesArray
 }
 
-export const selectAuctiontype = (id: string, auctions: Auction[]): auctionType => {
-  const auctionType: Auction = auctions.filter(item => item.id === id)[0]
-  return auctionType.type
+export const selectSaletype = (id: string, sales: Sale[]): saleType => {
+  const saleType: Sale = sales.filter(item => item.id === id)[0]
+  return saleType.type
 }
 
-export const generateInitialAuctionData = async (
-  auctionBidsRequest: Promise<any>,
-  auctiontypes: auctionType
+export const generateInitialSaleData = async (
+  saleBidsRequest: Promise<any>,
+  saletypes: saleType
 ): Promise<BidsBySaleId> => {
-  let auctionBids: any[]
-  if (auctiontypes == 'fixedPriceSale') {
-    auctionBids = (await auctionBidsRequest)[auctiontypes].purchases.map((item: any) => ({
+  let saleBids: any[]
+  if (saletypes == 'fixedPriceSale') {
+    saleBids = (await saleBidsRequest)[saletypes].purchases.map((item: any) => ({
       ...item,
       amount: formatDecimal(item.amount),
     }))
   } else {
-    auctionBids = (await auctionBidsRequest)[auctiontypes].bids.map((item: any) => ({
+    saleBids = (await saleBidsRequest)[saletypes].bids.map((item: any) => ({
       ...item,
       tokenOut: formatDecimal(item.tokenOutAmount),
       tokenIn: formatDecimal(item.tokenInAmount),
     }))
   }
-  const sales: BidsBySaleId = auctionBids.reduce(
+  const sales: BidsBySaleId = saleBids.reduce(
     (a, x) => ({
       [x.sale.id]: {
         lastUpdated: Date.now(),
-        bids: auctionBids,
+        bids: saleBids,
       },
     }),
     {}

@@ -18,9 +18,9 @@ $ npm run start
 
 ## Views
 
-Fixed Price Auction, currently not linked:
+Fixed Price Sale, currently not linked:
 
-http://localhost:3000/auctions/fixed/0x142
+http://localhost:3000/sales/fixed/0x142
 
 ## Scripts
 
