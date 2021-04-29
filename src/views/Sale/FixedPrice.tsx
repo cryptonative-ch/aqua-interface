@@ -110,6 +110,8 @@ export function FixedPriceSaleView() {
 
   const bids = bidsbySale ? bidsbySale.bids : []
 
+
+
   const toggleModal = () => {
     setModalVisible(true)
   }
