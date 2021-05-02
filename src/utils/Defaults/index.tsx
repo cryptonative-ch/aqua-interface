@@ -3,7 +3,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 
 // Interface
-import { Auction, auctionType, FairSale, FixedPriceSale } from 'src/interfaces/Auction'
+import { Sale, saleType, FairSale, FixedPriceSale } from 'src/interfaces/Sale'
 
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
@@ -121,8 +121,8 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   bids: [],
 })
 
-export const getAuctionDefault = (a?: Partial<Auction>, auctiontype: auctionType = 'fairSale') =>
-  auctiontype == 'fixedPriceSale'
+export const getSaleDefault = (a?: Partial<Sale>, saletype: saleType = 'fairSale') =>
+  saletype == 'fixedPriceSale'
     ? {
         ...getFixedPriceSales(),
         ...a,

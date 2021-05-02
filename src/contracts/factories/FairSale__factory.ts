@@ -174,7 +174,7 @@ const _abi = [
       {
         indexed: false,
         internalType: 'uint96',
-        name: 'auctionedTokens',
+        name: 'saleedTokens',
         type: 'uint96',
       },
       {
@@ -227,7 +227,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'auctionStartedDate',
+    name: 'saleStartedDate',
     outputs: [
       {
         internalType: 'uint256',
@@ -393,7 +393,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'initialAuctionOrder',
+    name: 'initialSaleOrder',
     outputs: [
       {
         internalType: 'bytes32',
@@ -571,7 +571,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'settleAuction',
+    name: 'settleSale',
     outputs: [
       {
         internalType: 'bytes32',
@@ -600,7 +600,7 @@ const _abi = [
         type: 'bytes32[]',
       },
     ],
-    name: 'settleAuctionAtomically',
+    name: 'settleSaleAtomically',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

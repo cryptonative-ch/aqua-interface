@@ -159,7 +159,7 @@
       {
         "indexed": false,
         "internalType": "uint96",
-        "name": "auctionedTokens",
+        "name": "saleedTokens",
         "type": "uint96"
       },
       {
@@ -212,7 +212,7 @@
   },
   {
     "inputs": [],
-    "name": "auctionStartedDate",
+    "name": "saleStartedDate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -378,7 +378,7 @@
   },
   {
     "inputs": [],
-    "name": "initialAuctionOrder",
+    "name": "initialSaleOrder",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -556,7 +556,7 @@
   },
   {
     "inputs": [],
-    "name": "settleAuction",
+    "name": "settleSale",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -585,7 +585,7 @@
         "type": "bytes32[]"
       }
     ],
-    "name": "settleAuctionAtomically",
+    "name": "settleSaleAtomically",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

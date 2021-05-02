@@ -28,7 +28,7 @@ import { MobileFooter } from 'src/components/MobileFooter'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
-import { HeaderItem } from '../Auction/components/HeaderItem'
+import { HeaderItem } from '../Sale/components/HeaderItem'
 
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
