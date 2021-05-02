@@ -43,7 +43,7 @@ export const salesQuery = `
       endDate
       tokenAmount
       minimumBidAmount
-      
+      minFundingThreshold
       tokenIn {
         id
         name

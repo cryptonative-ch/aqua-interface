@@ -64,7 +64,6 @@ import { fetchSaleBids } from 'src/redux/BidData'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
-import { Center } from 'src/layouts/Center'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -162,9 +161,6 @@ export function FixedPriceSaleView() {
     }
   }
 
-  if (!bids) {
-    return <Center>LOADING</Center>
-  }
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>

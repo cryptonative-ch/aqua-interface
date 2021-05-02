@@ -70,12 +70,14 @@ export const generateInitialSaleData = async (
   const sales: BidsBySaleId = saleBids.reduce(
     (a, x) => ({
       [x.sale.id]: {
+        lastUpdated: Date.now(),
         bids: saleBids,
       },
     }),
     {}
   )
   return sales
+  // [{}] --> {saleId: {lastupdated, bids[{}]}}
 }
 
 export async function subgraphCall(endpoint: string, query: string) {
