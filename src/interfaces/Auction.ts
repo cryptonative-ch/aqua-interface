@@ -15,7 +15,7 @@ interface BaseAuction {
 interface Bid {
   id: string
   status: string // submitted/settled/cancelled/claimed
-  BaseAuction: string
+  BaseAuction: BaseAuction
   createdAt: number // The UTC timestamp at which the bid was placed
   updatedAt: number | null // The UTC timestamp at which the bid was updated
   deletedAt: number | null // The UTC timestamp at which the bid was deleted

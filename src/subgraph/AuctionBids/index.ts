@@ -7,6 +7,9 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceSale
       id
       buyer
       amount
+      sale {
+        id
+      }
     }
    }
  }
@@ -20,6 +23,9 @@ export const auctionBidsQuery = (auctionid: string, auctionType: 'fixedPriceSale
       id
       tokenInAmount
       tokenOutAmount
+      sale {
+        id
+      }
     }
    }
  }

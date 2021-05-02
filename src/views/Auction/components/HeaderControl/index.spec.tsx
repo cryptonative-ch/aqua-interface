@@ -7,6 +7,9 @@ import '@testing-library/jest-dom/extend-expect'
 // Component
 import { HeaderControl } from './index'
 
+// Mesa utils
+import { getAuctionDefault } from "src/utils/Defaults";
+
 describe('HeaderControl', () => {
   test('should display texts and logo img', () => {
     const { getByText, getByTestId } = render(<HeaderControl status="closed" />)
@@ -17,5 +20,5 @@ describe('HeaderControl', () => {
     test('should display graph image', () => {
       const { getByTestId } = render(<HeaderControl status="active" />)
       expect(getByTestId('graph-img')).toBeInTheDocument()
-    })
+    })    
 })

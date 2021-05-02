@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // External
 import React, { useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
@@ -48,7 +50,7 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { Auction, AuctionBid } from 'src/interfaces/Auction'
+import { Auction } from 'src/interfaces/Auction'
 
 // Constants
 import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
@@ -101,9 +103,11 @@ export function FixedPriceAuctionView() {
     return auctions
   })
 
-  const bids = useSelector<RootState, AuctionBid[]>(state => {
-    return state.BidReducer.bids
+  const bidsbySale = useSelector<RootState, any>(state => {
+    return state.BidReducer.bidsBySaleId[params.auctionId]
   })
+
+  const bids = bidsbySale ? bidsbySale.bids : []
 
   const toggleModal = () => {
     setModalVisible(true)
@@ -146,7 +150,6 @@ export function FixedPriceAuctionView() {
       const auctionBidsRequest = subgraphCall(ENDPOINT, auctionBidsQuery(params.auctionId, auction.type))
       const fetchBids = () => dispatch(fetchAuctionBids(params.auctionId, auction.type, auctionBidsRequest))
       fetchBids()
-      console.log('hi')
     }
     dispatch(setPageTitle(t(auction?.name as string)))
   }, [t, auction])

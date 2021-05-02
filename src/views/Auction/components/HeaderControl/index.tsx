@@ -1,6 +1,6 @@
 // External
 import styled from 'styled-components'
-import { space, SpaceProps } from 'styled-system'
+import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
 import React from 'react'
 import numeral from 'numeral'
 
@@ -19,6 +19,10 @@ import { Auction } from 'src/interfaces/Auction'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+
+type BarActiveProps = LayoutProps & ColorProps & BorderProps
+
+type BarBallMarker = BarActiveProps & MarginProps
 
 const ControlTitle = styled.div({
   fontStyle: 'normal',
@@ -76,21 +80,23 @@ const BarContainer = styled.div({
   position: 'relative',
 })
 
-const BarMarker = styled.div({
+const BarMarker = styled.div<BarBallMarker>(
+  props => ({
+  marginLeft: props.marginLeft?.toString() + "%",
   width: '6px',
   height: '6px',
   borderRadius: '6px',
   backgroundColor: '#7B7F93',
-  marginLeft: '20%',
   position: 'absolute',
 })
+)
 
-const BarActive = styled.div({
+const BarActive = styled.div<BarActiveProps>(props => ({
+  width: `${props.width}%`,
   height: '8px',
   borderRadius: '8px',
-  width: '10%',
   backgroundColor: '#304FFE',
-})
+}))
 
 const LogoImg = styled.img({
   width: '60px',
@@ -118,6 +124,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction
   if (isFixed && status === 'active') {
     const tokenSold = formatBigInt(auction.soldAmount, auction.tokenOut.decimals)
     const totalSupply = formatBigInt(auction.sellAmount, auction.tokenOut.decimals)
+
     const percentageSold = (tokenSold / totalSupply) * 100
     return (
       <Flex flexDirection="column" flex={1}>
@@ -130,10 +137,10 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, auction
           </FixedDescription>
         </Flex>
         <BarContainer>
-          <BarActive></BarActive>
-          <BarMarker></BarMarker>
+          <BarActive width={percentageSold}></BarActive>
+          <BarMarker marginLeft={auction.minFundingThreshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml="calc(20% - 66px)">{'Min. Threshold 20%'}</ControlButton>
+        <ControlButton ml="calc(20% - 66px)">{`Min. Threshold ${auction.minFundingThreshold}%`}</ControlButton>
       </Flex>
     )
   }
