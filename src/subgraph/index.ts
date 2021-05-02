@@ -70,7 +70,6 @@ export const generateInitialSaleData = async (
   const sales: BidsBySaleId = saleBids.reduce(
     (a, x) => ({
       [x.sale.id]: {
-        lastUpdated: Date.now(),
         bids: saleBids,
       },
     }),

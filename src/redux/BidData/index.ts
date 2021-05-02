@@ -3,6 +3,7 @@
 // Externals
 import { Action } from 'redux'
 import { AppThunk } from '../store'
+import dayjs from 'dayjs'
 
 // interface
 import { SaleBid } from 'src/interfaces/Sale'
@@ -24,7 +25,7 @@ export enum ActionTypes {
 export interface BidsBySaleId {
   // "ox223123nlda": {"lastupdated", "bids: []"}
   [saleId: string]: {
-    lastUpdated: number // UTC timestamp
+    updatedAt: number // UTC timestamp
     bids: SaleBid[] // bids
   }
 }
@@ -48,6 +49,7 @@ export const initialBidRequest = (payload: boolean) => ({
   type: ActionTypes.INITIAL_BID_REQUEST,
 })
 
+// initial fetch data from api
 export const initialBidSuccess = (payload: BidsBySaleId) => ({
   payload,
   type: ActionTypes.INITIAL_BID_SUCCESS,
@@ -73,8 +75,19 @@ const defaultState: BidState = {
 
 // fetch Data
 
-export const fetchSaleBids = (id: string, saleType: saleType, saleBidsRequest: Promise<any>): AppThunk => {
-  return async dispatch => {
+export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsRequest: Promise<any>): AppThunk => {
+  return async (dispatch, getState) => {
+    // Current time
+    const timeNow = dayjs.utc().unix()
+    // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
+    const { updatedAt } = getState().bidReducer.bidsBySaleId[saleId] || timeNow
+    const delta = Math.abs(updatedAt - timeNow)
+    // exit
+    if (delta <= 30) {
+      return
+    }
+    // fetch new (fresh) data
+
     dispatch(initialBidRequest(true))
     try {
       dispatch(initialBidSuccess(await generateInitialSaleData(saleBidsRequest, saleType)))
@@ -85,9 +98,13 @@ export const fetchSaleBids = (id: string, saleType: saleType, saleBidsRequest: P
   }
 }
 
+const keyFinder = (object: BidsBySaleId) => {
+  return Object.keys(object)[0]
+}
+
 //REDUCER
 
-export function BidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
+export function bidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
   switch (action.type) {
     case ActionTypes.INITIAL_BID_REQUEST:
       return {
@@ -95,22 +112,27 @@ export function BidReducer(state: BidState = defaultState, action: BidActionType
         isLoading: action.payload,
       }
     case ActionTypes.INITIAL_BID_SUCCESS:
+      // Extract the saleid
+      const saleId = keyFinder(action.payload)
+
+      // create a cache timestamp
+      const updatedAt = dayjs.utc().unix()
+      // get bidsBySaleId from previous state
+      const { bidsBySaleId } = state
+
       return {
         ...state,
         isLoading: false,
         bidsBySaleId: {
-          ...state.bidsBySaleId,
-          [Object.keys(action.payload)[0]]: state.bidsBySaleId[Object.keys(action.payload)[0]]
+          ...bidsBySaleId,
+          [saleId]: bidsBySaleId[saleId]
             ? {
-                lastUpdated: action.payload[Object.keys(action.payload)[0]].lastUpdated,
-                bids: [
-                  ...state.bidsBySaleId[Object.keys(action.payload)[0]].bids,
-                  ...action.payload[Object.keys(action.payload)[0]].bids,
-                ],
+                updatedAt: updatedAt,
+                bids: [...bidsBySaleId[saleId].bids, ...action.payload[saleId].bids],
               }
             : {
-                lastUpdated: action.payload[Object.keys(action.payload)[0]].lastUpdated,
-                bids: [...action.payload[Object.keys(action.payload)[0]].bids],
+                updatedAt: updatedAt,
+                bids: action.payload[saleId].bids,
               },
         },
       }

@@ -105,7 +105,7 @@ export function FixedPriceSaleView() {
   })
 
   const bidsBySale = useSelector<RootState, any>(state => {
-    return state.BidReducer.bidsBySaleId[params.saleId]
+    return state.bidReducer.bidsBySaleId[params.saleId]
   })
 
   const bids = bidsBySale ? bidsBySale.bids : []

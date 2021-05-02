@@ -28,3 +28,6 @@ yarn.lock
 # dependencies
 .vscode
 .husky/_/
+
+#misc
+notes.md
