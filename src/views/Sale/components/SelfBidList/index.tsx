@@ -8,7 +8,7 @@ import numeral from 'numeral'
 import { Flex } from 'src/components/Flex'
 
 // Utility
-import { isSaleOpen } from 'src/mesa/sale'
+import { isSaleOpen, isSaleClosed } from 'src/mesa/sale'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Svg
@@ -124,23 +124,27 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
       formatBigInt(clearingPrice.tokenOut, sale.tokenOut.decimals)
     : 0
 
-  if (isFixed && isSaleOpen(sale)) {
+  if (isFixed) {
     return (
       <Flex flexDirection="column" style={{ position: 'relative' }}>
         <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding={isMobile ? '0 8px' : '0 16px'}>
-          <Flex flex={3}>
+          <Flex flex={isMobile ? 2.5 : 3}>
             <ColumnLabel>Type</ColumnLabel>
           </Flex>
-          <Flex flex={3}>
+          <Flex flex={ 3}>
             <ColumnLabel>Amount</ColumnLabel>
           </Flex>
-          <Flex flex={6} flexDirection="row" alignItems="center">
+          <Flex flex={3} flexDirection="row" alignItems="center">
             <ColumnLabel>Value</ColumnLabel>
           </Flex>
+          {isSaleClosed(sale) ? (
+            <Flex flex={isMobile ? 1 : 3}  flexDirection="row" alignItems="center" justifyContent="flex-end">
+              <ColumnLabel>Status</ColumnLabel>
+            </Flex>
+          ) : null}
         </Flex>
 
         {bids.map((bid: SaleBid, index: number) => {
-          const bidPrice = formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)
           const bidValue =
             formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
 
@@ -154,26 +158,38 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
               padding={isMobile ? '0 8px' : '0 16px'}
             >
               <Flex flex={3}>
-                <TokenPriceLabel color={vsp <= bidPrice ? '#4B9E98' : '#000629'}>
-                  {vsp <= bidPrice ? 'Buy Order' : 'Withdrawal'}
+                <TokenPriceLabel color={isSaleOpen(sale) ? '#4B9E98' : '#000629'}>
+                  {isSaleOpen(sale) ? 'Buy Order' : 'Withdrawal'}
                 </TokenPriceLabel>
               </Flex>
+
               <Flex flex={3}>
                 <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0')} ${
                   sale.tokenOut?.symbol
                 }`}</TokenPriceLabel>
               </Flex>
+
               <Flex flex={6}>
                 <TokenPriceLabel>{`${numeral(bidValue).format('0')} DAI`}</TokenPriceLabel>
                 <Flex flex={1} />
-                <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
+                {isSaleClosed(sale) ? (
+                  <>
+                    <IconImg src={WarningSVG} margin={ '4px 4px 0 8px'} />
+                    {!isMobile && (
+                    <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                      Unclaimed
+                    </TokenPriceLabel>
+                )}
+                  </>
+                ) : (
+                  <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
+                )}
               </Flex>
             </Flex>
           )
         })}
         {bidMenu !== -1 && (
           <ModalContainer itemIndex={bidMenu}>
-            <ModalMenu>Change Bid Price</ModalMenu>
             <ModalMenu>Withdraw Bid</ModalMenu>
           </ModalContainer>
         )}
@@ -282,7 +298,6 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
       })}
       {bidMenu !== -1 && (
         <ModalContainer itemIndex={bidMenu}>
-          <ModalMenu>Change Bid Price</ModalMenu>
           <ModalMenu>Withdraw Bid</ModalMenu>
         </ModalContainer>
       )}
