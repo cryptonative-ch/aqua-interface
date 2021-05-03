@@ -134,7 +134,7 @@ export function SaleView() {
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [t, sale, clearingPrice])
+  }, [t, sale])
 
   if (!sale) {
     fetchData()
