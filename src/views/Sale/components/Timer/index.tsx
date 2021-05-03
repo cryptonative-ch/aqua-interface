@@ -1,6 +1,7 @@
 // External
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import moment from 'moment-timezone'
 
 // Components
 import { CardText } from 'src/components/CardText'
@@ -12,6 +13,7 @@ import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
+
 
 interface TimerComponentProps {
   sale: Sale
@@ -40,7 +42,7 @@ export const timeFrame = (unixSeconds: number) => {
   const endDateDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
   const endDate = endDateDateTime.slice(4, 10)
   const endTime = endDateDateTime.slice(15, 21)
-  const timeZoneStamp = endDateDateTime.slice(25, 28)
+  const timeZoneStamp = moment().tz(moment.tz.guess()).format('z');
 
   if (unixSeconds < 0) {
     throw Error('seconds cannot be negative')
