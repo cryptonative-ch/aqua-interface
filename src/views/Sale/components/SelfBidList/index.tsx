@@ -131,14 +131,14 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
           <Flex flex={isMobile ? 2.5 : 3}>
             <ColumnLabel>Type</ColumnLabel>
           </Flex>
-          <Flex flex={ 3}>
+          <Flex flex={3}>
             <ColumnLabel>Amount</ColumnLabel>
           </Flex>
-          <Flex flex={3} flexDirection="row" alignItems="center">
+          <Flex flex={isSaleClosed(sale) ? 3 : 6} flexDirection="row" alignItems="center">
             <ColumnLabel>Value</ColumnLabel>
           </Flex>
           {isSaleClosed(sale) ? (
-            <Flex flex={isMobile ? 1 : 3}  flexDirection="row" alignItems="center" justifyContent="flex-end">
+            <Flex flex={isMobile ? 1 : 3} flexDirection="row" alignItems="center" justifyContent="flex-end">
               <ColumnLabel>Status</ColumnLabel>
             </Flex>
           ) : null}
@@ -174,12 +174,12 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
                 <Flex flex={1} />
                 {isSaleClosed(sale) ? (
                   <>
-                    <IconImg src={WarningSVG} margin={ '4px 4px 0 8px'} />
+                    <IconImg src={WarningSVG} margin={'4px 4px 0 8px'} />
                     {!isMobile && (
-                    <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                      Unclaimed
-                    </TokenPriceLabel>
-                )}
+                      <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                        Unclaimed
+                      </TokenPriceLabel>
+                    )}
                   </>
                 ) : (
                   <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />

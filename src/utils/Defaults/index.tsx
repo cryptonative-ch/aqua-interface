@@ -100,6 +100,7 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
   soldAmount: BigNumber.from(5000),
+  minimumRaise: BigNumber.from(200),
   tokenIn: {
     id: '0x141',
     name: 'DAI',
