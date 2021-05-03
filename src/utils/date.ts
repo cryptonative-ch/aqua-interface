@@ -16,14 +16,14 @@ export const convertUtcTimestampToLocal = (utcTimestamp: number) => {
   return dateUTC.unix()
 }
 
-export const convertTimestampWithMoment = (utcTimestamp: number) => {
+export const faketimer = (utcTimestamp: number) => {
   return dayjs
     .utc(utcTimestamp * 1000)
     .tz(dayjs.tz.guess())
     .format('MMM D, hh:mm z')
 }
 
-export const calculateTimeDifference = (utcTimestamp: number) => {
+export const calculatefaketimer = (utcTimestamp: number) => {
   const targetDate = dayjs.utc(utcTimestamp * 1000)
   const durationText = dayjs.duration(targetDate.diff(dayjs())).format('M D H m s').split(' ')
   const units = ['months', 'd', 'h', 'm', 's']
