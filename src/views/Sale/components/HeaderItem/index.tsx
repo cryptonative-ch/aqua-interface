@@ -82,9 +82,7 @@ export function HeaderItem({
     if (saleLive && sale) {
       const interval = setInterval(() => {
         setTime(PrevTime => (PrevTime + 1) % 2)
-
         const localTimeStamp = dayjs(Date.now()).unix()
-
         const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(sale.endDate))
         setDescriptionText(secondsTohms(timeDiffEnd))
       }, 1000)
@@ -93,7 +91,9 @@ export function HeaderItem({
         clearInterval(interval)
       }
     }
-  }, [descriptionText])
+    setDescriptionText(description)
+  }, [description])
+
 
   return (
     <Flex

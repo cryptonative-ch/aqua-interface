@@ -109,6 +109,8 @@ export function SaleView() {
 
   const bids = bidsBySale ? bidsBySale.bids : []
 
+
+
   const toggleModal = () => {
     setModalVisible(true)
   }
@@ -132,7 +134,7 @@ export function SaleView() {
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
-  }, [t, sale, dispatch])
+  }, [t, sale, clearingPrice])
 
   if (!sale) {
     fetchData()
