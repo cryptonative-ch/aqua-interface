@@ -12,6 +12,10 @@ import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { Flex } from 'src/components/Flex'
 
+
+// Svg
+import noToken from 'src/assets/svg/no_token_image.svg'
+
 const HeaderText = styled.div({
   fontStyle: 'normal',
   fontWeight: 600,
@@ -138,7 +142,7 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
   if (isMobile) {
     return (
       <HeaderContainer isMobile={isMobile}>
-        <MobileTokenContainer src={sale.tokenOut?.icon} />
+        <MobileTokenContainer src={sale.tokenOut?.icon || noToken} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
           <MobileHeaderText>{`${sale.name} Initial Sale`}</MobileHeaderText>
           <MobileStatusText>Private</MobileStatusText>
@@ -149,7 +153,7 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
 
   return (
     <HeaderContainer isMobile={isMobile}>
-      <TokenIconContainer src={sale.tokenOut?.icon} />
+      <TokenIconContainer src={sale.tokenOut?.icon || noToken} />
       <HeaderText>{`${sale.name} Initial Sale`}</HeaderText>
       <StatusText>Private</StatusText>
       {isSaleOpen(sale) && <TimeText data-testid="format_time">{format_time}</TimeText>}

@@ -65,6 +65,7 @@ import { fetchSaleBids } from 'src/redux/BidData'
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
 
+
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
