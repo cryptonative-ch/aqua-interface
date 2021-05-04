@@ -1,6 +1,13 @@
 // External
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import advanced from 'dayjs/plugin/advancedFormat'
+
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+import relativeTime from 'dayjs/plugin/relativeTime'
+import durationTime from 'dayjs/plugin/duration'
 
 // Components
 import { CardText } from 'src/components/CardText'
@@ -12,6 +19,14 @@ import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
+import { timezoneAbbreviation } from 'src/utils/timezone'
+
+dayjs.extend(advanced)
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(advanced)
+dayjs.extend(relativeTime)
+dayjs.extend(durationTime)
 
 interface TimerComponentProps {
   sale: Sale
@@ -40,7 +55,7 @@ export const timeFrame = (unixSeconds: number) => {
   const endDateDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
   const endDate = endDateDateTime.slice(4, 10)
   const endTime = endDateDateTime.slice(15, 21)
-  const timeZoneStamp = endDateDateTime.slice(25, 28)
+  const timeZoneStamp = timezoneAbbreviation(dayjs().tz(dayjs.tz.guess()).format('zzz'))
 
   if (unixSeconds < 0) {
     throw Error('seconds cannot be negative')

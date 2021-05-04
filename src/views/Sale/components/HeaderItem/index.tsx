@@ -2,11 +2,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { typography, TypographyProps } from 'styled-system'
+import dayjs from 'dayjs'
 
 // Components
 import { Flex } from 'src/components/Flex'
 import { Sale } from 'src/interfaces/Sale'
-import { calculateTimeDifference } from 'src/utils/date'
+import { secondsTohms } from 'src/views/Sale/components/Timer'
+
+// Mesa Utils
+import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 type HeaderTitleProps = TypographyProps & {
   color: string
@@ -78,14 +82,17 @@ export function HeaderItem({
     if (saleLive && sale) {
       const interval = setInterval(() => {
         setTime(PrevTime => (PrevTime + 1) % 2)
-        setDescriptionText(calculateTimeDifference(sale.endDate))
+        const localTimeStamp = dayjs(Date.now()).unix()
+        const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(sale.endDate))
+        setDescriptionText(secondsTohms(timeDiffEnd))
       }, 1000)
 
       return () => {
         clearInterval(interval)
       }
     }
-  }, [descriptionText])
+    setDescriptionText(description)
+  }, [description])
 
   return (
     <Flex
