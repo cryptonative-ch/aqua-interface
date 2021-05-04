@@ -94,7 +94,6 @@ export function HeaderItem({
     setDescriptionText(description)
   }, [description])
 
-
   return (
     <Flex
       flexDirection={isMobile ? 'row' : 'column'}

@@ -109,8 +109,6 @@ export function SaleView() {
 
   const bids = bidsBySale ? bidsBySale.bids : []
 
-
-
   const toggleModal = () => {
     setModalVisible(true)
   }
