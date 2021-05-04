@@ -43,7 +43,6 @@
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-http-backend": "^1.0.21",
     "keccak": "^3.0.1",
-    "moment-timezone": "^0.5.33",
     "numeral": "^2.0.6",
     "prettier": "^2.2.1",
     "randombytes": "^2.1.0",
