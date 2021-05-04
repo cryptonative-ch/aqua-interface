@@ -122,6 +122,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
   if (isFixed && status === 'active') {
     const tokenSold = formatBigInt(sale.soldAmount, sale.tokenOut.decimals)
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
+    const Threshold = formatBigInt(sale.minimumRaise)
     const percentageSold = (tokenSold / totalSupply) * 100
     return (
       <Flex flexDirection="column" flex={1}>
@@ -135,9 +136,9 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
         </Flex>
         <BarContainer>
           <BarActive width={percentageSold}></BarActive>
-          <BarMarker marginLeft={sale.minFundingThreshold}></BarMarker>
+          <BarMarker marginLeft={Threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml="calc(20% - 66px)">{`Min. Threshold ${sale.minFundingThreshold}%`}</ControlButton>
+        <ControlButton ml="calc(20% - 66px)">{`Min. Threshold: ${numeral(Threshold).format('0')}%`}</ControlButton>
       </Flex>
     )
   }

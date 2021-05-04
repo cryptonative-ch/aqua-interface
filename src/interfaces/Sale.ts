@@ -82,6 +82,7 @@ export interface FixedPriceSale extends BaseSale {
   //Minimum and maxmimum token per order
   allocationMin: number
   allocationMax: number
+  minimumRaise: BigNumber
   bids: FixedPriceSalePurchase[]
 }
 

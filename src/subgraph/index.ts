@@ -37,6 +37,7 @@ export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> 
           sellAmount: formatDecimal(item.sellAmount, item.tokenOut.decimal),
           tokenPrice: formatDecimal(item.tokenPrice, item.tokenOut.decimal),
           soldAmount: formatDecimal(item.soldAmount, item.tokenOut.decimal),
+          minimumRaise: formatDecimal(item.minimumRaise, item.tokenOut.decimal),
           type: fixedPriceSale,
         }))
       : []
