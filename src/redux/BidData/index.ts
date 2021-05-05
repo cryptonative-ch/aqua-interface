@@ -4,6 +4,7 @@
 import { Action } from 'redux'
 import { AppThunk } from '../store'
 import dayjs from 'dayjs'
+import { providers } from 'ethers'
 
 // interface
 import { SaleBid } from 'src/interfaces/Sale'
@@ -14,11 +15,15 @@ import { generateInitialSaleData } from 'src/subgraph'
 // interface
 import { saleType } from 'src/interfaces/Sale'
 
+// Blockchain
+import { getBidDataFromChain } from 'src/blockchain'
+
 // ACTION
 export enum ActionTypes {
   INITIAL_BID_REQUEST = 'INITIAL_BID_REQUEST',
   INITIAL_BID_SUCCESS = 'INITIAL_BID_SUCCESS',
   INITIAL_BID_FAILURE = 'INITIAL_BID_FAILURE',
+  UPDATE_BID_SUCCESS = 'UPDATE_BID_SUCCESS',
 }
 
 // indexable type
@@ -42,7 +47,15 @@ interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE
   payload: Error
 }
 
-export type BidActionTypes = InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
+interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
+  payload: SaleBid
+}
+
+export type BidActionTypes =
+  | InitialBidRequestAction
+  | InitialBidSuccessAction
+  | InitialBidFailureAction
+  | UpdateBidSuccess
 
 export const initialBidRequest = (payload: boolean) => ({
   payload,
@@ -53,6 +66,11 @@ export const initialBidRequest = (payload: boolean) => ({
 export const initialBidSuccess = (payload: BidsBySaleId) => ({
   payload,
   type: ActionTypes.INITIAL_BID_SUCCESS,
+})
+
+export const updateBidSuccess = (payload: SaleBid) => ({
+  payload,
+  type: ActionTypes.UPDATE_BID_SUCCESS,
 })
 
 export const initialBidFailure = (payload: Error) => ({
@@ -77,6 +95,8 @@ const defaultState: BidState = {
 
 export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsRequest: Promise<any>): AppThunk => {
   return async (dispatch, getState) => {
+    // provider
+    const provider = new providers.JsonRpcProvider()
     // Current time
     const timeNow = dayjs.utc().unix()
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -141,6 +161,17 @@ export function bidReducer(state: BidState = defaultState, action: BidActionType
         ...state,
         isLoading: false,
         error: action.payload,
+      }
+    case ActionTypes.UPDATE_BID_SUCCESS:
+      return {
+        ...state,
+        bidsBySaleId: {
+          ...bidsBySaleId,
+          [saleId]: {
+            updatedAt: updatedAt,
+            bids: [...bidsBySaleId[saleId].bids, action.payload],
+          },
+        },
       }
 
     default:
