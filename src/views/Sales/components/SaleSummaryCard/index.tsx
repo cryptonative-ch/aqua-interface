@@ -19,6 +19,9 @@ import { BadgeFlex } from 'src/layouts/BadgeFlex'
 // Interface
 import { Sale } from 'src/interfaces/Sale'
 
+// Svg
+import noToken from 'src/assets/svg/no_token_image.svg'
+
 const TokenIconFigure = styled.div(props => ({
   marginRight: props.theme.space[3],
 }))
@@ -35,7 +38,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
         <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <Flex width="70%" alignItems="center">
             <TokenIconFigure>
-              <Icon src={sale.tokenOut?.icon} alt={sale.tokenOut?.name} />
+              <Icon src={sale.tokenOut?.icon || noToken} alt={sale.tokenOut?.name} />
             </TokenIconFigure>
             <CardText fontSize="title">{sale.name}</CardText>
           </Flex>

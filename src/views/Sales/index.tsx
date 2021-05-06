@@ -24,6 +24,7 @@ import { Card } from 'src/components/CardSale'
 import MetamaskImage from 'src/assets/svg/metamask.svg'
 import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
+
 // interface
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 import { Sale } from 'src/interfaces/Sale'
