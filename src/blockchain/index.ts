@@ -1,23 +1,43 @@
 // External
+
 import { providers, Contract } from 'ethers'
 
-// Components
-import { FairBidPick, FixedPricePick, saleType } from 'src/interfaces/Sale'
+// interfaces
+import { SalePickBid, saleType } from 'src/interfaces/Sale'
 
-export const getBidDataFromChain = (
+// Redux
+import { updateBidRequest, updateBidSuccess, updateBidFailure } from 'src/redux/BidData'
+import { AppThunk } from 'src/redux/store'
+
+const fetchBidsFromChain = (bids: SalePickBid): AppThunk => {
+  return async dispatch => {
+    dispatch(updateBidRequest(true))
+    try {
+      dispatch(updateBidSuccess(bids))
+    } catch (error) {
+      console.log(error)
+      dispatch(updateBidFailure(error))
+    }
+  }
+}
+
+export const getBidDataFromChain = async (
   contractAddress: string,
   saleType: saleType,
   provider: providers.JsonRpcProvider
-): FairBidPick | FixedPricePick => {
-  let bids: any = {}
+) => {
   const fixedSaleAbi = [
     // event that triggers whenever user places a successful order for a token
     'event NewPurchase(address indexed buyer, uint256 indexed amount)',
+    // event for sale initialization
+    'event InitializedSale(IERC20 indexed _tokenIn,IERC20 indexed _tokenOut,uint256 orderCancellationEndDate,uint256 endDate,uint96 _totalTokenOutAmount,uint96 _minBidAmountToReceive,uint256 minimumBiddingAmountPerOrder,uint256 minSellThreshold);',
   ]
 
   const fairSaleAbi = [
     // event that triggers whenever user places a successful order for a token
     'event NewOrder(uint64 indexed ownerId, uint96 orderTokenOut, uint96 orderTokenIn)',
+    // event for sale initialization
+    'event SaleInitialized(IERC20 tokenIn,IERC20 tokenOut,uint256 tokenPrice,uint256 tokensForSale,uint256 startDate,uint256 endDate,uint256 allocationMin,uint256 allocationMax,uint256 minimumRaise);',
   ]
 
   if (saleType == 'fairSale') {
@@ -25,11 +45,16 @@ export const getBidDataFromChain = (
 
     fairSaleContract.on('NewOrder', (ownerId, orderTokenOut, orderTokenIn, event) => {
       console.log(`A new bid of ${orderTokenIn} for ${orderTokenOut} from ${ownerId} has been successful`)
-      bids = {
+      const bids: SalePickBid = {
         address: ownerId,
         tokenIn: orderTokenIn,
         tokenOut: orderTokenOut,
+        BaseSale: {
+          id: contractAddress,
+        },
       }
+
+      fetchBidsFromChain(bids)
     })
   }
 
@@ -37,11 +62,13 @@ export const getBidDataFromChain = (
 
   fixedSaleContract.on('NewPurchase', (buyer, amount, event) => {
     console.log(`a new purchase order  of ${amount}from ${buyer} has been successful`)
-    bids = {
+    const bids: SalePickBid = {
       buyer: buyer,
       amount: amount,
+      BaseSale: {
+        id: contractAddress,
+      },
     }
+    fetchBidsFromChain(bids)
   })
-
-  return bids
 }
