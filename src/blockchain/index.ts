@@ -6,20 +6,7 @@ import { providers, Contract } from 'ethers'
 import { SalePickBid, saleType } from 'src/interfaces/Sale'
 
 // Redux
-import { updateBidRequest, updateBidSuccess, updateBidFailure } from 'src/redux/BidData'
-import { AppThunk } from 'src/redux/store'
-
-const fetchBidsFromChain = (bids: SalePickBid): AppThunk => {
-  return async dispatch => {
-    dispatch(updateBidRequest(true))
-    try {
-      dispatch(updateBidSuccess(bids))
-    } catch (error) {
-      console.log(error)
-      dispatch(updateBidFailure(error))
-    }
-  }
-}
+import { fetchBidsFromChain } from 'src/redux/BidData'
 
 export const getBidDataFromChain = async (
   contractAddress: string,

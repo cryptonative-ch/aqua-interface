@@ -137,6 +137,18 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
   }
 }
 
+export const fetchBidsFromChain = (bids: SalePickBid): AppThunk => {
+  return async dispatch => {
+    dispatch(updateBidRequest(true))
+    try {
+      dispatch(updateBidSuccess(bids))
+    } catch (error) {
+      console.log(error)
+      dispatch(updateBidFailure(error))
+    }
+  }
+}
+
 const keyFinder = (object: BidsBySaleId) => {
   return Object.keys(object)[0]
 }
