@@ -2,13 +2,12 @@
 
 // External
 import React, { useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import WalletConnector from 'cryptowalletconnector'
 import numeral from 'numeral'
 import styled from 'styled-components'
 
@@ -37,7 +36,6 @@ import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
 // Svg
 import MetamaskImage from 'src/assets/svg/metamask.svg'
-import WalletImage from 'src/assets/svg/wallet_connect.svg'
 
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
@@ -65,7 +63,6 @@ import { fetchSaleBids } from 'src/redux/BidData'
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
 
-
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
@@ -84,9 +81,8 @@ export interface FixedPriceSaleViewParams {
 }
 
 export function FixedPriceSaleView() {
-  const wallet = useWallet()
+  const { account, library, chainId } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
   const [fixedPriceContract, setFixedPriceContract] = useState<ethers.Contract>()
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
@@ -132,19 +128,19 @@ export function FixedPriceSaleView() {
   }
 
   useEffect(() => {
-    if (!wallet.chainId || !wallet.ethereum || !wallet.account) {
+    if (!chainId || !library || !account) {
       return
     }
     // An example Provider
-    const provider = new ethers.providers.Web3Provider(wallet.ethereum as ethers.providers.ExternalProvider)
+    const provider = new ethers.providers.Web3Provider(library)
     // An example Signer
     const signer = provider.getSigner(0)
     setFixedPriceContract(new ethers.Contract(FIXED_PRICE_SALE_CONTRACT_ADDRESS, FixedPriceSaleABI, signer))
-  }, [wallet])
+  }, [chainId, library, account])
 
   useEffect(() => {
     if (!userAddress) {
-      setUserAddress(walletAddress || getRandomWallet().address)
+      setUserAddress(account || getRandomWallet().address)
     }
 
     if (sale) {
@@ -340,12 +336,7 @@ export function FixedPriceSaleView() {
           )}
         </Flex>
       </Container>
-      <WalletConnector
-        isOpen={connectModal}
-        onClose={() => setModalVisible(false)}
-        metamaskImage={MetamaskImage}
-        walletImage={WalletImage}
-      ></WalletConnector>
+
       {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>

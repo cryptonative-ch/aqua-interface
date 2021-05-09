@@ -2,7 +2,6 @@
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
 import React, { Suspense, Fragment, useEffect, useState, useCallback } from 'react'
-import { UseWalletProvider } from 'use-wallet'
 import { CookiesProvider } from 'react-cookie'
 import axios from 'axios'
 
@@ -57,20 +56,8 @@ export const App = () => {
           <GlobalStyle />
           <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
             <BrowserRouter>
-              <UseWalletProvider
-                chainId={4}
-                connectors={{
-                  walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
-                  walletlink: {
-                    url: 'https://mainnet.eth.aragon.network/',
-                    appName: 'Coinbase Wallet',
-                    appLogoUrl: '',
-                  },
-                }}
-              >
-                <AppRouter />
-                <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
-              </UseWalletProvider>
+              <AppRouter />
+              <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
             </BrowserRouter>
           </Suspense>
         </ThemeProvider>

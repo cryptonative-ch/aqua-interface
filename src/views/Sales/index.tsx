@@ -4,7 +4,6 @@ import React, { useEffect, useState, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import WalletConnector from 'cryptowalletconnector'
 
 // Redux
 import { setPageTitle } from 'src/redux/page'
@@ -19,11 +18,6 @@ import { Footer } from 'src/components/Footer'
 import { SaleNavBar } from './components/SaleNavBar'
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 import { Card } from 'src/components/CardSale'
-
-// Svg
-import MetamaskImage from 'src/assets/svg/metamask.svg'
-import WalletImage from 'src/assets/svg/wallet_connect.svg'
-
 
 // interface
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
@@ -141,12 +135,6 @@ export function SalesView() {
                   ))}
           </SaleListSection>
         </Container>
-        <WalletConnector
-          isOpen={connectModal}
-          onClose={() => setModalVisible(false)}
-          metamaskImage={MetamaskImage}
-          walletImage={WalletImage}
-        ></WalletConnector>
         {!isMobile && <Footer />}
       </AbsoluteContainer>
     </SaleContext.Provider>

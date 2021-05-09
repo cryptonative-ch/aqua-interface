@@ -1,11 +1,10 @@
 // External
 import React, { useState, useEffect } from 'react'
-import { useWallet } from 'use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import WalletConnector from 'cryptowalletconnector'
 // import styled from 'styled-components'
 
 // Hooks
@@ -30,10 +29,6 @@ import { Flex } from 'src/components/Flex'
 
 import { HeaderItem } from '../Sale/components/HeaderItem'
 
-// Svg
-import MetamaskImage from 'src/assets/svg/metamask.svg'
-import WalletImage from 'src/assets/svg/wallet_connect.svg'
-
 // Mesa Utils
 
 // Wallet Utils
@@ -47,10 +42,8 @@ interface StaticViewParams {
 }
 
 export function StaticView() {
-  const wallet = useWallet()
+  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
-
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
   const [connectModal, setModalVisible] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
   // const ref = useRef<HTMLElement>()
@@ -67,7 +60,7 @@ export function StaticView() {
 
   useEffect(() => {
     if (!userAddress) {
-      setUserAddress(walletAddress || getRandomWallet().address)
+      setUserAddress(account || getRandomWallet().address)
     }
   })
 
@@ -103,12 +96,6 @@ export function StaticView() {
           </Flex>
         </Flex>
       </Container>
-      <WalletConnector
-        isOpen={connectModal}
-        onClose={() => setModalVisible(false)}
-        metamaskImage={MetamaskImage}
-        walletImage={WalletImage}
-      ></WalletConnector>
       {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>
