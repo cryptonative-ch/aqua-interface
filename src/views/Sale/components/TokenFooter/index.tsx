@@ -1,7 +1,6 @@
 // External
 import React from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
 
 // Interface
@@ -103,13 +102,13 @@ interface TokenFooterProps {
 }
 
 export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterProps) => {
-  const wallet = useWallet()
+  const { account } = useWeb3React()
   const {
     isMobile,
     windowSize: { width: windowWidth },
   } = useWindowSize()
 
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
+  const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
 
   const mobileWrapper: WrapperProps = {}
   if (isMobile) {
