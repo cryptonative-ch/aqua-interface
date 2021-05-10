@@ -1,6 +1,9 @@
-// External
+// Externals
 import React, { useState, useEffect } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
+
+// Hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
 // Svg
 import MenuImg from 'src/assets/svg/Menu-Icon.svg'
@@ -21,29 +24,33 @@ import {
   MenuBorder,
 } from './style'
 
-// Component
+// Components
 import { Flex } from 'src/components/Flex'
 import { Link } from 'src/components/Link'
 
 // Constants
 import { FE_VERSION, SC_VERSION } from 'src/constants'
+import { getErrorMessage, injected } from 'src/connectors'
 
-export interface HeaderProps {
-  connectWallet?: () => void
-  isConnecting?: boolean
-}
-
-export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = false }) => {
+export const Header: React.FC = () => {
   const [t] = useTranslation()
+  const [isConnecting, setIsConnecting] = useState<boolean>(false)
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const { account, deactivate } = useWeb3React()
+  const { account, activate, deactivate } = useWeb3React()
   const { isMobile } = useWindowSize()
 
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
+  const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
 
-  const disconnectWallet = () => {
-    wallet.reset()
+  const connectWallet = () => {
+    setIsConnecting(true)
+    activate(injected)
+      .catch(error => {
+        console.log(getErrorMessage(error))
+      })
+      .finally(() => setIsConnecting(false))
   }
+
+  const disconnectWallet = () => deactivate()
 
   useEffect(() => {
     if (menuOpen) {
