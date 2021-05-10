@@ -1,9 +1,9 @@
 // External
+import React, { Suspense, Fragment, useEffect, useState, useCallback } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
-import React, { Suspense, Fragment, useEffect, useState, useCallback } from 'react'
 import { CookiesProvider } from 'react-cookie'
-import axios from 'axios'
+import Axios from 'axios'
 
 // Styles
 import { GlobalStyle } from './styles/Global'
@@ -20,22 +20,10 @@ import { Center } from './layouts/Center'
 
 export const App = () => {
   const { isShown, toggle } = useModal()
-  const [sanction, setSanction] = useState<string>('false')
+  const [sanction, setSanction] = useState<boolean>(false)
 
   const getGeoInfo = useCallback(() => {
-    axios
-      .get('https://ipapi.co/json/')
-      .then(response => {
-        const data = response.data
-        if (SANCTION_LIST.indexOf(data.country_code) >= 0) {
-          setSanction('true')
-        } else {
-          setSanction('false')
-        }
-      })
-      .catch(() => {
-        //
-      })
+    Axios.get('https://ipapi.co/json/').then(({ data }) => setSanction(SANCTION_LIST.includes(data.country_code)))
   }, [])
 
   useEffect(() => {
@@ -43,10 +31,10 @@ export const App = () => {
   }, [getGeoInfo])
 
   const content = (
-    <Fragment>
+    <>
       <div>You agree to the Terms and Conditions of sale by pressing the Continue</div>
       <ConfirmButton onClick={() => toggle(true)}>Continue</ConfirmButton>
-    </Fragment>
+    </>
   )
 
   return (
