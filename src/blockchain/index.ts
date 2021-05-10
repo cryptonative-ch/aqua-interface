@@ -3,7 +3,7 @@
 import { providers, Contract } from 'ethers'
 
 // interfaces
-import { SalePickBid, saleType } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchase, SalePickBid, saleType } from 'src/interfaces/Sale'
 
 // Redux
 import { fetchBidsFromChain } from 'src/redux/BidData'
@@ -30,15 +30,19 @@ export const getBidDataFromChain = async (
   if (saleType == 'fairSale') {
     const fairSaleContract = new Contract(contractAddress, fairSaleAbi, provider)
 
-    fairSaleContract.on('NewOrder', (ownerId, orderTokenOut, orderTokenIn, event) => {
+    fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
       console.log(`A new bid of ${orderTokenIn} for ${orderTokenOut} from ${ownerId} has been successful`)
-      const bids: SalePickBid = {
+      const bids = {
         address: ownerId,
         tokenIn: orderTokenIn,
         tokenOut: orderTokenOut,
         BaseSale: {
           id: contractAddress,
         },
+
+        createdAt: await provider.getBlockNumber(),
+        updatedAt: await provider.getBlockNumber(),
+        deletedAt: null,
       }
 
       fetchBidsFromChain(bids)
@@ -47,14 +51,17 @@ export const getBidDataFromChain = async (
 
   const fixedSaleContract = new Contract(contractAddress, fixedSaleAbi, provider)
 
-  fixedSaleContract.on('NewPurchase', (buyer, amount, event) => {
+  fixedSaleContract.on('NewPurchase', async (buyer, amount, event) => {
     console.log(`a new purchase order  of ${amount}from ${buyer} has been successful`)
-    const bids: SalePickBid = {
+    const bids = {
       buyer: buyer,
       amount: amount,
       BaseSale: {
         id: contractAddress,
       },
+      createdAt: await provider.getBlockNumber(),
+      updatedAt: await provider.getBlockNumber(),
+      deletedAt: null,
     }
     fetchBidsFromChain(bids)
   })

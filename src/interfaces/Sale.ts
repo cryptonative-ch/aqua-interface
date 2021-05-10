@@ -13,8 +13,6 @@ interface BaseSale {
 }
 
 interface Bid {
-  id: string
-  status: string // submitted/settled/cancelled/claimed
   BaseSale: Pick<BaseSale, 'id'>
   createdAt: number // The UTC timestamp at which the bid was placed
   updatedAt: number | null // The UTC timestamp at which the bid was updated
@@ -27,9 +25,9 @@ export interface FairSaleBid extends Bid {
   address: string // The bidder's Ethereum address
 }
 
-export type FairBidPick = Pick<FairSaleBid, 'address' | 'tokenOut' | 'tokenIn' | 'BaseSale'>
+export type FairBidPick = Pick<FairSaleBid, 'address' | 'tokenOut' | 'tokenIn'>
 
-export type FixedPricePick = Pick<FixedPriceSalePurchase, 'amount' | 'buyer' | 'BaseSale'>
+export type FixedPricePick = Pick<FixedPriceSalePurchase, 'amount' | 'buyer'>
 
 export type SalePickBid = FixedPricePick | FairBidPick
 
@@ -38,7 +36,7 @@ export interface FixedPriceSalePurchase extends Bid {
   buyer: string // The bidder's Ethereum address
 }
 
-export type SaleBid = FairSaleBid & FixedPriceSalePurchase
+export type SaleBid = FairSaleBid | FixedPriceSalePurchase
 
 export type Sale = FixedPriceSale & FairSale
 export interface Token {

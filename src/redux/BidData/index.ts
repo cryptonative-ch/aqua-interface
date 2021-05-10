@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { AppThunk } from '../store'
 
 // interface
-import { SaleBid, SalePickBid } from 'src/interfaces/Sale'
+import { SaleBid } from 'src/interfaces/Sale'
 
 // subgraph
 import { generateInitialSaleData } from 'src/subgraph'
@@ -53,7 +53,7 @@ interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
 }
 
 interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
-  payload: SalePickBid
+  payload: SaleBid
 }
 
 interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
@@ -89,7 +89,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: SalePickBid) => ({
+export const updateBidSuccess = (payload: SaleBid) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
@@ -137,7 +137,7 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
   }
 }
 
-export const fetchBidsFromChain = (bids: SalePickBid): AppThunk => {
+export const fetchBidsFromChain = (bids: SaleBid): AppThunk => {
   return async dispatch => {
     dispatch(updateBidRequest(true))
     try {

@@ -17,7 +17,7 @@ import MoreSVG from 'src/assets/svg/More-Icon.svg'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 
 // Interfaces
-import { Sale, SaleBid, FairBidPick } from 'src/interfaces/Sale'
+import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
 
 type ColumnLabelProps = SpaceProps
@@ -99,7 +99,7 @@ const IconImg = styled.img<IconImgProps>(
 
 interface SelfBidListProps {
   sale: Sale
-  bids: SaleBid[]
+  bids: FairSaleBid[] & FixedPriceSalePurchase[]
   clearingPrice?: FairBidPick
   status: string
   showGraph: boolean
@@ -144,7 +144,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
           ) : null}
         </Flex>
 
-        {bids.map((bid: SaleBid, index: number) => {
+        {bids.map((bid: FixedPriceSalePurchase, index: number) => {
           const bidValue =
             formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
 
@@ -229,7 +229,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
         )}
       </Flex>
 
-      {bids.map((bid: SaleBid, index: number) => {
+      {bids.map((bid, index: number) => {
         const bidPrice =
           formatBigInt(bid.tokenIn, sale.tokenIn.decimals) / formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
         return (
