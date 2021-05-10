@@ -8,18 +8,18 @@ import { CustomNetworkConnector } from './CustomNetworkConnector'
 import { UnsupportedChainIdError } from '@web3-react/core'
 
 // Constants
-import { ChainId, INFURA_PROJECT_ID } from 'src/constants'
+import { CHAIN_ID, INFURA_PROJECT_ID } from 'src/constants'
 
 export const network = new CustomNetworkConnector({
   urls: {
-    [ChainId.RINKEBY]: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
-    [ChainId.XDAI]: 'https://rpc.xdaichain.com/',
+    [CHAIN_ID.RINKEBY]: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
+    [CHAIN_ID.XDAI]: 'https://rpc.xdaichain.com/',
   },
-  defaultChainId: ChainId.XDAI,
+  defaultChainId: CHAIN_ID.XDAI,
 })
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [ChainId.RINKEBY, ChainId.XDAI],
+  supportedChainIds: [CHAIN_ID.RINKEBY, CHAIN_ID.XDAI],
 })
 
 export function getErrorMessage(error: Error) {
