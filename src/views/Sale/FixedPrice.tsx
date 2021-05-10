@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // External
+import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { ethers } from 'ethers'
-import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import numeral from 'numeral'
 import styled from 'styled-components'
+import { ethers } from 'ethers'
+import numeral from 'numeral'
 
 // Hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
@@ -18,24 +18,23 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
+import { MobileFooter } from 'src/components/MobileFooter'
+import { FormButton } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
-import { SaleHeader } from './components/SaleHeader'
-import { PlaceBidForm } from './components/PlaceBidForm'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
-import { MobileFooter } from 'src/components/MobileFooter'
+import { Header } from 'src/components/Header'
+import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
-import { FormButton } from 'src/components/FormButton'
-import { HeaderItem } from './components/HeaderItem'
+
 import { HeaderControl } from './components/HeaderControl'
+import { PlaceBidForm } from './components/PlaceBidForm'
 import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
-// Svg
-import MetamaskImage from 'src/assets/svg/metamask.svg'
+import { HeaderItem } from './components/HeaderItem'
+import { SaleHeader } from './components/SaleHeader'
 
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
@@ -50,12 +49,14 @@ import { Sale } from 'src/interfaces/Sale'
 // Constants
 import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
-import { RootState } from 'src/redux/store'
-import { fetchSales } from 'src/redux/SaleListings'
-import { salesRequest } from 'src/subgraph/Sales'
 import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
+import { salesRequest } from 'src/subgraph/Sales'
+
+// Redux
+import { fetchSales } from 'src/redux/SaleListings'
 import { fetchSaleBids } from 'src/redux/BidData'
+import { RootState } from 'src/redux/store'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'

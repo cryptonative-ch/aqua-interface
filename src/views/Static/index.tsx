@@ -1,32 +1,29 @@
 // External
-import React, { useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 import { useDispatch } from 'react-redux'
-// import styled from 'styled-components'
+import React from 'react'
 
 // Hooks
-// import { useElementWidth } from 'src/hooks/useElementWidth'
-import { useWindowSize } from 'src/hooks/useWindowSize'
 import { useMountEffect } from 'src/hooks/useMountEffect'
+import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Actions
 import { setPageTitle } from 'src/redux/page'
 
 // Components
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
+import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
-import { StaticHeader } from '../Static/components/StaticHeader'
-import { StaticContent } from '../Static/components/StaticContent'
 import { Container } from 'src/components/Container'
 import { CardBody } from 'src/components/CardBody'
-import { MobileFooter } from 'src/components/MobileFooter'
+import { Header } from 'src/components/Header'
+import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
+import { StaticContent } from '../Static/components/StaticContent'
+import { StaticHeader } from '../Static/components/StaticHeader'
 import { HeaderItem } from '../Sale/components/HeaderItem'
 
 interface StaticViewParams {

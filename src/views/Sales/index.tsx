@@ -1,22 +1,22 @@
 // External
-import styled from 'styled-components'
 import React, { useEffect, useState, createContext } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
 
 // Redux
-import { setPageTitle } from 'src/redux/page'
 import { fetchSales } from 'src/redux/SaleListings'
+import { setPageTitle } from 'src/redux/page'
 import { RootState } from 'src/redux/store'
 
 // Components
+import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 import { SaleSummaryCard } from './components/SaleSummaryCard'
+import { SaleNavBar } from './components/SaleNavBar'
 import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { SaleNavBar } from './components/SaleNavBar'
-import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 import { Card } from 'src/components/CardSale'
 
 // interface
