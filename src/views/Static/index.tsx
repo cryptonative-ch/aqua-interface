@@ -29,23 +29,12 @@ import { Flex } from 'src/components/Flex'
 
 import { HeaderItem } from '../Sale/components/HeaderItem'
 
-// Mesa Utils
-
-// Wallet Utils
-import { getRandomWallet } from 'src/utils/wallets'
-
-// Views
-// import { NotFoundView } from 'src/views/NotFound'
-
 interface StaticViewParams {
   staticId: string
 }
 
 export function StaticView() {
-  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const [connectModal, setModalVisible] = useState<boolean>(false)
-  const [userAddress, setUserAddress] = useState<string>('')
   // const ref = useRef<HTMLElement>()
   // const { width: containerWidth, setWidth } = useElementWidth(ref)
 
@@ -53,16 +42,6 @@ export function StaticView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
-
-  const toggleModal = () => {
-    setModalVisible(true)
-  }
-
-  useEffect(() => {
-    if (!userAddress) {
-      setUserAddress(account || getRandomWallet().address)
-    }
-  })
 
   useMountEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.about')))
@@ -74,7 +53,7 @@ export function StaticView() {
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
+      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <StaticHeader />

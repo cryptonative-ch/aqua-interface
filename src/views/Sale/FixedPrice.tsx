@@ -41,9 +41,6 @@ import MetamaskImage from 'src/assets/svg/metamask.svg'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { timeFrame, secondsTohms } from 'src/views/Sale/components/Timer'
 
-// Wallet Utils
-import { getRandomWallet } from 'src/utils/wallets'
-
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 
@@ -84,9 +81,7 @@ export function FixedPriceSaleView() {
   const { account, library, chainId } = useWeb3React()
   const { isMobile } = useWindowSize()
   const [fixedPriceContract, setFixedPriceContract] = useState<ethers.Contract>()
-  const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
-  const [userAddress, setUserAddress] = useState<string>('')
 
   const params = useParams<FixedPriceSaleViewParams>()
   const dispatch = useDispatch()
@@ -105,10 +100,6 @@ export function FixedPriceSaleView() {
   })
 
   const bids = bidsBySale ? bidsBySale.bids : []
-
-  const toggleModal = () => {
-    setModalVisible(true)
-  }
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -139,10 +130,6 @@ export function FixedPriceSaleView() {
   }, [chainId, library, account])
 
   useEffect(() => {
-    if (!userAddress) {
-      setUserAddress(account || getRandomWallet().address)
-    }
-
     if (sale) {
       const saleBidsRequest = subgraphCall(ENDPOINT, saleBidsQuery(params.saleId, sale.type))
       const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, saleBidsRequest))
@@ -160,7 +147,7 @@ export function FixedPriceSaleView() {
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
+      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <SaleHeader sale={sale} />

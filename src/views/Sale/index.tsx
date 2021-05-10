@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useTheme } from 'styled-components'
 import numeral from 'numeral'
 import styled from 'styled-components'
 
@@ -81,7 +81,6 @@ interface SaleViewParams {
 export function SaleView() {
   const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
   const [clearingPrice, setClearingPrice] = useState<FairBidPick>()
@@ -105,10 +104,6 @@ export function SaleView() {
   })
 
   const bids = bidsBySale ? bidsBySale.bids : []
-
-  const toggleModal = () => {
-    setModalVisible(true)
-  }
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -140,7 +135,7 @@ export function SaleView() {
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
+      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <SaleHeader sale={sale} />

@@ -74,7 +74,6 @@ export const SaleContext = createContext<SaleContextType>({} as SaleContextType)
 
 export function SalesView() {
   const { isMobile } = useWindowSize()
-  const [connectModal, setModalVisible] = useState<boolean>(false)
   const [SaleShow, setSaleShow] = useState<SaleStatus>(SaleStatus.LIVE)
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -84,10 +83,6 @@ export function SalesView() {
     return state.SaleReducer.sales
   })
 
-  const toggleModal = () => {
-    setModalVisible(true)
-  }
-
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
     fetchData()
@@ -96,7 +91,7 @@ export function SalesView() {
   return (
     <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
       <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
-        <Header connectWallet={toggleModal} isConnecting={connectModal} />
+        <Header />
         <Container>
           <Title>Token Sales</Title>
           <SaleNavBar />
