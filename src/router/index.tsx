@@ -13,7 +13,7 @@ import { NotFoundView } from 'src/views/NotFound'
 export const AppRouter = () => {
   const sanctionValue = useContext(SanctionContext)
 
-  if (sanctionValue === 'true') {
+  if (sanctionValue) {
     return (
       <Switch>
         <Route exact path="*" component={NotFoundView} />
