@@ -94,7 +94,7 @@ export const updateBidSuccess = (payload: SaleBid) => ({
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
 
-export const updateBidFailure = (payload: boolean) => ({
+export const updateBidFailure = (payload: Error) => ({
   payload,
   type: ActionTypes.UPDATE_BID_FAILURE,
 })
@@ -137,8 +137,8 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
   }
 }
 
-export const fetchBidsFromChain = (bids: SaleBid): AppThunk => {
-  return async dispatch => {
+export const fetchBidsFromChain = (bids: SaleBid): any => {
+  return async (dispatch: any) => {
     dispatch(updateBidRequest(true))
     try {
       dispatch(updateBidSuccess(bids))

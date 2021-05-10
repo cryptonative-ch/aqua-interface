@@ -1,18 +1,20 @@
 // External
-
 import { providers, Contract } from 'ethers'
 
 // interfaces
-import { FixedPriceSalePurchase, SalePickBid, saleType } from 'src/interfaces/Sale'
+import { SaleBid, saleType } from 'src/interfaces/Sale'
 
 // Redux
 import { fetchBidsFromChain } from 'src/redux/BidData'
+import { store } from 'src/redux/store'
+import { formatDecimal } from 'src/utils/Defaults'
 
-export const getBidDataFromChain = async (
+export async function getBidDataFromChain(
   contractAddress: string,
   saleType: saleType,
-  provider: providers.JsonRpcProvider
-) => {
+  provider: providers.JsonRpcProvider,
+  decimal: number
+) {
   const fixedSaleAbi = [
     // event that triggers whenever user places a successful order for a token
     'event NewPurchase(address indexed buyer, uint256 indexed amount)',
@@ -31,8 +33,7 @@ export const getBidDataFromChain = async (
     const fairSaleContract = new Contract(contractAddress, fairSaleAbi, provider)
 
     fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
-      console.log(`A new bid of ${orderTokenIn} for ${orderTokenOut} from ${ownerId} has been successful`)
-      const bids = {
+      const bids: SaleBid = {
         address: ownerId,
         tokenIn: orderTokenIn,
         tokenOut: orderTokenOut,
@@ -40,29 +41,28 @@ export const getBidDataFromChain = async (
           id: contractAddress,
         },
 
-        createdAt: await provider.getBlockNumber(),
-        updatedAt: await provider.getBlockNumber(),
+        createdAt: await (await provider.getBlock(event.blockNumber)).timestamp,
+        updatedAt: null,
         deletedAt: null,
       }
 
-      fetchBidsFromChain(bids)
+      store.dispatch(fetchBidsFromChain(bids))
     })
   }
 
   const fixedSaleContract = new Contract(contractAddress, fixedSaleAbi, provider)
 
   fixedSaleContract.on('NewPurchase', async (buyer, amount, event) => {
-    console.log(`a new purchase order  of ${amount}from ${buyer} has been successful`)
-    const bids = {
+    const bids: SaleBid = {
       buyer: buyer,
-      amount: amount,
+      amount: formatDecimal(amount, decimal),
       BaseSale: {
         id: contractAddress,
       },
-      createdAt: await provider.getBlockNumber(),
-      updatedAt: await provider.getBlockNumber(),
+      createdAt: await (await provider.getBlock(event.blockNumber)).timestamp,
+      updatedAt: null,
       deletedAt: null,
     }
-    fetchBidsFromChain(bids)
+    store.dispatch(fetchBidsFromChain(bids))
   })
 }

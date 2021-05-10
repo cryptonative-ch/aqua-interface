@@ -64,6 +64,7 @@ import { fetchSaleBids } from 'src/redux/BidData'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+import { getBidDataFromChain } from 'src/blockchain'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -147,9 +148,11 @@ export function FixedPriceSaleView() {
     }
 
     if (sale) {
+      const provider = new ethers.providers.JsonRpcProvider()
       const saleBidsRequest = subgraphCall(ENDPOINT, saleBidsQuery(params.saleId, sale.type))
       const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, saleBidsRequest))
       fetchBids()
+      getBidDataFromChain(params.saleId, sale.type, provider, sale.tokenOut.decimals)
     }
     dispatch(setPageTitle(t(sale?.name as string)))
   }, [t, sale])
