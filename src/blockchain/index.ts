@@ -45,6 +45,8 @@ export async function getBidDataFromChain(
         updatedAt: null,
         deletedAt: null,
       }
+      // repeat bids from the initial subgraph
+      // no overlapping
 
       store.dispatch(fetchBidsFromChain(bids))
     })
