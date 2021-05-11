@@ -1,8 +1,10 @@
-// External
+// Externals
 import React, { useState, useEffect } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
+
+// Hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
-import { useWallet } from 'use-wallet'
 // Svg
 import MenuImg from 'src/assets/svg/Menu-Icon.svg'
 import CloseImg from 'src/assets/svg/Close.svg'
@@ -22,29 +24,33 @@ import {
   MenuBorder,
 } from './style'
 
-// Component
+// Components
 import { Flex } from 'src/components/Flex'
 import { Link } from 'src/components/Link'
 
 // Constants
 import { FE_VERSION, SC_VERSION } from 'src/constants'
+import { getErrorMessage, injected } from 'src/connectors'
 
-export interface HeaderProps {
-  connectWallet?: () => void
-  isConnecting?: boolean
-}
-
-export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = false }) => {
+export const Header: React.FC = () => {
   const [t] = useTranslation()
+  const [isConnecting, setIsConnecting] = useState<boolean>(false)
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const wallet = useWallet()
+  const { account, activate, deactivate } = useWeb3React()
   const { isMobile } = useWindowSize()
 
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
+  const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
 
-  const disconnectWallet = () => {
-    wallet.reset()
+  const connectWallet = () => {
+    setIsConnecting(true)
+    activate(injected)
+      .catch(error => {
+        console.log(getErrorMessage(error))
+      })
+      .finally(() => setIsConnecting(false))
   }
+
+  const disconnectWallet = () => deactivate()
 
   useEffect(() => {
     if (menuOpen) {
@@ -96,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
                 margin="0"
                 justifyContent="center"
               >
-                <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect' : walletAddress}</ButtonText>
+                <ButtonText>{isConnecting ? 'Connecting...' : !account ? 'Connect' : walletAddress}</ButtonText>
               </Button>
             </Flex>
           )}
@@ -133,10 +139,10 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
           <Title>Mesa</Title>
           <Description marginLeft="0">from DXdao</Description>
         </Flex>
-        {!wallet.account && !isConnecting && (
+        {!account && !isConnecting && (
           <Button onClick={connectWallet} backgroundColor="#7B7F93" textColor="white" padding="0 24px" margin="0">
-            <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect' : walletAddress}</ButtonText>
-            {wallet.account && <ButtonImage />}
+            <ButtonText>{isConnecting ? 'Connecting...' : !account ? 'Connect' : walletAddress}</ButtonText>
+            {account && <ButtonImage />}
           </Button>
         )}
         <MenuIcon src={MenuImg} onClick={() => setMenuOpen(true)} />
@@ -152,11 +158,11 @@ export const Header: React.FC<HeaderProps> = ({ connectWallet, isConnecting = fa
       </Row>
       <Button
         onClick={connectWallet}
-        backgroundColor={!wallet.account ? '#304FFE' : '#DDDDE3'}
-        textColor={!wallet.account ? 'white' : '#000629'}
+        backgroundColor={!account ? '#304FFE' : '#DDDDE3'}
+        textColor={!account ? 'white' : '#000629'}
       >
-        <ButtonText>{isConnecting ? 'Connecting...' : !wallet.account ? 'Connect Wallet' : walletAddress}</ButtonText>
-        {wallet.account && <ButtonImage />}
+        <ButtonText>{isConnecting ? 'Connecting...' : !account ? 'Connect Wallet' : walletAddress}</ButtonText>
+        {account && <ButtonImage />}
       </Button>
     </Wrapper>
   )

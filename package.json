@@ -30,7 +30,6 @@
     "babel-preset-react-app": "^10.0.0",
     "casual-browserify": "^1.5.19-2",
     "chart.js": "^2.9.4",
-    "cryptowalletconnector": "^1.0.14",
     "csstype": "^3.0.5",
     "d3": "^6.5.0",
     "dayjs": "^1.10.3",
@@ -62,8 +61,7 @@
     "styled-reboot": "^5.0.0",
     "styled-system": "^5.1.5",
     "typechain": "^4.0.3",
-    "typescript": "~4.2.2",
-    "use-wallet": "^0.8.1"
+    "typescript": "~4.2.2"
   },
   "scripts": {
     "start:mock": "env-cmd -f .env.mock react-scripts start",

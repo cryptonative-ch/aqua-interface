@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// External
+// Externals
 import React, { useEffect, useRef, useState } from 'react'
-import { useWallet } from 'use-wallet'
-import { useTheme } from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import WalletConnector from 'cryptowalletconnector'
-import numeral from 'numeral'
+import { useTheme } from 'styled-components'
 import styled from 'styled-components'
+import numeral from 'numeral'
 
 // Hooks
 import { useElementWidth } from 'src/hooks/useElementWidth'
@@ -19,27 +18,24 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
+import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
-import { SaleHeader } from './components/SaleHeader'
-import { PlaceBidForm } from './components/PlaceBidForm'
+import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
-import { MobileFooter } from 'src/components/MobileFooter'
-import { BarChart } from './components/BarChart'
-import { Card } from 'src/components/Card'
+import { Header } from 'src/components/Header'
+import { Footer } from 'src/components/Footer'
 import { Flex } from 'src/components/Flex'
-import { FormButton } from 'src/components/FormButton'
-import { HeaderItem } from './components/HeaderItem'
+import { Card } from 'src/components/Card'
+// View Components
 import { HeaderControl } from './components/HeaderControl'
+import { PlaceBidForm } from './components/PlaceBidForm'
 import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
-
-// Svg
-import MetamaskImage from 'src/assets/svg/metamask.svg'
-import WalletImage from 'src/assets/svg/wallet_connect.svg'
+import { HeaderItem } from './components/HeaderItem'
+import { SaleHeader } from './components/SaleHeader'
+import { BarChart } from './components/BarChart'
 
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
@@ -80,11 +76,8 @@ interface SaleViewParams {
 }
 
 export function SaleView() {
-  const wallet = useWallet()
+  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
-
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
-  const [connectModal, setModalVisible] = useState<boolean>(false)
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
   const [clearingPrice, setClearingPrice] = useState<FairBidPick>()
@@ -109,10 +102,6 @@ export function SaleView() {
 
   const bids = bidsBySale ? bidsBySale.bids : []
 
-  const toggleModal = () => {
-    setModalVisible(true)
-  }
-
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
       setShowGraph(!showGraph)
@@ -121,7 +110,7 @@ export function SaleView() {
 
   useEffect(() => {
     if (!userAddress) {
-      setUserAddress(walletAddress || getRandomWallet().address)
+      setUserAddress(account || getRandomWallet().address)
     }
 
     dispatch(setPageTitle(t(sale?.name as string)))
@@ -143,7 +132,7 @@ export function SaleView() {
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header connectWallet={toggleModal} isConnecting={connectModal}></Header>
+      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <SaleHeader sale={sale} />
@@ -341,12 +330,6 @@ export function SaleView() {
           )}
         </Flex>
       </Container>
-      <WalletConnector
-        isOpen={connectModal}
-        onClose={() => setModalVisible(false)}
-        metamaskImage={MetamaskImage}
-        walletImage={WalletImage}
-      ></WalletConnector>
       {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>

@@ -1,22 +1,24 @@
 // External
-import React from 'react'
-import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
+import { useWeb3React } from '@web3-react/core'
+import styled from 'styled-components'
+import React from 'react'
 
-// Interface
-import { Sale } from 'src/interfaces/Sale'
+// Hooks
+import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Component
 import { Flex } from 'src/components/Flex'
 
 // Svg
 import ExternalLinkSVG from 'src/assets/svg/External-Link.svg'
-import TwitterSVG from 'src/assets/svg/Twitter.svg'
 import TelegramSVG from 'src/assets/svg/Telegram.svg'
-import GithubSVG from 'src/assets/svg/Github.svg'
 import DiscordSVG from 'src/assets/svg/Discord.svg'
-import { useWindowSize } from 'src/hooks/useWindowSize'
+import TwitterSVG from 'src/assets/svg/Twitter.svg'
+import GithubSVG from 'src/assets/svg/Github.svg'
+
+// Interfaces
+import { Sale } from 'src/interfaces/Sale'
 
 type WrapperProps = SpaceProps & BorderProps & LayoutProps
 
@@ -103,13 +105,13 @@ interface TokenFooterProps {
 }
 
 export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterProps) => {
-  const wallet = useWallet()
+  const { account } = useWeb3React()
   const {
     isMobile,
     windowSize: { width: windowWidth },
   } = useWindowSize()
 
-  const walletAddress = wallet.account ? `${wallet.account.substr(0, 6)}...${wallet.account.substr(-4)}` : ''
+  const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
 
   const mobileWrapper: WrapperProps = {}
   if (isMobile) {
