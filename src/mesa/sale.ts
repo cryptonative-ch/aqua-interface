@@ -2,7 +2,7 @@
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 // Interfaces
-import { Sale, SaleBid } from 'src/interfaces/Sale'
+import { FairSaleBid, FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
 
 // Mesa
 import { calculateClearingPrice } from './price'
@@ -42,7 +42,7 @@ export const isSaleClosed = ({ endDate }: Sale) => {
  * @param order1
  * @param order2
  */
-export const isBidActive = ({ bids }: Sale, bid: SaleBid) => {
+export const isBidActive = ({ bids }: Sale, bid: FairSaleBid) => {
   const clearingPriceOrder = calculateClearingPrice(bids)
 
   return bid.tokenIn < clearingPriceOrder.tokenIn
@@ -53,5 +53,5 @@ export const isBidActive = ({ bids }: Sale, bid: SaleBid) => {
  * @param saleBids
  * @param address
  */
-export const filterSaleBidsByAddress = (saleBids: SaleBid[], address: string) =>
+export const filterSaleBidsByAddress = (saleBids: FairSaleBid[] & FixedPriceSalePurchase[], address: string) =>
   saleBids.filter(saleBid => saleBid.address === address)
