@@ -13,7 +13,7 @@ interface BaseSale {
 }
 
 interface Bid {
-  BaseSale: Pick<BaseSale, 'id'>
+  baseSale: Pick<BaseSale, 'id'>
   createdAt: number // The UTC timestamp at which the bid was placed
   updatedAt: number | null // The UTC timestamp at which the bid was updated
   deletedAt: number | null // The UTC timestamp at which the bid was deleted

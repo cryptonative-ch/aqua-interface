@@ -42,7 +42,7 @@ export const isSaleClosed = ({ endDate }: Sale) => {
  * @param order1
  * @param order2
  */
-export const isBidActive = ({ bids }: Sale, bid: FairSaleBid & FixedPriceSalePurchase) => {
+export const isBidActive = ({ bids }: Sale, bid: FairSaleBid) => {
   const clearingPriceOrder = calculateClearingPrice(bids)
 
   return bid.tokenIn < clearingPriceOrder.tokenIn

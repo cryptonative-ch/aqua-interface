@@ -122,7 +122,8 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
     const { updatedAt } = getState().bidReducer.bidsBySaleId[saleId] || timeNow
     const delta = Math.abs(updatedAt - timeNow)
     // exit
-    if (delta <= 30) {
+    // should only be called once
+    if (delta <= 3000000) {
       return
     }
     // fetch new (fresh) data
@@ -150,7 +151,7 @@ export const fetchBidsFromChain = (bids: SaleBid): any => {
 }
 
 const keyFinder = (object: BidsBySaleId) => {
-  return Object.keys(object)[0]
+  return String(Object.getOwnPropertyNames(object)[0])
 }
 
 //REDUCER
@@ -164,26 +165,25 @@ export function bidReducer(state: BidState = defaultState, action: BidActionType
       }
     case ActionTypes.INITIAL_BID_SUCCESS: {
       // Extract the saleid
-      const saleId = keyFinder(action.payload)
+
+      const id = keyFinder(action.payload)
 
       // create a cache timestamp
       const updatedAt = dayjs.utc().unix()
-      // get bidsBySaleId from previous state
-      const { bidsBySaleId } = state
 
       return {
         ...state,
         isLoading: false,
         bidsBySaleId: {
-          ...bidsBySaleId,
-          [saleId]: bidsBySaleId[saleId]
+          ...state.bidsBySaleId,
+          [id]: state.bidsBySaleId[id]
             ? {
                 updatedAt: updatedAt,
-                bids: [...bidsBySaleId[saleId].bids, ...action.payload[saleId].bids],
+                bids: [...state.bidsBySaleId[id].bids, ...action.payload[id].bids],
               }
             : {
                 updatedAt: updatedAt,
-                bids: action.payload[saleId].bids,
+                bids: action.payload[id].bids,
               },
         },
       }
@@ -207,7 +207,7 @@ export function bidReducer(state: BidState = defaultState, action: BidActionType
       const { bidsBySaleId } = state
       // get saleId from payload
       const {
-        BaseSale: { id },
+        baseSale: { id },
       } = action.payload
       return {
         ...state,
