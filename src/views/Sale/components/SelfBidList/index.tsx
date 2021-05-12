@@ -232,6 +232,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
       {bids.map((bid: SaleBid, index: number) => {
         const bidPrice =
           formatBigInt(bid.tokenIn, sale.tokenIn.decimals) / formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
+          const totalTokens =  formatBigInt(bid.tokenIn, sale.tokenIn.decimals) * formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
         return (
           <Flex
             key={index}
@@ -282,7 +283,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
             ) : (
               <Flex flex={6} flexDirection="row" alignItems="center">
                 <TokenPriceLabel color="#000629" padding="4px 0 4px 8px">
-                  1,785.7142 IOP
+                 {`${numeral(totalTokens).format('0.[00]')} ${sale.tokenOut.symbol}`}
                 </TokenPriceLabel>
                 <Flex flex={1} />
                 <IconImg src={WarningSVG} margin={isMobile ? '0 8px' : '0 4px 0 8px'} />

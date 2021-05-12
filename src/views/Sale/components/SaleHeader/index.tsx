@@ -13,7 +13,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { Flex } from 'src/components/Flex'
 
 // Svg
-import noToken from 'src/assets/svg/no_token_image.svg'
+import noToken from 'src/assets/svg/no-token-image.svg'
 
 const HeaderText = styled.div({
   fontStyle: 'normal',

@@ -20,7 +20,7 @@ import { BadgeFlex } from 'src/layouts/BadgeFlex'
 import { Sale } from 'src/interfaces/Sale'
 
 // Svg
-import noToken from 'src/assets/svg/no_token_image.svg'
+import noToken from 'src/assets/svg/no-token-image.svg'
 
 const TokenIconFigure = styled.div(props => ({
   marginRight: props.theme.space[3],
