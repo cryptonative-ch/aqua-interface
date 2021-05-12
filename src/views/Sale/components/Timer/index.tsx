@@ -1,13 +1,6 @@
 // External
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import advanced from 'dayjs/plugin/advancedFormat'
-
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
-
-import relativeTime from 'dayjs/plugin/relativeTime'
-import durationTime from 'dayjs/plugin/duration'
 
 // Components
 import { CardText } from 'src/components/CardText'
@@ -20,13 +13,6 @@ import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { timezoneAbbreviation } from 'src/utils/timezone'
-
-dayjs.extend(advanced)
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.extend(advanced)
-dayjs.extend(relativeTime)
-dayjs.extend(durationTime)
 
 interface TimerComponentProps {
   sale: Sale
