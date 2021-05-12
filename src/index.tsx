@@ -1,6 +1,5 @@
 // External
 import { ExternalProvider, Web3Provider } from '@ethersproject/providers'
-import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 import { Provider as StoreProvider } from 'react-redux'
 import { Web3ReactProvider } from '@web3-react/core'
 import { render } from 'react-dom'
@@ -11,6 +10,7 @@ import timezone from 'dayjs/plugin/timezone'
 import advanced from 'dayjs/plugin/advancedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
+import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Redux store
 import { store } from 'src/redux/store'
