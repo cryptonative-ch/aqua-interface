@@ -40,7 +40,7 @@ const inititalState: PageState = {
   path: '/',
 }
 
-export default function reducer(state: PageState = inititalState, action: PageAction) {
+export function reducer(state: PageState = inititalState, action: PageAction) {
   switch (action.type) {
     case ActionTypes.PAGE_SET_TITLE:
       return { ...state, title: action.payload }
