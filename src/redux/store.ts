@@ -1,11 +1,11 @@
 import { combineReducers, createStore, applyMiddleware, Action } from 'redux'
-import Thunk, { ThunkAction } from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import Thunk, { ThunkAction } from 'redux-thunk'
 
 // Reducers
-import page from './page'
-import { bidReducer } from './BidData'
-import { SaleReducer } from './SaleListings'
+import { reducer as sales } from './sales'
+import { reducer as bids } from './bids'
+import { reducer as page } from './page'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
@@ -15,8 +15,8 @@ declare module 'react-redux' {
 
 const rootReducer = combineReducers({
   page,
-  bidReducer,
-  SaleReducer,
+  bids,
+  sales,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
