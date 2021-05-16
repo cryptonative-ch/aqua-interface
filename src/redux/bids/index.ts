@@ -100,13 +100,13 @@ export const updateBidFailure = (payload: Error) => ({
 })
 
 // State
-interface BidState {
+export interface BidsState {
   isLoading: boolean
   error: Error | null
   bidsBySaleId: BidsBySaleId
 }
 
-const defaultState: BidState = {
+const defaultState: BidsState = {
   isLoading: true,
   error: null,
   bidsBySaleId: {},
@@ -119,7 +119,7 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
     // Current time
     const timeNow = dayjs.utc().unix()
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
-    const { updatedAt } = getState().bidReducer.bidsBySaleId[saleId] || timeNow
+    const { updatedAt } = getState().bids.bidsBySaleId[saleId] || timeNow
     const delta = Math.abs(updatedAt - timeNow)
     // exit
     // should only be called once
@@ -154,9 +154,13 @@ const keyFinder = (object: BidsBySaleId) => {
   return String(Object.getOwnPropertyNames(object)[0])
 }
 
-//REDUCER
-
-export function bidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
+/**
+ * Reducer
+ * @param state
+ * @param action
+ * @returns
+ */
+export function reducer(state: BidsState = defaultState, action: BidActionTypes): BidsState {
   switch (action.type) {
     case ActionTypes.INITIAL_BID_REQUEST:
       return {
