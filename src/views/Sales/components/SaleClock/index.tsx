@@ -73,7 +73,7 @@ export const SaleClock: React.FC<SaleClockProps> = ({ sale }) => {
           </Flex>
         ) : (
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">timeEnd</CardText>
+            <CardText color="grey">Timeframe</CardText>
             <Timer sale={sale} />
           </Flex>
         )}
