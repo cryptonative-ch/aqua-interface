@@ -216,42 +216,45 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
         </Flex>
       </FormGroup>
       {isFixed && <FixedTerm>{`You'll get 1,000 ${sale.tokenOut?.symbol}`}</FixedTerm>}
-   {approve ? <Button
-        disabled={isDisabled}
-        data-testid="submit-button"
-        type="submit"
-        title={t('buttons.placeBid')}
-        formButton
-        width="100%"
-        height="48px"
-        fontWeight="500"
-        padding={false}
-        fontSize="14px"
-        lineHeight="21px"
-        border={true}
-        background={isDisabled ? '#DDDDE3' : '#304FFE'}
-        color={isDisabled ? '#7B7F93' : '#fff'}
-      > 
-        {isFixed ? t('texts.placeBuyOrder') : t('buttons.placeBid')}
-      </Button> : <Button
-        disabled={isDisabled}
-        data-testid="submit-button"
-        type="submit"
-        title={t('buttons.placeBid')}
-        formButton
-        width="100%"
-        height="48px"
-        fontWeight="500"
-        padding={false}
-        fontSize="14px"
-        lineHeight="21px"
-        border={true}
-        background={isDisabled ? '#DDDDE3' : '#304FFE'}
-        color={isDisabled ? '#7B7F93' : '#fff'}
-      > 
-        {t('texts.approve')}
-      </Button>
-      }
+      {approve ? (
+        <Button
+          disabled={isDisabled}
+          data-testid="submit-button"
+          type="submit"
+          title={t('buttons.placeBid')}
+          formButton
+          width="100%"
+          height="48px"
+          fontWeight="500"
+          padding={false}
+          fontSize="14px"
+          lineHeight="21px"
+          border={true}
+          background={isDisabled ? '#DDDDE3' : '#304FFE'}
+          color={isDisabled ? '#7B7F93' : '#fff'}
+        >
+          {isFixed ? t('texts.placeBuyOrder') : t('buttons.placeBid')}
+        </Button>
+      ) : (
+        <Button
+          disabled={isDisabled}
+          data-testid="submit-button"
+          type="submit"
+          title={t('buttons.placeBid')}
+          formButton
+          width="100%"
+          height="48px"
+          fontWeight="500"
+          padding={false}
+          fontSize="14px"
+          lineHeight="21px"
+          border={true}
+          background={isDisabled ? '#DDDDE3' : '#304FFE'}
+          color={isDisabled ? '#7B7F93' : '#fff'}
+        >
+          {t('texts.approve')}
+        </Button>
+      )}
     </FormBody>
   )
 }

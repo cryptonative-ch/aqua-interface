@@ -40,7 +40,7 @@ import { BarChart } from './components/BarChart'
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { timeFrame, secondsTohms } from 'src/views/Sale/components/Timer'
+import { secondsTohms, timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // Wallet Utils
@@ -159,15 +159,10 @@ export function SaleView() {
                       description={`${numeral(formatBigInt(sale.tokenAmount)).format('0,0')} ${sale.tokenOut?.symbol}`}
                     />
                     {isSaleClosed(sale) && (
-                      <HeaderItem isMobile title="Closed On" description={timeFrame(sale.endDate)} textAlign="right" />
+                      <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
                     {isSaleUpcoming(sale) && (
-                      <HeaderItem
-                        isMobile
-                        title="Starts On"
-                        description={timeFrame(sale.startDate)}
-                        textAlign="right"
-                      />
+                      <HeaderItem isMobile title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
                     {isSaleOpen(sale) && (
                       <HeaderItem
@@ -196,10 +191,10 @@ export function SaleView() {
                     />
                     {(isSaleClosed(sale) || isSaleUpcoming(sale)) && <Flex flex={0.2} />}
                     {isSaleClosed(sale) && (
-                      <HeaderItem title="Closed On" description={timeFrame(sale.endDate)} textAlign="right" />
+                      <HeaderItem title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
                     {isSaleUpcoming(sale) && (
-                      <HeaderItem title="Starts On" description={timeFrame(sale.startDate)} textAlign="right" />
+                      <HeaderItem title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
                     {isSaleOpen(sale) && (
                       <HeaderItem

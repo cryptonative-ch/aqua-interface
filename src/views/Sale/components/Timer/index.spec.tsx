@@ -9,10 +9,8 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
-
-
 // Component
-import { secondsTohms, timeFrame } from './index'
+import { secondsTohms } from './index'
 
 // Extends dayjs
 dayjs.extend(DayjsRelativeTime)
@@ -41,13 +39,5 @@ describe('seconds to HMS function', () => {
           secondsTohms(-100)
         }).toThrow('seconds cannot be negative')
       })
-  })
-})
-
-describe('converts unix seconds into local Date time format function', () => {
-  test('test negative input', () => {
-    expect(() => {
-      timeFrame(-100)
-    }).toThrow('seconds cannot be negative')
   })
 })

@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 
 // Components
 import { Flex } from 'src/components/Flex'
-import { Timer, timeFrame } from 'src/views/Sale/components/Timer'
+import { Timer, timeEnd } from 'src/views/Sale/components/Timer'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
@@ -64,16 +64,16 @@ export const SaleClock: React.FC<SaleClockProps> = ({ sale }) => {
           <Flex flexDirection="column" justifyContent="space-between">
             <Flex flexDirection="row" justifyContent="space-between">
               <CardText color="grey">Starts</CardText>
-              <CardText>{timeFrame(convertUtcTimestampToLocal(sale.startDate))}</CardText>
+              <CardText>{timeEnd(sale.startDate)}</CardText>
             </Flex>
             <Flex flexDirection="row" justifyContent="space-between">
               <CardText color="grey">Ends</CardText>
-              <CardText>{timeFrame(convertUtcTimestampToLocal(sale.endDate))}</CardText>
+              <CardText>{timeEnd(sale.endDate)}</CardText>
             </Flex>
           </Flex>
         ) : (
           <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">Timeframe</CardText>
+            <CardText color="grey">timeEnd</CardText>
             <Timer sale={sale} />
           </Flex>
         )}
