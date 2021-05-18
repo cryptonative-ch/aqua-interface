@@ -2,6 +2,7 @@
   "name": "mesa-interface",
   "version": "0.1.0",
   "dependencies": {
+    "@dxdao/mesa": "^0.1.2",
     "@ethersproject/providers": "^5.0.13",
     "@ethersproject/units": "^5.0.6",
     "@rebass/preset": "^4.0.5",
