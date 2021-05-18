@@ -1,6 +1,7 @@
 // External
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import momentTimeZone from 'moment-timezone'
 
 // Components
 import { CardText } from 'src/components/CardText'
@@ -46,15 +47,14 @@ export const timeEnd = (unixtmestamp: number, timezone?: string) => {
     timezone ? { timeZone: `${timezone}` } : undefined
   ).resolvedOptions().timeZone
 
-  const date = dayjs
+  const date = momentTimeZone
     .unix(unixtmestamp)
-    .local()
-    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : dayjs.tz.guess())
+    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
     .format('MMM D, H:mm')
 
   const timeZoneStamp = timezoneAbbreviation(
     dayjs()
-      .tz(typeof timezone !== 'undefined' ? timeZoneGuess : dayjs.tz.guess())
+      .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
       .format('zzz')
   )
   return `${date} ${timeZoneStamp}`
