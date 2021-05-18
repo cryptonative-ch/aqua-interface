@@ -1,7 +1,7 @@
 // Externals
 import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import advanced from 'dayjs/plugin/advancedFormat'
@@ -10,7 +10,7 @@ import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Component
-import { secondsTohms } from './index'
+import { secondsTohms, timeEnd } from './index'
 
 // Extends dayjs
 dayjs.extend(DayjsRelativeTime)
@@ -22,22 +22,65 @@ dayjs.extend(durationTime)
 
 //clean up
 
-afterEach(cleanup)
-
 // tests
+let addHours: (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
+let utcDate: dayjs.Dayjs
+let dateUTC: dayjs.Dayjs
 
-describe('seconds to HMS function', () => {
-  describe('convert seconds into different formats', () => {
-    test('tests conversion of seconds to minutes', () => {
-      expect(secondsTohms(60)).toBe('1m ')
-    }),
-      test('tests conversion of seconds into days, hours, minutes', () => {
-        expect(secondsTohms(20000)).toBe('5h 33m 20s')
+describe('Timer', () => {
+  describe('seconds to HMS function', () => {
+    describe('convert seconds into different formats', () => {
+      test('tests conversion of seconds to minutes', () => {
+        expect(secondsTohms(60)).toBe('1m ')
       }),
-      test('tests negative input', () => {
-        expect(() => {
-          secondsTohms(-100)
-        }).toThrow('seconds cannot be negative')
-      })
-  })
+        test('tests conversion of seconds into days, hours, minutes', () => {
+          expect(secondsTohms(20000)).toBe('5h 33m 20s')
+        }),
+        test('tests negative input', () => {
+          expect(() => {
+            secondsTohms(-100)
+          }).toThrow('seconds cannot be negative')
+        })
+    })
+  }),
+    describe('TimeEnd', () => {
+      describe('Error checks', () => {
+        test('should throw error for negative numbers', () => {
+          const time = timeEnd(-1)
+          expect(() => time).toThrow('unixtimestamp cannot be negative')
+        })
+      }),
+        describe('Time conversion checks', () => {
+          beforeEach(() => {
+            // variables
+            addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
+            utcDate = dayjs(new Date('2017-01-01 11:00:00').toUTCString()) // GMT
+            dateUTC = dayjs.unix(utcDate.unix())
+          })
+
+          test('should display correct time at 0 hours', () => {
+            const time = timeEnd(addHours(dateUTC, 0).unix(), 'UTC')
+            expect(time).toBe('Jan 1, 11:00 UTC')
+          }),
+            test('should display correct time at +4', () => {
+              const time = timeEnd(addHours(dateUTC, +4).unix(), 'UTC')
+              expect(time).toBe('Jan 1, 15:00 UTC')
+            }),
+            test('should display US Pacific timezone at 2017-01-01 11:00:00 UTC', () => {
+              const time = timeEnd(addHours(dateUTC, 0).unix(), 'ECT')
+
+              expect(time).toBe('Jan 1, 13:00 CEST')
+            }),
+            test('should display Bangladesh Standard Time at 2017-01-01 11:00:00 UTC', () => {
+              const time = timeEnd(addHours(dateUTC, 0).unix(), 'BST')
+
+              expect(time).toBe('Jan 1, 17:00 BST')
+            }),
+            test('should display Pacific Standard Time at 2017-01-01 11:00:00 UTC', () => {
+              const time = timeEnd(addHours(dateUTC, 0).unix(), 'PST')
+
+              expect(time).toBe('Jan 1, 4:00 PDT')
+            })
+        })
+    })
 })

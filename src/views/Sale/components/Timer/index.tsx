@@ -36,9 +36,27 @@ export const secondsTohms = (seconds: number) => {
   return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
-export const timeEnd = (unixtmestamp: number) => {
-  const date = dayjs.unix(unixtmestamp).local().tz(dayjs.tz.guess()).format('MMM D, H:mm')
-  const timeZoneStamp = timezoneAbbreviation(dayjs().tz(dayjs.tz.guess()).format('zzz'))
+export const timeEnd = (unixtmestamp: number, timezone?: string) => {
+  if (unixtmestamp < 0) {
+    throw new Error('unixtimestamp cannot be negative')
+  }
+
+  const timeZoneGuess = new Intl.DateTimeFormat(
+    'zh-CN',
+    timezone ? { timeZone: `${timezone}` } : undefined
+  ).resolvedOptions().timeZone
+
+  const date = dayjs
+    .unix(unixtmestamp)
+    .local()
+    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : dayjs.tz.guess())
+    .format('MMM D, H:mm')
+
+  const timeZoneStamp = timezoneAbbreviation(
+    dayjs()
+      .tz(typeof timezone !== 'undefined' ? timeZoneGuess : dayjs.tz.guess())
+      .format('zzz')
+  )
   return `${date} ${timeZoneStamp}`
 }
 

@@ -14,17 +14,12 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
-
-
-
 // Component
 import { theme } from '../../../../styles/theme'
 import { PlaceBidForm } from './index'
 import { calculateClearingPrice } from 'src/mesa/price'
 //defaults
 import { getSaleDefault } from 'src/utils/Defaults'
-
-
 
 // Extends dayjs
 dayjs.extend(DayjsRelativeTime)

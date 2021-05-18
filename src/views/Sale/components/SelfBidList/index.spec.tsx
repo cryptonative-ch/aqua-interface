@@ -12,7 +12,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
-
 // Component
 import { SelfBidList } from './index'
 
@@ -23,8 +22,6 @@ dayjs.extend(timezone)
 dayjs.extend(advanced)
 dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
-
-
 
 describe('SelfBidList', () => {
   test('should display texts', () => {
