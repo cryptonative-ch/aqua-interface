@@ -2,8 +2,11 @@
 
 // Externals
 import { Action } from 'redux'
-import { AppThunk } from '../store'
 import dayjs from 'dayjs'
+
+// redux
+
+import { AppThunk } from '../store'
 
 // interface
 import { SaleBid } from 'src/interfaces/Sale'
@@ -19,6 +22,9 @@ export enum ActionTypes {
   INITIAL_BID_REQUEST = 'INITIAL_BID_REQUEST',
   INITIAL_BID_SUCCESS = 'INITIAL_BID_SUCCESS',
   INITIAL_BID_FAILURE = 'INITIAL_BID_FAILURE',
+  UPDATE_BID_REQUEST = 'UPDATE_BID_REQUEST',
+  UPDATE_BID_SUCCESS = 'UPDATE_BID_SUCCESS',
+  UPDATE_BID_FAILURE = 'UPDATE_BID_FAILURE',
 }
 
 // indexable type
@@ -42,7 +48,25 @@ interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE
   payload: Error
 }
 
-export type BidActionTypes = InitialBidRequestAction | InitialBidSuccessAction | InitialBidFailureAction
+interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
+  payload: boolean
+}
+
+interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
+  payload: SaleBid
+}
+
+interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
+  payload: Error
+}
+
+export type BidActionTypes =
+  | InitialBidRequestAction
+  | InitialBidSuccessAction
+  | InitialBidFailureAction
+  | UpdateBidRequest
+  | UpdateBidSuccess
+  | UpdateBidFailure
 
 export const initialBidRequest = (payload: boolean) => ({
   payload,
@@ -60,14 +84,29 @@ export const initialBidFailure = (payload: Error) => ({
   type: ActionTypes.INITIAL_BID_FAILURE,
 })
 
+export const updateBidRequest = (payload: boolean) => ({
+  payload,
+  type: ActionTypes.UPDATE_BID_REQUEST,
+})
+
+export const updateBidSuccess = (payload: SaleBid) => ({
+  payload,
+  type: ActionTypes.UPDATE_BID_SUCCESS,
+})
+
+export const updateBidFailure = (payload: Error) => ({
+  payload,
+  type: ActionTypes.UPDATE_BID_FAILURE,
+})
+
 // State
-interface BidState {
+export interface BidsState {
   isLoading: boolean
   error: Error | null
   bidsBySaleId: BidsBySaleId
 }
 
-const defaultState: BidState = {
+const defaultState: BidsState = {
   isLoading: true,
   error: null,
   bidsBySaleId: {},
@@ -80,10 +119,11 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
     // Current time
     const timeNow = dayjs.utc().unix()
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
-    const { updatedAt } = getState().bidReducer.bidsBySaleId[saleId] || timeNow
+    const { updatedAt } = getState().bids.bidsBySaleId[saleId] || timeNow
     const delta = Math.abs(updatedAt - timeNow)
     // exit
-    if (delta <= 30) {
+    // should only be called once
+    if (delta <= 3000000) {
       return
     }
     // fetch new (fresh) data
@@ -98,48 +138,96 @@ export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsReques
   }
 }
 
-const keyFinder = (object: BidsBySaleId) => {
-  return Object.keys(object)[0]
+export const fetchBidsFromChain = (bids: SaleBid): any => {
+  return async (dispatch: any) => {
+    dispatch(updateBidRequest(true))
+    try {
+      dispatch(updateBidSuccess(bids))
+    } catch (error) {
+      console.log(error)
+      dispatch(updateBidFailure(error))
+    }
+  }
 }
 
-//REDUCER
+const keyFinder = (object: BidsBySaleId) => {
+  return String(Object.getOwnPropertyNames(object)[0])
+}
 
-export function bidReducer(state: BidState = defaultState, action: BidActionTypes): BidState {
+/**
+ * Reducer
+ * @param state
+ * @param action
+ * @returns
+ */
+export function reducer(state: BidsState = defaultState, action: BidActionTypes): BidsState {
   switch (action.type) {
     case ActionTypes.INITIAL_BID_REQUEST:
       return {
         ...state,
         isLoading: action.payload,
       }
-    case ActionTypes.INITIAL_BID_SUCCESS:
+    case ActionTypes.INITIAL_BID_SUCCESS: {
       // Extract the saleid
-      const saleId = keyFinder(action.payload)
+
+      const id = keyFinder(action.payload)
 
       // create a cache timestamp
       const updatedAt = dayjs.utc().unix()
-      // get bidsBySaleId from previous state
-      const { bidsBySaleId } = state
 
       return {
         ...state,
         isLoading: false,
         bidsBySaleId: {
-          ...bidsBySaleId,
-          [saleId]: bidsBySaleId[saleId]
+          ...state.bidsBySaleId,
+          [id]: state.bidsBySaleId[id]
             ? {
                 updatedAt: updatedAt,
-                bids: [...bidsBySaleId[saleId].bids, ...action.payload[saleId].bids],
+                bids: [...state.bidsBySaleId[id].bids, ...action.payload[id].bids],
               }
             : {
                 updatedAt: updatedAt,
-                bids: action.payload[saleId].bids,
+                bids: action.payload[id].bids,
               },
         },
       }
+    }
+
     case ActionTypes.INITIAL_BID_FAILURE:
       return {
         ...state,
         isLoading: false,
+        error: action.payload,
+      }
+    case ActionTypes.UPDATE_BID_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      }
+    case ActionTypes.UPDATE_BID_SUCCESS: {
+      // create a cache timestamp
+      const updatedAt = dayjs.utc().unix()
+      // get bidsBySaleId from previous state
+      const { bidsBySaleId } = state
+      // get saleId from payload
+      const {
+        baseSale: { id },
+      } = action.payload
+      return {
+        ...state,
+        bidsBySaleId: {
+          ...bidsBySaleId,
+          [id]: {
+            updatedAt: updatedAt,
+            bids: [...bidsBySaleId[id].bids, action.payload],
+          },
+        },
+      }
+    }
+
+    case ActionTypes.UPDATE_BID_FAILURE:
+      return {
+        ...state,
         error: action.payload,
       }
 

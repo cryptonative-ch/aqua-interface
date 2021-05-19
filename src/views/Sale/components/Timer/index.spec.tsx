@@ -27,7 +27,7 @@ dayjs.extend(durationTime)
 let addHours: (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
 let utcDate: dayjs.Dayjs
 let dateUTC: dayjs.Dayjs
-let addDays:  (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
+let addDays: (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
 
 describe('Timer', () => {
   describe('seconds to HMS function', () => {
@@ -90,35 +90,31 @@ describe('Timer', () => {
 
               expect(time).toBe('May 1, 4:00 PDT')
             }),
-           describe('Daylight Savings Time Transition Check', () => {
-            beforeEach(() => {
-              jest.useFakeTimers('modern')
-              jest.setSystemTime(new Date('2021-03-14 10:00:00'))
-              // variables
-              addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
-              addDays = (dayjsInstance: Dayjs, days: number) => dayjsInstance.clone().add(days, 'd')
-              utcDate = dayjs(Date.now()).utc(true) // UTC
-              dateUTC = dayjs.unix(utcDate.unix())
+            describe('Daylight Savings Time Transition Check', () => {
+              beforeEach(() => {
+                jest.useFakeTimers('modern')
+                jest.setSystemTime(new Date('2021-03-14 10:00:00'))
+                // variables
+                addHours = (dayjsInstance: Dayjs, hours: number) => dayjsInstance.clone().add(hours, 'h')
+                addDays = (dayjsInstance: Dayjs, days: number) => dayjsInstance.clone().add(days, 'd')
+                utcDate = dayjs(Date.now()).utc(true) // UTC
+                dateUTC = dayjs.unix(utcDate.unix())
+              })
+
+              afterAll(() => {
+                jest.useRealTimers()
+              })
+              test('should display correct daylight savings time transition for Pacific Standard Time', () => {
+                const time = timeEnd(addHours(dateUTC, 0).unix(), 'PST')
+                expect(time).toBe('Mar 14, 3:00 PDT')
+                // this has reached daylight savings time
+              }),
+                test('should display correct daylight savings time transition for European Central Time ', () => {
+                  const time = timeEnd(addHours(dateUTC, 0).unix(), 'ECT')
+                  // this has not yet reached daylight savings time
+                  expect(time).toBe('Mar 14, 11:00 CET')
+                })
             })
-  
-            afterAll(() => {
-              jest.useRealTimers()
-            })
-             test('should display correct daylight savings time transition for Pacific Standard Time', () => {
-              const time = timeEnd(addHours(dateUTC, 0).unix(), 'PST')
-              expect(time).toBe('Mar 14, 3:00 PDT')
-              // this has reached daylight savings time
-             }),
-             test('should display correct daylight savings time transition for European Central Time ', () => {
-              const time = timeEnd(addHours(dateUTC, 0).unix(), 'ECT')
-              // this has not yet reached daylight savings time
-              expect(time).toBe('Mar 14, 11:00 CET')
-             })
-             
-             
-           })
-           
-            
         })
     })
 })

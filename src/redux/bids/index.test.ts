@@ -6,13 +6,11 @@ import thunk from 'redux-thunk'
 // mocks
 import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
 
-// Mesa Utils
-import { salesQuery } from 'src/subgraph/Sales'
-
-// components
-import { ActionTypes, BidActionTypes, bidReducer, fetchSaleBids } from './index'
-import { getSalesData, selectSaletype } from 'src/subgraph'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
+import { salesQuery } from 'src/subgraph/Sales'
+// Redux components
+import { ActionTypes, BidActionTypes, reducer, fetchSaleBids, BidsState } from './index'
+import { getSalesData, selectSaletype } from 'src/subgraph'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -21,6 +19,13 @@ const store = mockStore({})
 describe('Async Bid Data Actions and Reducers', () => {
   let server: any
   let salesRequest: any
+
+  const initialState: BidsState = {
+    bidsBySaleId: {},
+    error: null,
+    isLoading: false,
+  }
+
   beforeEach(async () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
     salesRequest = await server.query(salesQuery)
@@ -53,7 +58,7 @@ describe('Async Bid Data Actions and Reducers', () => {
         type: ActionTypes.INITIAL_BID_REQUEST,
         payload: true,
       }
-      expect(bidReducer({ isLoading: false, bidsBySaleId: {}, error: null }, startAction)).toEqual({
+      expect(reducer(initialState, startAction)).toEqual({
         bidsBySaleId: {},
         isLoading: true,
         error: null,
@@ -67,7 +72,7 @@ describe('Async Bid Data Actions and Reducers', () => {
         type: ActionTypes.INITIAL_BID_SUCCESS,
         payload: saleBidsRequest.data,
       }
-      expect(bidReducer({ isLoading: false, bidsBySaleId: {}, error: null }, expectedActions)).toEqual({
+      expect(reducer(initialState, expectedActions)).toEqual({
         bidsBySaleId: expect.objectContaining({
           fairSale: expect.objectContaining({
             bids: expect.arrayContaining([
@@ -86,7 +91,7 @@ describe('Async Bid Data Actions and Reducers', () => {
         type: ActionTypes.INITIAL_BID_FAILURE,
         payload: expect.any(Error),
       }
-      expect(bidReducer({ isLoading: false, bidsBySaleId: {}, error: null }, startActions)).toEqual({
+      expect(reducer(initialState, startActions)).toEqual({
         bidsBySaleId: {},
         error: expect.any(Error),
         isLoading: false,

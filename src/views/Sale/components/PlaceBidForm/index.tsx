@@ -118,7 +118,6 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
-  const [approve, setApprove] = useState(false)
   const theme = useTheme()
   const [t] = useTranslation()
 
@@ -172,7 +171,7 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
     }
   }, [isShown, onSubmit, result, setResult, tokenAmount, tokenPrice])
 
-  const isDisabled = approve || !formValid || isSaleClosed(sale) || isSaleUpcoming(sale)
+  const isDisabled = !formValid || isSaleClosed(sale) || isSaleUpcoming(sale)
 
   return (
     <FormBody id="createBidForm" onSubmit={onFormSubmit}>

@@ -10,7 +10,7 @@ import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
 import { salesQuery } from 'src/subgraph/Sales'
 
 // components
-import { fetchSales, SaleReducer, ActionTypes, SaleActionTypes } from './index'
+import { thunks, reducer, ActionTypes, SaleActionTypes, SalesState } from './index'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -19,6 +19,14 @@ const store = mockStore({})
 describe('async Sale Actions and Reducers', () => {
   let server: any
   let salesRequest: any
+
+  const initialState: SalesState = {
+    updatedAt: 0,
+    isLoading: false,
+    sales: [],
+    error: null,
+  }
+
   beforeEach(async () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
     salesRequest = await server.query(salesQuery)
@@ -31,10 +39,10 @@ describe('async Sale Actions and Reducers', () => {
     const expectedActions = [
       {
         payload: true,
-        type: ActionTypes.GENERATE_AUCTIONS_REQUEST,
+        type: ActionTypes.SALES_FETCH_REQUEST,
       },
       {
-        type: ActionTypes.GENERATE_AUCTIONS_SUCCESS,
+        type: ActionTypes.SALES_FETCH_SUCCESS,
         payload: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
@@ -42,31 +50,32 @@ describe('async Sale Actions and Reducers', () => {
         ]),
       },
     ]
-    return store.dispatch(fetchSales(salesRequest.data)).then(() => {
+    return store.dispatch(thunks.fetchSales(salesRequest.data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   }),
     test('reducer should handle GENERATE_AUCTIONS_REQUEST', () => {
       const startAction: SaleActionTypes = {
-        type: ActionTypes.GENERATE_AUCTIONS_REQUEST,
+        type: ActionTypes.SALES_FETCH_REQUEST,
         payload: true,
       }
-      expect(SaleReducer({ isLoading: false, sales: [], error: null }, startAction)).toEqual({
+      expect(reducer(initialState, startAction)).toEqual({
         sales: [],
+        createAt: expect.any(Number),
         isLoading: true,
         error: null,
       })
     }),
     test('reducer should handle GENERATE_AUCTIONS_SUCCESS', () => {
       const startActions: SaleActionTypes = {
-        type: ActionTypes.GENERATE_AUCTIONS_SUCCESS,
+        type: ActionTypes.SALES_FETCH_SUCCESS,
         payload: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
           }),
         ]),
       }
-      expect(SaleReducer({ isLoading: false, sales: [], error: null }, startActions)).toEqual({
+      expect(reducer(initialState, startActions)).toEqual({
         sales: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
@@ -78,11 +87,12 @@ describe('async Sale Actions and Reducers', () => {
     }),
     test('reducer should handle GENERATE_AUCTIONS_FAILURE', () => {
       const startActions: SaleActionTypes = {
-        type: ActionTypes.GENERATE_AUCTIONS_FAILURE,
+        type: ActionTypes.SALES_FETCH_ERROR,
         payload: expect.any(Error),
       }
-      expect(SaleReducer({ isLoading: false, sales: [], error: null }, startActions)).toEqual({
+      expect(reducer(initialState, startActions)).toEqual({
         sales: [],
+        createAt: expect.any(Number),
         error: expect.any(Error),
         isLoading: false,
       })

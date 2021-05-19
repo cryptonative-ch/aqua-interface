@@ -34,8 +34,7 @@
     "bidMaybeTooLow": "Bid may be too low to be included",
     "doYouWishToContinue": "Do you wish to continue?",
     "yourActivity": "Your Activity",
-    "placeBuyOrder": "Place Buy Order",
-    "approve": "Approve Bid"
+    "placeBuyOrder": "Place Buy Order"
   },
   "buttons": {
     "back": "Back",
