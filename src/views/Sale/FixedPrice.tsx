@@ -38,7 +38,7 @@ import { SaleHeader } from './components/SaleHeader'
 
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { timeFrame, secondsTohms } from 'src/views/Sale/components/Timer'
+import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
@@ -182,15 +182,10 @@ export function FixedPriceSaleView() {
                       }`}
                     />
                     {isSaleClosed(sale) && (
-                      <HeaderItem isMobile title="Closed On" description={timeFrame(sale.endDate)} textAlign="right" />
+                      <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
                     {isSaleUpcoming(sale) && (
-                      <HeaderItem
-                        isMobile
-                        title="Starts On"
-                        description={timeFrame(sale.startDate)}
-                        textAlign="right"
-                      />
+                      <HeaderItem isMobile title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
                     {isSaleOpen(sale) && (
                       <HeaderItem
@@ -220,10 +215,10 @@ export function FixedPriceSaleView() {
                     />
                     {(isSaleClosed(sale) || isSaleUpcoming(sale)) && <Flex flex={0.2} />}
                     {isSaleClosed(sale) && (
-                      <HeaderItem title="Closed On" description={timeFrame(sale.endDate)} textAlign="right" />
+                      <HeaderItem title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
                     {isSaleUpcoming(sale) && (
-                      <HeaderItem title="Starts On" description={timeFrame(sale.startDate)} textAlign="right" />
+                      <HeaderItem title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
                     {isSaleOpen(sale) && (
                       <HeaderItem

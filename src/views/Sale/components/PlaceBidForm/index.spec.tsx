@@ -6,15 +6,28 @@ import '@testing-library/jest-dom/extend-expect'
 import { ThemeProvider } from 'styled-components'
 import numeral from 'numeral'
 import i18n from 'i18next'
-
-import { calculateClearingPrice } from 'src/mesa/price'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import advanced from 'dayjs/plugin/advancedFormat'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import durationTime from 'dayjs/plugin/duration'
+import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Component
 import { theme } from '../../../../styles/theme'
 import { PlaceBidForm } from './index'
-
+import { calculateClearingPrice } from 'src/mesa/price'
 //defaults
 import { getSaleDefault } from 'src/utils/Defaults'
+
+// Extends dayjs
+dayjs.extend(DayjsRelativeTime)
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(advanced)
+dayjs.extend(relativeTime)
+dayjs.extend(durationTime)
 
 describe('PlaceBidForm', () => {
   test('should display texts', () => {

@@ -9,7 +9,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
-
 // Components
 import { SaleClock } from './index'
 

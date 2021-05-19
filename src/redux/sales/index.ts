@@ -24,7 +24,7 @@ export interface SalesFetchRequestAction extends Action<ActionTypes.SALES_FETCH_
 export interface SalesFetchSucessAction extends Action<ActionTypes.SALES_FETCH_SUCCESS> {
   payload: Sale[]
 }
-export interface SalesFetchCompleteAction extends Action<ActionTypes.SALES_FETCH_COMPLETE> {}
+export type SalesFetchCompleteAction = Action<ActionTypes.SALES_FETCH_COMPLETE>
 export interface SalesFetchErrorAction extends Action<ActionTypes.SALES_FETCH_ERROR> {
   payload: Error
 }

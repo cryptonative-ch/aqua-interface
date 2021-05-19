@@ -1,7 +1,6 @@
-import dayjs from 'dayjs'
+import momentTimeZone from 'moment-timezone'
 
 export const convertUtcTimestampToLocal = (utcTimestamp: number) => {
-  const utcMinutesOffset = new Date().getTimezoneOffset()
-  const dateUTC = dayjs.unix(utcTimestamp).add(utcMinutesOffset, 'minutes')
+  const dateUTC = momentTimeZone.unix(utcTimestamp).tz(momentTimeZone.tz.guess())
   return dateUTC.unix()
 }

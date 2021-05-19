@@ -1,6 +1,7 @@
 // External
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import momentTimeZone from 'moment-timezone'
 
 // Components
 import { CardText } from 'src/components/CardText'
@@ -12,7 +13,6 @@ import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-import { timezoneAbbreviation } from 'src/utils/timezone'
 
 interface TimerComponentProps {
   sale: Sale
@@ -36,18 +36,26 @@ export const secondsTohms = (seconds: number) => {
   return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
-export const timeFrame = (unixSeconds: number) => {
-  const diff = new Date().getTimezoneOffset()
-  const endDateDateTime = new Date(unixSeconds * 1000 + diff * 1000 * 60).toString()
-  const endDate = endDateDateTime.slice(4, 10)
-  const endTime = endDateDateTime.slice(15, 21)
-  const timeZoneStamp = timezoneAbbreviation(dayjs().tz(dayjs.tz.guess()).format('zzz'))
-
-  if (unixSeconds < 0) {
-    throw Error('seconds cannot be negative')
+export const timeEnd = (unixtmestamp: number, timezone?: string) => {
+  if (unixtmestamp < 0) {
+    throw new Error('unixtimestamp cannot be negative')
   }
 
-  return `${endDate}, ${endTime} ${timeZoneStamp}`
+  const timeZoneGuess = new Intl.DateTimeFormat(
+    'zh-CN',
+    timezone ? { timeZone: `${timezone}` } : undefined
+  ).resolvedOptions().timeZone
+
+  const date = momentTimeZone
+    .unix(unixtmestamp)
+    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
+    .format('MMM D, H:mm')
+
+  const timeZoneStamp = momentTimeZone
+    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
+    .zoneAbbr()
+
+  return `${date} ${timeZoneStamp}`
 }
 
 export const Timer: React.FC<TimerComponentProps> = ({ sale }: TimerComponentProps) => {
@@ -68,9 +76,9 @@ export const Timer: React.FC<TimerComponentProps> = ({ sale }: TimerComponentPro
   if (isSaleUpcoming(sale)) {
     return (
       <Flex>
-        <CardText data-testid="open">{timeFrame(convertUtcTimestampToLocal(sale.startDate))}</CardText>
+        <CardText data-testid="open">{timeEnd(sale.startDate)}</CardText>
         <CardText color="grey">&nbsp;to&nbsp;</CardText>
-        <CardText>{timeFrame(convertUtcTimestampToLocal(sale.endDate))}</CardText>
+        <CardText>{timeEnd(sale.endDate)}</CardText>
       </Flex>
     )
   } else if (isSaleOpen(sale)) {
@@ -84,7 +92,7 @@ export const Timer: React.FC<TimerComponentProps> = ({ sale }: TimerComponentPro
   }
   return (
     <Flex>
-      <CardText data-testid="closed">{timeFrame(sale.endDate)}</CardText>
+      <CardText data-testid="closed">{timeEnd(sale.endDate)}</CardText>
     </Flex>
   )
 }

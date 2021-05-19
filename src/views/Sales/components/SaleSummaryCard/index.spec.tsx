@@ -12,8 +12,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
-
-
 // Extends dayjs
 dayjs.extend(DayjsRelativeTime)
 dayjs.extend(utc)
@@ -21,7 +19,6 @@ dayjs.extend(timezone)
 dayjs.extend(advanced)
 dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
-
 
 // Components
 import { SaleSummaryCard } from './index'
