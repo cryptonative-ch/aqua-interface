@@ -34,7 +34,8 @@
     "bidMaybeTooLow": "Bid may be too low to be included",
     "doYouWishToContinue": "Do you wish to continue?",
     "yourActivity": "Your Activity",
-    "placeBuyOrder": "Place Buy Order"
+    "placeBuyOrder": "Place Buy Order",
+    "pageNotFound": "The page that you’re looking for couldn’t be found."
   },
   "buttons": {
     "back": "Back",

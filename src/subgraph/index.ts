@@ -5,7 +5,7 @@ import axios from 'axios'
 
 //interface
 import { Sale, saleType } from '../interfaces/Sale'
-import { BidsBySaleId } from 'src/redux/BidData'
+import { BidsBySaleId } from 'src/redux/bids'
 
 // utils
 import { formatDecimal } from 'src/utils/Defaults'

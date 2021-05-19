@@ -54,8 +54,8 @@ import { saleBidsQuery } from 'src/subgraph/SaleBids'
 import { salesRequest } from 'src/subgraph/Sales'
 
 // Redux
-import { fetchSales } from 'src/redux/SaleListings'
-import { fetchSaleBids } from 'src/redux/BidData'
+import { fetchSales } from 'src/redux/sales'
+import { fetchSaleBids } from 'src/redux/bids'
 import { RootState } from 'src/redux/store'
 
 // Mesa Utils
@@ -90,15 +90,15 @@ export function FixedPriceSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const fetchData = () => dispatch(fetchSales(salesRequest))
+  const fetchData = () => dispatch(fetchSales())
 
   const sale = useSelector<RootState, Sale>(state => {
-    const sales = state.SaleReducer.sales.filter(sale => sale.id == params.saleId)[0]
+    const sales = state.sales.sales.filter(sale => sale.id == params.saleId)[0]
     return sales
   })
 
   const bidsBySale = useSelector<RootState, any>(state => {
-    return state.bidReducer.bidsBySaleId[params.saleId]
+    return state.bids.bidsBySaleId[params.saleId]
   })
 
   const bids = bidsBySale ? bidsBySale.bids : []
