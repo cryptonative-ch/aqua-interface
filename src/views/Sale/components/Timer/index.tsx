@@ -13,7 +13,7 @@ import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-import { timezoneAbbreviation } from 'src/utils/timezone'
+
 
 interface TimerComponentProps {
   sale: Sale
@@ -52,11 +52,8 @@ export const timeEnd = (unixtmestamp: number, timezone?: string) => {
     .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
     .format('MMM D, H:mm')
 
-  const timeZoneStamp = timezoneAbbreviation(
-    dayjs()
-      .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
-      .format('zzz')
-  )
+  const timeZoneStamp = momentTimeZone.tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess()).zoneAbbr()
+  
   return `${date} ${timeZoneStamp}`
 }
 
