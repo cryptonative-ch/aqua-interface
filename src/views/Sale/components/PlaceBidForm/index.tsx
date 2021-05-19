@@ -14,7 +14,7 @@ import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 import { Sale } from 'src/interfaces/Sale'
 import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
-import { Approve } from '../Approve'
+import { ApproveButton } from '../Approve'
 
 const FormBody = styled.form({
   flex: 1,
@@ -217,7 +217,7 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
         </Flex>
       </FormGroup>
       {isFixed && <FixedTerm>{`You'll get 1,000 ${sale.tokenOut?.symbol}`}</FixedTerm>}
-        <Approve isDisabled={isDisabled} isFixed={isFixed} approve={approve}></Approve>
+        <ApproveButton isDisabled={isDisabled} isFixed={isFixed} approve={approve}></ApproveButton>
     </FormBody>
   )
 }

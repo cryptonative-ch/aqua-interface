@@ -11,7 +11,7 @@ interface ApproveProps {
   approve: boolean
 }
 
-export const Approve = ({ isDisabled, isFixed, approve }: ApproveProps) => {
+export const ApproveButton = ({ isDisabled, isFixed, approve }: ApproveProps) => {
   const [t] = useTranslation()
   if (approve) {
     return (
