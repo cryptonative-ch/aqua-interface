@@ -1,45 +1,118 @@
 // External
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 
 // Hooks
-import { useSales } from './useSales'
+import { useMesa } from './useMesa'
 
+// Redux actions
+import { fetchSalesComplete, fetchSalesError, fetchSalesRequest, fetchSalesSuccess } from 'src/redux/sales'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
 
 interface UseSaleReturn {
   loading: boolean
-  error: Error | null
-  sale: Sale | null
+  error: Error | undefined
+  sale: Sale | undefined
 }
 
+// We request both types because we do not know the exact
+export const salesQuery = (saleId: string) => `
+  {
+    fixedPriceSale ("${saleId}") {
+      id
+      name
+      createdAt
+      updatedAt
+      deletedAt
+      status
+      startDate
+      endDate
+      tokenIn {
+        id
+        name
+        symbol
+        decimals
+      }
+      tokenOut {
+        id
+        name
+        symbol
+        decimals
+      }
+      sellAmount
+      soldAmount
+      minimumRaise
+      allocationMin
+      allocationMax
+      tokenPrice
+    }
+    fairSale ("${saleId}") {
+      id
+      name
+      createdAt
+      updatedAt
+      deletedAt
+      status
+      startDate
+      endDate
+      tokenAmount
+      minimumBidAmount
+      minFundingThreshold
+      tokenIn {
+        id
+        name
+        symbol
+        decimals
+      }
+      tokenOut {
+        id
+        name
+        symbol
+        decimals
+      }
+    }
+  }
+`
+
 /**
+ * This hooks fetches, caches a single Sale to the Redux sales
  *
- * @param saleId
+ * @param saleId the saleId (contract address)
  */
 export function useSale(saleId: string): UseSaleReturn {
-  /**
-   * @todo refactor this function
-   * function puts another request to the server
-   */
-  const { sales } = useSales()
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | null>(null)
-  const [sale, setSales] = useState<Sale | null>(null)
+  const [error, setError] = useState<Error>()
+  const mesa = useMesa()
+  const sales = useSelector(({ sales }) => sales.sales)
+  const sale = sales.find(sale => sale.id === saleId)
 
   useEffect(() => {
-    try {
-      const foundSale = sales.find(sale => sale.id === saleId)
-
-      // Sale == null = not found
-      if (foundSale) {
-        setSales(foundSale)
-      }
-    } catch (e) {
-      setError(e)
+    // Sale exists in Redux cache, return
+    if (sale) {
+      return setLoading(false)
     }
-    setLoading(false)
-  }, [sales, saleId])
+    // Store is missing this sale
+    // or the browser directly requested the path /sales/<saleId>
+    dispatch(fetchSalesRequest())
+    // Submit the query to the subgraph
+    mesa.subgraph
+      .query(salesQuery(saleId))
+      .then(({ data }) => {
+        const { fixedPriceSale, fairSale } = data
+        // Merge store data with this
+        dispatch(fetchSalesSuccess([sales, ...fixedPriceSale, ...fairSale] as Sale[]))
+      })
+      .catch(error => {
+        setError(error)
+        dispatch(fetchSalesError(error))
+      })
+      .then(() => {
+        setLoading(false)
+        dispatch(fetchSalesComplete())
+      })
+  }, [sale, saleId])
 
   return {
     sale,
