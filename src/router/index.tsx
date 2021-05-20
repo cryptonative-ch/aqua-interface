@@ -3,12 +3,13 @@ import { Route, Switch } from 'react-router-dom'
 import React, { useContext } from 'react'
 
 // Views
-import { SaleView } from 'src/views/Sale'
-import { SalesView } from 'src/views/Sales'
-import { FixedPriceSaleView } from 'src/views/Sale/FixedPrice'
-import { StaticView } from 'src/views/Static'
-import { SanctionContext } from 'src/contexts'
 import { NotFoundView } from 'src/views/NotFound'
+import { StaticView } from 'src/views/Static'
+import { SalesView } from 'src/views/Sales'
+import { SaleView } from 'src/views/Sale'
+
+// Contexts
+import { SanctionContext } from 'src/contexts'
 
 export const AppRouter = () => {
   const sanctionValue = useContext(SanctionContext)
@@ -26,7 +27,6 @@ export const AppRouter = () => {
       <Route exact path="/" component={SalesView} />
       <Route exact path="/sales" component={SalesView} />
       <Route exact path="/sales/:saleId" component={SaleView} />
-      <Route exact path="/sales/fixed/:saleId" component={FixedPriceSaleView} />
       <Route exact path="/about" component={StaticView} />
       <Route exact path="/contact" component={SalesView} />
       <Route exact path="*" component={NotFoundView} />
