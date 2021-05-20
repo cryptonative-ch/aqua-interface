@@ -1,11 +1,9 @@
 // External
 import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
-import { Button } from 'src/components/Button'
 
 // Mesa Utils
 import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
@@ -121,7 +119,6 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [approve, setApprove] = useState<boolean>(false)
   const theme = useTheme()
-  const [t] = useTranslation()
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
@@ -217,7 +214,7 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
         </Flex>
       </FormGroup>
       {isFixed && <FixedTerm>{`You'll get 1,000 ${sale.tokenOut?.symbol}`}</FixedTerm>}
-        <ApproveButton isDisabled={isDisabled} isFixed={isFixed} approve={approve}></ApproveButton>
+      <ApproveButton isDisabled={isDisabled} isFixed={isFixed} approve={approve}></ApproveButton>
     </FormBody>
   )
 }

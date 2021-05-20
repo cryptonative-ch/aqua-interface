@@ -6,7 +6,7 @@ import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
 import { SaleBid, saleType } from 'src/interfaces/Sale'
 
 // Redux
-import { fetchBidsFromChain } from 'src/redux/BidData'
+import { fetchBidsFromChain } from 'src/redux/bids'
 import { store } from 'src/redux/store'
 import { formatDecimal } from 'src/utils/Defaults'
 

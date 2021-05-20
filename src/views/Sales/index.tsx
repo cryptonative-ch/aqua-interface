@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 // Redux
-import { fetchSales } from 'src/redux/SaleListings'
+import { fetchSales } from 'src/redux/sales'
 import { setPageTitle } from 'src/redux/page'
 import { RootState } from 'src/redux/store'
 
@@ -77,10 +77,10 @@ export function SalesView() {
   const [SaleShow, setSaleShow] = useState<SaleStatus>(SaleStatus.LIVE)
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const fetchData = () => dispatch(fetchSales(salesRequest))
+  const fetchData = () => dispatch(fetchSales())
 
   const sales = useSelector<RootState, Sale[]>(state => {
-    return state.SaleReducer.sales
+    return state.sales.sales
   })
 
   useEffect(() => {
