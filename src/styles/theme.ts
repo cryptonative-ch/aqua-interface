@@ -30,15 +30,21 @@ export type ThemeColors = {
   secondary: CSS.Property.Color
   highlightBackground: CSS.Property.Color
   highlightColor: CSS.Property.Color
+  mesaLightGreen: CSS.Property.Color
+  mesaBlack: CSS.Property.Color
+  activeBid: CSS.Property.Color
+  inActiveBid: CSS.Property.Color
 }
 
 export const colors: ThemeColors = {
-  text: '#000',
+  text: '#000629',
   background: '#F2F2F2',
   primary: '#283618',
   secondary: '#283618',
   highlightBackground: '#222',
   highlightColor: '#222',
+  activeBid: '#4b9e98',
+  inActiveBid: '#e15f5f',
 }
 
 export interface ThemeButton {

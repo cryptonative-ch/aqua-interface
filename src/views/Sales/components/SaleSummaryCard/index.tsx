@@ -15,6 +15,7 @@ import { Divider } from 'src/components/Divider'
 import { SaleClock } from '../SaleClock'
 import { Icon } from 'src/components/Icon'
 import { BadgeFlex } from 'src/layouts/BadgeFlex'
+import { BidTokenPriceLabel } from '../SaleActiveBids'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
@@ -32,6 +33,7 @@ interface SaleSummaryProps {
 
 export function SaleSummaryCard({ sale }: SaleSummaryProps) {
   const [t] = useTranslation()
+  // needs input from wallet
   return (
     <Card>
       <CardBody>
@@ -48,6 +50,11 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
         </Flex>
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
+          <Flex flexDirection="row" justifyContent="space-between">
+            <CardText color="grey">{t('texts.yourBids')}</CardText>
+            <BidTokenPriceLabel active={true}></BidTokenPriceLabel>
+          </Flex>
+
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.salesType')}</CardText>
             {sale.type == 'fixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}

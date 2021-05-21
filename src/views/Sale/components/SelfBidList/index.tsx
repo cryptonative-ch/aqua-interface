@@ -19,6 +19,7 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 // Interfaces
 import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
+import { TokenPriceLabel } from 'src/components/TokenPriceLabel'
 
 type ColumnLabelProps = SpaceProps
 
@@ -31,19 +32,6 @@ const ColumnLabel = styled.div<ColumnLabelProps>(
     color: '#7B7F93',
     marginLeft: '8px',
   }),
-  space
-)
-
-const TokenPriceLabel = styled.div<ColorProps & SpaceProps>(
-  () => ({
-    fontStyle: 'normal',
-    fontWeight: 500,
-    fontSize: '14px',
-    lineHeight: '17px',
-    padding: '4px 8px',
-    color: '#000629',
-  }),
-  color,
   space
 )
 
