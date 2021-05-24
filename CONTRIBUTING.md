@@ -128,8 +128,8 @@ Imports should be grouped by category:
 import React from 'react'
 
 // Components
-import { Container } from 'src/components/Container'
-import { CardBody } from 'src/components/CardBody'
+import { Container } from 'src/components/Containers/Container'
+import { CardBody } from 'src/components/Cards/CardBody'
 import { Card } from 'src/components/Card'
 
 // Layouts

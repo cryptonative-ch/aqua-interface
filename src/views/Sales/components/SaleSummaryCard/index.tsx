@@ -5,9 +5,9 @@ import React from 'react'
 
 // Components
 import { SaleFinalPrice } from '../SaleFinalPrice'
-import { CardBody } from 'src/components/CardSaleBody'
-import { CardText } from 'src/components/CardText'
-import { Card } from 'src/components/CardSale'
+import { CardBody } from 'src/components/Cards/CardSaleBody'
+import { CardText } from 'src/components/Cards/CardText'
+import { Card } from 'src/components/Cards/CardSale'
 import { Flex } from 'src/components/Flex'
 import { BadgeCard } from 'src/views/Sale/components/BadgeCard'
 import { SaleAmount } from '../SaleAmount'

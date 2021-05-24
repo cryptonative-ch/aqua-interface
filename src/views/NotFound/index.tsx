@@ -14,7 +14,7 @@ import { Center } from 'src/layouts/Center'
 
 // Components
 
-import { Button } from 'src/components/Button'
+import { Button } from 'src/components/Buttons/Button'
 import { Title } from 'src/components/Title'
 import { Link } from 'src/components/Link'
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 //Internal
 import { Wrapper } from './style'
-import { Button, ButtonText } from 'src/components/Header/style'
+import { Button, ButtonText } from 'src/layouts/Header/style'
 
 export interface MobileFooterProps {
   onClick?: () => void

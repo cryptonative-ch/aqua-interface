@@ -8,6 +8,11 @@ import '@testing-library/jest-dom/extend-expect'
 import { SaleNavBar } from './index'
 import { SaleContext, SaleStatus, SaleContextType } from '../../index'
 
+// theme
+
+import { theme } from 'src/styles/theme'
+import { ThemeProvider } from 'styled-components'
+
 //clean up
 
 afterEach(cleanup)
@@ -16,7 +21,9 @@ afterEach(cleanup)
 const wrapper = (sale: SaleContextType) => {
   return render(
     <SaleContext.Provider value={sale}>
-      <SaleNavBar />
+      <ThemeProvider theme={theme}>
+        <SaleNavBar />
+      </ThemeProvider>
     </SaleContext.Provider>
   )
 }

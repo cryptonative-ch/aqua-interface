@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Components
-import { Button } from 'src/components/Button'
+import { Button } from 'src/components/Buttons/Button'
 
 interface ApproveProps {
   isDisabled: boolean

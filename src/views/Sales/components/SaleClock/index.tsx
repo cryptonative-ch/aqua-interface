@@ -8,7 +8,7 @@ import { Timer, timeEnd } from 'src/views/Sale/components/Timer'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
-import { CardText } from 'src/components/CardText'
+import { CardText } from 'src/components/Cards/CardText'
 import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 
 // Utils

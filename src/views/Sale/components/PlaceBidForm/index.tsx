@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from '
 import styled, { useTheme } from 'styled-components'
 
 // Components
-import { FormGroup } from 'src/components/FormGroup'
+import { FormGroup } from 'src/components/Forms/FormGroup'
 
 // Mesa Utils
 import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'

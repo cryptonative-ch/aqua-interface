@@ -27,6 +27,11 @@ import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { getSaleDefault, addHours, dateUTC } from 'src/utils/Defaults'
 
+// theme
+
+import { theme } from 'src/styles/theme'
+import { ThemeProvider } from 'styled-components'
+
 describe('seconds to HMS function', () => {
   describe('convert seconds into different formats', () => {
     test('tests conversion of seconds to minutes', () => {
@@ -58,7 +63,14 @@ describe('SaleHeader', () => {
     } else if (isSaleOpen(sale)) {
       format_time = secondsTohms(time_diff_end)
     }
-    const { getByText, getByTestId } = render(<SaleHeader sale={sale} />)
+    const wrapper = (sale: Sale) => {
+      return render(
+        <ThemeProvider theme={theme}>
+          <SaleHeader sale={sale} />
+        </ThemeProvider>
+      )
+    }
+    const { getByText, getByTestId } = wrapper(sale)
     expect(await getByTestId('format_time')).toHaveTextContent(format_time, { normalizeWhitespace: false })
     expect(getByText('Omen Initial Sale')).toBeInTheDocument()
     expect(getByText('Private')).toBeInTheDocument()

@@ -13,12 +13,12 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
-import { MobileFooter } from 'src/components/MobileFooter'
-import { BackButton } from 'src/components/BackButton'
-import { Container } from 'src/components/Container'
-import { CardBody } from 'src/components/CardBody'
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
+import { MobileFooter } from 'src/layouts/Footers/MobileFooter'
+import { BackButton } from 'src/components/Buttons/BackButton'
+import { Container } from 'src/components/Containers/Container'
+import { CardBody } from 'src/components/Cards/CardBody'
+import { Header } from 'src/layouts/Header'
+import { Footer } from 'src/layouts/Footers/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 

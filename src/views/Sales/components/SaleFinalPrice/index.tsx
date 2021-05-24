@@ -5,7 +5,7 @@ import React from 'react'
 
 // Components
 
-import { CardText } from 'src/components/CardText'
+import { CardText } from 'src/components/Cards/CardText'
 import { Flex } from 'src/components/Flex'
 
 // Interfaces

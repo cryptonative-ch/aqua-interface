@@ -11,13 +11,13 @@ import { setPageTitle } from 'src/redux/page'
 import { RootState } from 'src/redux/store'
 
 // Components
-import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
+import { AbsoluteContainer } from 'src/components/Containers/AbsoluteContainer'
 import { SaleSummaryCard } from './components/SaleSummaryCard'
 import { SaleNavBar } from './components/SaleNavBar'
-import { Container } from 'src/components/Container'
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
-import { Card } from 'src/components/CardSale'
+import { Container } from 'src/components/Containers/Container'
+import { Header } from 'src/layouts/Header'
+import { Footer } from 'src/layouts/Footers/Footer'
+import { Card } from 'src/components/Cards/CardSale'
 
 // interface
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'

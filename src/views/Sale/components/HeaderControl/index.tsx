@@ -6,7 +6,7 @@ import numeral from 'numeral'
 
 // Components
 import { Flex } from 'src/components/Flex'
-import { FormButton } from 'src/components/FormButton'
+import { FormButton } from 'src/components/Forms/FormButton'
 
 // Svg
 import LogoSVG from 'src/assets/svg/Logo.svg'

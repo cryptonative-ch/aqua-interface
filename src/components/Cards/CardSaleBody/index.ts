@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 // Components
 
-import { Card } from 'src/components/CardSale'
+import { Card } from 'src/components/Cards/CardSale'
 
 export type CardBodyProps = SpaceProps & LayoutProps & FlexProps & TextAlignProps
 

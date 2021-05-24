@@ -20,7 +20,7 @@ import { AppRouter } from './router'
 import { CHAIN_ID, SANCTION_LIST } from 'src/constants'
 
 // Components
-import { ConfirmButton } from 'src/components/Buttons/ConfirmButton'
+import { ConfirmButton } from 'src/components/Buttons/Buttons/ConfirmButton'
 import { Modal } from 'src/components/Modal'
 
 // Layouts

@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
 
 // Components
-import { Button } from 'src/components/Button'
+import { Button } from 'src/components/Buttons/Button'
 import CloseIcon from 'src/assets/svg/Close.svg'
 
 //Internal

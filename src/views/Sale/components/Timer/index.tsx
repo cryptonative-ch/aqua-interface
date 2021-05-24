@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import momentTimeZone from 'moment-timezone'
 
 // Components
-import { CardText } from 'src/components/CardText'
+import { CardText } from 'src/components/Cards/CardText'
 import { Flex } from 'src/components/Flex'
 
 //Interfaces
