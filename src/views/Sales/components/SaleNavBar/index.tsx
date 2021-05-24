@@ -2,7 +2,7 @@
 import React, { useContext } from 'react'
 
 // Components
-import { ActiveBadge, TextBadge, BackgroundBadge } from 'src/components/SaleBadge'
+import { ActiveBadge, TextBadge, BackgroundBadge } from 'src/components/Badge/SaleBadge'
 
 // context
 import { SaleContext, SaleStatus } from 'src/views/Sales'

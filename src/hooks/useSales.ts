@@ -97,7 +97,7 @@ export function useSales(): UseSalesReturn {
     }
 
     // Dispatch request start
-    dispatch(fetchSalesRequest())
+    dispatch(fetchSalesRequest(true))
     // Submit the query to the subgraph
     mesa.subgraph
       .query(salesQuery)

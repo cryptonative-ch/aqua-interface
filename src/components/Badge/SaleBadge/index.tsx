@@ -16,15 +16,15 @@ export const BackgroundBadge = styled.div({
   background: '#dddde3',
 })
 
-export const ActiveBadge = styled.div({
+export const ActiveBadge = styled.div(props => ({
   height: '27px',
   width: '95px',
   borderRadius: '33px',
   padding: '5px 13px',
   display: 'flex',
   justifyContent: 'center',
-  background: '#ffffff',
-})
+  background: props.theme.colors.highlightBackground,
+}))
 
 export const TextBadge = styled.p<TextBadgeProps>(props => ({
   margin: props.color === 'active' ? '0' : '5px 13px',

@@ -19,7 +19,7 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 // Interfaces
 import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
-import { TokenPriceLabel } from 'src/components/TokenPriceLabel'
+import { TokenPriceLabel } from 'src/components/Badge/TokenPriceLabel'
 
 type ColumnLabelProps = SpaceProps
 
@@ -54,7 +54,7 @@ const ModalContainer = styled.div<ModalContainerProps>(props => ({
   position: 'absolute',
   right: '24px',
   top: `${props.itemIndex * 50 + 58}px`,
-  background: '#FFFFFF',
+  background: props.theme.colors.highlightBackground,
   boxShadow: '0px 4px 12px rgba(0, 6, 41, 0.1)',
   zIndex: 200,
 }))

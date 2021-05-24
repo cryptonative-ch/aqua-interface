@@ -95,7 +95,7 @@ export function useSale(saleId: string): UseSaleReturn {
     }
     // Store is missing this sale
     // or the browser directly requested the path /sales/<saleId>
-    dispatch(fetchSalesRequest())
+    dispatch(fetchSalesRequest(true))
     // Submit the query to the subgraph
     mesa.subgraph
       .query(salesQuery(saleId))

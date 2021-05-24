@@ -9,7 +9,7 @@ import { Link } from 'src/components/Link'
 
 //Internal
 import { Wrapper } from './style'
-import { Row, Title } from 'src/components/Header/style'
+import { Row, Title } from 'src/layouts/Header/style'
 import { FE_VERSION, SC_VERSION } from 'src/constants'
 
 export interface FooterProps {

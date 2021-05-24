@@ -25,24 +25,24 @@ export const radii: ThemeRadii = {
 
 export type ThemeColors = {
   text: CSS.Property.Color
-  background: CSS.Property.Color
-  primary: CSS.Property.Color
-  secondary: CSS.Property.Color
+  secondaryText: CSS.Property.Color
+  tertiaryText: CSS.Property.Color
+  primaryBackground: CSS.Property.Color
+  secondaryBackground: CSS.Property.Color
   highlightBackground: CSS.Property.Color
   highlightColor: CSS.Property.Color
-  mesaLightGreen: CSS.Property.Color
-  mesaBlack: CSS.Property.Color
   activeBid: CSS.Property.Color
   inActiveBid: CSS.Property.Color
 }
 
 export const colors: ThemeColors = {
   text: '#000629',
-  background: '#F2F2F2',
-  primary: '#283618',
-  secondary: '#283618',
-  highlightBackground: '#222',
-  highlightColor: '#222',
+  secondaryText: '#7B7F93',
+  tertiaryText: '#FFFFFF',
+  primaryBackground: '#F2F2F2',
+  secondaryBackground: '#DDDDE3',
+  highlightBackground: '#FFFFFF',
+  highlightColor: '#304FFE',
   activeBid: '#4b9e98',
   inActiveBid: '#e15f5f',
 }

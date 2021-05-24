@@ -24,15 +24,15 @@ const HeaderText = styled.div({
   margin: '0 40px 0 16px',
 })
 
-const StatusText = styled.div({
+const StatusText = styled.div(props => ({
   padding: '4px 8px',
   background: '#000629',
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '19px',
-  color: '#ffffff',
-})
+  color: props.theme.colors.highlightBackground,
+}))
 
 const TimeText = styled.div({
   fontStyle: 'normal',
@@ -53,17 +53,17 @@ const MobileHeaderText = styled.div({
   margin: '0 16px 0 0',
 })
 
-const MobileStatusText = styled.div({
+const MobileStatusText = styled.div(props => ({
   padding: '4px 8px',
   background: '#000629',
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '19px',
-  color: '#ffffff',
+  color: props.theme.colors.highlightBackground,
   height: '28px',
   margin: '8px 0',
-})
+}))
 
 type HeaderContainerProps = {
   isMobile: boolean

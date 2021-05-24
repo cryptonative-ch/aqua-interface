@@ -2,7 +2,7 @@ import React from 'react'
 import { theme } from 'src/styles/theme'
 
 // Components
-import { TokenPriceLabel } from 'src/components/TokenPriceLabel'
+import { TokenPriceLabel } from 'src/components/Badge/TokenPriceLabel'
 
 interface BidTokenPriceLabelProps {
   active: boolean
