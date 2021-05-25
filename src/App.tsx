@@ -1,5 +1,6 @@
 // External
 import { Mesa, MesaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/mesa'
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
@@ -48,6 +49,14 @@ export const App = () => {
       subgraph: ENDPOINT,
     }
   }
+
+  // Start new Apollo Client
+  const apolloClient = new ApolloClient({
+    cache: new InMemoryCache(),
+    name: 'mesa',
+    uri: mesaConfig.subgraph,
+  })
+
   // Construct the Mesa SDK
   const mesa = new Mesa(mesaConfig, library)
   const getGeoInfo = useCallback(() => {
@@ -67,19 +76,21 @@ export const App = () => {
 
   return (
     <CookiesProvider>
-      <MesaContext.Provider value={mesa}>
-        <SanctionContext.Provider value={sanction}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
-              <BrowserRouter>
-                <AppRouter />
-                <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
-              </BrowserRouter>
-            </Suspense>
-          </ThemeProvider>
-        </SanctionContext.Provider>
-      </MesaContext.Provider>
+      <ApolloProvider client={apolloClient}>
+        <MesaContext.Provider value={mesa}>
+          <SanctionContext.Provider value={sanction}>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
+                <BrowserRouter>
+                  <AppRouter />
+                  <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
+                </BrowserRouter>
+              </Suspense>
+            </ThemeProvider>
+          </SanctionContext.Provider>
+        </MesaContext.Provider>
+      </ApolloProvider>
     </CookiesProvider>
   )
 }
