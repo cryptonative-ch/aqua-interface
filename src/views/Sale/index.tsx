@@ -27,7 +27,7 @@ import { CardBody } from 'src/components/Cards/CardBody'
 import { Header } from 'src/layouts/Header'
 import { Footer } from 'src/layouts/Footers/Footer'
 import { Flex } from 'src/components/Flex'
-import { Card } from 'src/components/Card'
+import { Card } from 'src/components/Cards/Card'
 // View Components
 import { HeaderControl } from './components/HeaderControl'
 import { PlaceBidForm } from './components/PlaceBidForm'

@@ -130,7 +130,7 @@ import React from 'react'
 // Components
 import { Container } from 'src/components/Containers/Container'
 import { CardBody } from 'src/components/Cards/CardBody'
-import { Card } from 'src/components/Card'
+import { Card } from 'src/components/Cards/Card'
 
 // Layouts
 import { Center } from 'src/layouts/Center'

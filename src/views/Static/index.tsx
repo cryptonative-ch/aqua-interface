@@ -19,7 +19,7 @@ import { Container } from 'src/components/Containers/Container'
 import { CardBody } from 'src/components/Cards/CardBody'
 import { Header } from 'src/layouts/Header'
 import { Footer } from 'src/layouts/Footers/Footer'
-import { Card } from 'src/components/Card'
+import { Card } from 'src/components/Cards/Card'
 import { Flex } from 'src/components/Flex'
 
 import { StaticContent } from '../Static/components/StaticContent'

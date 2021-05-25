@@ -61,6 +61,10 @@ export const buttons: ThemeButtons = {
     color: 'black',
     backgroundColor: 'white',
   },
+  tokensClaimed: {
+    color: '#4B9E98',
+    backgroundColor: '#4b9e9859',
+  },
 }
 
 export type ThemeBreakpoints = string[]

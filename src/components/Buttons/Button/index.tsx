@@ -46,7 +46,7 @@ export const Button = styled.button<ButtonProps>(
     verticalAlign: 'middle',
     userSelect: 'none',
     backgroundColor: 'transparent',
-    border: props.border || props.formButton ? 'none' : `1px solid ${props.theme.colors.primary}`,
+    border: props.border || props.formButton ? 'none' : `1px solid ${props.theme.colors.highlightColor}`,
     // @TODO: Move radis to Theme
     borderRadius: props.formButton ? 0 : props.rounded ? '32px' : props.theme.radii.base,
     fontSize: '1rem',

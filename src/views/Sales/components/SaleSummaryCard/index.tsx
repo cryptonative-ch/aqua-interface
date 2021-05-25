@@ -1,7 +1,7 @@
 // External
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import React from 'react'
+import React, { useState } from 'react'
 
 // Components
 import { SaleFinalPrice } from '../SaleFinalPrice'
@@ -16,6 +16,7 @@ import { SaleClock } from '../SaleClock'
 import { Icon } from 'src/components/Icon'
 import { BadgeFlex } from 'src/layouts/BadgeFlex'
 import { BidTokenPriceLabel } from '../SaleActiveBids'
+import { TokenClaimButton } from 'src/components/Buttons/TokenClaim'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
@@ -34,6 +35,7 @@ interface SaleSummaryProps {
 export function SaleSummaryCard({ sale }: SaleSummaryProps) {
   const [t] = useTranslation()
   // needs input from wallet
+  const [tokensClaimed, setTokensClaimed] = useState<boolean>(false)
   return (
     <Card>
       <CardBody>
@@ -67,6 +69,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
             <CardText color="grey">{t('texts.amountForSale')}</CardText>
             <SaleAmount sale={sale} />
           </Flex>
+          {Tokens ? <TokenClaimButton /> : undefined}
           <SaleClock sale={sale} />
         </Flex>
       </CardBody>

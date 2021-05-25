@@ -1,6 +1,7 @@
 // Externals
 
 import styled from 'styled-components'
+import SVG from 'react-inlinesvg'
 
 export const Icon = styled.img(
   {
@@ -13,3 +14,11 @@ export const Icon = styled.img(
   }
   `
 )
+
+interface SVGIconProps {
+  color: string
+}
+
+export const SVGIcon = styled(SVG)<SVGIconProps>(Icon, props => ({
+  color: props.color,
+}))
