@@ -9,7 +9,7 @@ import { SVGIcon } from 'src/components/Icon'
 import { theme } from 'src/styles/theme'
 
 // svg
-import vector from 'src/assets/svg/SVGIcon.svg'
+import vector from 'src/assets/svg/Vector.svg'
 
 export const TokenClaimButton = () => {
   const [t] = useTranslation()
@@ -30,7 +30,7 @@ export const TokenClaimButton = () => {
       color={theme.buttons.tokensClaimed.color}
     >
       <SVGIcon src={vector} color={theme.buttons.tokensClaimed.color} />
-      {t('tokenClaimed')}
+      {t('buttons.tokenClaimed')}
     </Button>
   )
 }
