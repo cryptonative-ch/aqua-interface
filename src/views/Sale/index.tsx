@@ -43,11 +43,11 @@ export function SaleView() {
   }
 
   // Pass the sale down to the appropriate
-  if (sale.type === 'fixedPriceSale') {
+  if (sale.type === 'FixedPriceSale') {
     // Fetch the sale from the subgraph, and use the appropriate view
     return <FixedPriceSaleView />
   }
-  if (sale.type === 'fairSale') {
+  if (sale.type === 'FairSale') {
     return <FairSaleView />
   }
   // Sale not found

@@ -9,7 +9,7 @@ interface BaseSale {
   status: string // open/ended/settled/upcoming
   startDate: number // Open timestamp
   endDate: number // Close timestamp
-  type: saleType // sale type, i.e fairsale or fixedPriceSale
+  type: SaleType // sale type, i.e fairsale or fixedPriceSale
 }
 
 interface Bid {
@@ -88,7 +88,7 @@ export interface FixedPriceSale extends BaseSale {
   bids: FixedPriceSalePurchase[]
 }
 
-export type saleType = 'fixedPriceSale' | 'fairSale'
+export type SaleType = 'FixedPriceSale' | 'FairSale'
 
 export interface MesaFactory {
   // ID: should be a unique easy-to-reference

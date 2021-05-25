@@ -3,7 +3,7 @@ import { providers } from 'ethers'
 import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
 
 // interfaces
-import { SaleBid, saleType } from 'src/interfaces/Sale'
+import { SaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Redux
 import { fetchBidsFromChain } from 'src/redux/bids'
@@ -12,11 +12,11 @@ import { formatDecimal } from 'src/utils/Defaults'
 
 export async function getBidDataFromChain(
   contractAddress: string,
-  saleType: saleType,
+  saleType: SaleType,
   provider: providers.JsonRpcProvider,
   decimal: number
 ) {
-  if (saleType == 'fairSale') {
+  if (saleType == 'FairSale') {
     const fairSaleContract = FairSale__factory.connect(contractAddress, provider)
 
     fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {

@@ -42,7 +42,7 @@ export const timeEnd = (unixtmestamp: number, timezone?: string) => {
   }
 
   const timeZoneGuess = new Intl.DateTimeFormat(
-    'zh-CN',
+    'en-US',
     timezone ? { timeZone: `${timezone}` } : undefined
   ).resolvedOptions().timeZone
 
