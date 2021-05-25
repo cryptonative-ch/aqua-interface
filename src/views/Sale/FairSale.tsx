@@ -54,12 +54,13 @@ import { FairBidPick, FairSaleBid } from 'src/interfaces/Sale'
 
 //redux
 import { fetchSaleBids } from 'src/redux/bids'
-import { ENDPOINT, subgraphCall } from 'src/subgraph'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
+import { subgraphCall } from 'src/subgraph'
 
 //subgraph
 // Hooks
 import { useSale } from 'src/hooks/useSale'
+import { SUBGRAPH_ENDPOINT } from 'src/constants'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -105,7 +106,7 @@ export function FairSaleView() {
     dispatch(setPageTitle(t(sale?.name as string)))
 
     if (sale) {
-      const FairSaleBidsRequest = subgraphCall(ENDPOINT, saleBidsQuery(params.saleId, sale.type))
+      const FairSaleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId, sale.type))
       const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, FairSaleBidsRequest))
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))

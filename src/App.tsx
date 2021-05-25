@@ -18,7 +18,7 @@ import { useModal } from 'src/hooks/useModal'
 import { AppRouter } from './router'
 
 // Constantsx
-import { CHAIN_ID, SANCTION_LIST } from 'src/constants'
+import { CHAIN_ID, SANCTION_LIST, SUBGRAPH_ENDPOINT } from 'src/constants'
 
 // Components
 import { ConfirmButton } from 'src/components/ConfirmButton'
@@ -30,7 +30,6 @@ import { Center } from './layouts/Center'
 // Contexts
 import { SanctionContext } from 'src/contexts'
 import { MesaContext } from 'src/mesa'
-import { ENDPOINT } from './subgraph'
 
 export const App = () => {
   const { isShown, toggle } = useModal()
@@ -46,14 +45,13 @@ export const App = () => {
   if (process.env.NODE_ENV === 'development') {
     mesaConfig = {
       ...RINKEBY_CONFIG,
-      subgraph: ENDPOINT,
+      subgraph: SUBGRAPH_ENDPOINT,
     }
   }
 
   // Start new Apollo Client
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
-    name: 'mesa',
     uri: mesaConfig.subgraph,
   })
 

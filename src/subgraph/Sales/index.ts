@@ -1,5 +1,5 @@
-//subgraph
-import { ENDPOINT, subgraphCall } from 'src/subgraph/index'
+// Subgraph
+import { subgraphCall } from 'src/subgraph/index'
 
 export const salesQuery = `
   {
@@ -24,7 +24,7 @@ export const salesQuery = `
         symbol
         decimals
       }
-      
+
       sellAmount
       soldAmount
       minimumRaise
@@ -59,5 +59,3 @@ export const salesQuery = `
     }
   }
 `
-
-export const salesRequest = subgraphCall(ENDPOINT, salesQuery)

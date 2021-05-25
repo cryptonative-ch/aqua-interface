@@ -10,7 +10,6 @@ import { BidsBySaleId } from 'src/redux/bids'
 // utils
 import { formatDecimal } from 'src/utils/Defaults'
 
-export const ENDPOINT: string = process.env.REACT_APP_ENDPOINT as string
 export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> => {
   const fairSale: SaleType = 'FairSale'
   const fixedPriceSale: SaleType = 'FixedPriceSale'

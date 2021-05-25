@@ -47,9 +47,9 @@ import { NotFoundView } from 'src/views/NotFound'
 import { Sale } from 'src/interfaces/Sale'
 
 // Constants
-import { FIXED_PRICE_SALE_CONTRACT_ADDRESS } from 'src/constants'
+import { FIXED_PRICE_SALE_CONTRACT_ADDRESS, SUBGRAPH_ENDPOINT } from 'src/constants'
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
-import { ENDPOINT, subgraphCall } from 'src/subgraph'
+import { subgraphCall } from 'src/subgraph'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
 import { salesRequest } from 'src/subgraph/Sales'
 
@@ -134,7 +134,7 @@ export function FixedPriceSaleView() {
   useEffect(() => {
     if (sale) {
       const provider = new ethers.providers.JsonRpcProvider()
-      const saleBidsRequest = subgraphCall(ENDPOINT, saleBidsQuery(params.saleId, sale.type))
+      const saleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId, sale.type))
       const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, saleBidsRequest))
       fetchBids()
       getBidDataFromChain(params.saleId, sale.type, provider, sale.tokenOut.decimals)
