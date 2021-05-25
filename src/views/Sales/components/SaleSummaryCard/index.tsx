@@ -50,7 +50,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.salesType')}</CardText>
-            {sale.type == 'fixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}
+            {sale.type == 'FixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.currentPrice')}</CardText>

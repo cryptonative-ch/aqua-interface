@@ -3,7 +3,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 
 // Interface
-import { Sale, saleType, FairSale, FixedPriceSale } from 'src/interfaces/Sale'
+import { Sale, SaleType, FairSale, FixedPriceSale } from 'src/interfaces/Sale'
 
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
@@ -83,7 +83,7 @@ const getFairSale = (): FairSale => ({
   },
   minimumBidAmount: formatDecimal('10.000000000000000000'),
   bids: [],
-  type: 'fairSale',
+  type: 'FairSale',
   minFundingThreshold: 100,
 })
 
@@ -96,7 +96,7 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   startDate: 1585654141,
   endDate: 1617193741,
   name: 'Omen',
-  type: 'fixedPriceSale',
+  type: 'FixedPriceSale',
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
   soldAmount: BigNumber.from(5000),
@@ -122,8 +122,8 @@ const getFixedPriceSales = (): FixedPriceSale => ({
   bids: [],
 })
 
-export const getSaleDefault = (a?: Partial<Sale>, saletype: saleType = 'fairSale') =>
-  saletype == 'fixedPriceSale'
+export const getSaleDefault = (a?: Partial<Sale>, saletype: SaleType = 'FairSale') =>
+  saletype == 'FixedPriceSale'
     ? {
         ...getFixedPriceSales(),
         ...a,

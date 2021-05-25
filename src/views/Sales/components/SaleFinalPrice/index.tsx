@@ -20,9 +20,9 @@ interface SaleFinalPriceProps {
 
 export function SaleFinalPrice({ sale }: SaleFinalPriceProps) {
   const pricePerToken = numeral(
-    sale.type == 'fixedPriceSale'
-      ? formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)
-      : formatBigInt(sale.minimumBidAmount, sale.tokenOut.decimals)
+    sale.type == 'FixedPriceSale'
+      ? formatBigInt(sale.tokenPrice || '0', sale.tokenOut.decimals)
+      : formatBigInt(sale.minimumBidAmount || '0', sale.tokenOut.decimals)
   ).format('0.00')
 
   return (

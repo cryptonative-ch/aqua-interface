@@ -20,7 +20,7 @@ export const SaleAmount: React.FC<SaleAmountprops> = ({ sale }) => {
     <Flex>
       <CardText>
         {numeral(
-          sale.type == 'fairSale'
+          sale.type == 'FairSale'
             ? formatBigInt(sale.tokenAmount, sale.tokenOut.decimals)
             : formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         ).format('0,0')}
