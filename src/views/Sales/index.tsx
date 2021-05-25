@@ -1,14 +1,12 @@
 // External
-import React, { useEffect, useState, createContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 // Redux
-import { fetchSales } from 'src/redux/sales'
 import { setPageTitle } from 'src/redux/page'
-import { RootState } from 'src/redux/store'
 
 // Components
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
