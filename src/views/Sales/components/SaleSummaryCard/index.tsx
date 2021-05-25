@@ -69,7 +69,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
             <CardText color="grey">{t('texts.amountForSale')}</CardText>
             <SaleAmount sale={sale} />
           </Flex>
-          {Tokens ? <TokenClaimButton /> : undefined}
+          {tokensClaimed ? <TokenClaimButton /> : undefined}
           <SaleClock sale={sale} />
         </Flex>
       </CardBody>

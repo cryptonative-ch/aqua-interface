@@ -36,7 +36,7 @@
     "yourActivity": "Your Activity",
     "placeBuyOrder": "Place Buy Order",
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
-    "tokenClaimed": "Tokens Claimed"
+    "verifyTransaction": "Please verify the transaction to place your bid."
   },
   "buttons": {
     "back": "Back",
@@ -45,6 +45,8 @@
     "addARandomBid": "Add A Random Bid",
     "showClosedSales": "Show Closed Sales",
     "hideClosedSales": "Hide Closed Sales",
-    "backToSales": "Back to all sales"
+    "backToSales": "Back to all sales",
+    "loadMore": "Load more",
+    "tokenClaimed": "Tokens Claimed"
   }
 }

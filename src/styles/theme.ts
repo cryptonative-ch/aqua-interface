@@ -1,5 +1,6 @@
 import { defaultRebootTheme } from 'styled-reboot'
 import * as CSS from 'csstype'
+import { backgroundColor } from 'styled-system'
 
 export type ThemeGrid = {
   display: CSS.Property.Grid
@@ -61,6 +62,18 @@ export const buttons: ThemeButtons = {
     color: 'black',
     backgroundColor: 'white',
   },
+  Active: {
+    color: '#FFFFFF',
+    backgroundColor: '#304FFE',
+  },
+  disabled: {
+    color: '#7B7F93',
+    backgroundColor: '#DDDDE3',
+  },
+  inActive: {
+    color: '#FFFFFF',
+    backgroundColor: '#7B7F93',
+  },
   tokensClaimed: {
     color: '#4B9E98',
     backgroundColor: '#4b9e9859',
@@ -86,7 +99,13 @@ export const fonts: ThemeFonts = {
 }
 
 export type ThemeFontSizes = number[]
-export const fontSizes: ThemeFontSizes = [12, 16, 18, 20, 22, 24, 28, 32]
+export const fontSizes: ThemeFontSizes = [12, 14, 16, 18, 20, 22, 24, 28, 32]
+
+export type ThemelineHeight = number[]
+export const lineHeights: ThemelineHeight = [21]
+
+export type ThemeFontWeights = number[]
+export const fontWrights: ThemeFontWeights = [500, 600]
 
 export type ThemeHeader = {
   height: number

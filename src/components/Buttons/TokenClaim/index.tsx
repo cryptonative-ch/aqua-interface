@@ -16,10 +16,9 @@ export const TokenClaimButton = () => {
   return (
     <Button
       disabled={false}
-      data-testid="submit-button"
-      type="submit"
+      data-testid="tokenClaimButton"
+      type="button"
       title={t('tokenClaimed')}
-      formButton
       width="90%"
       height="48px"
       fontWeight="500"
