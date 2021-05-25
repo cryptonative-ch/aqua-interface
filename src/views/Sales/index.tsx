@@ -71,6 +71,11 @@ export type SaleContextType = {
 }
 
 export const SaleContext = createContext<SaleContextType>({} as SaleContextType)
+const saleFilterMap = {
+  [SaleStatus.UPCOMING]: isSaleUpcoming,
+  [SaleStatus.CLOSED]: isSaleClosed,
+  [SaleStatus.LIVE]: isSaleOpen,
+}
 
 export function SalesView() {
   const { isMobile } = useWindowSize()
@@ -96,38 +101,11 @@ export function SalesView() {
           <Title>Token Sales</Title>
           <SaleNavBar />
           <SaleListSection>
-            {SaleShow === SaleStatus.UPCOMING
-              ? sales
-                  .filter(sale => isSaleUpcoming(sale))
-                  .map(sale => (
-                    <SaleSummaryWrapper
-                      to={sale.type == 'fixedPriceSale' ? `/sales/fixed/${sale.id}` : `/sales/${sale.id}`}
-                      key={sale.id}
-                    >
-                      <SaleSummaryCard sale={sale} />
-                    </SaleSummaryWrapper>
-                  ))
-              : SaleShow === SaleStatus.CLOSED
-              ? sales
-                  .filter(sale => isSaleClosed(sale))
-                  .map(sale => (
-                    <SaleSummaryWrapper
-                      to={sale.type == 'fixedPriceSale' ? `/sales/fixed/${sale.id}` : `/sales/${sale.id}`}
-                      key={sale.id}
-                    >
-                      <SaleSummaryCard sale={sale} />
-                    </SaleSummaryWrapper>
-                  ))
-              : sales
-                  .filter(sale => isSaleOpen(sale))
-                  .map(sale => (
-                    <SaleSummaryWrapper
-                      to={sale.type == 'fixedPriceSale' ? `/sales/fixed/${sale.id}` : `/sales/${sale.id}`}
-                      key={sale.id}
-                    >
-                      <SaleSummaryCard sale={sale} />
-                    </SaleSummaryWrapper>
-                  ))}
+            {sales.filter(saleFilterMap[SaleShow]).map(sale => (
+              <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
+                <SaleSummaryCard sale={sale} />
+              </SaleSummaryWrapper>
+            ))}
           </SaleListSection>
         </Container>
         {!isMobile && <Footer />}
