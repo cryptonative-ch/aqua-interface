@@ -51,7 +51,6 @@ import { FIXED_PRICE_SALE_CONTRACT_ADDRESS, SUBGRAPH_ENDPOINT } from 'src/consta
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
 import { subgraphCall } from 'src/subgraph'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
-import { salesRequest } from 'src/subgraph/Sales'
 
 // Redux
 import { fetchSales } from 'src/redux/sales'
