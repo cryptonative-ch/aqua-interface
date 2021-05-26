@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetAllSales
+// GraphQL query operation: GetSingleSale
 // ====================================================
 
-export interface GetAllSales_fixedPriceSales_tokenIn {
+export interface GetSingleSale_fixedPriceSale_tokenIn {
   __typename: "Token";
   id: string;
   name: string | null;
@@ -15,7 +15,7 @@ export interface GetAllSales_fixedPriceSales_tokenIn {
   decimals: any;
 }
 
-export interface GetAllSales_fixedPriceSales_tokenOut {
+export interface GetSingleSale_fixedPriceSale_tokenOut {
   __typename: "Token";
   id: string;
   name: string | null;
@@ -23,7 +23,7 @@ export interface GetAllSales_fixedPriceSales_tokenOut {
   decimals: any;
 }
 
-export interface GetAllSales_fixedPriceSales {
+export interface GetSingleSale_fixedPriceSale {
   __typename: "FixedPriceSale";
   id: string;
   /**
@@ -65,14 +65,14 @@ export interface GetAllSales_fixedPriceSales {
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetAllSales_fixedPriceSales_tokenIn;
+  tokenIn: GetSingleSale_fixedPriceSale_tokenIn;
   /**
    * Token investor get
    */
-  tokenOut: GetAllSales_fixedPriceSales_tokenOut;
+  tokenOut: GetSingleSale_fixedPriceSale_tokenOut;
 }
 
-export interface GetAllSales_fairSales_tokenIn {
+export interface GetSingleSale_fairSale_tokenIn {
   __typename: "Token";
   id: string;
   name: string | null;
@@ -80,7 +80,7 @@ export interface GetAllSales_fairSales_tokenIn {
   decimals: any;
 }
 
-export interface GetAllSales_fairSales_tokenOut {
+export interface GetSingleSale_fairSale_tokenOut {
   __typename: "Token";
   id: string;
   name: string | null;
@@ -88,7 +88,7 @@ export interface GetAllSales_fairSales_tokenOut {
   decimals: any;
 }
 
-export interface GetAllSales_fairSales {
+export interface GetSingleSale_fairSale {
   __typename: "FairSale";
   id: string;
   name: string | null;
@@ -101,11 +101,15 @@ export interface GetAllSales_fairSales {
   tokenAmount: any;
   minimumBidAmount: any;
   minFundingThreshold: number | null;
-  tokenIn: GetAllSales_fairSales_tokenIn;
-  tokenOut: GetAllSales_fairSales_tokenOut;
+  tokenIn: GetSingleSale_fairSale_tokenIn;
+  tokenOut: GetSingleSale_fairSale_tokenOut;
 }
 
-export interface GetAllSales {
-  fixedPriceSales: GetAllSales_fixedPriceSales[];
-  fairSales: GetAllSales_fairSales[];
+export interface GetSingleSale {
+  fixedPriceSale: GetSingleSale_fixedPriceSale | null;
+  fairSale: GetSingleSale_fairSale | null;
+}
+
+export interface GetSingleSaleVariables {
+  saleId: string;
 }
