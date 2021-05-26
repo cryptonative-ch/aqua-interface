@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetAllSales
+// GraphQL fragment: fixedPriceSaleResults
 // ====================================================
 
-export interface GetAllSales_fixedPriceSales_tokenIn {
+export interface fixedPriceSaleResults_tokenIn {
   __typename: "Token";
   id: string;
   name: string | null;
@@ -15,7 +15,7 @@ export interface GetAllSales_fixedPriceSales_tokenIn {
   decimals: any;
 }
 
-export interface GetAllSales_fixedPriceSales_tokenOut {
+export interface fixedPriceSaleResults_tokenOut {
   __typename: "Token";
   id: string;
   name: string | null;
@@ -23,7 +23,7 @@ export interface GetAllSales_fixedPriceSales_tokenOut {
   decimals: any;
 }
 
-export interface GetAllSales_fixedPriceSales {
+export interface fixedPriceSaleResults {
   __typename: "FixedPriceSale";
   id: string;
   /**
@@ -65,47 +65,9 @@ export interface GetAllSales_fixedPriceSales {
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetAllSales_fixedPriceSales_tokenIn;
+  tokenIn: fixedPriceSaleResults_tokenIn;
   /**
    * Token investor get
    */
-  tokenOut: GetAllSales_fixedPriceSales_tokenOut;
-}
-
-export interface GetAllSales_fairSales_tokenIn {
-  __typename: "Token";
-  id: string;
-  name: string | null;
-  symbol: string | null;
-  decimals: any;
-}
-
-export interface GetAllSales_fairSales_tokenOut {
-  __typename: "Token";
-  id: string;
-  name: string | null;
-  symbol: string | null;
-  decimals: any;
-}
-
-export interface GetAllSales_fairSales {
-  __typename: "FairSale";
-  id: string;
-  name: string | null;
-  createdAt: number;
-  updatedAt: number;
-  deletedAt: number | null;
-  status: string;
-  startDate: number;
-  endDate: number;
-  tokenAmount: any;
-  minimumBidAmount: any;
-  minFundingThreshold: number | null;
-  tokenIn: GetAllSales_fairSales_tokenIn;
-  tokenOut: GetAllSales_fairSales_tokenOut;
-}
-
-export interface GetAllSales {
-  fixedPriceSales: GetAllSales_fixedPriceSales[];
-  fairSales: GetAllSales_fairSales[];
+  tokenOut: fixedPriceSaleResults_tokenOut;
 }
