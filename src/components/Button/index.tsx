@@ -81,6 +81,15 @@ export const Button = styled.button<ButtonProps>(
       link: {
         bg: 'transparent',
       },
+      form: {
+        background: '#304FFE',
+        color: '#fff',
+        border: 'none',
+        ':disabled': {
+          background: '#DDDDE3',
+          color: 'black',
+        },
+      },
     },
   }),
   background
