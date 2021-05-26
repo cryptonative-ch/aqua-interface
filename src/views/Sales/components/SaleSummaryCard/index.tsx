@@ -1,5 +1,4 @@
 // External
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import React, { useState } from 'react'
 
@@ -13,21 +12,17 @@ import { BadgeCard } from 'src/views/Sale/components/BadgeCard'
 import { SaleAmount } from '../SaleAmount'
 import { Divider } from 'src/components/Divider'
 import { SaleClock } from '../SaleClock'
-import { Icon } from 'src/components/Icon'
+import { Icon } from 'src/components/Icons/Icon'
 import { BadgeFlex } from 'src/layouts/BadgeFlex'
 import { BidTokenPriceLabel } from '../SaleActiveBids'
 import { TokenClaimButton } from 'src/components/Buttons/TokenClaim'
+import { TokenIconFigure } from 'src/components/Icons/TokenIconFigure'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
-
-const TokenIconFigure = styled.div(props => ({
-  marginRight: props.theme.space[3],
-}))
-
 interface SaleSummaryProps {
   sale: Sale
 }

@@ -47,6 +47,7 @@
     "hideClosedSales": "Hide Closed Sales",
     "backToSales": "Back to all sales",
     "loadMore": "Load more",
-    "tokenClaimed": "Tokens Claimed"
+    "tokenClaimed": "Tokens Claimed",
+    "claimTokens": "Claim Tokens"
   }
 }

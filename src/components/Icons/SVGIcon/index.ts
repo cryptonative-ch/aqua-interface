@@ -1,19 +1,9 @@
 // Externals
-
 import styled from 'styled-components'
 import SVG from 'react-inlinesvg'
 
-export const Icon = styled.img(
-  {
-    height: '45px',
-  },
-  props =>
-    `
-  @media (max-width: ${props.theme.breakpoints[2]}) {
-  height: 32px;
-  }
-  `
-)
+// Components
+import { Icon } from '../Icon'
 
 interface SVGIconProps {
   color: string

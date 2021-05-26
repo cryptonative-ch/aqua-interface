@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 // Components
 import { Button } from '../Button'
-import { SVGIcon } from 'src/components/Icon'
+import { SVGIcon } from 'src/components/Icons/SVGIcon'
 // Themes
 import { theme } from 'src/styles/theme'
 
