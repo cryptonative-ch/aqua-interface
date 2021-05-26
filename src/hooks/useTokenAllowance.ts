@@ -1,6 +1,6 @@
 // Externals
 import { BigNumber } from '@ethersproject/bignumber'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Hooks
 import { useTokenContract } from './useTokenContract'
@@ -9,18 +9,22 @@ export function useTokenAllowance(tokenAddress: string, owner: string, spender: 
   const [allowance, setAllownace] = useState<BigNumber>(BigNumber.from(0))
   const tokenContract = useTokenContract(tokenAddress)
 
-  return useMemo(() => {
+  useEffect(() => {
     if (!tokenContract) {
-      return allowance
+      return
     }
 
+    console.log('Calling allowance')
     tokenContract
       .allowance(owner, spender)
-      .then(setAllownace)
+      .then(results => {
+        console.log({ results })
+        setAllownace(results)
+      })
       .catch(() => {
         console.log(`Could not get the allowance for ${owner}`)
       })
-
-    return allowance
   }, [tokenContract, tokenAddress, owner, spender])
+
+  return allowance
 }
