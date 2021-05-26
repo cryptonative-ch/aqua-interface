@@ -22,6 +22,9 @@ import { CHAIN_ID, SANCTION_LIST } from 'src/constants'
 // Components
 import { ConfirmButton } from 'src/components/Buttons/ConfirmButton'
 import { Modal } from 'src/components/Modal'
+import {verifyTransaction } from "src/views/Sale/components/Modals/VerifyTransactionModal";
+import { withdrawBidModal } from "src/views/Sale/components/Modals/ClaimTokenModal";
+import { ClaimSuccessModal  } from "src/views/Sale/components/Modals/ClaimSuccessModal";
 
 // Layouts
 import { Center } from './layouts/Center'
@@ -74,6 +77,7 @@ export const App = () => {
             <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
               <BrowserRouter>
                 <AppRouter />
+                <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
                 <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
               </BrowserRouter>
             </Suspense>
