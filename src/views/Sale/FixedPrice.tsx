@@ -29,8 +29,8 @@ import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
+import { PurchaseTokensForm } from './components/PurchaseTokensForm'
 import { HeaderControl } from './components/HeaderControl'
-import { PlaceBidForm } from './components/PlaceBidForm'
 import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
 import { HeaderItem } from './components/HeaderItem'
@@ -309,19 +309,13 @@ export function FixedPriceSaleView() {
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
-                  <PlaceBidForm
-                    onSubmit={(val: BidFormProps) => buyToken(val)}
-                    sale={sale}
-                    currentSettlementPrice={formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)}
-                    isFixed
-                  />
+                  <PurchaseTokensForm saleId={sale.id} />
                 </CardBody>
               </Card>
             </Flex>
           )}
         </Flex>
       </Container>
-
       {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>
