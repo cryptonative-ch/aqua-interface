@@ -76,17 +76,23 @@ export const Button = styled.button<ButtonProps>(
   variant({
     variants: {
       primary: {
-        bg: 'white',
+        background: '#304FFE',
+        color: '#FFFFFF',
+        border: 'none',
+        ':disabled': {
+          background: '#DDDDE3',
+          color: 'black',
+        },
       },
       link: {
         bg: 'transparent',
       },
-      form: {
-        background: '#304FFE',
-        color: '#fff',
+      secondary: {
+        background: '##7B7F93',
+        color: '#FFFFFF',
         border: 'none',
         ':disabled': {
-          background: '#DDDDE3',
+          background: '#7B7F93',
           color: 'black',
         },
       },
