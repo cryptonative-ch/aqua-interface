@@ -9,7 +9,7 @@ import { ErrorMesssage } from 'src/components/ErrorMessage'
 import { Center } from 'src/layouts/Center'
 
 // Hooks
-import { useSale } from 'src/hooks/useSale'
+import { useSaleQuery } from 'src/hooks/useSaleQuery'
 
 // Views
 import { NotFoundView } from '../NotFound'
@@ -23,7 +23,8 @@ interface SaleViewParams {
 
 export function SaleView() {
   const params = useParams<SaleViewParams>()
-  const { loading, sale, error } = useSale(params.saleId)
+  // Fetch the sale from the subgraph, and use the appropriate view
+  const { loading, sale, error } = useSaleQuery(params.saleId)
 
   if (loading) {
     return <Center>Loading</Center>
@@ -44,7 +45,6 @@ export function SaleView() {
 
   // Pass the sale down to the appropriate
   if (sale.type === 'FixedPriceSale') {
-    // Fetch the sale from the subgraph, and use the appropriate view
     return <FixedPriceSaleView />
   }
   if (sale.type === 'FairSale') {
