@@ -41,13 +41,16 @@ export function useApproveCallback({
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
+    //
     if (currentAllowance.lt(amountToApprove)) {
       return ApprovalState.NOT_APPROVED
     }
 
     // amountToApprove will be defined if currentAllowance is
     return ApprovalState.APPROVED
-  }, [amountToApprove, currentAllowance, spender, library, account])
+  }, [amountToApprove, currentAllowance, spender])
+
+  const tokenContract = ERC20__factory.connect(tokenAddress, library)
 
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
@@ -55,29 +58,23 @@ export function useApproveCallback({
       return
     }
     if (!tokenAddress) {
-      return console.error('no token')
+      console.error('no token')
+      return
     }
-    if (!library) {
-      return console.error('no provider')
-    }
-    if (!library.getSigner()) {
-      return console.error('no signer')
-    }
-
-    const tokenContract = ERC20__factory.connect(tokenAddress, library.getSigner())
-
-    console.log(tokenContract.signer)
 
     if (!tokenContract) {
-      return console.error('tokenContract is null')
+      console.error('tokenContract is null')
+      return
     }
 
     if (!amountToApprove) {
-      return console.error('missing amount to approve')
+      console.error('missing amount to approve')
+      return
     }
 
     if (!spender) {
-      return console.error('no spender')
+      console.error('no spender')
+      return
     }
 
     return tokenContract
@@ -89,7 +86,7 @@ export function useApproveCallback({
         console.debug('Failed to approve token', error)
         throw error
       })
-  }, [approvalState, tokenAddress, amountToApprove, spender, library])
+  }, [approvalState, tokenAddress, tokenContract, amountToApprove, spender])
 
   return [approvalState, approve]
 }
