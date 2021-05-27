@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // External
-import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import numeral from 'numeral'
@@ -18,6 +18,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
+import { ErrorMesssage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
 import { FormButton } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
@@ -36,6 +37,9 @@ import { TokenFooter } from './components/TokenFooter'
 import { HeaderItem } from './components/HeaderItem'
 import { SaleHeader } from './components/SaleHeader'
 
+// Layouts
+import { Center } from 'src/layouts/Center'
+
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
@@ -43,23 +47,17 @@ import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 
-// Interfaces
-import { Sale } from 'src/interfaces/Sale'
-
 // Constants
 import { FIXED_PRICE_SALE_CONTRACT_ADDRESS, SUBGRAPH_ENDPOINT } from 'src/constants'
 import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
 import { subgraphCall } from 'src/subgraph'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
 
-// Redux
-import { fetchSales } from 'src/redux/sales'
-import { fetchSaleBids } from 'src/redux/bids'
-import { RootState } from 'src/redux/store'
-
 // Mesa Utils
+import { useSaleQuery } from 'src/hooks/useSaleQuery'
 import { formatBigInt } from 'src/utils/Defaults'
-import { getBidDataFromChain } from 'src/blockchain'
+import { fetchSaleBids } from 'src/redux/bids'
+import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -89,18 +87,9 @@ export function FixedPriceSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const fetchData = () => dispatch(fetchSales())
+  const { error, loading, sale } = useSaleQuery(params.saleId)
 
-  const sale = useSelector<RootState, Sale>(state => {
-    const sales = state.sales.sales.filter(sale => sale.id == params.saleId)[0]
-    return sales
-  })
-
-  const bidsBySale = useSelector<RootState, any>(state => {
-    return state.bids.bidsBySaleId[params.saleId]
-  })
-
-  const bids = bidsBySale ? bidsBySale.bids : []
+  const bids: FixedPriceSalePurchase[] = []
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -108,44 +97,20 @@ export function FixedPriceSaleView() {
     }
   }
 
-  const buyToken = async ({ tokenAmount }: BidFormProps) => {
-    if (fixedPriceContract) {
-      try {
-        const closed = await fixedPriceContract.buyTokens(tokenAmount)
-        console.log(closed)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  if (loading) {
+    return <Center>loading</Center>
   }
 
-  useEffect(() => {
-    if (!chainId || !library || !account) {
-      return
-    }
-    // An example Provider
-    const provider = new ethers.providers.Web3Provider(library)
-    // An example Signer
-    const signer = provider.getSigner(0)
-    setFixedPriceContract(new ethers.Contract(FIXED_PRICE_SALE_CONTRACT_ADDRESS, FixedPriceSaleABI, signer))
-  }, [chainId, library, account])
-
-  useEffect(() => {
-    if (sale) {
-      const provider = new ethers.providers.JsonRpcProvider()
-      const saleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId, sale.type))
-      const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, saleBidsRequest))
-      fetchBids()
-      getBidDataFromChain(params.saleId, sale.type, provider, sale.tokenOut.decimals)
-    }
-    dispatch(setPageTitle(t(sale?.name as string)))
-  }, [t, sale])
+  if (error) {
+    return (
+      <Center>
+        <ErrorMesssage error={error} />
+      </Center>
+    )
+  }
 
   if (!sale) {
-    fetchData()
-    if (!sale) {
-      return <NotFoundView />
-    }
+    return <NotFoundView />
   }
 
   return (
@@ -294,12 +259,12 @@ export function FixedPriceSaleView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList sale={sale} isFixed={true} bids={bids} />
+                <SelfBidList sale={sale} isFixed={true} bids={bids as any} />
               </Card>
             )}
             <TokenFooter sale={sale} />
           </Flex>
-          {isSaleOpen(sale) && !isMobile && (
+          {!isMobile && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
