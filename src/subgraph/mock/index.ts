@@ -4,7 +4,7 @@ import casual from 'casual-browserify'
 
 // schema
 
-export const schemaString = `  
+export const schemaString = `
 # EntityMetadata
 # Enforces important fields on each entity that implement this interface
 interface EntityMetadata {
@@ -123,7 +123,7 @@ type FixedPriceSale implements EntityMetadata  {
   # bidding and sale tokens
   tokenIn: Token!
   tokenOut: Token!
-  purchases: [FixedPriceSalePurchase!] 
+  purchases: [FixedPriceSalePurchase!]
 }
 
 type FixedPriceSalePurchase implements EntityMetadata  {
@@ -203,7 +203,7 @@ type Query {
 `
 const address = '0x###D####b########d###aA##e###c##eF##EE#c'
 
-const bigDecimal = '###.##################'
+const bigDecimal = '#####################'
 
 export const preserveResolvers = false
 
