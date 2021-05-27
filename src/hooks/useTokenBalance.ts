@@ -1,18 +1,31 @@
 // External
-import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 import { BigNumber } from 'ethers'
+
+// Hooks
+import { useTokenContract } from './useTokenContract'
+
+// Interfaces
+interface UseTokenBalanceProps {
+  tokenAddress?: string
+  owner?: string
+}
 
 /**
  * Returns the balance owned by the address
  */
-export function useTokenBalance(tokenContractAddress: string) {
-  const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0))
-  const { library, account } = useWeb3React()
+export function useTokenBalance({ owner, tokenAddress }: UseTokenBalanceProps) {
+  const [balance, setBalanace] = useState(BigNumber.from(0))
+  const tokenContract = useTokenContract(tokenAddress)
 
   useEffect(() => {
-    setBalance(BigNumber.from(6535))
-  }, [library, account])
+    // Contract is empty or no address
+    if (!tokenContract || !owner) {
+      return
+    }
+
+    tokenContract.balanceOf(owner).then(setBalanace)
+  }, [owner, tokenAddress])
 
   return balance
 }
