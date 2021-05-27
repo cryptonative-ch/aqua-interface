@@ -32,7 +32,7 @@ const wrapper = (sale: Sale) => {
 
 // tests
 
-const sale = getSaleDefault({ sellAmount: formatDecimal('4978.999999999999999999') }, 'fixedPriceSale')
+const sale = getSaleDefault({ sellAmount: formatDecimal('4978.999999999999999999') }, 'FixedPriceSale')
 
 describe('SaleAmount tests', () => {
   test('should display correct Amount', () => {

@@ -8,66 +8,66 @@
 // ====================================================
 
 export interface fixedPriceSaleResults_tokenIn {
-  __typename: "Token";
-  id: string;
-  name: string | null;
-  symbol: string | null;
-  decimals: any;
+  __typename: 'Token'
+  id: string
+  name: string | null
+  symbol: string | null
+  decimals: any
 }
 
 export interface fixedPriceSaleResults_tokenOut {
-  __typename: "Token";
-  id: string;
-  name: string | null;
-  symbol: string | null;
-  decimals: any;
+  __typename: 'Token'
+  id: string
+  name: string | null
+  symbol: string | null
+  decimals: any
 }
 
 export interface fixedPriceSaleResults {
-  __typename: "FixedPriceSale";
-  id: string;
+  __typename: 'FixedPriceSale'
+  id: string
   /**
    * The name of the same, default is the tokenIn's name
    */
-  name: string;
-  createdAt: number;
-  updatedAt: number;
-  deletedAt: number | null;
+  name: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: string;
+  status: string
   /**
    * The UTC timestamp at which the sale starts
    */
-  startDate: number;
+  startDate: number
   /**
    * The UTC timestamp at which the sale closes
    */
-  endDate: number;
+  endDate: number
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any;
-  minimumRaise: any;
+  sellAmount: any
+  minimumRaise: any
   /**
    * Minimum token amount per purchase
    */
-  allocationMin: any;
+  allocationMin: any
   /**
    * Maximum token amount per purchase
    */
-  allocationMax: any;
+  allocationMax: any
   /**
    * Token price
    */
-  tokenPrice: any;
+  tokenPrice: any
   /**
    * Token investors can use to bid
    */
-  tokenIn: fixedPriceSaleResults_tokenIn;
+  tokenIn: fixedPriceSaleResults_tokenIn
   /**
    * Token investor get
    */
-  tokenOut: fixedPriceSaleResults_tokenOut;
+  tokenOut: fixedPriceSaleResults_tokenOut
 }

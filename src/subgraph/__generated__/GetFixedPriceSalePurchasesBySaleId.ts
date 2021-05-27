@@ -8,25 +8,25 @@
 // ====================================================
 
 export interface GetFixedPriceSalePurchasesBySaleId_fixedPriceSalePurchases_sale {
-  __typename: "FixedPriceSale";
-  id: string;
+  __typename: 'FixedPriceSale'
+  id: string
 }
 
 export interface GetFixedPriceSalePurchasesBySaleId_fixedPriceSalePurchases {
-  __typename: "FixedPriceSalePurchase";
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-  deletedAt: number | null;
-  buyer: any;
-  amount: any;
-  sale: GetFixedPriceSalePurchasesBySaleId_fixedPriceSalePurchases_sale;
+  __typename: 'FixedPriceSalePurchase'
+  id: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
+  buyer: any
+  amount: any
+  sale: GetFixedPriceSalePurchasesBySaleId_fixedPriceSalePurchases_sale
 }
 
 export interface GetFixedPriceSalePurchasesBySaleId {
-  fixedPriceSalePurchases: GetFixedPriceSalePurchasesBySaleId_fixedPriceSalePurchases[];
+  fixedPriceSalePurchases: GetFixedPriceSalePurchasesBySaleId_fixedPriceSalePurchases[]
 }
 
 export interface GetFixedPriceSalePurchasesBySaleIdVariables {
-  saleId: string;
+  saleId: string
 }
