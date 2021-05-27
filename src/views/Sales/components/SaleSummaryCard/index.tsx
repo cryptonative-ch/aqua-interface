@@ -15,16 +15,13 @@ import { Divider } from 'src/components/Divider'
 import { SaleClock } from '../SaleClock'
 import { Icon } from 'src/components/Icon'
 import { BadgeFlex } from 'src/layouts/BadgeFlex'
+import { TokenIconFigure } from 'src/components/TokenIconFigure'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
-
-const TokenIconFigure = styled.div(props => ({
-  marginRight: props.theme.space[3],
-}))
 
 interface SaleSummaryProps {
   sale: Sale
