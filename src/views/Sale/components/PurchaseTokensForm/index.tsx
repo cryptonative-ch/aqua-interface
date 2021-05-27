@@ -1,8 +1,9 @@
 // External
-import React, { useState, ChangeEvent, FormEvent, useEffect, useCallback } from 'react'
+import React, { useState, ChangeEvent, FormEvent, useCallback } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { sales } from '@dxdao/mesa'
+import { utils } from 'ethers'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
@@ -10,16 +11,18 @@ import { Button } from 'src/components/Button'
 import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
 
-// Hooks
-import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
-
-// Mesa Utils
-import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
-
 // Components
 import { ErrorMesssage } from 'src/components/ErrorMessage'
 import { useSaleQuery } from 'src/hooks/useSaleQuery'
 
+// Hooks
+import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
+import { useTokenBalance } from 'src/hooks/useTokenBalance'
+
+// Contract factories
+import { ERC20__factory } from 'src/contracts'
+
+// Layouts
 import { Center } from 'src/layouts/Center'
 
 const FormLabel = styled.div({
@@ -111,33 +114,41 @@ interface PurchaseTokensFormComponentProps {
 export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps) => {
   const { account, library } = useWeb3React()
   const { loading, sale, error } = useSaleQuery(saleId)
+  const tokenBalance = useTokenBalance({
+    tokenAddress: sale?.tokenIn.id,
+    owner: account ?? undefined,
+  })
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
     tokenAddress: sale?.tokenIn.id as string,
   })
 
-  useEffect(() => {
-    if (!account || !library || !sale) {
-      return
-    }
-
-    console.log({ approvalState })
-
-    console.log({ sale })
-    // Connect to TokeIn and FixedPriceSale contract
-    const fixedPriceSaleContract = sales.FixedPriceSaleFactory.connect(sale.id, library)
-  }, [account, library])
-
   const [validationError, setValidationError] = useState<Error>()
   const [formValid, setFormValid] = useState<boolean>(false)
-  const [tokenAmount, setTokenAmount] = useState<number>(0)
+  const [tokenAmount, setTokenAmount] = useState(BigNumber.from(0))
 
-  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
+  // A form is valid when
+  // 1. purchaseValue >= minimum Allocation
+  // 2. purchaseValue <= max allocation (including previous purchases)
+  // 3. bidding token balance <= purchaseValue
+  const validateForm = () => {
+    if (tokenBalance.eq(0)) {
+      return setValidationError(new Error('Insufficient funds'))
+    }
+
+    // Calculate the purchase value
+    const purchaseValue = tokenAmount.mul(sale?.tokenPrice || '0')
+
+    if (purchaseValue.gt(tokenBalance)) {
+      return setValidationError(new Error('Insufficient funds'))
+    }
+
+    return setValidationError(undefined)
+  }
 
   const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const tokenAmount = parseInt(event.target.value || '0')
-    setTokenAmount(tokenAmount)
-    validateForm([tokenAmount])
+    setTokenAmount(utils.parseUnits(event.target.value || '0'))
+    validateForm()
   }
 
   /**
@@ -186,10 +197,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
             />
           </FormContainer>
         </Flex>
+        {validationError && <ErrorMesssage error={validationError} />}
       </FormGroup>
-      <FixedTerm>{`You'll get 1,000 ${sale.tokenOut.symbol}`}</FixedTerm>
       {approvalState == ApprovalState.APPROVED ? (
-        <Button>Purchase {sale.tokenOut.symbol}</Button>
+        <Button disabled={!(validationError instanceof Error)}>Purchase {sale.tokenOut.symbol}</Button>
       ) : (
         <Button onClick={approve}>Approve {sale.tokenIn.symbol}</Button>
       )}
