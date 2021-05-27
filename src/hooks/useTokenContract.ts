@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 // Contracts
 import { ERC20__factory } from 'src/contracts'
 
-export function useTokenContract(tokenAddress: string) {
+export function useTokenContract(tokenAddress?: string) {
   const { library, account } = useWeb3React()
 
   return useMemo(() => {
