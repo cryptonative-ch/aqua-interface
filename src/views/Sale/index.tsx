@@ -18,6 +18,9 @@ import { NotFoundView } from '../NotFound'
 import { FixedPriceSaleView } from './FixedPrice'
 import { FairSaleView } from './FairSale'
 
+// Redux actions
+import { setPageTitle } from 'src/redux/page'
+
 interface SaleViewParams {
   saleId: string
 }
