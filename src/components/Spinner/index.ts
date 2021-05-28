@@ -13,13 +13,15 @@ const spin = keyframes`
     }
 `
 
-const animation = () => css`
-  ${spin} 0.6s linear infinite
-`
+const animation = () => {
+  css`
+    ${spin} 0.6s linear infinite
+  `
+}
 
 export const Spinner = styled.div<SpinnerProps>({
   border: '0.2em solid #304FFE',
-  borderTop: '0.2em solid #767676',
+  borderTop: '0.2em solid rgba(48, 79, 254, 0.1)',
   borderRadius: '50%',
   width: '2.28571429rem',
   height: '2.28571429rem',
