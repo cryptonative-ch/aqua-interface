@@ -37,6 +37,7 @@
     "placeBuyOrder": "Place Buy Order",
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
     "verifyTransaction": "Please verify the transaction to claim your tokens."
+    , "unclaimed":"Unclaimed"
   },
   "buttons": {
     "back": "Back",

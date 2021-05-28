@@ -6,15 +6,15 @@ import { SpaceProps, TypographyProps, LayoutProps, TextColorProps, FontWeightPro
 export type TitleProps = SpaceProps & TypographyProps & LayoutProps & TextColorProps & FontWeightProps
 
 export const Title = styled.h1<TitleProps>(props => ({
-  height: `${props.height}px` || '44px',
-  width: `${props.height}px` || '100%',
+  height: props.height as string|| '44px',
+  width: props.height as string || '100%',
   fontFamily: 'Inter',
-  fontSize: `${String(props.fontSize)}px` || '36px',
+  fontSize: props.fontSize as string || '36px',
   fontStyle: 'normal',
-  fontWeight: Number(props.fontWeight) || 600,
-  lineHeight: `${props.height}px` || '44px',
+  fontWeight: props.fontWeight as number || 600,
+  lineHeight: props.height as string || '44px',
   letterSpacing: '0',
   textAlign: 'center',
   color: props.color || '#000629',
-  marginBottom: `${String(props.marginBottom)}px` || '32px',
+  marginBottom: props.marginBottom as string || '32px',
 }))

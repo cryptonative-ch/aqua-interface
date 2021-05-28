@@ -35,11 +35,11 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
         </Flex>
         <Divider />
         <Flex>
-          <CardText>Unclaimed</CardText>
+          <CardText>{t('text.unclaimed')}</CardText>
           <CardText>2,678.5713 IOP</CardText>
         </Flex>
         <Flex>
-          <CardText>Current Price</CardText>
+          <CardText>{t('texts.currentPrice')}</CardText>
           <CardText>2.23 DAI</CardText>
         </Flex>
         <Button>{t('buttons.claimTokens')}</Button>

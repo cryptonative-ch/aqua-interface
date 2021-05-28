@@ -10,28 +10,17 @@ import { setPageTitle } from 'src/redux/page'
 
 // Components
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
-import { SaleSummaryCard } from './components/SaleSummaryCard'
-import { ErrorMesssage } from 'src/components/ErrorMessage'
-import { SaleNavBar } from './components/SaleNavBar'
 import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/CardSale'
 
-// interface
-import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
-
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useWindowSize } from 'src/hooks/useWindowSize'
-import { useSalesQuery } from 'src/hooks/useSalesQuery'
 
 // Layouts
-import { Center } from 'src/layouts/Center'
-
-const SaleSummaryWrapper = styled(NavLink)(Card, {
-  display: 'block',
-})
+import { TokenClaim } from './components/TokenClaim'
 
 const SaleListSection = styled.div(
   props => ({
@@ -61,81 +50,26 @@ const Title = styled.p({
   marginBottom: '32px',
 })
 
-export enum SaleStatus {
-  LIVE = 'Live',
-  UPCOMING = 'upcoming',
-  CLOSED = 'closed',
-}
 
-export type SaleContextType = {
-  SaleShow: SaleStatus
-  setSaleShow: (value: SaleStatus) => void
-}
-
-export const SaleContext = createContext<SaleContextType>({} as SaleContextType)
-const saleFilterMap = {
-  [SaleStatus.UPCOMING]: isSaleUpcoming,
-  [SaleStatus.CLOSED]: isSaleClosed,
-  [SaleStatus.LIVE]: isSaleOpen,
-}
-
-export function SalesView() {
+export function TokenView() {
   const { isMobile } = useWindowSize()
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const [SaleShow, setSaleShow] = useState<SaleStatus>(SaleStatus.LIVE)
-  const { loading, sales, error } = useSalesQuery()
 
   useMountEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
 
-  if (loading) {
-    return (
-      <Center>
-        <Header />
-        <Container>
-          <Title>Token Sales</Title>
-          <SaleListSection>Loading!</SaleListSection>
-        </Container>
-      </Center>
-    )
-  }
-
-  if (error) {
-    return (
-      <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
-        <Center>
-          <Header />
-          <Container>
-            <Title>Token Sales</Title>
-            <SaleNavBar />
-            <SaleListSection>
-              <ErrorMesssage error={error} />
-            </SaleListSection>
-          </Container>
-        </Center>
-      </SaleContext.Provider>
-    )
-  }
-
   return (
-    <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
       <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
         <Header />
         <Container>
-          <Title>Token Sales</Title>
-          <SaleNavBar />
+          <Title>{t('texts.claimToken')}</Title>
           <SaleListSection>
-            {sales.filter(saleFilterMap[SaleShow]).map(sale => (
-              <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                <SaleSummaryCard sale={sale} />
-              </SaleSummaryWrapper>
-            ))}
+             <TokenClaim sale={sale}/>
           </SaleListSection>
         </Container>
         {!isMobile && <Footer />}
       </AbsoluteContainer>
-    </SaleContext.Provider>
   )
 }
