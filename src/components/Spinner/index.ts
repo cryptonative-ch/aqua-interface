@@ -18,7 +18,7 @@ const animation = () => css`
 `
 
 export const Spinner = styled.div<SpinnerProps>({
-  border: '0.2em solid #304FFE 0.1',
+  border: '0.2em solid #304FFE',
   borderTop: '0.2em solid #767676',
   borderRadius: '50%',
   width: '2.28571429rem',

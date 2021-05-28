@@ -66,5 +66,5 @@ export const TokenClaim = () => {
 
   const claimedState = <CardBody></CardBody>
 
-  return <Card>{claim == 'verify' ? verifyState : claimState}</Card>
+  return <Card>{claim == 'verify' ? verifyState : claim == 'claimed' ? claimedState : claimState}</Card>
 }
