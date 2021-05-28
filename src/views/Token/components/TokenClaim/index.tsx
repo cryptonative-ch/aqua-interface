@@ -22,6 +22,7 @@ import { CardTitle } from 'src/components/CardTitle'
 
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { theme } from 'src/styles/theme'
 
 interface TokenClaimProps {
   sale: Sale
@@ -33,7 +34,7 @@ export const TokenClaim = () => {
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'claimed'>('unclaimed')
 
   const claimState = (
-    <CardBody>
+    <CardBody padding={theme.space[3]}>
       <Flex margin="0 0 16px 0">
         <TokenIconFigure>
           <Icon src={noToken} />
@@ -41,7 +42,7 @@ export const TokenClaim = () => {
         <CardTitle>Claim IOP</CardTitle>
       </Flex>
       <Divider />
-      <Flex flexDirection="column" justifyContent="space-evenly" margin="12px 0 0 0">
+      <Flex flexDirection="column" justifyContent="space-evenly">
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.unclaimed')}</CardText>
           <CardText>2,678.5713 IOP</CardText>
@@ -58,9 +59,13 @@ export const TokenClaim = () => {
   )
 
   const verifyState = (
-    <CardBody justifyContent="center">
-      <Spinner />
-      <CardText>{t('texts.verifyTransaction')}</CardText>
+    <CardBody height='100%' textAlign='center'>
+      <Flex height='100%' width='100%' justifyContent='center' flexDirection='column' >
+        <Flex justifyContent='center'>
+          <Spinner />
+        </Flex>
+          <CardText>{t('texts.verifyTransaction')}</CardText>
+      </Flex>
     </CardBody>
   )
 
