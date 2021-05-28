@@ -17,6 +17,7 @@ import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/CardSale'
+import { GridListSection } from 'src/components/Grid'
 
 // interface
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
@@ -32,20 +33,6 @@ import { Center } from 'src/layouts/Center'
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
 })
-
-const SaleListSection = styled.div(
-  props => ({
-    margin: '0',
-    display: props.theme.grid.display,
-    gridTemplateColumns: props.theme.grid.gridTemplateColumns[0],
-    gap: props.theme.grid.gap[0],
-  }),
-  props => `
-    @media (max-width: ${props.theme.breakpoints[2]}) {
-      grid-template-columns: ${props.theme.grid.gridTemplateColumns[1]};
-      row-gap: ${props.theme.grid.gap[1]};
-    })`
-)
 
 const Title = styled.p({
   height: '44px',
@@ -96,7 +83,7 @@ export function SalesView() {
         <Header />
         <Container>
           <Title>Token Sales</Title>
-          <SaleListSection>Loading!</SaleListSection>
+          <GridListSection>Loading!</GridListSection>
         </Container>
       </Center>
     )
@@ -110,9 +97,9 @@ export function SalesView() {
           <Container>
             <Title>Token Sales</Title>
             <SaleNavBar />
-            <SaleListSection>
+            <GridListSection>
               <ErrorMesssage error={error} />
-            </SaleListSection>
+            </GridListSection>
           </Container>
         </Center>
       </SaleContext.Provider>
@@ -126,13 +113,13 @@ export function SalesView() {
         <Container>
           <Title>Token Sales</Title>
           <SaleNavBar />
-          <SaleListSection>
+          <GridListSection>
             {sales.filter(saleFilterMap[SaleShow]).map(sale => (
               <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
                 <SaleSummaryCard sale={sale} />
               </SaleSummaryWrapper>
             ))}
-          </SaleListSection>
+          </GridListSection>
         </Container>
         {!isMobile && <Footer />}
       </AbsoluteContainer>

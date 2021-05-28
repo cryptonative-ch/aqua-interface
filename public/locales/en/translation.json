@@ -5,12 +5,14 @@
   "pagesTitles": {
     "home": "Home",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "tokens": "Tokens"
   },
   "navTitles": {
     "home": "Home",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "tokens": "Tokens"
   },
   "texts": {
     "bid": "Bid",
@@ -36,8 +38,9 @@
     "yourActivity": "Your Activity",
     "placeBuyOrder": "Place Buy Order",
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
-    "verifyTransaction": "Please verify the transaction to claim your tokens."
-    , "unclaimed":"Unclaimed"
+    "verifyTransaction": "Please verify the transaction to claim your tokens.",
+    "unclaimed": "Unclaimed",
+    "claimTokens": "Claim Tokens"
   },
   "buttons": {
     "back": "Back",
@@ -46,6 +49,8 @@
     "addARandomBid": "Add A Random Bid",
     "showClosedSales": "Show Closed Sales",
     "hideClosedSales": "Hide Closed Sales",
-    "backToSales": "Back to all sales"
+    "backToSales": "Back to all sales",
+    "claimTokens": "Claim Tokens",
+    "shortClaim": "Claim"
   }
 }

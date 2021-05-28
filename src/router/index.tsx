@@ -7,7 +7,7 @@ import { NotFoundView } from 'src/views/NotFound'
 import { StaticView } from 'src/views/Static'
 import { SalesView } from 'src/views/Sales'
 import { SaleView } from 'src/views/Sale'
-import { TokenView  } from "src/views/Token";
+import { TokenView } from 'src/views/Token'
 
 // Contexts
 import { SanctionContext } from 'src/contexts'
@@ -30,8 +30,8 @@ export const AppRouter = () => {
       <Route exact path="/sales/:saleId" component={SaleView} />
       <Route exact path="/about" component={StaticView} />
       <Route exact path="/contact" component={SalesView} />
+      <Route exact path="/tokens" component={TokenView} />
       <Route exact path="*" component={NotFoundView} />
-      <Route exact path='/tokens' component={Tokens}/>
     </Switch>
   )
 }

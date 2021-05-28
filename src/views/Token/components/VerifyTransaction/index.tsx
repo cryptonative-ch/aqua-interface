@@ -9,11 +9,5 @@ import { CardText } from 'src/components/CardText'
 
 export const VerifyTransaction = () => {
   const [t] = useTranslation()
-  return (
-    <Card>
-      <CardBody>
-        <CardText>{t('texts.verifyTransaction')}</CardText>
-      </CardBody>
-    </Card>
-  )
+  return <Card></Card>
 }
