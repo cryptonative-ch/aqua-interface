@@ -44,10 +44,10 @@ export function SaleView() {
   }
 
   // Pass the sale down to the appropriate
-  if (sale.type === 'FixedPriceSale') {
+  if (sale.__typename === 'FixedPriceSale') {
     return <FixedPriceSaleView />
   }
-  if (sale.type === 'FairSale') {
+  if (sale.__typename === 'FairSale') {
     return <FairSaleView />
   }
   // Sale not found
