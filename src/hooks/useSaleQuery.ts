@@ -5,14 +5,20 @@ import { QueryResult, useQuery } from '@apollo/client'
 import { GET_SINGLE_SALE } from 'src/subgraph/queries'
 
 // Interfaces
-import { GetSingleSale, GetSingleSaleVariables } from 'src/subgraph/__generated__/GetSingleSale'
-import { Sale } from 'src/interfaces/Sale'
+import {
+  GetSingleSale,
+  GetSingleSaleVariables,
+  GetSingleSale_fairSale,
+  GetSingleSale_fixedPriceSale,
+} from 'src/subgraph/__generated__/GetSingleSale'
 
-interface UseSaleQueryResult extends Omit<QueryResult, 'data'> {
-  sale: Sale | undefined
+type Sale = GetSingleSale_fairSale | GetSingleSale_fixedPriceSale
+
+interface UseSaleQueryResult<T> extends Omit<QueryResult, 'data'> {
+  sale: T | undefined
 }
 
-export function useSaleQuery(saleId: string): UseSaleQueryResult {
+export function useSaleQuery<T = Sale>(saleId: string): UseSaleQueryResult<T> {
   const { data, ...rest } = useQuery<GetSingleSale, GetSingleSaleVariables>(GET_SINGLE_SALE, {
     variables: {
       saleId,
@@ -33,7 +39,15 @@ export function useSaleQuery(saleId: string): UseSaleQueryResult {
   }
 
   return {
-    sale,
+    sale: sale as T,
     ...rest,
   }
+}
+
+export function useFixedPriceSaleQuery(saleId: string) {
+  return useSaleQuery<GetSingleSale_fixedPriceSale>(saleId)
+}
+
+export function useFairSaleQuery(saleId: string) {
+  return useSaleQuery<GetSingleSale_fairSale>(saleId)
 }
