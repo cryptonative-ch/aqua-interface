@@ -1,6 +1,7 @@
 // Externals
 import { useParams } from 'react-router-dom'
-import React from 'react'
+import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
 
 // General Components
 import { ErrorMesssage } from 'src/components/ErrorMessage'
@@ -22,9 +23,14 @@ interface SaleViewParams {
 }
 
 export function SaleView() {
+  const dispatch = useDispatch()
   const params = useParams<SaleViewParams>()
   // Fetch the sale from the subgraph, and use the appropriate view
   const { loading, sale, error } = useSaleQuery(params.saleId)
+
+  useEffect(() => {
+    dispatch(setPageTitle(sale?.tokenIn.name || 'Sale'))
+  }, [sale])
 
   if (loading) {
     return <Center>Loading</Center>
