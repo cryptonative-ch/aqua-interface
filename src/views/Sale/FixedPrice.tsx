@@ -1,21 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // External
-import React, { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
 import numeral from 'numeral'
 
 // Hooks
+import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useWindowSize } from 'src/hooks/useWindowSize'
-
-// Actions
-import { setPageTitle } from 'src/redux/page'
 
 // Components
 import { ErrorMesssage } from 'src/components/ErrorMessage'
@@ -43,19 +38,11 @@ import { Center } from 'src/layouts/Center'
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
+import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
-
-// Constants
-import { FIXED_PRICE_SALE_CONTRACT_ADDRESS, SUBGRAPH_ENDPOINT } from 'src/constants'
-import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
-import { subgraphCall } from 'src/subgraph'
-import { saleBidsQuery } from 'src/subgraph/SaleBids'
-
-// Mesa Utils
-import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
-import { formatBigInt } from 'src/utils/Defaults'
+// Interfaces
 import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 
@@ -67,11 +54,6 @@ const FixedFormMax = styled.div({
   color: '#7B7F93',
 })
 
-type BidFormProps = {
-  tokenAmount: number
-  tokenPrice: number
-}
-
 export interface FixedPriceSaleViewParams {
   saleId: string
 }
@@ -79,13 +61,10 @@ export interface FixedPriceSaleViewParams {
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
-
   const params = useParams<FixedPriceSaleViewParams>()
+  const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-
-  const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
-
   const bids: FixedPriceSalePurchase[] = []
 
   const toggleGraph = () => {
