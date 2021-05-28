@@ -10,6 +10,7 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { Icon } from 'src/components/Icon'
+import { Spinner } from 'src/components/Spinner'
 
 // interface
 import { Sale } from 'src/interfaces/Sale'
@@ -25,8 +26,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 interface TokenClaimProps {
   sale: Sale
 }
-
-const claimedState = <CardBody></CardBody>
 
 export const TokenClaim = () => {
   const [t] = useTranslation()
@@ -60,8 +59,12 @@ export const TokenClaim = () => {
 
   const verifyState = (
     <CardBody justifyContent="center">
+      <Spinner />
       <CardText>{t('texts.verifyTransaction')}</CardText>
     </CardBody>
   )
+
+  const claimedState = <CardBody></CardBody>
+
   return <Card>{claim == 'verify' ? verifyState : claimState}</Card>
 }
