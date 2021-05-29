@@ -1,18 +1,19 @@
 // Externals
 
 import styled from 'styled-components'
-import { LineHeightProps, FontSizeProps, FontWeightProps } from 'styled-system'
+import { LineHeightProps, FontSizeProps, FontWeightProps, LayoutProps } from 'styled-system'
 
 // Components
 import { Flex } from 'src/components/Flex'
+import { Property } from 'csstype'
 
-export type CardTextProps = FontSizeProps & FontWeightProps & LineHeightProps
+export type CardTextProps = FontSizeProps & FontWeightProps & LineHeightProps & LayoutProps
 
 export const CardText = styled.p<CardTextProps>(
   Flex,
   props => ({
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    overflow: props.overflow as Property.Overflow || 'hidden',
+    textOverflow:'ellipsis',
     whiteSpace: 'nowrap',
     fontFamily: 'Inter',
     fontSize: props.fontSize === 'title' ? '24px' : '16px',

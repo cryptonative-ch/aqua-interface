@@ -11,7 +11,6 @@ import { Divider } from 'src/components/Divider'
 import { CardText } from 'src/components/CardText'
 import { Flex, FlexProps } from 'src/components/Flex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
-import { Icon } from 'src/components/Icon'
 import { Spinner } from 'src/components/Spinner'
 import { Button } from 'src/components/Button'
 import { CardTitle } from 'src/components/CardTitle'
@@ -31,19 +30,19 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { theme } from 'src/styles/theme'
 import { space, SpaceProps } from 'styled-system';
 
+// interfaces
 interface TokenClaimProps {
   sale: Sale
 }
 
 
-const Circle = styled.div<FlexProps>({
+const Circle = styled.div({
   height: '45px',
   background: 'rgba(75, 158, 152, 0.35)',
   width: '45px',
   borderRadius: '50%',
-  justifyContent: "center"
-},
-Flex)
+}
+)
 
 const Link = styled.p<SpaceProps>({
 color: '#304FFE',
@@ -52,13 +51,17 @@ hover: 'underline'
 },
 space)
 
-interface SVGProps {
-  color: string;
-}
-const StyledSVG = styled(SVG)<SVGProps>(
+
+const StyledSVG = styled(SVG)(
   props => ({
   fill: props.color
 }))
+
+const Icon = styled.img<SpaceProps>({
+  height: '32px',
+  width: '32px',
+},
+space)
 
 export const TokenClaim = () => {
   const [t] = useTranslation()
@@ -84,13 +87,17 @@ export const TokenClaim = () => {
         <TokenIconFigure>
           <Icon src={noToken} />
         </TokenIconFigure>
-        <CardTitle>Claim IOP</CardTitle>
+        <CardTitle fontWeight={500}>Claim IOP</CardTitle>
       </Flex>
       <Divider />
       <Flex flexDirection="column" justifyContent="space-evenly">
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.unclaimed')}</CardText>
-          <CardText>2,678.5713 IOP</CardText>
+          <Flex>
+          <CardText>2,678 </CardText>
+          <CardText color='grey'>.5713</CardText>
+          <CardText>&nbsp;IOP</CardText>
+          </Flex>
         </Flex>
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.currentPrice')}</CardText>
@@ -118,12 +125,12 @@ export const TokenClaim = () => {
     <CardBody height='100%' textAlign='center'>
       <Flex flexDirection="column"  height='100%'>
         <Flex justifyContent='center'>
-          <Circle justifyContent='center' alignItems='center'>
-            <Icon src={check} height='32px' width='32px' />
+          <Circle> 
+            <Icon marginTop='8px' src={check}/>
           </Circle>
         </Flex>
         <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
-        <CardText color='grey'> 678.5713 IOP has been sent to your address.
+        <CardText color='grey'> 678.57 IOP has been sent to your address.
         </CardText>
         <Link marginTop='24px'>See this transaction on block explorer
         <StyledSVG src={link} color='#304FFE'/>
