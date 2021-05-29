@@ -1,5 +1,6 @@
 // Externals
 import React, { useEffect, useState } from 'react'
+import SVG from "react-inlinesvg";
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -21,10 +22,14 @@ import { Sale } from 'src/interfaces/Sale'
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
 import check from 'src/assets/svg/Check-Icon.svg'
+import link from 'src/assets/svg/External-Link.svg'
 
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
+
+// Theme
 import { theme } from 'src/styles/theme'
+import { space, SpaceProps } from 'styled-system';
 
 interface TokenClaimProps {
   sale: Sale
@@ -39,6 +44,21 @@ const Circle = styled.div<FlexProps>({
   justifyContent: "center"
 },
 Flex)
+
+const Link = styled.p<SpaceProps>({
+color: '#304FFE',
+cursor: 'pointer',
+hover: 'underline'
+},
+space)
+
+interface SVGProps {
+  color: string;
+}
+const StyledSVG = styled(SVG)<SVGProps>(
+  props => ({
+  fill: props.color
+}))
 
 export const TokenClaim = () => {
   const [t] = useTranslation()
@@ -76,7 +96,7 @@ export const TokenClaim = () => {
           <CardText color="grey">{t('texts.currentPrice')}</CardText>
           <CardText>2.23 DAI</CardText>
         </Flex>
-        <Button onClick={() => setClaim('verify')} width="50%">
+        <Button onClick={() => setClaim('verify')} width="90%">
           {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
         </Button>
       </Flex>
@@ -103,9 +123,12 @@ export const TokenClaim = () => {
           </Circle>
         </Flex>
         <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
-        <CardText color="grey">2,678.5713 IOP has been sent to your address.</CardText>
-        <CardText>See this transaction on block explorer</CardText>
-        <Button variant='secondary' width='50%'>{t('buttons.done')}</Button>
+        <CardText color='grey'> 678.5713 IOP has been sent to your address.
+        </CardText>
+        <Link marginTop='24px'>See this transaction on block explorer
+        <StyledSVG src={link} color='#304FFE'/>
+        </Link>
+        <Button variant='secondary' width='90%'>{t('buttons.done')}</Button>
       </Flex>
     </CardBody>
   )
