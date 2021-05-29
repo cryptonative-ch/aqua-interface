@@ -88,7 +88,7 @@ export const Button = styled.button<ButtonProps>(
         },
       },
       secondary: {
-        background: '##7B7F93',
+        background: '#7B7F93',
         color: '#FFFFFF',
         border: 'none',
         ':disabled': {

@@ -40,7 +40,8 @@
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
     "verifyTransaction": "Please verify the transaction to claim your tokens.",
     "unclaimed": "Unclaimed",
-    "claimTokens": "Claim Tokens"
+    "claimTokens": "Claim Tokens",
+    "claimSuccessful": "Claim Successful!"
   },
   "buttons": {
     "back": "Back",
@@ -51,6 +52,7 @@
     "hideClosedSales": "Hide Closed Sales",
     "backToSales": "Back to all sales",
     "claimTokens": "Claim Tokens",
-    "shortClaim": "Claim"
+    "shortClaim": "Claim",
+    "done": "Done"
   }
 }
