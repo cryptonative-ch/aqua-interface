@@ -245,7 +245,7 @@ export function FixedPriceSaleView() {
             )}
             <TokenFooter sale={sale as FIX_LATER} />
           </Flex>
-          {!isMobile && (
+          {!isMobile && isSaleOpen(sale as FIX_LATER) && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
