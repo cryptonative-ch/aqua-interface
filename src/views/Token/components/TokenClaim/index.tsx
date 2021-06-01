@@ -30,6 +30,20 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { theme } from 'src/styles/theme'
 import { space, SpaceProps } from 'styled-system';
 
+
+// contracts
+import { FixedPriceSaleTemplate__factory } from 'src/contracts';
+
+
+
+//notes
+// use subgraph to find all the tokens available for claiming
+// connect to the fixedsalepurchase contracts
+// call the claimToken function to recieve tokens from smart contract
+// to user wallet
+
+
+
 // interfaces
 interface TokenClaimProps {
   sale: Sale

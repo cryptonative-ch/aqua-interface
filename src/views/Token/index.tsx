@@ -1,7 +1,8 @@
 // External
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { useQuery, gql } from '@apollo/client'
 
 // Redux
 import { setPageTitle } from 'src/redux/page'
@@ -14,21 +15,33 @@ import { Footer } from 'src/components/Footer'
 import { Title } from 'src/components/Title'
 
 // Hooks
-import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Layouts
 import { TokenClaim } from './components/TokenClaim'
 import { GridListSection } from 'src/components/Grid'
 
-export function TokenView() {
+const userSalesQuery = (userAddress: string) => gql`
+{
+  fixedPriceSalePurchases(where:{
+    buyer:"${userAddress}"})
+  {
+    id
+  }
+`
+
+// { data: buyer { saleId:.., tokens}}
+
+export async function TokenView() {
   const { isMobile } = useWindowSize()
   const dispatch = useDispatch()
   const [t] = useTranslation()
-
-  useMountEffect(() => {
+  const userAccount = window.ethereum.selectedAddress
+  useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.tokens')))
   })
+
+  const { loading, data, error } = useQuery(userSalesQuery(userAccount))
 
   return (
     <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
