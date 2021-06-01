@@ -1,6 +1,7 @@
 // External
 import React, { useEffect } from 'react'
 import dayjs from 'Dayjs'
+import { BigNumber, BigNumbers } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useQuery, gql } from '@apollo/client'
@@ -55,9 +56,18 @@ export async function TokenView() {
 
   const { loading, data, error } = useQuery(userSalesQuery(userAccount))
 
-  const filteredData: FixedPriceSalePurchase[] = await data.filter(
-    (element: FixedPriceSalePurchase) => element.soldAmount >= element.minimumRaise && Date.now > element.endDate
+  const filteredData: FixedPriceSalePurchase[] = await data.fixedPriceSalePurchases.filter(
+    (element: FixedPriceSalePurchase) =>
+      BigNumber.from(element.soldAmount) >= BigNumber.from(element.minimumRaise) && unixDateNow > element.endDate
   )
+
+  if (loading) {
+    return 'loading..'
+  }
+
+  if (error) {
+    return `Error! ${error.message}`
+  }
 
   return (
     <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
