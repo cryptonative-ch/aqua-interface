@@ -1,6 +1,6 @@
 // Externals
 import React, { useEffect, useState } from 'react'
-import SVG from "react-inlinesvg";
+import SVG from 'react-inlinesvg'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -16,7 +16,7 @@ import { Button } from 'src/components/Button'
 import { CardTitle } from 'src/components/CardTitle'
 
 // interface
-import { Sale } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
@@ -28,13 +28,10 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Theme
 import { theme } from 'src/styles/theme'
-import { space, SpaceProps } from 'styled-system';
-
+import { space, SpaceProps } from 'styled-system'
 
 // contracts
-import { FixedPriceSaleTemplate__factory } from 'src/contracts';
-
-
+import { FixedPriceSaleTemplate__factory } from 'src/contracts'
 
 //notes
 // use subgraph to find all the tokens available for claiming
@@ -42,42 +39,40 @@ import { FixedPriceSaleTemplate__factory } from 'src/contracts';
 // call the claimToken function to recieve tokens from smart contract
 // to user wallet
 
-
-
 // interfaces
 interface TokenClaimProps {
-  sale: Sale
+  purchase: FixedPriceSalePurchase
 }
-
 
 const Circle = styled.div({
   height: '45px',
   background: 'rgba(75, 158, 152, 0.35)',
   width: '45px',
   borderRadius: '50%',
-}
+})
+
+const Link = styled.p<SpaceProps>(
+  {
+    color: '#304FFE',
+    cursor: 'pointer',
+    hover: 'underline',
+  },
+  space
 )
 
-const Link = styled.p<SpaceProps>({
-color: '#304FFE',
-cursor: 'pointer',
-hover: 'underline'
-},
-space)
-
-
-const StyledSVG = styled(SVG)(
-  props => ({
-  fill: props.color
+const StyledSVG = styled(SVG)(props => ({
+  fill: props.color,
 }))
 
-const Icon = styled.img<SpaceProps>({
-  height: '32px',
-  width: '32px',
-},
-space)
+const Icon = styled.img<SpaceProps>(
+  {
+    height: '32px',
+    width: '32px',
+  },
+  space
+)
 
-export const TokenClaim = () => {
+export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'claimed'>('unclaimed')
@@ -97,25 +92,25 @@ export const TokenClaim = () => {
 
   const claimState = (
     <CardBody padding={theme.space[3]}>
-      <Flex margin="0 0 16px 0" >
+      <Flex margin="0 0 16px 0">
         <TokenIconFigure>
-          <Icon src={noToken} />
+          <Icon src={sale.tokenOut.icon || noToken} />
         </TokenIconFigure>
-        <CardTitle fontWeight={500}>Claim IOP</CardTitle>
+        <CardTitle fontWeight={500}>Claim {sale.tokenOut.name}</CardTitle>
       </Flex>
       <Divider />
       <Flex flexDirection="column" justifyContent="space-evenly">
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.unclaimed')}</CardText>
           <Flex>
-          <CardText>2,678 </CardText>
-          <CardText color='grey'>.5713</CardText>
-          <CardText>&nbsp;IOP</CardText>
+            <CardText>2,678 </CardText>
+            <CardText color="grey">.5713</CardText>
+            <CardText>&nbsp;{sale.tokenOut.name}</CardText>
           </Flex>
         </Flex>
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.currentPrice')}</CardText>
-          <CardText>2.23 DAI</CardText>
+          <CardText>2.23 {sale.tokenIn.name}</CardText>
         </Flex>
         <Button onClick={() => setClaim('verify')} width="90%">
           {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
@@ -136,20 +131,22 @@ export const TokenClaim = () => {
   )
 
   const claimedState = (
-    <CardBody height='100%' textAlign='center'>
-      <Flex flexDirection="column"  height='100%'>
-        <Flex justifyContent='center'>
-          <Circle> 
-            <Icon marginTop='8px' src={check}/>
+    <CardBody height="100%" textAlign="center">
+      <Flex flexDirection="column" height="100%">
+        <Flex justifyContent="center">
+          <Circle>
+            <Icon marginTop="8px" src={check} />
           </Circle>
         </Flex>
         <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
-        <CardText color='grey'> 678.57 IOP has been sent to your address.
-        </CardText>
-        <Link marginTop='24px'>See this transaction on block explorer
-        <StyledSVG src={link} color='#304FFE'/>
+        <CardText color="grey"> 678.57 {sale.tokenOut.name} has been sent to your address.</CardText>
+        <Link marginTop="24px">
+          See this transaction on block explorer
+          <StyledSVG src={link} color="#304FFE" />
         </Link>
-        <Button variant='secondary' width='90%'>{t('buttons.done')}</Button>
+        <Button variant="secondary" width="90%">
+          {t('buttons.done')}
+        </Button>
       </Flex>
     </CardBody>
   )

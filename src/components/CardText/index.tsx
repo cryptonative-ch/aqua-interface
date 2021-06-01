@@ -12,8 +12,8 @@ export type CardTextProps = FontSizeProps & FontWeightProps & LineHeightProps & 
 export const CardText = styled.p<CardTextProps>(
   Flex,
   props => ({
-    overflow: props.overflow as Property.Overflow || 'hidden',
-    textOverflow:'ellipsis',
+    overflow: (props.overflow as Property.Overflow) || 'hidden',
+    textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     fontFamily: 'Inter',
     fontSize: props.fontSize === 'title' ? '24px' : '16px',
