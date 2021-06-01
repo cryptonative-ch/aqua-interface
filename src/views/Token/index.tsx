@@ -25,6 +25,7 @@ import { GridListSection } from 'src/components/Grid'
 
 // interface
 import { FixedPriceSalePurchase } from 'src/interfaces/Sale.ts'
+import { ErrorMesssage } from 'src/components/ErrorMessage'
 
 // can only do top level where conditions
 // check if user has a purchase for a sale that has ended + threshold reached
@@ -34,6 +35,7 @@ const userSalesQuery = (userAddress: string) => gql`
     buyer:"${userAddress}"})
   {
     id
+    amount
     sale: {
           id
           minimumRaise
@@ -62,11 +64,22 @@ export async function TokenView() {
   )
 
   if (loading) {
-    return 'loading..'
+    return <h1>LOADING!</h1>
   }
 
   if (error) {
-    return `Error! ${error.message}`
+    return (
+      <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
+        <Header />
+        <Container>
+          <Title>{t('texts.claimTokens')}</Title>
+          <GridListSection>
+            <ErrorMesssage error={error} />
+          </GridListSection>
+        </Container>
+        {!isMobile && <Footer />}
+      </AbsoluteContainer>
+    )
   }
 
   return (
@@ -75,11 +88,9 @@ export async function TokenView() {
       <Container>
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
-          <TokenClaim />
-          <TokenClaim />
-          <TokenClaim />
-          <TokenClaim />
-          <TokenClaim />
+          {filteredData.map((tokens, key) => (
+            <TokenClaim key={tokens.id} purchase={tokens} />
+          ))}
         </GridListSection>
       </Container>
       {!isMobile && <Footer />}
