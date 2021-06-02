@@ -15,7 +15,7 @@ import { SaleBid } from 'src/interfaces/Sale'
 import { generateInitialSaleData } from 'src/subgraph'
 
 // interface
-import { saleType } from 'src/interfaces/Sale'
+import { SaleType } from 'src/interfaces/Sale'
 
 // ACTION
 export enum ActionTypes {
@@ -114,7 +114,7 @@ const defaultState: BidsState = {
 
 // fetch Data
 
-export const fetchSaleBids = (saleId: string, saleType: saleType, saleBidsRequest: Promise<any>): AppThunk => {
+export const fetchSaleBids = (saleId: string, saleType: SaleType, saleBidsRequest: Promise<any>): AppThunk => {
   return async (dispatch, getState) => {
     // Current time
     const timeNow = dayjs.utc().unix()

@@ -35,8 +35,7 @@ export type SaleActionTypes =
   | SalesFetchCompleteAction
   | SalesFetchErrorAction
 
-export const fetchSalesRequest = (payload: boolean) => ({
-  payload,
+export const fetchSalesRequest = () => ({
   type: ActionTypes.SALES_FETCH_REQUEST,
 })
 
@@ -106,7 +105,7 @@ export function reducer(state: SalesState = defaultState, action: SaleActionType
     case ActionTypes.SALES_FETCH_REQUEST:
       return {
         ...state,
-        isLoading: action.payload,
+        isLoading: true,
       }
     case ActionTypes.SALES_FETCH_SUCCESS:
       return {

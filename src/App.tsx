@@ -1,5 +1,6 @@
 // External
 import { Mesa, MesaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/mesa'
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
@@ -17,7 +18,7 @@ import { useModal } from 'src/hooks/useModal'
 import { AppRouter } from './router'
 
 // Constantsx
-import { CHAIN_ID, SANCTION_LIST } from 'src/constants'
+import { CHAIN_ID, SANCTION_LIST, SUBGRAPH_ENDPOINT } from 'src/constants'
 
 // Components
 import { ConfirmButton } from 'src/components/ConfirmButton'
@@ -29,7 +30,6 @@ import { Center } from './layouts/Center'
 // Contexts
 import { SanctionContext } from 'src/contexts'
 import { MesaContext } from 'src/mesa'
-import { ENDPOINT } from './subgraph'
 
 export const App = () => {
   const { isShown, toggle } = useModal()
@@ -45,9 +45,16 @@ export const App = () => {
   if (process.env.NODE_ENV === 'development') {
     mesaConfig = {
       ...RINKEBY_CONFIG,
-      subgraph: ENDPOINT,
+      subgraph: SUBGRAPH_ENDPOINT,
     }
   }
+
+  // Start new Apollo Client
+  const apolloClient = new ApolloClient({
+    cache: new InMemoryCache(),
+    uri: mesaConfig.subgraph,
+  })
+
   // Construct the Mesa SDK
   const mesa = new Mesa(mesaConfig, library)
   const getGeoInfo = useCallback(() => {
@@ -67,19 +74,21 @@ export const App = () => {
 
   return (
     <CookiesProvider>
-      <MesaContext.Provider value={mesa}>
-        <SanctionContext.Provider value={sanction}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
-              <BrowserRouter>
-                <AppRouter />
-                <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
-              </BrowserRouter>
-            </Suspense>
-          </ThemeProvider>
-        </SanctionContext.Provider>
-      </MesaContext.Provider>
+      <ApolloProvider client={apolloClient}>
+        <MesaContext.Provider value={mesa}>
+          <SanctionContext.Provider value={sanction}>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
+                <BrowserRouter>
+                  <AppRouter />
+                  <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
+                </BrowserRouter>
+              </Suspense>
+            </ThemeProvider>
+          </SanctionContext.Provider>
+        </MesaContext.Provider>
+      </ApolloProvider>
     </CookiesProvider>
   )
 }

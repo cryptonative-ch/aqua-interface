@@ -1,18 +1,17 @@
 // External
-import React, { useEffect, useState, createContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 // Redux
-import { fetchSales } from 'src/redux/sales'
 import { setPageTitle } from 'src/redux/page'
-import { RootState } from 'src/redux/store'
 
 // Components
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 import { SaleSummaryCard } from './components/SaleSummaryCard'
+import { ErrorMesssage } from 'src/components/ErrorMessage'
 import { SaleNavBar } from './components/SaleNavBar'
 import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
@@ -21,11 +20,14 @@ import { Card } from 'src/components/CardSale'
 
 // interface
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
-import { Sale } from 'src/interfaces/Sale'
 
-//subgraph
-import { salesRequest } from 'src/subgraph/Sales'
+// Hooks
+import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { useSalesQuery } from 'src/hooks/useSalesQuery'
+
+// Layouts
+import { Center } from 'src/layouts/Center'
 
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -71,22 +73,51 @@ export type SaleContextType = {
 }
 
 export const SaleContext = createContext<SaleContextType>({} as SaleContextType)
+const saleFilterMap = {
+  [SaleStatus.UPCOMING]: isSaleUpcoming,
+  [SaleStatus.CLOSED]: isSaleClosed,
+  [SaleStatus.LIVE]: isSaleOpen,
+}
 
 export function SalesView() {
   const { isMobile } = useWindowSize()
-  const [SaleShow, setSaleShow] = useState<SaleStatus>(SaleStatus.LIVE)
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const fetchData = () => dispatch(fetchSales())
+  const [SaleShow, setSaleShow] = useState<SaleStatus>(SaleStatus.LIVE)
+  const { loading, sales, error } = useSalesQuery()
 
-  const sales = useSelector<RootState, Sale[]>(state => {
-    return state.sales.sales
+  useMountEffect(() => {
+    dispatch(setPageTitle(t('pagesTitles.home')))
   })
 
-  useEffect(() => {
-    dispatch(setPageTitle(t('pagesTitles.home')))
-    fetchData()
-  }, [t])
+  if (loading) {
+    return (
+      <Center>
+        <Header />
+        <Container>
+          <Title>Token Sales</Title>
+          <SaleListSection>Loading!</SaleListSection>
+        </Container>
+      </Center>
+    )
+  }
+
+  if (error) {
+    return (
+      <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
+        <Center>
+          <Header />
+          <Container>
+            <Title>Token Sales</Title>
+            <SaleNavBar />
+            <SaleListSection>
+              <ErrorMesssage error={error} />
+            </SaleListSection>
+          </Container>
+        </Center>
+      </SaleContext.Provider>
+    )
+  }
 
   return (
     <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
@@ -96,38 +127,11 @@ export function SalesView() {
           <Title>Token Sales</Title>
           <SaleNavBar />
           <SaleListSection>
-            {SaleShow === SaleStatus.UPCOMING
-              ? sales
-                  .filter(sale => isSaleUpcoming(sale))
-                  .map(sale => (
-                    <SaleSummaryWrapper
-                      to={sale.type == 'fixedPriceSale' ? `/sales/fixed/${sale.id}` : `/sales/${sale.id}`}
-                      key={sale.id}
-                    >
-                      <SaleSummaryCard sale={sale} />
-                    </SaleSummaryWrapper>
-                  ))
-              : SaleShow === SaleStatus.CLOSED
-              ? sales
-                  .filter(sale => isSaleClosed(sale))
-                  .map(sale => (
-                    <SaleSummaryWrapper
-                      to={sale.type == 'fixedPriceSale' ? `/sales/fixed/${sale.id}` : `/sales/${sale.id}`}
-                      key={sale.id}
-                    >
-                      <SaleSummaryCard sale={sale} />
-                    </SaleSummaryWrapper>
-                  ))
-              : sales
-                  .filter(sale => isSaleOpen(sale))
-                  .map(sale => (
-                    <SaleSummaryWrapper
-                      to={sale.type == 'fixedPriceSale' ? `/sales/fixed/${sale.id}` : `/sales/${sale.id}`}
-                      key={sale.id}
-                    >
-                      <SaleSummaryCard sale={sale} />
-                    </SaleSummaryWrapper>
-                  ))}
+            {sales.filter(saleFilterMap[SaleShow]).map(sale => (
+              <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
+                <SaleSummaryCard sale={sale} />
+              </SaleSummaryWrapper>
+            ))}
           </SaleListSection>
         </Container>
         {!isMobile && <Footer />}

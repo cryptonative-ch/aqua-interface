@@ -4,16 +4,15 @@
 import axios from 'axios'
 
 //interface
-import { Sale, saleType } from '../interfaces/Sale'
+import { Sale, SaleType } from '../interfaces/Sale'
 import { BidsBySaleId } from 'src/redux/bids'
 
 // utils
 import { formatDecimal } from 'src/utils/Defaults'
 
-export const ENDPOINT: string = process.env.REACT_APP_ENDPOINT as string
 export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> => {
-  const fairSale: saleType = 'fairSale'
-  const fixedPriceSale: saleType = 'fixedPriceSale'
+  const fairSale: SaleType = 'FairSale'
+  const fixedPriceSale: SaleType = 'FixedPriceSale'
 
   const fairSales: Sale[] = (await salesRequest).fairSales
 
@@ -46,17 +45,17 @@ export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> 
   return salesArray
 }
 
-export const selectSaletype = (id: string, sales: Sale[]): saleType => {
+export const selectSaletype = (id: string, sales: Sale[]): SaleType => {
   const saleType: Sale = sales.filter(item => item.id === id)[0]
   return saleType.type
 }
 
 export const generateInitialSaleData = async (
   saleBidsRequest: Promise<any>,
-  saletypes: saleType
+  saletypes: SaleType
 ): Promise<BidsBySaleId> => {
   let saleBids: any[]
-  if (saletypes == 'fixedPriceSale') {
+  if (saletypes == 'FixedPriceSale') {
     saleBids = (await saleBidsRequest)[saletypes].purchases.map((item: any) => ({
       ...item,
       amount: formatDecimal(item.amount),

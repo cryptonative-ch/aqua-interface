@@ -1,5 +1,7 @@
-export const saleBidsQuery = (saleid: string, saleType: 'fixedPriceSale' | 'fairSale') => {
-  if (saleType == 'fixedPriceSale') {
+import { SaleType } from 'src/interfaces/Sale'
+
+export const saleBidsQuery = (saleid: string, saleType: SaleType) => {
+  if (saleType == 'FixedPriceSale') {
     return `
       {
         fixedPriceSale (id: ${JSON.stringify(saleid)}) {

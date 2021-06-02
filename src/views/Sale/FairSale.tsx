@@ -1,71 +1,96 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// External
+// Externals
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
-import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
-import React, { useState } from 'react'
+import { useTheme } from 'styled-components'
 import styled from 'styled-components'
 import numeral from 'numeral'
 
 // Hooks
-import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
+import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
+// Actions
+import { setPageTitle } from 'src/redux/page'
+
 // Components
-import { ErrorMesssage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
-import { FormButton } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
+import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
-import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
-
-import { PurchaseTokensForm } from './components/PurchaseTokensForm'
+import { Card } from 'src/components/Card'
+// View Components
 import { HeaderControl } from './components/HeaderControl'
+import { PlaceBidForm } from './components/PlaceBidForm'
 import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
 import { HeaderItem } from './components/HeaderItem'
 import { SaleHeader } from './components/SaleHeader'
-
-// Layouts
-import { Center } from 'src/layouts/Center'
+import { BarChart } from './components/BarChart'
 
 // Mesa Utils
+import { calculateClearingPrice } from 'src/mesa/price'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
+import { secondsTohms, timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
+
+// Wallet Utils
+import { getRandomWallet } from 'src/utils/wallets'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
-// Interfaces
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
-import { FIX_LATER } from 'src/interfaces'
 
-const FixedFormMax = styled.div({
+// Interfaces
+import { FairBidPick, FairSaleBid } from 'src/interfaces/Sale'
+
+//redux
+import { fetchSaleBids } from 'src/redux/bids'
+import { saleBidsQuery } from 'src/subgraph/SaleBids'
+import { subgraphCall } from 'src/subgraph'
+
+//subgraph
+// Hooks
+import { useSale } from 'src/hooks/useSale'
+import { SUBGRAPH_ENDPOINT } from 'src/constants'
+
+const ChartDescription = styled.div({
   fontStyle: 'normal',
-  fontWeight: 500,
-  fontSize: '16px',
-  lineHeight: '19px',
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '21px',
   color: '#7B7F93',
+  margin: '0 16px 16px',
 })
 
-export interface FixedPriceSaleViewParams {
+interface SaleViewParams {
   saleId: string
 }
 
-export function FixedPriceSaleView() {
+export function FairSaleView() {
+  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
-  const params = useParams<FixedPriceSaleViewParams>()
-  const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
+  const [userAddress, setUserAddress] = useState<string>('')
+  const [clearingPrice, setClearingPrice] = useState<FairBidPick>()
+  const ref = useRef<HTMLElement>()
+  const { width: containerWidth, setWidth } = useElementWidth(ref)
+
+  const params = useParams<SaleViewParams>()
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
-  const bids: FixedPriceSalePurchase[] = []
+
+  const { error, loading, sale } = useSale(params.saleId)
+  const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as FairSaleBid[]
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -73,17 +98,20 @@ export function FixedPriceSaleView() {
     }
   }
 
-  if (loading) {
-    return <Center>loading</Center>
-  }
+  useEffect(() => {
+    if (!userAddress) {
+      setUserAddress(account || getRandomWallet().address)
+    }
 
-  if (error) {
-    return (
-      <Center>
-        <ErrorMesssage error={error} />
-      </Center>
-    )
-  }
+    dispatch(setPageTitle(t(sale?.name as string)))
+
+    if (sale) {
+      const FairSaleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId, sale.type))
+      const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, FairSaleBidsRequest))
+      fetchBids()
+      setClearingPrice(calculateClearingPrice(bids))
+    }
+  }, [t, sale])
 
   if (!sale) {
     return <NotFoundView />
@@ -94,7 +122,7 @@ export function FixedPriceSaleView() {
       <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
-        <SaleHeader sale={sale as any} />
+        <SaleHeader sale={sale} />
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="column" flex={1}>
             <Card border="none" marginX={isMobile ? '8px' : '0'}>
@@ -107,90 +135,107 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="column" flex={1}>
                     <HeaderItem
                       isMobile
-                      title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} DAI/${
-                        sale.tokenOut?.symbol
-                      }`}
+                      title={isSaleUpcoming(sale) ? 'Min. Price' : isSaleOpen(sale) ? 'Current Price' : 'Final Price'}
+                      description={`${(
+                        1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 1)
+                      ).toFixed(2)} DAI/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
-                      title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(sale.allocationMin, sale.tokenOut.decimals)).format(
-                        '0,0'
-                      )} - ${numeral(formatBigInt(sale.allocationMax, sale.tokenOut.decimals)).format('0,0')} ${
-                        sale.tokenOut?.symbol
-                      }`}
+                      title={isSaleClosed(sale) ? 'Amount Sold' : 'Amount for Sale'}
+                      description={`${numeral(formatBigInt(sale.tokenAmount)).format('0,0')} ${sale.tokenOut?.symbol}`}
                     />
-                    {isSaleClosed(sale as FIX_LATER) && (
+                    {isSaleClosed(sale) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
-                    {isSaleUpcoming(sale as FIX_LATER) && (
+                    {isSaleUpcoming(sale) && (
                       <HeaderItem isMobile title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
-                    {isSaleOpen(sale as FIX_LATER) && (
+                    {isSaleOpen(sale) && (
                       <HeaderItem
                         isMobile
                         title="Ends In"
                         description={secondsTohms(sale.endDate)}
                         textAlign="right"
                         saleLive={true}
-                        sale={sale as FIX_LATER}
+                        sale={sale}
                       />
                     )}
                   </Flex>
                 ) : (
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
-                      title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} DAI/${
+                      title={isSaleUpcoming(sale) ? 'Min. Price' : isSaleOpen(sale) ? 'Current Price' : 'Final Price'}
+                      description={`${(
+                        1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 1)
+                      ).toFixed(2)} DAI/${sale.tokenOut?.symbol}`}
+                    />
+                    <HeaderItem
+                      title={isSaleClosed(sale) ? 'Amount Sold' : 'Amount for Sale'}
+                      description={`${numeral(formatBigInt(sale.tokenAmount, sale.tokenOut.decimals)).format('0,0')} ${
                         sale.tokenOut?.symbol
                       }`}
                     />
-                    <HeaderItem
-                      title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(sale.allocationMin)).format('0,0')} - ${numeral(
-                        formatBigInt(sale.allocationMax)
-                      ).format('0,0')} ${sale.tokenOut?.symbol}`}
-                      flexAmount={1.5}
-                    />
-                    {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
-                    {isSaleClosed(sale as FIX_LATER) && (
+                    {(isSaleClosed(sale) || isSaleUpcoming(sale)) && <Flex flex={0.2} />}
+                    {isSaleClosed(sale) && (
                       <HeaderItem title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
-                    {isSaleUpcoming(sale as FIX_LATER) && (
+                    {isSaleUpcoming(sale) && (
                       <HeaderItem title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
-                    {isSaleOpen(sale as FIX_LATER) && (
+                    {isSaleOpen(sale) && (
                       <HeaderItem
                         title="Ends In"
                         description={secondsTohms(sale.endDate)}
                         textAlign="right"
                         saleLive={true}
-                        sale={sale as FIX_LATER}
+                        sale={sale}
                         flexAmount={1.3}
                       />
                     )}
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale as FIX_LATER) && bids && bids.length > 0 && (
+              {isSaleOpen(sale) && bids && bids.length > 0 && (
+                <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
+                  <HeaderControl sale={sale} showGraph={showGraph} toggleGraph={toggleGraph} />
+                </CardBody>
+              )}
+              {isSaleClosed(sale) && (!bids || bids.length === 0) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
-                    sale={sale as FIX_LATER}
+                    sale={sale}
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
-                    isFixed={true}
+                    status={isSaleClosed(sale) ? 'closed' : 'active'}
                   />
                 </CardBody>
               )}
-              {isSaleClosed(sale as FIX_LATER) && (!bids || bids.length === 0) && (
-                <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
-                  <HeaderControl
-                    sale={sale as FIX_LATER}
-                    showGraph={showGraph}
-                    toggleGraph={toggleGraph}
-                    isFixed={true}
-                    status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
+              {isMobile && showGraph && (
+                <ChartDescription>
+                  This can be a concise explanation on how the point dutch sale works and how the Current Price is
+                  calculated.
+                </ChartDescription>
+              )}
+              {showGraph && (
+                <CardBody
+                  display="flex"
+                  padding="0 16px 16px"
+                  border="none"
+                  ref={e => {
+                    if (e) {
+                      ref.current = e
+                      setWidth(e.clientWidth)
+                    }
+                  }}
+                >
+                  <BarChart
+                    width={containerWidth}
+                    height={400}
+                    data={bids}
+                    userAddress={userAddress}
+                    vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 0}
+                    sale={sale}
                   />
                 </CardBody>
               )}
@@ -205,10 +250,10 @@ export function FixedPriceSaleView() {
                   alignItems="center"
                 >
                   <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">
-                    {t('texts.yourActivity')}
+                    {t('texts.yourBids')}
                   </CardTitle>
                   <Flex flex={1} />
-                  {isSaleClosed(sale as FIX_LATER) && !isMobile && (
+                  {isSaleClosed(sale) && !isMobile && (
                     <>
                       <FormButton
                         disabled={false}
@@ -240,22 +285,27 @@ export function FixedPriceSaleView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList sale={sale as FIX_LATER} isFixed={true} bids={bids as any} />
+                <SelfBidList sale={sale} clearingPrice={clearingPrice} bids={bids as any} />
               </Card>
             )}
-            <TokenFooter sale={sale as FIX_LATER} />
+            <TokenFooter sale={sale} />
           </Flex>
-          {!isMobile && isSaleOpen(sale as FIX_LATER) && (
+          {isSaleOpen(sale) && !isMobile && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
-                  <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
-                    <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. 3,500 ${sale.tokenOut?.symbol}`}</FixedFormMax>
+                  <Flex flexDirection="row" alignItems="center" flex={1}>
+                    <HeaderItem title="Place a Bid" description="" color="#000629" />
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
-                  <PurchaseTokensForm saleId={sale.id} />
+                  <PlaceBidForm
+                    onSubmit={() => {
+                      console.log('Add to Sale')
+                    }}
+                    sale={sale}
+                    currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
+                  />
                 </CardBody>
               </Card>
             </Flex>
