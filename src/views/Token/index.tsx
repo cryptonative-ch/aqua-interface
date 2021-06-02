@@ -1,4 +1,5 @@
 // External
+/* eslint-disable */
 import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
@@ -56,12 +57,17 @@ export function TokenView() {
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
   const userAccount = (window as any).ethereum.selectedAddress
-  let fixedPriceSalePurchases: FixedPriceSalePurchase[]
-  const fetchData = async () => {
+  let filteredData: FixedPriceSalePurchase[] | undefined
+  useEffect(() => {
     mesa.subgraph
       .query(userSalesQuery(userAccount))
       .then(({ data }) => {
-        ;({ fixedPriceSalePurchases } = data)
+        const { fixedPriceSalePurchases } = data
+        filteredData = fixedPriceSalePurchases.filter(
+          (element: FixedPriceSalePurchase) =>
+            BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
+            unixDateNow > element.sale!.endDate
+        )
       })
       .catch(error => {
         setError(error)
@@ -69,18 +75,9 @@ export function TokenView() {
       .then(() => {
         setLoading(false)
       })
-  }
-  useEffect(() => {
-    fetchData()
     dispatch(setPageTitle(t('pagesTitles.tokens')))
   })
   const unixDateNow = dayjs(Date.now()).unix()
-
-  const filteredData: FixedPriceSalePurchase[] = fixedPriceSalePurchases.filter(
-    (element: FixedPriceSalePurchase) =>
-      BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
-      unixDateNow > element.sale!.endDate
-  )
 
   if (loading) {
     return <h1>LOADING!</h1>
@@ -107,7 +104,7 @@ export function TokenView() {
       <Container>
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
-          {filteredData.map(tokens => (
+          {filteredData!.map(tokens => (
             <TokenClaim key={tokens.id} purchase={tokens} />
           ))}
         </GridListSection>
