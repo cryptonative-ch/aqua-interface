@@ -99,6 +99,8 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
     signer = provider.getSigner()
   }, [])
 
+  const preDecimalAmount = amount.toString().split('\\.')[0]
+  const postDecimalAmount = amount.toString().split('\\.')[1]
   const claimState = (
     <CardBody padding={theme.space[3]}>
       <Flex margin="0 0 16px 0">
@@ -112,14 +114,14 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.unclaimed')}</CardText>
           <Flex>
-            <CardText>2,678 </CardText>
-            <CardText color="grey">.5713</CardText>
+            <CardText>{preDecimalAmount}</CardText>
+            <CardText color="grey">{postDecimalAmount}</CardText>
             <CardText>&nbsp;{sale?.tokenOut.name}</CardText>
           </Flex>
         </Flex>
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.currentPrice')}</CardText>
-          <CardText>2.23 {sale?.tokenIn.name}</CardText>
+          <CardText>{`${sale?.tokenPrice} ${sale?.tokenIn.name}`}</CardText>
         </Flex>
         <Button onClick={() => claimTokens(sale!.id, signer)} width="90%">
           {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
@@ -148,7 +150,10 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
           </Circle>
         </Flex>
         <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
-        <CardText color="grey"> 678.57 {sale?.tokenOut.name} has been sent to your address.</CardText>
+        <CardText color="grey">
+          {' '}
+          `${amount} ${sale?.tokenOut.name} has been sent to your address.`
+        </CardText>
         <Link marginTop="24px">
           See this transaction on block explorer
           <StyledSVG src={link} color="#304FFE" />

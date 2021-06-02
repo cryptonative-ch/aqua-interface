@@ -37,9 +37,30 @@ query getTokenClaims {
     id
     amount
     sale {
+        id
+      soldAmount
+      minimumRaise
+      name
+      status
+      startDate
+      endDate
+      tokenPrice
+      sellAmount
+      tokenIn {
+        id
+        name
+        symbol
+        decimals
+      }
+      tokenOut {
           id
-          minimumRaise
-          soldAmount
+        name
+        symbol
+        decimals
+      }
+      allocationMin
+      allocationMax
+
     }
   }
 }
@@ -56,10 +77,11 @@ export function TokenView() {
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
   let filteredData: FixedPriceSalePurchase[] | undefined
+
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider((window as any).ethereum)
     const signer = provider.getSigner()
-    const userAccount = (window as any).ethereum.selectedAddress
+    const userAccount = '0x6f736630d86fe714e8ce02c68f431347789f9835' //(window as any).ethereum.selectedAddress
     console.log(userAccount)
     if (userAccount) {
       mesa.subgraph
@@ -72,6 +94,7 @@ export function TokenView() {
               BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
               unixDateNow > element.sale!.endDate
           )
+          console.log(filteredData)
         })
         .catch(error => {
           setError(error)

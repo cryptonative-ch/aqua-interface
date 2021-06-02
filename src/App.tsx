@@ -42,12 +42,6 @@ export const App = () => {
     mesaConfig = RINKEBY_CONFIG
   }
   // Development
-  if (process.env.NODE_ENV === 'development') {
-    mesaConfig = {
-      ...RINKEBY_CONFIG,
-      subgraph: SUBGRAPH_ENDPOINT,
-    }
-  }
 
   // Start new Apollo Client
   const apolloClient = new ApolloClient({
