@@ -1,7 +1,7 @@
 // External
 import React, { useEffect } from 'react'
-import dayjs from 'Dayjs'
-import { BigNumber, BigNumbers } from 'ethers'
+import dayjs from 'dayjs'
+import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useQuery, gql } from '@apollo/client'
@@ -24,7 +24,7 @@ import { TokenClaim } from './components/TokenClaim'
 import { GridListSection } from 'src/components/Grid'
 
 // interface
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale.ts'
+import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { ErrorMesssage } from 'src/components/ErrorMessage'
 
 // can only do top level where conditions
@@ -46,21 +46,22 @@ const userSalesQuery = (userAddress: string) => gql`
 
 // { data: buyer { saleId:.., tokens}}
 
-export async function TokenView() {
+export function TokenView() {
   const { isMobile } = useWindowSize()
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const userAccount = window.ethereum.selectedAddress
+  const userAccount = (window as any).ethereum.selectedAddress
   useEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.tokens')))
   })
-  const unixDateNow = dayjs(Date.now).unix()
+  const unixDateNow = dayjs(Date.now()).unix()
 
   const { loading, data, error } = useQuery(userSalesQuery(userAccount))
 
-  const filteredData: FixedPriceSalePurchase[] = await data.fixedPriceSalePurchases.filter(
+  const filteredData: FixedPriceSalePurchase[] = data.fixedPriceSalePurchases.filter(
     (element: FixedPriceSalePurchase) =>
-      BigNumber.from(element.soldAmount) >= BigNumber.from(element.minimumRaise) && unixDateNow > element.endDate
+      BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
+      unixDateNow > element.sale?.endDate
   )
 
   if (loading) {
@@ -88,7 +89,7 @@ export async function TokenView() {
       <Container>
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
-          {filteredData.map((tokens, key) => (
+          {filteredData.map(tokens => (
             <TokenClaim key={tokens.id} purchase={tokens} />
           ))}
         </GridListSection>

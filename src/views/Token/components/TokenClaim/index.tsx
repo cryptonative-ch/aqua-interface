@@ -9,14 +9,14 @@ import { Card } from 'src/components/Card'
 import { CardBody } from 'src/components/CardBody'
 import { Divider } from 'src/components/Divider'
 import { CardText } from 'src/components/CardText'
-import { Flex, FlexProps } from 'src/components/Flex'
+import { Flex } from 'src/components/Flex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { Spinner } from 'src/components/Spinner'
 import { Button } from 'src/components/Button'
 import { CardTitle } from 'src/components/CardTitle'
 
 // interface
-import { FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
@@ -35,7 +35,7 @@ import { FixedPriceSaleTemplate__factory } from 'src/contracts'
 
 //notes
 // use subgraph to find all the tokens available for claiming
-// connect to the fixedsalepurchase contracts
+// connect to the fixedsale?purchase contracts
 // call the claimToken function to recieve tokens from smart contract
 // to user wallet
 
@@ -94,9 +94,9 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
     <CardBody padding={theme.space[3]}>
       <Flex margin="0 0 16px 0">
         <TokenIconFigure>
-          <Icon src={sale.tokenOut.icon || noToken} />
+          <Icon src={sale?.tokenOut.icon || noToken} />
         </TokenIconFigure>
-        <CardTitle fontWeight={500}>Claim {sale.tokenOut.name}</CardTitle>
+        <CardTitle fontWeight={500}>Claim {sale?.tokenOut.name}</CardTitle>
       </Flex>
       <Divider />
       <Flex flexDirection="column" justifyContent="space-evenly">
@@ -105,12 +105,12 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
           <Flex>
             <CardText>2,678 </CardText>
             <CardText color="grey">.5713</CardText>
-            <CardText>&nbsp;{sale.tokenOut.name}</CardText>
+            <CardText>&nbsp;{sale?.tokenOut.name}</CardText>
           </Flex>
         </Flex>
         <Flex justifyContent="space-between">
           <CardText color="grey">{t('texts.currentPrice')}</CardText>
-          <CardText>2.23 {sale.tokenIn.name}</CardText>
+          <CardText>2.23 {sale?.tokenIn.name}</CardText>
         </Flex>
         <Button onClick={() => setClaim('verify')} width="90%">
           {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
@@ -139,7 +139,7 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
           </Circle>
         </Flex>
         <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
-        <CardText color="grey"> 678.57 {sale.tokenOut.name} has been sent to your address.</CardText>
+        <CardText color="grey"> 678.57 {sale?.tokenOut.name} has been sent to your address.</CardText>
         <Link marginTop="24px">
           See this transaction on block explorer
           <StyledSVG src={link} color="#304FFE" />
