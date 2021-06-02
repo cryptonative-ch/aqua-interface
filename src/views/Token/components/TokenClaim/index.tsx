@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import SVG from 'react-inlinesvg'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { Signer } from '@ethersproject/abstract-signer'
+import { ethers } from 'ethers'
 
 // Components
 import { Card } from 'src/components/Card'
@@ -29,6 +31,9 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Theme
 import { theme } from 'src/styles/theme'
 import { space, SpaceProps } from 'styled-system'
+
+// Mesa Utils
+import { formatBigInt } from 'src/utils/Defaults'
 
 // contracts
 import { FixedPriceSaleTemplate__factory } from 'src/contracts'
@@ -72,23 +77,27 @@ const Icon = styled.img<SpaceProps>(
   space
 )
 
+const claimTokens = async (saleId: string, signer: Signer) => {
+  const connectFactory = await FixedPriceSaleTemplate__factory.connect(saleId, signer)
+  try {
+    const claim = connectFactory.claimToken()
+    console.log(claim)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'claimed'>('unclaimed')
 
+  let signer: Signer
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (claim === 'verify') {
-        setClaim('claimed')
-      }
-    }, 1000)
-    timer
-    console.log('switch activated')
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [claim])
+    // connect to metamask
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+    signer = provider.getSigner()
+  }, [])
 
   const claimState = (
     <CardBody padding={theme.space[3]}>
@@ -112,7 +121,7 @@ export const TokenClaim = ({ purchase: { id, sale, amount } }: TokenClaimProps) 
           <CardText color="grey">{t('texts.currentPrice')}</CardText>
           <CardText>2.23 {sale?.tokenIn.name}</CardText>
         </Flex>
-        <Button onClick={() => setClaim('verify')} width="90%">
+        <Button onClick={() => claimTokens(sale!.id, signer)} width="90%">
           {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
         </Button>
       </Flex>
