@@ -68,25 +68,25 @@ describe('Timer', () => {
           })
 
           test('should display correct time at 0 hours', () => {
-            const time = timeEnd(addHours(dateUTC, 0).unix(), 'UTC')
+            const time = timeEnd(addHours(dateUTC, 0).unix(), 'Etc/UTC')
             expect(time).toBe('May 1, 11:00 UTC')
           }),
             test('should display correct time at +4', () => {
-              const time = timeEnd(addHours(dateUTC, +4).unix(), 'UTC')
+              const time = timeEnd(addHours(dateUTC, +4).unix(), 'Etc/UTC')
               expect(time).toBe('May 1, 15:00 UTC')
             }),
             test('should display US Pacific timezone at 2021-05-01  11:00:00 UTC', () => {
-              const time = timeEnd(addHours(dateUTC, 0).unix(), 'ECT')
+              const time = timeEnd(addHours(dateUTC, 0).unix(), 'Europe/Paris')
 
               expect(time).toBe('May 1, 13:00 CEST')
             }),
             test('should display Bangladesh Standard Time at 2021-05-01 11:00:00 UTC', () => {
-              const time = timeEnd(addHours(dateUTC, 0).unix(), 'BST')
+              const time = timeEnd(addHours(dateUTC, 0).unix(), 'Europe/London')
 
-              expect(time).toBe('May 1, 17:00 +06')
+              expect(time).toBe('May 1, 12:00 BST')
             }),
             test('should display Pacific Standard Time at 2021-05-01  11:00:00 UTC', () => {
-              const time = timeEnd(addHours(dateUTC, 0).unix(), 'PST')
+              const time = timeEnd(addHours(dateUTC, 0).unix(), 'America/Los_Angeles')
 
               expect(time).toBe('May 1, 4:00 PDT')
             }),
@@ -105,12 +105,12 @@ describe('Timer', () => {
                 jest.useRealTimers()
               })
               test('should display correct daylight savings time transition for Pacific Standard Time', () => {
-                const time = timeEnd(addHours(dateUTC, 0).unix(), 'PST')
+                const time = timeEnd(addHours(dateUTC, 0).unix(), 'America/Los_Angeles')
                 expect(time).toBe('Mar 14, 3:00 PDT')
                 // this has reached daylight savings time
               }),
                 test('should display correct daylight savings time transition for European Central Time ', () => {
-                  const time = timeEnd(addHours(dateUTC, 0).unix(), 'ECT')
+                  const time = timeEnd(addHours(dateUTC, 0).unix(), 'Europe/Paris')
                   // this has not yet reached daylight savings time
                   expect(time).toBe('Mar 14, 11:00 CET')
                 })
