@@ -1,6 +1,6 @@
 // External
 import React, { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
+import { useWeb3React } from '@web3-react/core'
 import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
@@ -21,12 +21,14 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { useMesa } from 'src/hooks/useMesa'
 
 // Layouts
-import { TokenClaim } from './components/TokenClaim'
 import { GridListSection } from 'src/components/Grid'
 
 // interface
 import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { ErrorMesssage } from 'src/components/ErrorMessage'
+
+// claims
+import { TokenClaim } from './components/TokenClaim'
 
 const userSalesQuery = (userAddress: string) => `
 
@@ -71,6 +73,7 @@ query getTokenClaims {
 
 export function TokenView() {
   const { isMobile } = useWindowSize()
+  const { account, library, chainId } = useWeb3React()
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
@@ -79,13 +82,13 @@ export function TokenView() {
   let filteredData: FixedPriceSalePurchase[] | undefined
 
   useEffect(() => {
-    const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-    const signer = provider.getSigner()
-    const userAccount = '0x6f736630d86fe714e8ce02c68f431347789f9835' //(window as any).ethereum.selectedAddress
-    console.log(userAccount)
-    if (userAccount) {
+    if (!chainId || !library || !account) {
+      return
+    }
+
+    if (account) {
       mesa.subgraph
-        .query(userSalesQuery(userAccount))
+        .query(userSalesQuery(account))
         .then(({ data }) => {
           const { fixedPriceSalePurchases } = data
           const unixDateNow = dayjs(Date.now()).unix()
@@ -104,7 +107,7 @@ export function TokenView() {
         })
     }
     dispatch(setPageTitle(t('pagesTitles.tokens')))
-  }, [])
+  }, [chainId, account, library])
 
   if (loading) {
     return (

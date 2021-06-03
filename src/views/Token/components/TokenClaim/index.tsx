@@ -16,6 +16,9 @@ import { Flex } from 'src/components/Flex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { Button } from 'src/components/Button'
 import { CardTitle } from 'src/components/CardTitle'
+
+// claims
+import { FailedClaim } from 'src/views/Token/components/FailedClaim'
 import { VerifyState } from 'src/views/Token/components/VerifyClaim'
 import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 
@@ -49,7 +52,7 @@ const Icon = styled.img<SpaceProps>(
   space
 )
 
-export const TokenClaim = ({ purchase: { sale, amount } }: TokenClaimProps) => {
+export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimProps) => {
   const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
@@ -84,6 +87,21 @@ export const TokenClaim = ({ purchase: { sale, amount } }: TokenClaimProps) => {
 
   const preDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[0]
   const postDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[1]
+
+  if (claim === 'verify') {
+    return <VerifyState />
+  }
+
+  if (claim === 'failed') {
+    return <FailedClaim />
+  }
+
+  const purchase: FixedPriceSalePurchase = { sale, amount, ...rest }
+
+  if (claim === 'claimed') {
+    return <SuccessfulClaim purchase={purchase} />
+  }
+
   return (
     <Card>
       <CardBody padding={theme.space[3]}>
