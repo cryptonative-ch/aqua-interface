@@ -1,7 +1,7 @@
 // External
 import React, { useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import dayjs from 'dayjs'
+import { ethers } from 'ethers'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -73,41 +73,36 @@ query getTokenClaims {
 
 export function TokenView() {
   const { isMobile } = useWindowSize()
-  const { account, library, chainId } = useWeb3React()
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
   let filteredData: FixedPriceSalePurchase[] | undefined
+  const account = (window as any).ethereum.selectedAddress
 
   useEffect(() => {
-    if (!chainId || !library || !account) {
-      return
-    }
-
-    if (account) {
-      mesa.subgraph
-        .query(userSalesQuery(account))
-        .then(({ data }) => {
-          const { fixedPriceSalePurchases } = data
-          const unixDateNow = dayjs(Date.now()).unix()
-          filteredData = fixedPriceSalePurchases.filter(
-            (element: FixedPriceSalePurchase) =>
-              BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
-              unixDateNow > element.sale!.endDate
-          )
-          console.log(filteredData)
-        })
-        .catch(error => {
-          setError(error)
-        })
-        .then(() => {
-          setLoading(false)
-        })
-    }
+    mesa.subgraph
+      .query(userSalesQuery(account))
+      .then(({ data }) => {
+        const { fixedPriceSalePurchases } = data
+        const unixDateNow = dayjs(Date.now()).unix()
+        filteredData = fixedPriceSalePurchases.filter(
+          (element: FixedPriceSalePurchase) =>
+            BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
+            unixDateNow > element.sale!.endDate
+        )
+        console.log(filteredData)
+      })
+      .catch(error => {
+        setError(error)
+        setLoading(false)
+      })
+      .then(() => {
+        setLoading(false)
+      })
     dispatch(setPageTitle(t('pagesTitles.tokens')))
-  }, [chainId, account, library])
+  }, [account])
 
   if (loading) {
     return (

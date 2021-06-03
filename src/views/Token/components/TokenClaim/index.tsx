@@ -1,6 +1,5 @@
 // Externals
 import React, { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { Signer } from '@ethersproject/abstract-signer'
 import { ethers } from 'ethers'
@@ -53,7 +52,6 @@ const Icon = styled.img<SpaceProps>(
 )
 
 export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimProps) => {
-  const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
@@ -78,12 +76,9 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   let signer: Signer
   useEffect(() => {
     // connect to metamask
-    if (!chainId || !library || !account) {
-      return
-    }
-    const provider = new ethers.providers.Web3Provider(library)
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum)
     signer = provider.getSigner(0)
-  }, [chainId, library, account])
+  }, [claim])
 
   const preDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[0]
   const postDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[1]
