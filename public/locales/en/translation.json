@@ -41,7 +41,8 @@
     "verifyTransaction": "Please verify the transaction to claim your tokens.",
     "unclaimed": "Unclaimed",
     "claimTokens": "Claim Tokens",
-    "claimSuccessful": "Claim Successful!"
+    "claimSuccessful": "Claim Successful!",
+    "failedTransaction": "Transaction Failed"
   },
   "buttons": {
     "back": "Back",
