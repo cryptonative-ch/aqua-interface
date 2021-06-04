@@ -43,7 +43,7 @@ export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const { account, activate, deactivate } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const isValidNetwork = useSelector(store => (store.network.invalidChainId ? false : true))
+  const isValidNetwork = useSelector(store => store.network.validChainId)
   const dispatch = useDispatch()
 
   const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
@@ -54,9 +54,9 @@ export const Header: React.FC = () => {
     const parsedChainId = parseInt(chainId, 16)
     const isChainSupported = SUPPORTED_CHAIN_IDS.includes(parsedChainId)
     if (!isChainSupported) {
-      dispatch(setInvalidChainId(parsedChainId))
+      dispatch(setInvalidChainId())
     } else {
-      dispatch(setValidChainId(parsedChainId))
+      dispatch(setValidChainId())
     }
   }
 

@@ -5,42 +5,33 @@ export enum ActionTypes {
   NETWORK_SET_INVALID_CHAIN_ID = 'NETWORK_SET_INVALID_CHAIN_ID',
 }
 
-interface NetworkActionSetValidChainId extends Action<ActionTypes.NETWORK_SET_VALID_CHAIN_ID> {
-  payload: number
-}
-
-interface NetworkActionSetInvalidChainId extends Action<ActionTypes.NETWORK_SET_INVALID_CHAIN_ID> {
-  payload: number
-}
-
-export type NetworkAction = NetworkActionSetValidChainId | NetworkActionSetInvalidChainId
+export type NetworkAction =
+  | Action<ActionTypes.NETWORK_SET_VALID_CHAIN_ID>
+  | Action<ActionTypes.NETWORK_SET_INVALID_CHAIN_ID>
 
 export type NetworkState = {
-  validChainId: number | null
-  invalidChainId: number | null
+  validChainId: boolean
 }
 
-export const setValidChainId = (chainId: number): NetworkActionSetValidChainId => ({
+export const setValidChainId = (): Action<ActionTypes.NETWORK_SET_VALID_CHAIN_ID> => ({
   type: ActionTypes.NETWORK_SET_VALID_CHAIN_ID,
-  payload: chainId,
 })
 
-export const setInvalidChainId = (chainId: number): NetworkActionSetInvalidChainId => ({
+export const setInvalidChainId = (): Action<ActionTypes.NETWORK_SET_INVALID_CHAIN_ID> => ({
   type: ActionTypes.NETWORK_SET_INVALID_CHAIN_ID,
-  payload: chainId,
 })
 
+// Initial validChainId state set to true to avoid initial render of warning
 export const initialState: NetworkState = {
-  validChainId: null,
-  invalidChainId: null,
+  validChainId: true,
 }
 
 export function reducer(state: NetworkState = initialState, action: NetworkAction) {
   switch (action.type) {
     case ActionTypes.NETWORK_SET_VALID_CHAIN_ID:
-      return { ...state, validChainId: action.payload, invalidChainId: null }
+      return { ...state, validChainId: true }
     case ActionTypes.NETWORK_SET_INVALID_CHAIN_ID:
-      return { ...state, invalidChainId: action.payload, validChainId: null }
+      return { ...state, validChainId: false }
     default:
       return state
   }
