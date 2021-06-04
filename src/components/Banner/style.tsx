@@ -17,15 +17,6 @@ export const Wrapper = styled.div<WrapperProps>(props => ({
   color: 'white',
 }))
 
-// backgroundColor: props.error ? 'rgba(225, 95, 95, 0.35)' : 'white',
-// color: 'black',
-
-// backgroundColor: 'white',
-// color: props.error ? '#E15F5F' : 'white',
-
-// backgroundColor: props.error ? '#E15F5F' : 'white',
-// color: 'white',
-
 export const Content = styled.div({
   flex: '1',
   textAlign: 'center',

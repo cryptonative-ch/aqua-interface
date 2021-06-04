@@ -36,7 +36,8 @@
     "yourActivity": "Your Activity",
     "placeBuyOrder": "Place Buy Order",
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
-    "invalidNetwork": "Please connect to the xDai network"
+    "invalidNetwork": "Please connect to the xDai network",
+    "connectWallet": "Connect wallet to xdai network to participate"
   },
   "buttons": {
     "back": "Back",

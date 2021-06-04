@@ -4,6 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { utils } from 'ethers'
+import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
@@ -115,6 +116,7 @@ const w: any = window
 w.utils = utils
 
 export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps) => {
+  const [t] = useTranslation()
   const [txPending, setTxPending] = useState(false)
   const { account, library } = useWeb3React()
   const { loading, sale, error } = useFixedPriceSaleQuery(saleId)
@@ -213,7 +215,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   )
 
   if (!account) {
-    return <Center>Connect wallet to particpate</Center>
+    return <Center>{t('texts.connectWallet')}</Center>
   }
 
   if (loading) {
