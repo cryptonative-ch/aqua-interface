@@ -25,7 +25,7 @@
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
     "currentPrice": "Current Price",
-    "minPrice": "Minumum Price",
+    "minPrice": "Minimum Price",
     "amountForSale": "Amount for Sale",
     "noBidsMessage": "There are no bids",
     "runningSales": "Running Sales",
@@ -35,7 +35,8 @@
     "doYouWishToContinue": "Do you wish to continue?",
     "yourActivity": "Your Activity",
     "placeBuyOrder": "Place Buy Order",
-    "pageNotFound": "The page that you’re looking for couldn’t be found."
+    "pageNotFound": "The page that you’re looking for couldn’t be found.",
+    "invalidNetwork": "Please connect to the xDai network"
   },
   "buttons": {
     "back": "Back",

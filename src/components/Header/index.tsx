@@ -2,7 +2,10 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
+// Redux
+import { setInvalidChainId, setValidChainId } from 'src/redux/network'
 // Hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
 // Svg
@@ -27,9 +30,10 @@ import {
 // Components
 import { Flex } from 'src/components/Flex'
 import { Link } from 'src/components/Link'
+import { Banner } from 'src/components/Banner'
 
 // Constants
-import { FE_VERSION, SC_VERSION } from 'src/constants'
+import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS } from 'src/constants'
 import { getErrorMessage, injected } from 'src/connectors'
 
 export const Header: React.FC = () => {
@@ -38,8 +42,25 @@ export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const { account, activate, deactivate } = useWeb3React()
   const { isMobile } = useWindowSize()
+  const validNetwork = useSelector(store => (store.network.validChainId ? true : false))
+  const dispatch = useDispatch()
 
   const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
+
+  const w: any = window
+  const subscribeToNetworkChanges = () => {
+    if (w.ethereum) {
+      w.ethereum.on('chainChanged', function (chainId: string) {
+        const parsedChainId = parseInt(chainId, 16)
+        const isChainSupported = SUPPORTED_CHAIN_IDS.includes(parsedChainId)
+        if (!isChainSupported) {
+          dispatch(setInvalidChainId(parsedChainId))
+        } else {
+          dispatch(setValidChainId(parsedChainId))
+        }
+      })
+    }
+  }
 
   const connectWallet = () => {
     setIsConnecting(true)
@@ -51,6 +72,10 @@ export const Header: React.FC = () => {
   }
 
   const disconnectWallet = () => deactivate()
+
+  useEffect(() => {
+    subscribeToNetworkChanges()
+  }, [])
 
   useEffect(() => {
     if (menuOpen) {
@@ -151,19 +176,22 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <Wrapper padding="0 32px">
-      <Row>
-        <Title>Mesa</Title>
-        <Description>from DXdao</Description>
-      </Row>
-      <Button
-        onClick={connectWallet}
-        backgroundColor={!account ? '#304FFE' : '#DDDDE3'}
-        textColor={!account ? 'white' : '#000629'}
-      >
-        <ButtonText>{isConnecting ? 'Connecting...' : !account ? 'Connect Wallet' : walletAddress}</ButtonText>
-        {account && <ButtonImage />}
-      </Button>
-    </Wrapper>
+    <div>
+      {!validNetwork && <Banner error>{t('texts.invalidNetwork')}</Banner>}
+      <Wrapper padding="0 32px">
+        <Row>
+          <Title>Mesa</Title>
+          <Description>from DXdao</Description>
+        </Row>
+        <Button
+          onClick={connectWallet}
+          backgroundColor={!account ? '#304FFE' : '#DDDDE3'}
+          textColor={!account ? 'white' : '#000629'}
+        >
+          <ButtonText>{isConnecting ? 'Connecting...' : !account ? 'Connect Wallet' : walletAddress}</ButtonText>
+          {account && <ButtonImage />}
+        </Button>
+      </Wrapper>
+    </div>
   )
 }

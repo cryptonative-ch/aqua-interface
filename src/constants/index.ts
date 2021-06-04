@@ -9,6 +9,7 @@ export const SUBGRAPH_ENDPOINT = process.env.REACT_APP_SUBGRAPH_ENDPOINT as stri
 export const FE_VERSION = '0.0.1'
 export const SC_VERSION = '0.0.1'
 export const NETWORK_CONTEXT_NAME = 'Network'
+export const SUPPORTED_CHAIN_IDS = [100]
 export enum CHAIN_ID {
   MAINNET = 1,
   RINKEBY = 4,
