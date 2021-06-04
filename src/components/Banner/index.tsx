@@ -5,11 +5,11 @@ import React from 'react'
 import { Wrapper, Content, CloseButtonImage } from './style'
 
 export interface BannerProps {
-  error: boolean
+  error?: boolean
   close?: () => void
 }
 
-export const Banner: React.FC<BannerProps> = ({ children, error, close }) => {
+export const Banner: React.FC<BannerProps> = ({ children, error = false, close }) => {
   return (
     <Wrapper error={error}>
       <Content>{children}</Content>

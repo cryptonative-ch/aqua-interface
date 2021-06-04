@@ -14,7 +14,7 @@ export const Wrapper = styled.div<WrapperProps>(props => ({
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: props.error ? '#E15F5F' : 'white',
-  color: 'white',
+  color: props.error ? 'white' : 'black',
 }))
 
 export const Content = styled.div({
