@@ -37,7 +37,7 @@
     "placeBuyOrder": "Place Buy Order",
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
     "invalidNetwork": "Please connect to the xDai network",
-    "connectWallet": "Connect wallet to xdai network to participate"
+    "connectWallet": "Connect wallet to xDai network to participate"
   },
   "buttons": {
     "back": "Back",
@@ -46,6 +46,7 @@
     "addARandomBid": "Add A Random Bid",
     "showClosedSales": "Show Closed Sales",
     "hideClosedSales": "Hide Closed Sales",
-    "backToSales": "Back to all sales"
+    "backToSales": "Back to all sales",
+    "changeNetwork": "Change Network"
   }
 }

@@ -33,7 +33,7 @@ import { Link } from 'src/components/Link'
 import { Banner } from 'src/components/Banner'
 
 // Constants
-import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS } from 'src/constants'
+import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS, XDAI_CHAIN_PARAMETER } from 'src/constants'
 import { getErrorMessage, injected } from 'src/connectors'
 
 export const Header: React.FC = () => {
@@ -42,22 +42,28 @@ export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const { account, activate, deactivate } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const validNetwork = useSelector(store => (store.network.validChainId ? true : false))
+  const isValidNetwork = useSelector(store => (store.network.invalidChainId ? false : true))
   const dispatch = useDispatch()
 
   const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
 
   const w: any = window
+
+  const dispatchChainValidity = (chainId: string) => {
+    const parsedChainId = parseInt(chainId, 16)
+    const isChainSupported = SUPPORTED_CHAIN_IDS.includes(parsedChainId)
+    if (!isChainSupported) {
+      dispatch(setInvalidChainId(parsedChainId))
+    } else {
+      dispatch(setValidChainId(parsedChainId))
+    }
+  }
+
   const subscribeToNetworkChanges = () => {
     if (w.ethereum) {
+      dispatchChainValidity(w.ethereum.chainId)
       w.ethereum.on('chainChanged', function (chainId: string) {
-        const parsedChainId = parseInt(chainId, 16)
-        const isChainSupported = SUPPORTED_CHAIN_IDS.includes(parsedChainId)
-        if (!isChainSupported) {
-          dispatch(setInvalidChainId(parsedChainId))
-        } else {
-          dispatch(setValidChainId(parsedChainId))
-        }
+        dispatchChainValidity(chainId)
       })
     }
   }
@@ -84,6 +90,13 @@ export const Header: React.FC = () => {
       document.body.style.overflow = 'auto'
     }
   }, [menuOpen])
+
+  const changeNetwork = () => {
+    w.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [XDAI_CHAIN_PARAMETER],
+    })
+  }
 
   if (isMobile) {
     return (
@@ -177,7 +190,20 @@ export const Header: React.FC = () => {
 
   return (
     <div>
-      {!validNetwork && <Banner error>{t('texts.invalidNetwork')}</Banner>}
+      {!isValidNetwork && (
+        <Banner error>
+          {t('texts.invalidNetwork')}
+          <Button
+            onClick={changeNetwork}
+            backgroundColor={'#DDDDE3'}
+            textColor={'#000629'}
+            display="inline"
+            margin="0 16px"
+          >
+            <ButtonText>{t('buttons.changeNetwork')}</ButtonText>
+          </Button>
+        </Banner>
+      )}
       <Wrapper padding="0 32px">
         <Row>
           <Title>Mesa</Title>

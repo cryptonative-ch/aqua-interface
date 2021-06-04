@@ -118,7 +118,7 @@ export type ButtonProps = {
   LayoutProps &
   JustifyContentProps
 
-export const Button = styled.div<ButtonProps>(
+export const Button = styled.button<ButtonProps>(
   ({ backgroundColor, textColor = 'white' }) => ({
     backgroundColor,
     display: 'flex',
@@ -134,6 +134,7 @@ export const Button = styled.div<ButtonProps>(
     alignItems: 'center',
     justifyContent: 'space-between',
     cursor: 'pointer',
+    border: 'none',
   }),
   space,
   layout,

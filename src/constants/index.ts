@@ -15,3 +15,14 @@ export enum CHAIN_ID {
   RINKEBY = 4,
   XDAI = 100,
 }
+export const XDAI_CHAIN_PARAMETER = {
+  chainId: '0x64',
+  chainName: 'xDai',
+  nativeCurrency: {
+    name: 'xDai',
+    symbol: 'xDai',
+    decimals: 18,
+  },
+  rpcUrls: ['https://rpc.xdaichain.com/'],
+  blockExplorerUrls: ['https://blockscout.com/xdai/mainnet'],
+}
