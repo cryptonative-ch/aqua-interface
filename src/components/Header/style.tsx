@@ -13,6 +13,14 @@ import {
 // Svg
 import DownArrowUrl from 'src/assets/svg/Down-Arrow.svg'
 
+export const ColumnWrapper = styled.div<SpaceProps & ColorProps>(() => ({
+  zIndex: 100,
+  width: '100%',
+  outline: '0',
+  display: 'flex',
+  flexDirection: 'column',
+}))
+
 export const Wrapper = styled.div<SpaceProps & ColorProps>(
   () => ({
     height: '72px',

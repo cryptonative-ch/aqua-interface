@@ -25,6 +25,7 @@ import {
   MobileMenu,
   MenuOption,
   MenuBorder,
+  ColumnWrapper,
 } from './style'
 
 // Components
@@ -189,7 +190,7 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <div>
+    <ColumnWrapper>
       {!isValidNetwork && (
         <Banner error>
           {t('texts.invalidNetwork')}
@@ -218,6 +219,6 @@ export const Header: React.FC = () => {
           {account && <ButtonImage />}
         </Button>
       </Wrapper>
-    </div>
+    </ColumnWrapper>
   )
 }
