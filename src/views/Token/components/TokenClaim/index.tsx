@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Signer } from '@ethersproject/abstract-signer'
-import { ethers } from 'ethers'
+import { ethers, ContractTransaction } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 
@@ -37,7 +37,7 @@ import { theme } from 'src/styles/theme'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // contracts
-import { FixedPriceSaleTemplate__factory } from 'src/contracts'
+import { FixedPriceSale__factory } from 'src/contracts'
 
 // interfaces
 export interface TokenClaimProps {
@@ -57,13 +57,13 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
 
   const claimTokens = async (saleId: string, signer: Signer) => {
-    await FixedPriceSaleTemplate__factory.connect(saleId, signer)
+    await FixedPriceSale__factory.connect(saleId, signer)
       .claimToken()
-      .then((tx: any) => {
+      .then((tx: ContractTransaction) => {
         setClaim('verify')
         tx.wait(1)
       })
-      .then((receipt: any) => {
+      .then((receipt: ContractTransaction) => {
         console.log(receipt)
         setClaim('claimed')
       })
@@ -81,6 +81,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   }, [claim])
 
   const preDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[0]
+
   const postDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[1]
 
   if (claim === 'verify') {
