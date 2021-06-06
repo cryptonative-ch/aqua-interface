@@ -25,7 +25,7 @@
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
     "currentPrice": "Current Price",
-    "minPrice": "Minumum Price",
+    "minPrice": "Minimum Price",
     "amountForSale": "Amount for Sale",
     "noBidsMessage": "There are no bids",
     "runningSales": "Running Sales",
@@ -35,7 +35,9 @@
     "doYouWishToContinue": "Do you wish to continue?",
     "yourActivity": "Your Activity",
     "placeBuyOrder": "Place Buy Order",
-    "pageNotFound": "The page that you’re looking for couldn’t be found."
+    "pageNotFound": "The page that you’re looking for couldn’t be found.",
+    "invalidNetwork": "Please connect to the xDai network",
+    "connectWallet": "Connect wallet to xDai network to participate"
   },
   "buttons": {
     "back": "Back",
@@ -44,6 +46,7 @@
     "addARandomBid": "Add A Random Bid",
     "showClosedSales": "Show Closed Sales",
     "hideClosedSales": "Hide Closed Sales",
-    "backToSales": "Back to all sales"
+    "backToSales": "Back to all sales",
+    "changeNetwork": "Change Network"
   }
 }
