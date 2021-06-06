@@ -3,7 +3,7 @@ import { providers } from 'ethers'
 import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
 
 // interfaces
-import { SaleBid, SaleType } from 'src/interfaces/Sale'
+import { FairSaleBid, FixedPriceSalePurchase, SaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Redux
 import { fetchBidsFromChain } from 'src/redux/bids'
@@ -20,7 +20,8 @@ export async function getBidDataFromChain(
     const fairSaleContract = FairSale__factory.connect(contractAddress, provider)
 
     fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
-      const bids: SaleBid = {
+      const bids: FairSaleBid = {
+        id: ownerId + Math.random().toString(16).slice(2),
         address: ownerId,
         tokenIn: orderTokenIn,
         tokenOut: orderTokenOut,
@@ -41,6 +42,7 @@ export async function getBidDataFromChain(
 
   fixedPriceSaleContract.on('NewPurchase', async (buyer, amount, event) => {
     const bids: SaleBid = {
+      id: buyer + Math.random().toString(16).slice(2),
       buyer: buyer,
       amount: formatDecimal(amount, decimal),
       baseSale: {
