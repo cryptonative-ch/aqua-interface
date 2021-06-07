@@ -36,7 +36,7 @@ describe('Timer', () => {
         expect(secondsTohms(60)).toBe('1m ')
       }),
         test('tests conversion of seconds into days, hours, minutes', () => {
-          expect(secondsTohms(20000)).toBe('5h 33m 20s')
+          expect(secondsTohms(20000)).toBe('5h 33m ')
         }),
         test('tests negative input', () => {
           expect(() => {
@@ -53,7 +53,7 @@ describe('Timer', () => {
           const localTimeStamp = 1623227507
           const endDate = 1623227600
           const timeDiffEnd = Math.abs(localTimeStamp - endDate)
-          expect(secondsTohms(timeDiffEnd)).toBe('1d 22h 51m ')
+          expect(secondsTohms(timeDiffEnd)).toBe('1m 33s')
         })
     })
   }),
