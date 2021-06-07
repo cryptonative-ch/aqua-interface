@@ -2,11 +2,13 @@
 import { BigNumberish } from '@ethersproject/bignumber'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useWeb3React } from '@web3-react/core'
-import { useCallback, useMemo } from 'react'
 
-// Internals
+import { useCallback, useMemo, useState } from 'react'
+
+// Hooks
 import { useTokenAllowance } from './useTokenAllowance'
-import { ERC20__factory } from 'src/contracts'
+import { useTokenContract } from './useTokenContract'
+
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -28,7 +30,11 @@ export function useApproveCallback({
   spender,
 }: UseApproveCallbackProps): [ApprovalState, () => Promise<void>] {
   const { account, library } = useWeb3React()
+
+  const [txPending, setTxPending] = useState(false)
   const currentAllowance = useTokenAllowance(tokenAddress, account || '', spender)
+  const tokenContract = useTokenContract(tokenAddress)
+
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
@@ -41,6 +47,13 @@ export function useApproveCallback({
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
+
+    // Use signed tx and waiting
+    if (txPending) {
+      return ApprovalState.PENDING
+    }
+
+
     //
     if (currentAllowance.lt(amountToApprove)) {
       return ApprovalState.NOT_APPROVED
@@ -50,7 +63,7 @@ export function useApproveCallback({
     return ApprovalState.APPROVED
   }, [amountToApprove, currentAllowance, spender])
 
-  const tokenContract = ERC20__factory.connect(tokenAddress, library)
+
 
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
@@ -59,6 +72,12 @@ export function useApproveCallback({
     }
     if (!tokenAddress) {
       console.error('no token')
+      return
+    }
+
+
+    if (!library || !library.getSigner()) {
+      console.error('no signer')
       return
     }
 
@@ -77,6 +96,11 @@ export function useApproveCallback({
       return
     }
 
+
+    // Update internal state
+    setTxPending(true)
+
+
     return tokenContract
       .approve(spender, amountToApprove)
       .then(() => {
@@ -86,7 +110,10 @@ export function useApproveCallback({
         console.debug('Failed to approve token', error)
         throw error
       })
-  }, [approvalState, tokenAddress, tokenContract, amountToApprove, spender])
+
+      .finally(() => setTxPending(false))
+  }, [approvalState, tokenAddress, amountToApprove, spender, tokenContract])
+
 
   return [approvalState, approve]
 }

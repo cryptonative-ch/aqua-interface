@@ -27,7 +27,7 @@
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
     "currentPrice": "Current Price",
-    "minPrice": "Minumum Price",
+    "minPrice": "Minimum Price",
     "amountForSale": "Amount for Sale",
     "noBidsMessage": "There are no bids",
     "runningSales": "Running Sales",
@@ -43,6 +43,8 @@
     "claimTokens": "Claim Tokens",
     "claimSuccessful": "Claim Successful!",
     "failedTransaction": "Transaction Failed"
+    "invalidNetwork": "Please connect to the xDai network",
+    "connectWallet": "Connect wallet to xDai network to participate"
   },
   "buttons": {
     "back": "Back",
@@ -55,5 +57,6 @@
     "claimTokens": "Claim Tokens",
     "shortClaim": "Claim",
     "done": "Done"
+    "changeNetwork": "Change Network"
   }
 }

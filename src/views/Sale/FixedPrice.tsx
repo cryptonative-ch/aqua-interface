@@ -1,23 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // External
-import { useDispatch, useSelector } from 'react-redux'
-import React, { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
 import numeral from 'numeral'
 
 // Hooks
+import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
-// Actions
-import { setPageTitle } from 'src/redux/page'
-
 // Components
+import { ErrorMesssage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
 import { FormButton } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
@@ -36,30 +32,19 @@ import { TokenFooter } from './components/TokenFooter'
 import { HeaderItem } from './components/HeaderItem'
 import { SaleHeader } from './components/SaleHeader'
 
+// Layouts
+import { Center } from 'src/layouts/Center'
+
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
+import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
-
 // Interfaces
-import { Sale } from 'src/interfaces/Sale'
-
-// Constants
-import { FIXED_PRICE_SALE_CONTRACT_ADDRESS, SUBGRAPH_ENDPOINT } from 'src/constants'
-import FixedPriceSaleABI from 'src/constants/FixedPriceSale.json'
-import { subgraphCall } from 'src/subgraph'
-import { saleBidsQuery } from 'src/subgraph/SaleBids'
-
-// Redux
-import { fetchSales } from 'src/redux/sales'
-import { fetchSaleBids } from 'src/redux/bids'
-import { RootState } from 'src/redux/store'
-
-// Mesa Utils
-import { formatBigInt } from 'src/utils/Defaults'
-import { getBidDataFromChain } from 'src/blockchain'
+import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { FIX_LATER } from 'src/interfaces'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -69,38 +54,18 @@ const FixedFormMax = styled.div({
   color: '#7B7F93',
 })
 
-type BidFormProps = {
-  tokenAmount: number
-  tokenPrice: number
-}
-
 export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
 export function FixedPriceSaleView() {
-  const { account, library, chainId } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const [fixedPriceContract, setFixedPriceContract] = useState<ethers.Contract>()
   const [showGraph, setShowGraph] = useState<boolean>(false)
-
   const params = useParams<FixedPriceSaleViewParams>()
-  const dispatch = useDispatch()
+  const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-
-  const fetchData = () => dispatch(fetchSales())
-
-  const sale = useSelector<RootState, Sale>(state => {
-    const sales = state.sales.sales.filter(sale => sale.id == params.saleId)[0]
-    return sales
-  })
-
-  const bidsBySale = useSelector<RootState, any>(state => {
-    return state.bids.bidsBySaleId[params.saleId]
-  })
-
-  const bids = bidsBySale ? bidsBySale.bids : []
+  const bids: FixedPriceSalePurchase[] = []
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -108,44 +73,20 @@ export function FixedPriceSaleView() {
     }
   }
 
-  const buyToken = async ({ tokenAmount }: BidFormProps) => {
-    if (fixedPriceContract) {
-      try {
-        const closed = await fixedPriceContract.buyTokens(tokenAmount)
-        console.log(closed)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  if (loading) {
+    return <Center>loading</Center>
   }
 
-  useEffect(() => {
-    if (!chainId || !library || !account) {
-      return
-    }
-    // An example Provider
-    const provider = new ethers.providers.Web3Provider(library)
-    // An example Signer
-    const signer = provider.getSigner(0)
-    setFixedPriceContract(new ethers.Contract(FIXED_PRICE_SALE_CONTRACT_ADDRESS, FixedPriceSaleABI, signer))
-  }, [chainId, library, account])
-
-  useEffect(() => {
-    if (sale) {
-      const provider = new ethers.providers.JsonRpcProvider()
-      const saleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId, sale.type))
-      const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, saleBidsRequest))
-      fetchBids()
-      getBidDataFromChain(params.saleId, sale.type, provider, sale.tokenOut.decimals)
-    }
-    dispatch(setPageTitle(t(sale?.name as string)))
-  }, [t, sale])
+  if (error) {
+    return (
+      <Center>
+        <ErrorMesssage error={error} />
+      </Center>
+    )
+  }
 
   if (!sale) {
-    fetchData()
-    if (!sale) {
-      return <NotFoundView />
-    }
+    return <NotFoundView />
   }
 
   return (
@@ -153,7 +94,7 @@ export function FixedPriceSaleView() {
       <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
-        <SaleHeader sale={sale} />
+        <SaleHeader sale={sale as any} />
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="column" flex={1}>
             <Card border="none" marginX={isMobile ? '8px' : '0'}>
@@ -173,27 +114,27 @@ export function FixedPriceSaleView() {
                     />
                     <HeaderItem
                       isMobile
-                      title={isSaleClosed(sale) ? 'Amount Sold' : 'Min. - Max. Allocation'}
+                      title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
                       description={`${numeral(formatBigInt(sale.allocationMin, sale.tokenOut.decimals)).format(
                         '0,0'
                       )} - ${numeral(formatBigInt(sale.allocationMax, sale.tokenOut.decimals)).format('0,0')} ${
                         sale.tokenOut?.symbol
                       }`}
                     />
-                    {isSaleClosed(sale) && (
+                    {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
-                    {isSaleUpcoming(sale) && (
+                    {isSaleUpcoming(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
-                    {isSaleOpen(sale) && (
+                    {isSaleOpen(sale as FIX_LATER) && (
                       <HeaderItem
                         isMobile
                         title="Ends In"
                         description={secondsTohms(sale.endDate)}
                         textAlign="right"
                         saleLive={true}
-                        sale={sale}
+                        sale={sale as FIX_LATER}
                       />
                     )}
                   </Flex>
@@ -206,45 +147,50 @@ export function FixedPriceSaleView() {
                       }`}
                     />
                     <HeaderItem
-                      title={isSaleClosed(sale) ? 'Amount Sold' : 'Min. - Max. Allocation'}
+                      title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
                       description={`${numeral(formatBigInt(sale.allocationMin)).format('0,0')} - ${numeral(
                         formatBigInt(sale.allocationMax)
                       ).format('0,0')} ${sale.tokenOut?.symbol}`}
                       flexAmount={1.5}
                     />
-                    {(isSaleClosed(sale) || isSaleUpcoming(sale)) && <Flex flex={0.2} />}
-                    {isSaleClosed(sale) && (
+                    {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
+                    {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
                     )}
-                    {isSaleUpcoming(sale) && (
+                    {isSaleUpcoming(sale as FIX_LATER) && (
                       <HeaderItem title="Starts On" description={timeEnd(sale.startDate)} textAlign="right" />
                     )}
-                    {isSaleOpen(sale) && (
+                    {isSaleOpen(sale as FIX_LATER) && (
                       <HeaderItem
                         title="Ends In"
                         description={secondsTohms(sale.endDate)}
                         textAlign="right"
                         saleLive={true}
-                        sale={sale}
+                        sale={sale as FIX_LATER}
                         flexAmount={1.3}
                       />
                     )}
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale) && bids && bids.length > 0 && (
-                <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
-                  <HeaderControl sale={sale} showGraph={showGraph} toggleGraph={toggleGraph} isFixed={true} />
-                </CardBody>
-              )}
-              {isSaleClosed(sale) && (!bids || bids.length === 0) && (
+              {isSaleOpen(sale as FIX_LATER) && bids && bids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
-                    sale={sale}
+                    sale={sale as FIX_LATER}
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
-                    status={isSaleClosed(sale) ? 'closed' : 'active'}
+                  />
+                </CardBody>
+              )}
+              {isSaleClosed(sale as FIX_LATER) && (!bids || bids.length === 0) && (
+                <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
+                  <HeaderControl
+                    sale={sale as FIX_LATER}
+                    showGraph={showGraph}
+                    toggleGraph={toggleGraph}
+                    isFixed={true}
+                    status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
                   />
                 </CardBody>
               )}
@@ -262,7 +208,7 @@ export function FixedPriceSaleView() {
                     {t('texts.yourActivity')}
                   </CardTitle>
                   <Flex flex={1} />
-                  {isSaleClosed(sale) && !isMobile && (
+                  {isSaleClosed(sale as FIX_LATER) && !isMobile && (
                     <>
                       <FormButton
                         disabled={false}
@@ -294,12 +240,12 @@ export function FixedPriceSaleView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList sale={sale} isFixed={true} bids={bids} />
+                <SelfBidList sale={sale as FIX_LATER} isFixed={true} bids={bids as any} />
               </Card>
             )}
-            <TokenFooter sale={sale} />
+            <TokenFooter sale={sale as FIX_LATER} />
           </Flex>
-          {isSaleOpen(sale) && !isMobile && (
+          {!isMobile && isSaleOpen(sale as FIX_LATER) && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
               <Card border="none">
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>

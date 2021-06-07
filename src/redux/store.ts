@@ -6,6 +6,7 @@ import Thunk, { ThunkAction } from 'redux-thunk'
 import { reducer as sales } from './sales'
 import { reducer as bids } from './bids'
 import { reducer as page } from './page'
+import { reducer as network } from './network'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   page,
   bids,
   sales,
+  network,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

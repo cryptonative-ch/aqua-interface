@@ -1,8 +1,11 @@
 // External
-import React, { useState, ChangeEvent, FormEvent, useEffect, useCallback } from 'react'
+import React, { useState, ChangeEvent, FormEvent, useCallback } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { sales } from '@dxdao/mesa'
+import { utils } from 'ethers'
+import { useTranslation } from 'react-i18next'
+
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
@@ -10,17 +13,19 @@ import { Button } from 'src/components/Button'
 import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
 
-// Hooks
-import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
-
-// Mesa Utils
-import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
-
 // Components
 import { ErrorMesssage } from 'src/components/ErrorMessage'
-import { useSaleQuery } from 'src/hooks/useSaleQuery'
 
+// Hooks
+import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
+import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
+import { useTokenBalance } from 'src/hooks/useTokenBalance'
+
+// Layouts
 import { Center } from 'src/layouts/Center'
+import { FixedPriceSale__factory } from 'src/contracts'
+import { getProviderOrSigner } from 'src/utils'
+
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -108,45 +113,118 @@ interface PurchaseTokensFormComponentProps {
   saleId: string
 }
 
+
+const w: any = window
+
+w.utils = utils
+
 export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps) => {
+  const [t] = useTranslation()
+  const [txPending, setTxPending] = useState(false)
   const { account, library } = useWeb3React()
-  const { loading, sale, error } = useSaleQuery(saleId)
+  const { loading, sale, error } = useFixedPriceSaleQuery(saleId)
+  const tokenBalance = useTokenBalance({
+    tokenAddress: sale?.tokenIn.id,
+    owner: account ?? undefined,
+  })
+
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
     tokenAddress: sale?.tokenIn.id as string,
   })
 
-  useEffect(() => {
-    if (!account || !library || !sale) {
-      return
-    }
-
-    console.log({ approvalState })
-
-    console.log({ sale })
-    // Connect to TokeIn and FixedPriceSale contract
-    const fixedPriceSaleContract = sales.FixedPriceSaleFactory.connect(sale.id, library)
-  }, [account, library])
 
   const [validationError, setValidationError] = useState<Error>()
-  const [formValid, setFormValid] = useState<boolean>(false)
-  const [tokenAmount, setTokenAmount] = useState<number>(0)
+  // Store tokens as 18 decimal BigNumber
+  const [tokenAmount, setTokenAmount] = useState(0)
 
-  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
-
+  // A form is valid when
+  // 1. tokenAmount >= minimum Allocation
+  // 2. tokenAmount <= max allocation (including previous purchases)
+  // 3. bidding token balance <= purchaseValue
   const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const tokenAmount = parseInt(event.target.value || '0')
-    setTokenAmount(tokenAmount)
-    validateForm([tokenAmount])
+    // Assume that there are no validation errors
+    let newValidationError = undefined
+    // Convert minimum allocation
+    const purchaseMinimumAllocation = BigNumber.from(sale?.allocationMin || 0)
+    // Convert sale.tokenPrice to BigNumber for accurate math operations
+    // It also avoids dealing with native JavaScript operations
+    const tokenPrice = BigNumber.from(sale?.tokenPrice || 0)
+    // Parse to 18 deciamals
+    const newTokenAmount = parseFloat(event.target.value || '0')
+    const newTokenAmountBigNumber = utils.formatEther(event.target.value || '0')
+    // Calcualte purchase value = tokenPrice (BigNumber) * tokenAmount (BigNumberish-number)
+    const purchaseValue = tokenPrice.mul(newTokenAmount)
+
+    console.log(purchaseMinimumAllocation.toString())
+
+    console.log({
+      purchaseMinimumAllocation,
+      newTokenAmountBigNumber,
+      utils,
+    })
+
+    // tokeAmount is less than minimum allocation
+    if (purchaseMinimumAllocation.lt(newTokenAmount)) {
+      newValidationError = new Error(`Token amount is less than ${utils.formatUnits(sale?.allocationMin)}`)
+    }
+    // User's tokenIn (i.e. USDC, DAI) balance is zero
+    else if (tokenBalance.isZero()) {
+      newValidationError = new Error('Insufficient funds')
+    }
+    // Purchase value is greater than user's tokeIn balance
+    else if (purchaseValue.gt(tokenBalance)) {
+      newValidationError = new Error('Insufficient funds to process purchase')
+    }
+
+    // Update Component state and re-render
+    setTokenAmount(newTokenAmount) // Convert back to number
+    setValidationError(newValidationError)
+
   }
 
   /**
    * Handles the form submission
    * @param event
    */
-  const onSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-  }, [])
+
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      console.log('Buying tokens')
+
+      if (!sale) {
+        return console.error('no sale')
+      }
+
+      if (!account || !library) {
+        return console.error('no connected signer')
+      }
+
+      const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
+
+      // Update state
+      setTxPending(true)
+      // Convert tokenAmount (number) to 18-decimal BigNumber
+      // Sign and send transaction
+      fixedPriceSaleContract
+        .buyTokens(utils.parseEther(tokenAmount.toString()))
+        .then(tx => tx.wait(1)) // wait one network confirmation
+        .then(receipt => {
+          console.log(receipt)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+        .then(() => setTxPending(false))
+    },
+    [sale, library, account]
+  )
+
+  if (!account) {
+    return <Center>{t('texts.connectWallet')}</Center>
+  }
+
 
   if (loading) {
     return <Center>Loading</Center>
@@ -175,23 +253,36 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
             <FormText data-testid="amount-value">
-              {tokenAmount.toString()} {sale.tokenOut.symbol}
+
+              {tokenAmount} {sale.tokenOut.symbol}
+
             </FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
               type="number"
-              value={Number(tokenAmount).toString()}
+
+              value={tokenAmount}
+
               onChange={onTokenAmountChange}
             />
           </FormContainer>
         </Flex>
       </FormGroup>
-      <FixedTerm>{`You'll get 1,000 ${sale.tokenOut.symbol}`}</FixedTerm>
-      {approvalState == ApprovalState.APPROVED ? (
-        <Button>Purchase {sale.tokenOut.symbol}</Button>
+
+      {validationError && (
+        <FormGroup>
+          <ErrorMesssage error={validationError} />
+        </FormGroup>
+      )}
+      {txPending || approvalState == ApprovalState.PENDING ? (
+        <Button disabled={true}>Transaction in Progress</Button>
+      ) : approvalState == ApprovalState.APPROVED ? (
+        <Button disabled={validationError instanceof Error}>Purchase {sale.tokenOut.symbol}</Button>
       ) : (
-        <Button onClick={approve}>Approve {sale.tokenIn.symbol}</Button>
+        <Button type="button" onClick={approve}>
+          Approve {sale.tokenIn.symbol}
+        </Button>
       )}
     </Form>
   )
