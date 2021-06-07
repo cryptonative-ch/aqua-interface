@@ -42,6 +42,18 @@ describe('Timer', () => {
           expect(() => {
             secondsTohms(-100)
           }).toThrow('seconds cannot be negative')
+        }),
+        test('should not display seconds when more than an hour of time is left', () => {
+          const localTimeStamp = 1623058434
+          const endDate = 1623227147
+          const timeDiffEnd = Math.abs(localTimeStamp - endDate)
+          expect(secondsTohms(timeDiffEnd)).toBe('1d 22h 51m ')
+        }),
+        test('should display seconds only when time is less than an hour', () => {
+          const localTimeStamp = 1623227507
+          const endDate = 1623227600
+          const timeDiffEnd = Math.abs(localTimeStamp - endDate)
+          expect(secondsTohms(timeDiffEnd)).toBe('1d 22h 51m ')
         })
     })
   }),
