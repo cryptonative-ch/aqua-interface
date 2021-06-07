@@ -58,9 +58,6 @@ export const Button = styled.button<ButtonProps>(
     ':disabled': {
       opacity: props.formButton ? 1 : 0.5,
     },
-    ':hover': {
-      textDecoration: 'underline',
-    },
     ':focus': {
       outline: props.formButton ? 'none' : 'unset',
     },
@@ -76,10 +73,28 @@ export const Button = styled.button<ButtonProps>(
   variant({
     variants: {
       primary: {
-        bg: 'white',
+        background: '#304FFE',
+        color: '#FFFFFF',
+        border: 'none',
+        ':disabled': {
+          background: '#DDDDE3',
+          color: 'black',
+        },
       },
       link: {
         bg: 'transparent',
+        ':hover': {
+          textDecoration: 'underline',
+        },
+      },
+      secondary: {
+        background: '#7B7F93',
+        color: '#FFFFFF',
+        border: 'none',
+        ':disabled': {
+          background: '#7B7F93',
+          color: 'black',
+        },
       },
     },
   }),

@@ -8,17 +8,17 @@
 // ====================================================
 
 export interface fixedPriceSalePurchaseResults_sale {
-  __typename: "FixedPriceSale";
-  id: string;
+  __typename: 'FixedPriceSale'
+  id: string
 }
 
 export interface fixedPriceSalePurchaseResults {
-  __typename: "FixedPriceSalePurchase";
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-  deletedAt: number | null;
-  buyer: any;
-  amount: any;
-  sale: fixedPriceSalePurchaseResults_sale;
+  __typename: 'FixedPriceSalePurchase'
+  id: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
+  buyer: any
+  amount: any
+  sale: fixedPriceSalePurchaseResults_sale
 }

@@ -5,12 +5,14 @@
   "pagesTitles": {
     "home": "Home",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "tokens": "Tokens"
   },
   "navTitles": {
     "home": "Home",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "tokens": "Tokens"
   },
   "texts": {
     "bid": "Bid",
@@ -36,6 +38,11 @@
     "yourActivity": "Your Activity",
     "placeBuyOrder": "Place Buy Order",
     "pageNotFound": "The page that you’re looking for couldn’t be found.",
+    "verifyTransaction": "Please verify the transaction to claim your tokens.",
+    "unclaimed": "Unclaimed",
+    "claimTokens": "Claim Tokens",
+    "claimSuccessful": "Claim Successful!",
+    "failedTransaction": "Transaction Failed"
     "invalidNetwork": "Please connect to the xDai network",
     "connectWallet": "Connect wallet to xDai network to participate"
   },
@@ -47,6 +54,9 @@
     "showClosedSales": "Show Closed Sales",
     "hideClosedSales": "Hide Closed Sales",
     "backToSales": "Back to all sales",
+    "claimTokens": "Claim Tokens",
+    "shortClaim": "Claim",
+    "done": "Done"
     "changeNetwork": "Change Network"
   }
 }

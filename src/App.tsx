@@ -37,17 +37,18 @@ export const App = () => {
   const { library, chainId } = useWeb3React()
   // Default: XDAI
   let mesaConfig: MesaConfigMap = XDAI_CONFIG
-  // Use Rinkeby
-  if (chainId && chainId === CHAIN_ID.RINKEBY) {
-    mesaConfig = RINKEBY_CONFIG
-  }
-  // Development
+
   if (process.env.NODE_ENV === 'development') {
     mesaConfig = {
       ...RINKEBY_CONFIG,
       subgraph: SUBGRAPH_ENDPOINT,
     }
   }
+  // Use Rinkeby
+  if (chainId && chainId === CHAIN_ID.RINKEBY) {
+    mesaConfig = RINKEBY_CONFIG
+  }
+  // Development
 
   // Start new Apollo Client
   const apolloClient = new ApolloClient({

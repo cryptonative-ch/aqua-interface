@@ -8,11 +8,13 @@ import { FormGroup } from 'src/components/FormGroup'
 // Mesa Utils
 import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 
+// Contexts
+import { BidModalContext } from 'src/contexts'
+
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
-import { BidModalContext } from 'src/contexts'
 import { Flex } from 'src/components/Flex'
-import { ApproveButton } from '../Approve'
+import { ApproveButton } from '../ApproveButton'
 
 const FormBody = styled.form({
   flex: 1,

@@ -23,31 +23,14 @@ describe('testing subgraph integration', () => {
     server = mockServer(schemaString, mocks, preserveResolvers)
     salesRequest = await server.query(salesQuery)
   })
-  test('should check if salesQuery object contains type fairSale', async () => {
+  test('should check if salesQuery object contains type fixedPriceSale', async () => {
     const test = await getSalesData(salesRequest.data)
     expect(test).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: 'fairSale',
+          type: 'FixedPriceSale',
         }),
       ])
     )
-  }),
-    test('should check if salesQuery object contains type fixedPriceSale', async () => {
-      const test = await getSalesData(salesRequest.data)
-      expect(test).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            type: 'fixedPriceSale',
-          }),
-        ])
-      )
-    }),
-    test('should display correct saleBids', async () => {
-      const sale = await getSalesData(salesRequest.data)
-      const id = sale[0].id //emulate params.id
-      const saleBidsRequest = await server.query(saleBidsQuery(id, selectSaletype(id, sale)))
-      const test = await generateInitialSaleData(saleBidsRequest.data, selectSaletype(id, sale))
-      expect(test).toBeTruthy
-    })
+  })
 })

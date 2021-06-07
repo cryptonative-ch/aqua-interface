@@ -8,9 +8,9 @@
 // ====================================================
 
 export interface tokenResults {
-  __typename: "Token";
-  id: string;
-  name: string | null;
-  symbol: string | null;
-  decimals: any;
+  __typename: 'Token'
+  id: string
+  name: string | null
+  symbol: string | null
+  decimals: any
 }
