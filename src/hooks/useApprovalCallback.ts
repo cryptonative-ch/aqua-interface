@@ -9,7 +9,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTokenAllowance } from './useTokenAllowance'
 import { useTokenContract } from './useTokenContract'
 
-
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
   NOT_APPROVED = 'NOT_APPROVED',
@@ -35,7 +34,6 @@ export function useApproveCallback({
   const currentAllowance = useTokenAllowance(tokenAddress, account || '', spender)
   const tokenContract = useTokenContract(tokenAddress)
 
-
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
@@ -47,12 +45,10 @@ export function useApproveCallback({
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
-
     // Use signed tx and waiting
     if (txPending) {
       return ApprovalState.PENDING
     }
-
 
     //
     if (currentAllowance.lt(amountToApprove)) {
@@ -63,8 +59,6 @@ export function useApproveCallback({
     return ApprovalState.APPROVED
   }, [amountToApprove, currentAllowance, spender])
 
-
-
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       console.error('approve was called unnecessarily')
@@ -74,7 +68,6 @@ export function useApproveCallback({
       console.error('no token')
       return
     }
-
 
     if (!library || !library.getSigner()) {
       console.error('no signer')
@@ -96,10 +89,8 @@ export function useApproveCallback({
       return
     }
 
-
     // Update internal state
     setTxPending(true)
-
 
     return tokenContract
       .approve(spender, amountToApprove)
@@ -113,7 +104,6 @@ export function useApproveCallback({
 
       .finally(() => setTxPending(false))
   }, [approvalState, tokenAddress, amountToApprove, spender, tokenContract])
-
 
   return [approvalState, approve]
 }

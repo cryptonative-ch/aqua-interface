@@ -42,7 +42,7 @@
     "unclaimed": "Unclaimed",
     "claimTokens": "Claim Tokens",
     "claimSuccessful": "Claim Successful!",
-    "failedTransaction": "Transaction Failed"
+    "failedTransaction": "Transaction Failed",
     "invalidNetwork": "Please connect to the xDai network",
     "connectWallet": "Connect wallet to xDai network to participate"
   },
@@ -56,7 +56,7 @@
     "backToSales": "Back to all sales",
     "claimTokens": "Claim Tokens",
     "shortClaim": "Claim",
-    "done": "Done"
+    "done": "Done",
     "changeNetwork": "Change Network"
   }
 }

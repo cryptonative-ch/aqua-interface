@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { utils } from 'ethers'
 import { useTranslation } from 'react-i18next'
 
-
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 import { Button } from 'src/components/Button'
@@ -25,7 +24,6 @@ import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
-
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -113,7 +111,6 @@ interface PurchaseTokensFormComponentProps {
   saleId: string
 }
 
-
 const w: any = window
 
 w.utils = utils
@@ -132,7 +129,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     spender: sale?.id as string,
     tokenAddress: sale?.tokenIn.id as string,
   })
-
 
   const [validationError, setValidationError] = useState<Error>()
   // Store tokens as 18 decimal BigNumber
@@ -180,7 +176,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     // Update Component state and re-render
     setTokenAmount(newTokenAmount) // Convert back to number
     setValidationError(newValidationError)
-
   }
 
   /**
@@ -225,7 +220,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     return <Center>{t('texts.connectWallet')}</Center>
   }
 
-
   if (loading) {
     return <Center>Loading</Center>
   }
@@ -253,17 +247,13 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
             <FormText data-testid="amount-value">
-
               {tokenAmount} {sale.tokenOut.symbol}
-
             </FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
               type="number"
-
               value={tokenAmount}
-
               onChange={onTokenAmountChange}
             />
           </FormContainer>
