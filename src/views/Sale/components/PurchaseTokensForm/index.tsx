@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
-import { Button } from 'src/components/Button'
 
 // Components
 import { ErrorMesssage } from 'src/components/ErrorMessage'
