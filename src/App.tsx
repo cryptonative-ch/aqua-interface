@@ -18,7 +18,7 @@ import { useModal } from 'src/hooks/useModal'
 import { AppRouter } from './router'
 
 // Constantsx
-import { CHAIN_ID, SANCTION_LIST, SUBGRAPH_ENDPOINT } from 'src/constants'
+import { CHAIN_ID, SANCTION_LIST, SHOW_TERMS_AND_CONDITIONS, SUBGRAPH_ENDPOINT } from 'src/constants'
 
 // Components
 import { ConfirmButton } from 'src/components/ConfirmButton'
@@ -83,7 +83,12 @@ export const App = () => {
               <Suspense fallback={<Center minHeight="100%">LOADING</Center>}>
                 <BrowserRouter>
                   <AppRouter />
-                  <Modal isShown={isShown} hide={toggle} modalContent={content} headerText="Confirmation" />
+                  <Modal
+                    isShown={SHOW_TERMS_AND_CONDITIONS && isShown}
+                    hide={toggle}
+                    modalContent={content}
+                    headerText="Confirmation"
+                  />
                 </BrowserRouter>
               </Suspense>
             </ThemeProvider>
