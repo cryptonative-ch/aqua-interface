@@ -119,7 +119,7 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
-  const [approve, setApprove] = useState<boolean>(false)
+  const [approve] = useState<boolean>(false)
   const theme = useTheme()
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
