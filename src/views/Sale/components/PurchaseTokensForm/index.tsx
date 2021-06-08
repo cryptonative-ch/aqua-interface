@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
-import { Button } from 'src/components/Button'
 import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
 
@@ -35,15 +34,6 @@ const FormLabel = styled.div({
   color: '#000629',
 })
 
-const FormDescription = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  fontSize: '12px',
-  lineHeight: '17px',
-  marginTop: '8px',
-  color: '#7B7F93',
-})
-
 const FormContainer = styled.div({
   height: '48px',
   width: '100%',
@@ -62,33 +52,6 @@ const FormText = styled.div({
   lineHeight: '48px',
   margin: '0 16px',
   userSelect: 'none',
-})
-
-const FixedTerm = styled.div({
-  border: '1px dashed #DDDDE3',
-  borderWidth: '1px 0 0 0',
-  padding: '16px 0 8px 0',
-  textAlign: 'center',
-  fontSize: '14px',
-  lineHeight: '21px',
-  color: '#7B7F93',
-  fontWeight: 400,
-})
-
-const MaxButton = styled.div({
-  border: '1px solid #DDDDE3',
-  padding: '0 4px',
-  fontStyle: 'normal',
-  fontWeight: 500,
-  fontSize: '14px',
-  lineHeight: '21px',
-  textAlign: 'center',
-  color: '#7B7F93',
-  position: 'absolute',
-  right: '16px',
-  top: '13px',
-  cursor: 'pointer',
-  zIndex: 200,
 })
 
 const FormInput = styled.input({

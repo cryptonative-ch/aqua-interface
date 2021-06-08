@@ -1,7 +1,6 @@
 // External
 import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { ethers } from 'ethers'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
