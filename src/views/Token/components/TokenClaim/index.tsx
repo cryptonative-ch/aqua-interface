@@ -5,6 +5,7 @@ import { Signer } from '@ethersproject/abstract-signer'
 import { ethers, ContractTransaction } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
+import numeral from 'numeral'
 
 // Components
 import { Card } from 'src/components/Card'
@@ -32,9 +33,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Theme
 import { theme } from 'src/styles/theme'
-
-// Mesa Utils
-import { formatBigInt } from 'src/utils/Defaults'
 
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
@@ -79,10 +77,12 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
     const provider = new ethers.providers.Web3Provider((window as any).ethereum)
     signer = provider.getSigner(0)
   }, [claim])
+  console.log()
 
-  const preDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[0]
+  const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
 
-  const postDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[1]
+  const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
+  console.log(preDecimalAmount, postDecimalAmount)
 
   if (claim === 'verify') {
     return <VerifyState />
@@ -113,13 +113,15 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
             <CardText color="grey">{t('texts.unclaimed')}</CardText>
             <Flex>
               <CardText>{preDecimalAmount}</CardText>
-              <CardText color="grey">{postDecimalAmount}</CardText>
-              <CardText>&nbsp;{sale?.tokenOut.name}</CardText>
+              <CardText color="grey">{`.${postDecimalAmount}`}</CardText>
+              <CardText>&nbsp;{sale?.tokenOut.symbol}</CardText>
             </Flex>
           </Flex>
           <Flex justifyContent="space-between">
             <CardText color="grey">{t('texts.currentPrice')}</CardText>
-            <CardText>{`${sale?.tokenPrice} ${sale?.tokenIn.name}`}</CardText>
+            <CardText>{`${numeral(ethers.utils.formatUnits(sale ? sale.tokenPrice : 0, sale?.tokenOut.decimals)).format(
+              '0.0'
+            )} ${sale?.tokenIn.symbol}`}</CardText>
           </Flex>
           <Button onClick={() => claimTokens(sale!.id, signer)} width="90%">
             {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
