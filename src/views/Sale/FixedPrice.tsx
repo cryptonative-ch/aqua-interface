@@ -13,7 +13,7 @@ import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Components
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
 import { FormButton } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
@@ -80,7 +80,7 @@ export function FixedPriceSaleView() {
   if (error) {
     return (
       <Center>
-        <ErrorMesssage error={error} />
+        <ErrorMessage error={error} />
       </Center>
     )
   }
