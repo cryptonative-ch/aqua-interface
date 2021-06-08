@@ -25,7 +25,7 @@ import { GridListSection } from 'src/components/Grid'
 
 // interface
 import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
 import { TokenClaim } from './components/TokenClaim'
@@ -126,7 +126,7 @@ export function TokenView() {
         <Container>
           <Title>{t('texts.claimTokens')}</Title>
           <GridListSection>
-            <ErrorMesssage error={error} />
+            <ErrorMessage error={error} />
           </GridListSection>
         </Container>
         {!isMobile && <Footer />}

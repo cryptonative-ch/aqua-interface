@@ -44,7 +44,7 @@
     "claimSuccessful": "Claim Successful!",
     "failedTransaction": "Transaction Failed",
     "invalidNetwork": "Please connect to the xDai network",
-    "connectWallet": "Connect wallet to xDai network to participate"
+    "connectWallet": "Connect wallet to participate"
   },
   "buttons": {
     "back": "Back",

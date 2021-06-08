@@ -13,7 +13,7 @@ import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
 
 // Components
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -24,13 +24,14 @@ import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
+import { LinkedButtons } from 'src/components/LinkedButtons'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '14px',
   lineHeight: '48px',
-  marginRight: '24px',
+  marginRight: '0px',
   width: '80px',
   color: '#000629',
 })
@@ -106,6 +107,9 @@ const FormInput = styled.input({
     color: 'transparent',
   },
 })
+const FormFull = styled(Form)`
+  width: 100%;
+`
 
 interface PurchaseTokensFormComponentProps {
   saleId: string
@@ -227,7 +231,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   if (error) {
     return (
       <Center>
-        <ErrorMesssage error={error as Error} />
+        <ErrorMessage error={error as Error} />
       </Center>
     )
   }
@@ -235,13 +239,13 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   if (!sale) {
     return (
       <Center>
-        <ErrorMesssage error="Could not fetch sale" />
+        <ErrorMessage error="Could not fetch sale" />
       </Center>
     )
   }
 
   return (
-    <Form id="placePurchaseForm" onSubmit={onSubmit}>
+    <FormFull id="placePurchaseForm" onSubmit={onSubmit}>
       <FormGroup>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
@@ -262,10 +266,28 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
       {validationError && (
         <FormGroup>
-          <ErrorMesssage error={validationError} />
+          <ErrorMessage error={validationError} />
         </FormGroup>
       )}
-      {txPending || approvalState == ApprovalState.PENDING ? (
+      <LinkedButtons
+        buttons={[
+          {
+            title: `Approve ${sale.tokenIn.symbol}`,
+            id: 'approve',
+            onClick: approve,
+          },
+          {
+            title: `Purchase ${sale.tokenOut.symbol}`,
+            id: 'purchase',
+            onClick: () => {
+              console.log('purchase')
+            },
+          },
+        ]}
+        active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
+        loading={txPending || approvalState == ApprovalState.PENDING}
+      />
+      {/* {txPending || approvalState == ApprovalState.PENDING ? (
         <Button disabled={true}>Transaction in Progress</Button>
       ) : approvalState == ApprovalState.APPROVED ? (
         <Button disabled={validationError instanceof Error}>Purchase {sale.tokenOut.symbol}</Button>
@@ -273,7 +295,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         <Button type="button" onClick={approve}>
           Approve {sale.tokenIn.symbol}
         </Button>
-      )}
-    </Form>
+      )} */}
+    </FormFull>
   )
 }
