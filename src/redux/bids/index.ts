@@ -153,7 +153,6 @@ export const fetchBidsFromChain = (bids: SaleBid): any => {
 const keyFinder = (object: BidsBySaleId) => {
   return String(Object.getOwnPropertyNames(object)[0])
 }
-
 /**
  * Reducer
  * @param state

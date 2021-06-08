@@ -19,6 +19,9 @@ import {
 // Interfaces
 import { SaleBid, SaleType } from 'src/interfaces/Sale'
 
+// Blockchain websocket
+import { getBidDataFromChain } from 'src/blockchain'
+
 // Query
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
 
@@ -35,30 +38,6 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const mesa = useMesa()
   const bids = useSelector(({ bids }) => bids.bidsBySaleId[saleId].bids)
 
-  export const fetchSaleBids = (saleId: string, saleType: SaleType, saleBidsRequest: Promise<any>): AppThunk => {
-    return async (dispatch, getState) => {
-      // Current time
-      const timeNow = dayjs.utc().unix()
-      // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
-      const { updatedAt } = getState().bids.bidsBySaleId[saleId] || timeNow
-      const delta = Math.abs(updatedAt - timeNow)
-      // exit
-      // should only be called once
-      if (delta <= 3000000) {
-        return
-      }
-      // fetch new (fresh) data
-
-      dispatch(initialBidRequest(true))
-      try {
-        dispatch(initialBidSuccess(await generateInitialSaleData(saleBidsRequest, saleType)))
-      } catch (error) {
-        console.log(error)
-        dispatch(initialBidFailure(error))
-      }
-    }
-  }
-
   useEffect(() => {
     // Sale exists in Redux cache, return
     if (bids) {
@@ -68,6 +47,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     // or the browser directly requested the path /sales/<saleId>
     dispatch(initialBidRequest(true))
     // Submit the query to the subgraph
+    // then submit query to the blockchain
     mesa.subgraph
       .query(saleBidsQuery(saleId, saleType))
       .then(({ data }) => {
@@ -92,6 +72,20 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
       .then(() => {
         setLoading(false)
       })
+  }, [])
+
+  useEffect(() => {
+    if (bids) {
+      return setLoading(false)
+    }
+    dispatch(initialBidRequest(true))
+    try {
+      // getBidDataFromChain(saleId, saleType, provider, tokendecimals)
+      dispatch(updateBidSuccess(bids))
+    } catch (error) {
+      console.log(error)
+      dispatch(updateBidFailure(error))
+    }
   }, [bids])
 
   return {
