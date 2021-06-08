@@ -105,11 +105,11 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
           <TokenIconFigure>
             <Icon src={sale?.tokenOut.icon || noToken} />
           </TokenIconFigure>
-          <CardTitle fontWeight={500}>Claim {sale?.tokenOut.name}</CardTitle>
+          <CardTitle fontWeight={500}>Claim {sale?.tokenOut.symbol}</CardTitle>
         </Flex>
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly">
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" margin="24px 0px 12px 0px">
             <CardText color="grey">{t('texts.unclaimed')}</CardText>
             <Flex>
               <CardText>{preDecimalAmount}</CardText>
@@ -117,7 +117,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
               <CardText>&nbsp;{sale?.tokenOut.symbol}</CardText>
             </Flex>
           </Flex>
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" margin="12px 0px 24px 0px">
             <CardText color="grey">{t('texts.currentPrice')}</CardText>
             <CardText>{`${numeral(ethers.utils.formatUnits(sale ? sale.tokenPrice : 0, sale?.tokenOut.decimals)).format(
               '0.0'
