@@ -1,5 +1,5 @@
 // Externals
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Signer } from '@ethersproject/abstract-signer'
 import { ethers, ContractTransaction } from 'ethers'
@@ -53,43 +53,38 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
-
+  const [error, setError] = useState<Error>()
   const claimTokens = async (saleId: string, signer: Signer) => {
     await FixedPriceSale__factory.connect(saleId, signer)
-      .claimToken()
+      .claimTokens()
       .then((tx: ContractTransaction) => {
         setClaim('verify')
         tx.wait(1)
       })
-      .then((receipt: ContractTransaction) => {
+      .then(receipt => {
         console.log(receipt)
         setClaim('claimed')
       })
       .catch((error: Error) => {
+        setError(error)
         console.log(error)
         setClaim('failed')
       })
   }
 
-  let signer: Signer
-  useEffect(() => {
-    // connect to metamask
-    const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-    signer = provider.getSigner(0)
-  }, [claim])
-  console.log()
+  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  const signer = provider.getSigner(0)
 
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
 
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
-  console.log(preDecimalAmount, postDecimalAmount)
 
   if (claim === 'verify') {
     return <VerifyState />
   }
 
-  if (claim === 'failed') {
-    return <FailedClaim />
+  if (claim === 'failed' && error) {
+    return <FailedClaim error={JSON.stringify(error)} />
   }
 
   const purchase: FixedPriceSalePurchase = { sale, amount, ...rest }
