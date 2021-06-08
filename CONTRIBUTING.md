@@ -4,6 +4,37 @@
 
 Mesa is an open-source project, including but not limited to the Front End interface and Solidity Smart Contracts. As such, a Contribution Guideline shall facilitate the foundation for a collaborative ground for every contributor working on Mesa codebase(s).
 
+
+# Tickets 
+
+We use zenhub.com, if logged in with our Github account, the dashboard should be visible. Zenhub is basicly a agile project management which is tightly integrated with github.
+
+- Every task needs have an estimated ticket
+- If you see something during work which is out of scope of the ticket:
+  1. make a new ticket or reopen a ticket 
+  2. finish the old ticket first!
+  3. if not depending on the other ticket, make a new branch from the **dev** branch, not the branch you are working on.
+  4. No ticket is needed, but a branch, if you can do it under one hour. If you see that it takes longer, make a ticket with estimate.
+  5. You can restimate your tickets if you see its much more work. But do not use it to track hours. It's NOT time tracking.
+
+
+# Git Branches
+
+- One ticket, one branch
+- Use /feature/, /bug/, or /chore/ (chore to fix typo and little stuff)
+- Avoid working on the `main` branch unless absolutely necessary. Branch names should be named after what they do.
+- sub-branch like  "Feature/stufspecial/otherstuff" should not happen. You can work for yourself in this structur, but please don't get others to work in your sub-branch (It's a sign that something is off. We add to much complexity to non complex stuff. The interface software is still a simple interface)
+  
+Some more toughts on branches see [Phil Hord's answer on Stack Overflow](https://stackoverflow.com/a/6065944/2151050).
+
+# PR
+
+- A PR should never have more the two days of work!
+- PR must go to the **dev** branch
+- If a PR is open longer than a day ping the product owner or the person who is responsible for review. Ask in the chat!
+- If you make a PR from Feature/stufspecial/otherstuff to Feature/stufspecial/ you should pull it yourself, because I assume it's your sub-branch.
+- After a PR is done, you can delete your branch
+
 # Style Project Structure
 
 At Mesa, we are using React to build the frontend. Our current code structure looks like.
@@ -168,10 +199,3 @@ The code base uses [Jest](https://jestjs.io/)
 
 Each Component/function/file must be accompanied with approriate tests.
 
-# Git Branches
-
-Avoid working on the `main` branch unless absolutely necessary. Branch names should be named after what they do.
-
-## Branch name
-
-Please refer to [Phil Hord's answer on Stack Overflow](https://stackoverflow.com/a/6065944/2151050).
