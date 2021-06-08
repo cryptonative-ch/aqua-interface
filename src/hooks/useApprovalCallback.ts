@@ -8,7 +8,6 @@ import { useCallback, useMemo, useState } from 'react'
 // Hooks
 import { useTokenAllowance } from './useTokenAllowance'
 import { useTokenContract } from './useTokenContract'
-import { useBlockNumber } from './useBlockNumber'
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',

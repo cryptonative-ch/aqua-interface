@@ -287,15 +287,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
         loading={txPending || approvalState == ApprovalState.PENDING}
       />
-      {/* {txPending || approvalState == ApprovalState.PENDING ? (
-        <Button disabled={true}>Transaction in Progress</Button>
-      ) : approvalState == ApprovalState.APPROVED ? (
-        <Button disabled={validationError instanceof Error}>Purchase {sale.tokenOut.symbol}</Button>
-      ) : (
-        <Button type="button" onClick={approve}>
-          Approve {sale.tokenIn.symbol}
-        </Button>
-      )} */}
     </FormFull>
   )
 }
