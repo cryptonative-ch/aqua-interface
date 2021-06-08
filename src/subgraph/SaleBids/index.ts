@@ -4,7 +4,7 @@ export const saleBidsQuery = (saleid: string, saleType: SaleType) => {
   if (saleType == 'FixedPriceSale') {
     return `
       {
-        fixedPriceSale (id: ${JSON.stringify(saleid)}) {
+        fixedPriceSale (where: {"${saleid}"}) {
     purchases {
       id
       buyer
@@ -20,7 +20,7 @@ export const saleBidsQuery = (saleid: string, saleType: SaleType) => {
 
   return `
 {
-  fairSale (id: ${JSON.stringify(saleid)}) {
+  fairSale (where: {""${saleid}""}) {
     bids {
       id
       tokenInAmount

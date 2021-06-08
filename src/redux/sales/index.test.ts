@@ -35,7 +35,7 @@ describe('async Sale Actions and Reducers', () => {
     store.clearActions()
   })
 
-  test.skip('should create GENERATE_AUCTIONS_SUCCESS when fetching sales is complete', async () => {
+  test.skip('should create GENERATE_SALES_SUCCESS when fetching sales is complete', async () => {
     const expectedActions = [
       {
         payload: true,
@@ -54,7 +54,7 @@ describe('async Sale Actions and Reducers', () => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   }),
-    test('reducer should handle GENERATE_AUCTIONS_REQUEST', () => {
+    test('reducer should handle GENERATE_SALES_REQUEST', () => {
       const startAction: SaleActionTypes = {
         type: ActionTypes.SALES_FETCH_REQUEST,
         payload: true,
@@ -66,7 +66,7 @@ describe('async Sale Actions and Reducers', () => {
         updatedAt: 0,
       })
     }),
-    test('reducer should handle GENERATE_AUCTIONS_SUCCESS', () => {
+    test('reducer should handle GENERATE_SALES_SUCCESS', () => {
       const startActions: SaleActionTypes = {
         type: ActionTypes.SALES_FETCH_SUCCESS,
         payload: expect.arrayContaining([
@@ -86,7 +86,7 @@ describe('async Sale Actions and Reducers', () => {
         updatedAt: 0,
       })
     }),
-    test('reducer should handle GENERATE_AUCTIONS_FAILURE', () => {
+    test('reducer should handle GENERATE_SALES_FAILURE', () => {
       const startActions: SaleActionTypes = {
         type: ActionTypes.SALES_FETCH_ERROR,
         payload: expect.any(Error),
