@@ -1,10 +1,7 @@
-import { SaleType } from 'src/interfaces/Sale'
-
-export const saleBidsQuery = (saleid: string, saleType: SaleType) => {
-  if (saleType == 'FixedPriceSale') {
-    return `
+export const saleBidsQuery = (saleid: string) => {
+  return `
       {
-        fixedPriceSale (where: {"${saleid}"}) {
+        fixedPriceSales (where: {"${saleid}"}) {
     purchases {
       id
       buyer
@@ -14,13 +11,8 @@ export const saleBidsQuery = (saleid: string, saleType: SaleType) => {
       }
     }
    }
- }
-      `
-  }
 
-  return `
-{
-  fairSale (where: {""${saleid}""}) {
+  fairSales (where: {"${saleid}"}) {
     bids {
       id
       tokenInAmount

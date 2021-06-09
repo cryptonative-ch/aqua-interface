@@ -46,6 +46,9 @@ import { NotFoundView } from 'src/views/NotFound'
 import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 
+//bids
+import { useBids } from 'src/hooks/useBids'
+
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
@@ -65,7 +68,8 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const bids: FixedPriceSalePurchase[] = []
+  const { bids } = useBids(params.saleId)
+  console.log(bids)
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {

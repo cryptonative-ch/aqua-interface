@@ -106,7 +106,7 @@ export function FairSaleView() {
     dispatch(setPageTitle(t(sale?.name as string)))
 
     if (sale) {
-      const FairSaleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId, sale.type))
+      const FairSaleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId))
       const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, FairSaleBidsRequest))
       fetchBids()
       setClearingPrice(calculateClearingPrice(bids))

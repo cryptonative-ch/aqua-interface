@@ -8,7 +8,6 @@ import { useMesa } from './useMesa'
 // Redux actions
 import {
   initialBidSuccess,
-  initialBidSuccess,
   initialBidFailure,
   updateBidSuccess,
   updateBidRequest,
@@ -17,7 +16,7 @@ import {
   BidsBySaleId,
 } from 'src/redux/bids'
 // Interfaces
-import { SaleBid, SaleType } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchase, SaleBid, FairSaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Blockchain websocket
 import { getBidDataFromChain } from 'src/blockchain'
@@ -28,16 +27,15 @@ import { saleBidsQuery } from 'src/subgraph/SaleBids'
 interface UseBidsReturn {
   loading: boolean
   error: Error | undefined
-  bids: SaleBid | undefined
+  bids: any | undefined
 }
 
-export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
+export function useBids(saleId: string): UseBidsReturn {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
   const bids = useSelector(({ bids }) => bids.bidsBySaleId[saleId].bids)
-
   useEffect(() => {
     // Sale exists in Redux cache, return
     if (bids) {
@@ -49,12 +47,12 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     // Submit the query to the subgraph
     // then submit query to the blockchain
     mesa.subgraph
-      .query(saleBidsQuery(saleId, saleType))
+      .query(saleBidsQuery(saleId))
       .then(({ data }) => {
         const { fixedPriceSale, fairSale } = data
         const saleBids = fixedPriceSale ? fixedPriceSale.purchases : fairSale.bids
         const sales: BidsBySaleId = saleBids.reduce(
-          (a, x: any) => ({
+          (a: any, x: any) => ({
             [x.sale.id]: {
               lastUpdated: Date.now(),
               bids: saleBids,
@@ -73,21 +71,21 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
         setLoading(false)
       })
   }, [])
-
-  useEffect(() => {
-    if (bids) {
-      return setLoading(false)
-    }
-    dispatch(initialBidRequest(true))
-    try {
-      // getBidDataFromChain(saleId, saleType, provider, tokendecimals)
-      dispatch(updateBidSuccess(bids))
-    } catch (error) {
-      console.log(error)
-      dispatch(updateBidFailure(error))
-    }
-  }, [bids])
-
+  //
+  //  useEffect(() => {
+  //    if (bids) {
+  //      return setLoading(false)
+  //    }
+  //    dispatch(initialBidRequest(true))
+  //    try {
+  //      // getBidDataFromChain(saleId, saleType, provider, tokendecimals)
+  //      dispatch(updateBidSuccess(bids))
+  //    } catch (error) {
+  //      console.log(error)
+  //      dispatch(updateBidFailure(error))
+  //    }
+  //  }, [bids])
+  //
   return {
     bids,
     loading,
