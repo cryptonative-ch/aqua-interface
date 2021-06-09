@@ -77,15 +77,20 @@ export function HeaderItem({
   const [, setTime] = useState<number>(0)
   const [descriptionText, setDescriptionText] = useState<string>(description)
 
+  const runTimer = () => {
+    if (!saleLive || !sale) return
+
+    setTime(PrevTime => (PrevTime + 1) % 2)
+    const localTimeStamp = dayjs(Date.now()).unix()
+    const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(sale.endDate))
+    setDescriptionText(secondsTohms(timeDiffEnd))
+  }
+
   // re-renders component every second
   useEffect(() => {
     if (saleLive && sale) {
-      const interval = setInterval(() => {
-        setTime(PrevTime => (PrevTime + 1) % 2)
-        const localTimeStamp = dayjs(Date.now()).unix()
-        const timeDiffEnd = Math.abs(localTimeStamp - convertUtcTimestampToLocal(sale.endDate))
-        setDescriptionText(secondsTohms(timeDiffEnd))
-      }, 1000)
+      runTimer()
+      const interval = setInterval(runTimer, 1000)
 
       return () => {
         clearInterval(interval)

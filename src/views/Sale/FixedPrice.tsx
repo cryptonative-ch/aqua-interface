@@ -131,7 +131,7 @@ export function FixedPriceSaleView() {
                       <HeaderItem
                         isMobile
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale as FIX_LATER}
@@ -163,7 +163,7 @@ export function FixedPriceSaleView() {
                     {isSaleOpen(sale as FIX_LATER) && (
                       <HeaderItem
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale as FIX_LATER}

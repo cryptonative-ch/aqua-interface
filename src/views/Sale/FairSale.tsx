@@ -155,7 +155,7 @@ export function FairSaleView() {
                       <HeaderItem
                         isMobile
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale}
@@ -186,7 +186,7 @@ export function FairSaleView() {
                     {isSaleOpen(sale) && (
                       <HeaderItem
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale}
