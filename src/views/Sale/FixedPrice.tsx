@@ -115,11 +115,10 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(sale.allocationMin, sale.tokenOut.decimals)).format(
-                        '0,0'
-                      )} - ${numeral(formatBigInt(sale.allocationMax, sale.tokenOut.decimals)).format('0,0')} ${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${formatBigInt(
+                        sale.allocationMin,
+                        sale.tokenOut.decimals
+                      )} - ${formatBigInt(sale.allocationMax, sale.tokenOut.decimals)} ${sale.tokenOut?.symbol}`}
                     />
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
@@ -148,9 +147,10 @@ export function FixedPriceSaleView() {
                     />
                     <HeaderItem
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(sale.allocationMin)).format('0,0')} - ${numeral(
-                        formatBigInt(sale.allocationMax)
-                      ).format('0,0')} ${sale.tokenOut?.symbol}`}
+                      description={`${formatBigInt(
+                        sale.allocationMin,
+                        sale.tokenOut.decimals
+                      )} - ${formatBigInt(sale.allocationMax, sale.tokenOut.decimals)} ${sale.tokenOut?.symbol}`}
                       flexAmount={1.5}
                     />
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
