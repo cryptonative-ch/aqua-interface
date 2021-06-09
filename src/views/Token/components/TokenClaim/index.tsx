@@ -54,6 +54,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const { isMobile } = useWindowSize()
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
   const [error, setError] = useState<Error>()
+  const [tx, setTx] = useState<ContractTransaction>()
   const claimTokens = async (saleId: string, signer: Signer) => {
     //take this out before production
     await FixedPriceSale__factory.connect(saleId, signer)
@@ -70,6 +71,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
       .then((tx: ContractTransaction) => {
         setClaim('verify')
         tx.wait(1)
+        setTx(tx)
       })
       .then(receipt => {
         console.log(receipt)
@@ -100,7 +102,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const purchase: FixedPriceSalePurchase = { sale, amount, ...rest }
 
   if (claim === 'claimed') {
-    return <SuccessfulClaim purchase={purchase} />
+    return <SuccessfulClaim purchase={purchase} tx={tx!.hash} />
   }
 
   return (
