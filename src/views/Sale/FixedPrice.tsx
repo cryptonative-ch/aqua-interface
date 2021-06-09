@@ -37,7 +37,7 @@ import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
+import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
