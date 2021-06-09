@@ -156,9 +156,9 @@ export function TokenView() {
       <Container>
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
-          {filteredData?.map(tokens => (
-            <TokenClaim key={tokens.id} purchase={tokens} />
-          ))}
+          {filteredData?.map(
+            tokens => <TokenClaim key={tokens.id} purchase={tokens} /> || <h1>No Tokens Available to Claim</h1>
+          )}
         </GridListSection>
       </Container>
       {!isMobile && <Footer />}
