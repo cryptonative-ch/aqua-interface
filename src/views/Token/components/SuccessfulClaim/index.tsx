@@ -64,8 +64,7 @@ export const SuccessfulClaim = ({ purchase: { sale, amount } }: TokenClaimProps)
           </Flex>
           <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
           <CardText color="grey">
-            {' '}
-            `${formatBigInt(amount, sale?.tokenOut.decimals)} ${sale?.tokenOut.name} has been sent to your address.`
+            {`${formatBigInt(amount, sale?.tokenOut.decimals)} ${sale?.tokenOut.name} has been sent to your address.`}
           </CardText>
           <Link marginTop="24px">
             See this transaction on block explorer
