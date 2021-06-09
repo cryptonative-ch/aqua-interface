@@ -68,20 +68,20 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const { bids } = useBids(params.saleId)
-  console.log(bids)
+  const { bids, bidsLoading, bidsError } = useBids(params.saleId)
 
+  console.log(bids)
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
       setShowGraph(!showGraph)
     }
   }
 
-  if (loading) {
+  if (loading && bidsLoading) {
     return <Center>loading</Center>
   }
 
-  if (error) {
+  if (error && bidsError) {
     return (
       <Center>
         <ErrorMesssage error={error} />
