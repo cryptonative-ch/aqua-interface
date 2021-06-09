@@ -35,10 +35,12 @@ export function useBids(saleId: string): UseBidsReturn {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
-  const bids = useSelector(({ bids }) => bids.bidsBySaleId[saleId].bids)
+  const bids = useSelector(state => {
+    return state.bids
+  })
   useEffect(() => {
     // Sale exists in Redux cache, return
-    if (bids) {
+    if (bids.bidsBySaleId[saleId]) {
       return setLoading(false)
     }
     // Store is missing this sale
@@ -49,8 +51,9 @@ export function useBids(saleId: string): UseBidsReturn {
     mesa.subgraph
       .query(saleBidsQuery(saleId))
       .then(({ data }) => {
-        const { fixedPriceSale, fairSale } = data
-        const saleBids = fixedPriceSale ? fixedPriceSale.purchases : fairSale.bids
+        console.log(data)
+        const { fixedPriceSales, fairSales } = data
+        const saleBids = fixedPriceSales ? fixedPriceSales.purchases : fairSales.bids
         const sales: BidsBySaleId = saleBids.reduce(
           (a: any, x: any) => ({
             [x.sale.id]: {
@@ -60,6 +63,7 @@ export function useBids(saleId: string): UseBidsReturn {
           }),
           {}
         )
+        console.log(sales)
         // Merge store data with this
         dispatch(initialBidSuccess(sales))
       })
