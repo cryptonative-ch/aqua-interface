@@ -1,6 +1,3 @@
-// Subgraph
-import { subgraphCall } from 'src/subgraph/index'
-
 export const salesQuery = `
   {
     fixedPriceSales {

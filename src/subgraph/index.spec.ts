@@ -5,8 +5,7 @@ import { mockServer } from 'graphql-tools'
 import { cleanup } from '@testing-library/react'
 
 //components
-import { generateInitialSaleData, getSalesData, selectSaletype } from './index'
-import { saleBidsQuery } from 'src/subgraph/SaleBids'
+import { getSalesData } from './index'
 import { salesQuery } from 'src/subgraph/Sales'
 
 //mocks
