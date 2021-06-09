@@ -55,6 +55,16 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
   const [error, setError] = useState<Error>()
   const claimTokens = async (saleId: string, signer: Signer) => {
+    //take this out before production
+    await FixedPriceSale__factory.connect(saleId, signer)
+      .closeSale()
+      .then((tx: ContractTransaction) => {
+        tx.wait(1)
+      })
+      .catch((error: Error) => {
+        console.log(error)
+        setError(error)
+      })
     await FixedPriceSale__factory.connect(saleId, signer)
       .claimTokens()
       .then((tx: ContractTransaction) => {
