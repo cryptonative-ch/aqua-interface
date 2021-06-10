@@ -77,7 +77,7 @@ export function FixedPriceSaleView() {
     }
   }
 
-  if (loading && bidsLoading) {
+  if (loading) {
     return <Center>loading</Center>
   }
 

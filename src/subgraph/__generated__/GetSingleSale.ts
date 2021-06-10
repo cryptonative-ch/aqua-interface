@@ -46,6 +46,10 @@ export interface GetSingleSale_fixedPriceSale {
    */
   endDate: number
   /**
+   * Amount of tokens sold so far
+   */
+  soldAmount: any
+  /**
    * Amount of tokens to sell
    */
   sellAmount: any
