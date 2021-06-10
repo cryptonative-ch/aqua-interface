@@ -1,5 +1,4 @@
 // Externals
-import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -8,7 +7,6 @@ import advanced from 'dayjs/plugin/advancedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
-import momentTimeZone from 'moment-timezone'
 
 // Component
 import { secondsTohms, timeEnd } from './index'

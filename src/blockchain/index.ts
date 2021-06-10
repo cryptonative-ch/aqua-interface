@@ -3,7 +3,7 @@ import { providers } from 'ethers'
 import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
 
 // interfaces
-import { FairSaleBid, FixedPriceSalePurchase, SaleBid, SaleType } from 'src/interfaces/Sale'
+import { FairSaleBid, SaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Redux
 import { fetchBidsFromChain } from 'src/redux/bids'
