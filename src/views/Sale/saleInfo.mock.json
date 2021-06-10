@@ -1,0 +1,29 @@
+{
+  "icon": "https://img.icons8.com/question",
+  "description": "This can be a description for the project loaded from IPFS. Diam purus diam, nam sagittis risus. Nunc consequat felis tincidunt volutpat et. Malesuada tortor, auctor quis id nisl mattis platea.",
+  "website": {
+    "url": "https://exwhyzed.finance"
+  },
+  "socials": [
+    {
+      "name": "Github",
+      "icon": "https://img.icons8.com/github",
+      "link": "https://github.com/cryptonative-ch"
+    },
+    {
+      "name": "Twitter",
+      "icon": "https://img.icons8.com/twitter",
+      "link": "https://twitter.com/mesa_eth"
+    },
+    {
+      "name": "Discord",
+      "icon": "https://img.icons8.com/discord",
+      "link": "https://discord.com/invite/4QXEJQkvHH"
+    },
+    {
+      "name": "Telegram",
+      "icon": "https://img.icons8.com/telegram",
+      "link": "https://t.me/dxDAO"
+    }
+  ]
+}
