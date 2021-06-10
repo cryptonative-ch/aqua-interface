@@ -10,7 +10,7 @@ export type ContainerProps = LayoutProps &
 
 export const Container = styled.div<ContainerProps>(
   props => ({
-    Height: '100%',
+    height: 'auto',
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
     paddingRight: props.noPadding ? 0 : props.theme.space[3],
