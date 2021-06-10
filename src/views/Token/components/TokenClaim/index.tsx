@@ -1,10 +1,11 @@
 // Externals
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Signer } from '@ethersproject/abstract-signer'
 import { ethers, ContractTransaction } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
+import numeral from 'numeral'
 
 // Components
 import { Card } from 'src/components/Card'
@@ -33,9 +34,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Theme
 import { theme } from 'src/styles/theme'
 
-// Mesa Utils
-import { formatBigInt } from 'src/utils/Defaults'
-
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
 
@@ -55,47 +53,56 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
-
+  const [error, setError] = useState<Error>()
+  const [tx, setTx] = useState<ContractTransaction>()
   const claimTokens = async (saleId: string, signer: Signer) => {
+    //take this out before production
     await FixedPriceSale__factory.connect(saleId, signer)
-      .claimToken()
+      .closeSale()
+      .then((tx: ContractTransaction) => {
+        tx.wait(1)
+      })
+      .catch((error: Error) => {
+        console.log(error)
+        setError(error)
+      })
+    await FixedPriceSale__factory.connect(saleId, signer)
+      .claimTokens()
       .then((tx: ContractTransaction) => {
         setClaim('verify')
         tx.wait(1)
+        setTx(tx)
       })
-      .then((receipt: ContractTransaction) => {
+      .then(receipt => {
         console.log(receipt)
         setClaim('claimed')
       })
       .catch((error: Error) => {
+        setError(error)
         console.log(error)
         setClaim('failed')
       })
   }
 
-  let signer: Signer
-  useEffect(() => {
-    // connect to metamask
-    const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-    signer = provider.getSigner(0)
-  }, [claim])
+  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  const signer = provider.getSigner(0)
 
-  const preDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[0]
+  const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
 
-  const postDecimalAmount = formatBigInt(amount, sale?.tokenOut.decimals).toString().split('\\.')[1]
+  const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
   if (claim === 'verify') {
     return <VerifyState />
   }
 
-  if (claim === 'failed') {
-    return <FailedClaim />
+  if (claim === 'failed' && error) {
+    return <FailedClaim error={JSON.stringify(error)} />
   }
 
   const purchase: FixedPriceSalePurchase = { sale, amount, ...rest }
 
   if (claim === 'claimed') {
-    return <SuccessfulClaim purchase={purchase} />
+    return <SuccessfulClaim purchase={purchase} tx={tx!.hash} />
   }
 
   return (
@@ -105,21 +112,23 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
           <TokenIconFigure>
             <Icon src={sale?.tokenOut.icon || noToken} />
           </TokenIconFigure>
-          <CardTitle fontWeight={500}>Claim {sale?.tokenOut.name}</CardTitle>
+          <CardTitle fontWeight={500}>Claim {sale?.tokenOut.symbol}</CardTitle>
         </Flex>
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly">
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" margin="24px 0px 12px 0px">
             <CardText color="grey">{t('texts.unclaimed')}</CardText>
             <Flex>
               <CardText>{preDecimalAmount}</CardText>
-              <CardText color="grey">{postDecimalAmount}</CardText>
-              <CardText>&nbsp;{sale?.tokenOut.name}</CardText>
+              <CardText color="grey">{`.${postDecimalAmount}`}</CardText>
+              <CardText>&nbsp;{sale?.tokenOut.symbol}</CardText>
             </Flex>
           </Flex>
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" margin="12px 0px 24px 0px">
             <CardText color="grey">{t('texts.currentPrice')}</CardText>
-            <CardText>{`${sale?.tokenPrice} ${sale?.tokenIn.name}`}</CardText>
+            <CardText>{`${numeral(ethers.utils.formatUnits(sale ? sale.tokenPrice : 0, sale?.tokenOut.decimals)).format(
+              '0.0'
+            )} ${sale?.tokenIn.symbol}`}</CardText>
           </Flex>
           <Button onClick={() => claimTokens(sale!.id, signer)} width="90%">
             {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
