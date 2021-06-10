@@ -198,7 +198,7 @@ export function FairSaleView() {
               </CardBody>
               {isSaleOpen(sale) && bids && bids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
-                  <HeaderControl sale={sale} showGraph={showGraph} toggleGraph={toggleGraph} />
+                  <HeaderControl bids={bids} sale={sale} showGraph={showGraph} toggleGraph={toggleGraph} />
                 </CardBody>
               )}
               {isSaleClosed(sale) && (!bids || bids.length === 0) && (
@@ -208,6 +208,7 @@ export function FairSaleView() {
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     status={isSaleClosed(sale) ? 'closed' : 'active'}
+                    bids={bids}
                   />
                 </CardBody>
               )}

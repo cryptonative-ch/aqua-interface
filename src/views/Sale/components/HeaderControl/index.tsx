@@ -15,7 +15,7 @@ import UpSVG from 'src/assets/svg/Up-Arrow.svg'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
-import { Sale } from 'src/interfaces/Sale'
+import { Sale, SaleBid } from 'src/interfaces/Sale'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
@@ -114,12 +114,13 @@ interface HeaderControlProps {
   isFixed?: boolean
   toggleGraph: () => void
   sale: Sale
+  bids: SaleBid[]
 }
 
-export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, bids }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
 
-  if (isFixed && status === 'active') {
+  if (isFixed && bids && bids.length > 0) {
     const tokenSold = formatBigInt(sale.soldAmount, sale.tokenOut.decimals)
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const Threshold = formatBigInt(sale.minimumRaise)

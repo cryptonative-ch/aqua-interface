@@ -184,10 +184,11 @@ export function FixedPriceSaleView() {
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
+                    bids={bids}
                   />
                 </CardBody>
               )}
-              {isSaleClosed(sale as FIX_LATER) && (!bids || bids.length === 0) && (
+              {isSaleClosed(sale as FIX_LATER) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}
@@ -195,6 +196,7 @@ export function FixedPriceSaleView() {
                     toggleGraph={toggleGraph}
                     isFixed={true}
                     status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
+                    bids={bids}
                   />
                 </CardBody>
               )}
