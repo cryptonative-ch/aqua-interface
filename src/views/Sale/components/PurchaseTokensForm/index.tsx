@@ -24,6 +24,7 @@ import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
+import { formatBigInt, formatDecimal, fromBigDecimalToBigInt } from 'src/utils/Defaults'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -53,21 +54,23 @@ const FormText = styled.div({
   lineHeight: '48px',
   margin: '0 16px',
   userSelect: 'none',
+  right: 0,
+  zIndex: 999,
 })
 
 const FormInput = styled.input({
   flex: 1,
   height: 'unset',
-  background: 'transparent',
+  background: '#F2F2F2',
   border: 'none',
-  color: 'transparent',
+  color: '#7B7F93',
   padding: '0 16px',
   fontSize: '14px',
   lineHeight: '21px',
   zIndex: 100,
   ':focus': {
-    backgroundColor: 'transparent',
-    color: 'transparent',
+    background: '#F2F2F2',
+    color: '#7B7F93',
   },
 })
 const FormFull = styled(Form)`
@@ -99,37 +102,45 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
   const [validationError, setValidationError] = useState<Error>()
   // Store tokens as 18 decimal BigNumber
-  const [tokenAmount, setTokenAmount] = useState(0)
+  const [tokenAmount, setTokenAmount] = useState<number | undefined>()
 
   // A form is valid when
   // 1. tokenAmount >= minimum Allocation
   // 2. tokenAmount <= max allocation (including previous purchases)
   // 3. bidding token balance <= purchaseValue
   const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value) {
+      return setTokenAmount(undefined)
+    }
     // Assume that there are no validation errors
     let newValidationError = undefined
     // Convert minimum allocation
-    const purchaseMinimumAllocation = BigNumber.from(sale?.allocationMin || 0)
+    const purchaseMinimumAllocation = BigNumber.from(sale?.allocationMin)
+    const purchaseMaximumAllocation = BigNumber.from(sale?.allocationMax)
     // Convert sale.tokenPrice to BigNumber for accurate math operations
     // It also avoids dealing with native JavaScript operations
-    const tokenPrice = BigNumber.from(sale?.tokenPrice || 0)
-    // Parse to 18 deciamals
-    const newTokenAmount = parseFloat(event.target.value || '0')
-    const newTokenAmountBigNumber = utils.formatEther(event.target.value || '0')
-    // Calcualte purchase value = tokenPrice (BigNumber) * tokenAmount (BigNumberish-number)
-    const purchaseValue = tokenPrice.mul(newTokenAmount)
+    const tokenPrice = BigNumber.from(sale?.tokenPrice)
 
-    console.log(purchaseMinimumAllocation.toString())
-
-    console.log({
-      purchaseMinimumAllocation,
-      newTokenAmountBigNumber,
-      utils,
-    })
+    const newTokenAmount = parseFloat(event.target.value)
+    const bigTokenAmount = fromBigDecimalToBigInt(event.target.value)
+    // Calcualte purchase value = tokenPrice (BigNumber) * tokenAmount
+    // Currently a slightly complex solution to multiply BigNumbers by fractional token amounts
+    // If you have a better solution please improve
+    let purchaseValue
+    if (newTokenAmount % 1 != 0) {
+      const int = Math.trunc(newTokenAmount)
+      const remainder = newTokenAmount - int
+      purchaseValue = tokenPrice.div(Math.round(1 / remainder)).add(int ? tokenPrice.mul(int) : 0)
+    } else {
+      purchaseValue = tokenPrice.mul(newTokenAmount)
+    }
 
     // tokeAmount is less than minimum allocation
-    if (purchaseMinimumAllocation.lt(newTokenAmount)) {
+    if (purchaseMinimumAllocation.gt(bigTokenAmount)) {
       newValidationError = new Error(`Token amount is less than ${utils.formatUnits(sale?.allocationMin)}`)
+    }
+    if (purchaseMaximumAllocation.lt(bigTokenAmount)) {
+      newValidationError = new Error(`Token amount is more than ${utils.formatUnits(sale?.allocationMax)}`)
     }
     // User's tokenIn (i.e. USDC, DAI) balance is zero
     else if (tokenBalance.isZero()) {
@@ -141,7 +152,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     }
 
     // Update Component state and re-render
-    setTokenAmount(newTokenAmount) // Convert back to number
+    setTokenAmount(parseFloat(event.target.value)) // Convert back to number
     setValidationError(newValidationError)
   }
 
@@ -161,6 +172,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
       if (!account || !library) {
         return console.error('no connected signer')
+      }
+
+      if (!tokenAmount) {
+        return console.error('token amount == null')
       }
 
       const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
@@ -213,13 +228,13 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">
-              {tokenAmount} {sale.tokenOut.symbol}
-            </FormText>
+            <FormText data-testid="amount-value">{sale.tokenOut.symbol}</FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
               type="number"
+              step="0.01"
+              placeholder="0.0"
               value={tokenAmount}
               onChange={onTokenAmountChange}
             />

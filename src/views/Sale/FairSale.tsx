@@ -89,7 +89,7 @@ export function FairSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const { sale } = useSale(params.saleId)
+  const { error, loading, sale } = useSale(params.saleId)
   const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as FairSaleBid[]
 
   const toggleGraph = () => {
