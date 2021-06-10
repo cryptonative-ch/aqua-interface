@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import numeral from 'numeral'
+import { ethers } from 'ethers'
 
 // Hooks
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
@@ -68,7 +69,8 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const { bids, totalBids } = useBids(params.saleId)
+  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider, sale?.tokenOut.decimals)
 
   console.log(bids)
   const toggleGraph = () => {
