@@ -68,7 +68,7 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const { bids, bidsLoading, bidsError } = useBids(params.saleId)
+  const { bids, totalBids } = useBids(params.saleId)
 
   console.log(bids)
   const toggleGraph = () => {
@@ -177,14 +177,14 @@ export function FixedPriceSaleView() {
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale as FIX_LATER) && bids && bids.length > 0 && (
+              {isSaleOpen(sale as FIX_LATER) && totalBids && totalBids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
-                    bids={bids}
+                    bids={totalBids}
                   />
                 </CardBody>
               )}
@@ -196,7 +196,7 @@ export function FixedPriceSaleView() {
                     toggleGraph={toggleGraph}
                     isFixed={true}
                     status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
-                    bids={bids}
+                    bids={totalBids}
                   />
                 </CardBody>
               )}

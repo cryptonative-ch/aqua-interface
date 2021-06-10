@@ -1,6 +1,7 @@
 // External
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 
 // Hooks
 import { useMesa } from './useMesa'
@@ -16,7 +17,7 @@ import {
   BidsBySaleId,
 } from 'src/redux/bids'
 // Interfaces
-import { FixedPriceSalePurchase, SaleBid, FairSaleBid, SaleType } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchase, SaleBid, FairSaleBid, SaleType, Sale } from 'src/interfaces/Sale'
 
 // Blockchain websocket
 import { getBidDataFromChain } from 'src/blockchain'
@@ -27,20 +28,22 @@ import { saleBidsQuery } from 'src/subgraph/SaleBids'
 interface UseBidsReturn {
   bidsLoading: boolean
   bidsError: Error | undefined
-  bids: any | undefined
+  bids: SaleBid[]
+  totalBids: SaleBid[]
 }
 
 export function useBids(saleId: string): UseBidsReturn {
   const dispatch = useDispatch()
   const [bidsLoading, setBidsLoading] = useState<boolean>(true)
   const [bidsError, setBidsError] = useState<Error>()
+  const { account } = useWeb3React()
   const mesa = useMesa()
-  // undefined when no bids have been made
-  const bids = useSelector(state => {
+  const totalBids = useSelector(state => {
     return state.bids.bidsBySaleId[saleId] ? state.bids.bidsBySaleId[saleId].bids : []
   })
+  const bids = totalBids.filter((bid: any) => bid.buyer === account)
   useEffect(() => {
-    // Sale exists in Redux cache, return
+    // bids exists in Redux cache, return
     if (bids.length) {
       return setBidsLoading(false)
     }
@@ -55,7 +58,7 @@ export function useBids(saleId: string): UseBidsReturn {
         const { fixedPriceSales, fairSales } = data
         const saleBids = fixedPriceSales ? fixedPriceSales[0].purchases : fairSales[0].bids
         const sales: BidsBySaleId = saleBids.reduce(
-          (a: any, x: any) => ({
+          (_: any, x: any) => ({
             [x.sale.id]: {
               lastUpdated: Date.now(),
               bids: saleBids,
@@ -63,7 +66,6 @@ export function useBids(saleId: string): UseBidsReturn {
           }),
           {}
         )
-        // Merge store data with this
         dispatch(initialBidSuccess(sales))
       })
       .catch(bidsError => {
@@ -73,7 +75,7 @@ export function useBids(saleId: string): UseBidsReturn {
       .then(() => {
         setBidsLoading(false)
       })
-  }, [])
+  }, [account])
   //
   //  useEffect(() => {
   //    if (bids) {
@@ -90,6 +92,7 @@ export function useBids(saleId: string): UseBidsReturn {
   //  }, [bids])
   //
   return {
+    totalBids,
     bids,
     bidsLoading,
     bidsError,
