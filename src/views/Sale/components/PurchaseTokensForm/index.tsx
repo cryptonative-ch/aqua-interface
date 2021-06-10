@@ -130,14 +130,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     let newValidationError = undefined
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
     // Convert min max allocations
+    // Converting BigNumbers to normal numbers due to lack of decimal support
     const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
     const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
-    // Convert sale.tokenPrice to BigNumber for accurate math operations
-    // It also avoids dealing with native JavaScript operations
     const tokenPrice = parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice)))
-    // console.log(utils.parseEther(tokenPrice.toString()).toString())
-    // console.log(utils.formatUnits(tokenPrice))
-    // console.log(utils.parseUnits(tokenPrice.toString()).toString())
 
     const newPurchaseValue = parseFloat(event.target.value)
 
@@ -156,7 +152,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     }
 
     // Update Component state and re-render
-    setPurchaseValue(newPurchaseValue) // Convert back to number
+    setPurchaseValue(newPurchaseValue)
     setTokenQuantity(quantity)
     setValidationError(newValidationError)
   }
