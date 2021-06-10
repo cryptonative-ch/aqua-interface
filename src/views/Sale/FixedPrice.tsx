@@ -36,7 +36,7 @@ import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
+import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
@@ -129,7 +129,7 @@ export function FixedPriceSaleView() {
                       <HeaderItem
                         isMobile
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale as FIX_LATER}
@@ -162,7 +162,7 @@ export function FixedPriceSaleView() {
                     {isSaleOpen(sale as FIX_LATER) && (
                       <HeaderItem
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale as FIX_LATER}

@@ -40,7 +40,7 @@ import { BarChart } from './components/BarChart'
 // Mesa Utils
 import { calculateClearingPrice } from 'src/mesa/price'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { secondsTohms, timeEnd } from 'src/views/Sale/components/Timer'
+import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // Wallet Utils
@@ -155,7 +155,7 @@ export function FairSaleView() {
                       <HeaderItem
                         isMobile
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale}
@@ -186,7 +186,7 @@ export function FairSaleView() {
                     {isSaleOpen(sale) && (
                       <HeaderItem
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale}
