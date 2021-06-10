@@ -81,7 +81,7 @@ export function FixedPriceSaleView() {
     return <Center>loading</Center>
   }
 
-  if (error && bidsError) {
+  if (error) {
     return (
       <Center>
         <ErrorMesssage error={error} />

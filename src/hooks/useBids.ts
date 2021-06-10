@@ -35,12 +35,13 @@ export function useBids(saleId: string): UseBidsReturn {
   const [bidsLoading, setBidsLoading] = useState<boolean>(true)
   const [bidsError, setBidsError] = useState<Error>()
   const mesa = useMesa()
+  // undefined when no bids have been made
   const bids = useSelector(state => {
-    return state.bids.bidsBySaleId[saleId].bids
+    return state.bids.bidsBySaleId[saleId] ? state.bids.bidsBySaleId[saleId].bids : []
   })
   useEffect(() => {
     // Sale exists in Redux cache, return
-    if (bids) {
+    if (bids.length) {
       return setBidsLoading(false)
     }
     // Store is missing this sale
