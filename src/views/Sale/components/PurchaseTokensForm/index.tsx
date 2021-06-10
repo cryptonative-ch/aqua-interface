@@ -24,7 +24,7 @@ import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
-import { formatBigInt, formatDecimal, fromBigDecimalToBigInt } from 'src/utils/Defaults'
+import { fromBigDecimalToBigInt } from 'src/utils/Defaults'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -135,7 +135,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       purchaseValue = tokenPrice.mul(newTokenAmount)
     }
 
-    // tokeAmount is less than minimum allocation
+    // tokenAmount is less than minimum allocation
     if (purchaseMinimumAllocation.gt(bigTokenAmount)) {
       newValidationError = new Error(`Token amount is less than ${utils.formatUnits(sale?.allocationMin)}`)
     }
@@ -152,7 +152,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     }
 
     // Update Component state and re-render
-    setTokenAmount(parseFloat(event.target.value)) // Convert back to number
+    setTokenAmount(newTokenAmount) // Convert back to number
     setValidationError(newValidationError)
   }
 
