@@ -33,26 +33,21 @@ export function useBids(
   provider: providers.JsonRpcProvider,
   decimal: number
 ): UseBidsReturn {
+  //  const [bids, setBids] = useState<SaleBid[]>([])
   const dispatch = useDispatch()
   const { account } = useWeb3React()
   const mesa = useMesa()
-  console.log(saleId)
   const {
     isLoading,
     error,
-    bidsBySaleId: { [saleId]: { updatedAt, bids: totalBids } = { updatedAt: 0, bids: [] } },
+    bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
-  //  const { updatedAt, bids: totalBids } = bidsBySaleId[saleId]
 
-  const bids = totalBids.filter((bid: any) => bid.buyer === account)
-
-  console.log(totalBids)
-  console.log(account)
-  console.log(bids)
+  const { bids: totalBids } = useChain(saleId, saleType, provider, decimal)
+  const bids = totalBids.filter((bid: any) => bid.buyer === account?.toLowerCase())
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
-    const chainbids = useChain(saleId, saleType, provider, decimal)
     const timeNow = dayjs.utc().unix()
     const delta = Math.abs(updatedAt - timeNow)
     if (delta <= 30 && account) {

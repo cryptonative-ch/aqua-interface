@@ -1,6 +1,6 @@
 // External
-import { useDispatch } from 'react-redux'
-import react, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 import { providers } from 'ethers'
 import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
 
@@ -17,13 +17,25 @@ import { formatDecimal } from 'src/utils/Defaults'
 // TODO: CLAIMTOKENS LOGIC
 // TODO: :w
 //
+
+interface UseChainReturns {
+  loading: boolean
+  bids: SaleBid[]
+  error: Error | null
+}
+
 export function useChain(
   contractAddress: string,
   saleType: SaleType,
   provider: providers.JsonRpcProvider,
   decimal: number
-) {
+): UseChainReturns {
   const dispatch = useDispatch()
+  const {
+    isLoading,
+    error,
+    bidsBySaleId: { [contractAddress]: { bids } = { bids: [] } },
+  } = useSelector(({ bids }) => bids)
 
   useEffect(() => {
     if (saleType == 'FairSale') {
@@ -77,4 +89,9 @@ export function useChain(
       }
     })
   }, [dispatch])
+  return {
+    bids,
+    loading: isLoading,
+    error,
+  }
 }
