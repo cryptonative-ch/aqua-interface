@@ -56,6 +56,6 @@ describe('testing Sale Summary Card', () => {
     expect(getByText('texts.salesType')).toBeInTheDocument()
     expect(getByText('texts.currentPrice')).toBeInTheDocument()
     expect(getByText('texts.amountForSale')).toBeInTheDocument()
-    expect(getByText('Private')).toBeInTheDocument()
+    expect(getByText('Public')).toBeInTheDocument()
   })
 })

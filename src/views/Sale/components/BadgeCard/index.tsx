@@ -5,7 +5,7 @@ import React from 'react'
 import { Badge, Content } from 'src/components/Badge'
 
 interface BadgeCardProps {
-  saleType: 'private' | 'presale'
+  saleType: 'public' | 'presale'
 }
 
 export const BadgeCard: React.FC<BadgeCardProps> = ({ saleType }) => {
@@ -15,10 +15,10 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ saleType }) => {
         <Content>Pre-sale</Content>
       </Badge>
     )
-  } else if (saleType == 'private') {
+  } else if (saleType == 'public') {
     return (
       <Badge>
-        <Content>Private</Content>
+        <Content>Public</Content>
       </Badge>
     )
   }
