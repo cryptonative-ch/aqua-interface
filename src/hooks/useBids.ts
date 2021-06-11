@@ -1,5 +1,6 @@
 // External
 import { useDispatch, useSelector } from 'react-redux'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { providers } from 'ethers'
@@ -9,11 +10,12 @@ import { useMesa } from './useMesa'
 
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
+import { store } from 'src/redux/store'
 // Interfaces
 import { FixedPriceSalePurchase, Bid, SaleBid, FairSaleBid, SaleType, Sale } from 'src/interfaces/Sale'
 
 // Blockchain websocket
-import { getBidDataFromChain } from 'src/blockchain'
+import { useChain } from 'src/hooks/useChain'
 
 // Query
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
@@ -40,10 +42,25 @@ export function useBids(
     return state.bids.bidsBySaleId[saleId] ? state.bids.bidsBySaleId[saleId].bids : []
   })
   const bids = totalBids.filter((bid: any) => bid.buyer === account)
+
+  console.log(totalBids)
+  console.log(account)
+  console.log(bids)
+
   useEffect(() => {
-    if (bids.length) {
+    if (bids.length > 0) {
       return setBidsLoading(false)
     }
+    const timeNow = dayjs.utc().unix()
+    // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
+    const { updatedAt } = store.getState().bids.bidsBySaleId[saleId] || timeNow
+    const delta = Math.abs(updatedAt - timeNow)
+    // exit
+    // should only be called once
+    if (delta <= 3000000) {
+      return
+    }
+
     dispatch(initialBidRequest(true))
     mesa.subgraph
       .query(saleBidsQuery(saleId))
@@ -68,7 +85,8 @@ export function useBids(
       .then(() => {
         setBidsLoading(false)
       })
-    getBidDataFromChain(saleId, saleType, provider, decimal)
+
+    //const { bids: chainBids } = useChain(saleId, saleType, provider, decimal)
   }, [account])
   return {
     totalBids,

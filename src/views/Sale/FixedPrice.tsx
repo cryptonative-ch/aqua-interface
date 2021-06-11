@@ -44,7 +44,6 @@ import { formatBigInt } from 'src/utils/Defaults'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 
 //bids
@@ -72,7 +71,6 @@ export function FixedPriceSaleView() {
   const provider = new ethers.providers.Web3Provider((window as any).ethereum)
   const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider, sale?.tokenOut.decimals)
 
-  console.log(bids)
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
       setShowGraph(!showGraph)
