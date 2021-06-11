@@ -1,7 +1,7 @@
 // External
 import { useDispatch, useSelector } from 'react-redux'
 import dayjs from 'dayjs'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { providers } from 'ethers'
 
@@ -9,10 +9,9 @@ import { providers } from 'ethers'
 import { useMesa } from './useMesa'
 
 // Redux actions
-import { BidsState, initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
-import { store } from 'src/redux/store'
+import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
 // Interfaces
-import { FixedPriceSalePurchase, Bid, SaleBid, FairSaleBid, SaleType, Sale } from 'src/interfaces/Sale'
+import { SaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Blockchain websocket
 import { useChain } from 'src/hooks/useChain'
@@ -33,7 +32,6 @@ export function useBids(
   provider: providers.JsonRpcProvider,
   decimal: number
 ): UseBidsReturn {
-  //  const [bids, setBids] = useState<SaleBid[]>([])
   const dispatch = useDispatch()
   const { account } = useWeb3React()
   const mesa = useMesa()

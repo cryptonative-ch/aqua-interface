@@ -6,7 +6,6 @@ import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import { ethers } from 'ethers'
 
 // Hooks
@@ -257,7 +256,7 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
+                    <FixedFormMax>{`Max. ${ethers.utils.formatUnits(sale?.allocationMax)} ${
                       sale.tokenOut?.symbol
                     }`}</FixedFormMax>
                   </Flex>
