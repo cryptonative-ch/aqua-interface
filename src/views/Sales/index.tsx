@@ -11,7 +11,7 @@ import { setPageTitle } from 'src/redux/page'
 // Components
 import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 import { SaleSummaryCard } from './components/SaleSummaryCard'
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 import { SaleNavBar } from './components/SaleNavBar'
 import { Container } from 'src/components/Container'
 import { Header } from 'src/components/Header'
@@ -98,7 +98,7 @@ export function SalesView() {
             <Title>Token Sales</Title>
             <SaleNavBar />
             <GridListSection>
-              <ErrorMesssage error={error} />
+              <ErrorMessage error={error} />
             </GridListSection>
           </Container>
         </Center>

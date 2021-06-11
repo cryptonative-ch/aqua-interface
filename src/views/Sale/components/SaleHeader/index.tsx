@@ -6,6 +6,10 @@ import dayjs from 'dayjs'
 //Interfaces
 import { Sale } from 'src/interfaces/Sale'
 
+// Components
+
+import { secondsTohms } from 'src/views/Sale/components/Timer'
+
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
@@ -89,25 +93,6 @@ const MobileTokenContainer = styled.img({
   height: '48px',
   borderRadius: '48px',
 })
-
-export const secondsTohms = (seconds: number) => {
-  if (seconds < 0) {
-    throw Error('seconds cannot be negative')
-  }
-
-  const d = Math.floor(seconds / 86400)
-  const h = Math.floor((seconds % 86400) / 3600)
-  const m = Math.floor(((seconds % 86400) % 3600) / 60)
-  const s = Math.floor((seconds % 86400) % 3600) % 60
-
-  const dDisplay = d > 0 ? d + 'd ' : ''
-  const hDisplay = h > 0 ? h + 'h ' : ''
-  const mDisplay = m > 0 ? m + 'm ' : ''
-  const sDisplay = s > 0 ? s + 's' : ''
-
-  return dDisplay + hDisplay + mDisplay + sDisplay
-}
-
 interface SaleHeaderProps {
   sale: Sale
 }
@@ -143,8 +128,8 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
       <HeaderContainer isMobile={isMobile}>
         <MobileTokenContainer src={sale.tokenOut?.icon || noToken} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
-          <MobileHeaderText>{`${sale.name} Initial Sale`}</MobileHeaderText>
-          <MobileStatusText>Private</MobileStatusText>
+          <MobileHeaderText>{`${sale.name}`}</MobileHeaderText>
+          <MobileStatusText>Public</MobileStatusText>
         </Flex>
       </HeaderContainer>
     )
@@ -153,8 +138,8 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
   return (
     <HeaderContainer isMobile={isMobile}>
       <TokenIconContainer src={sale.tokenOut?.icon || noToken} />
-      <HeaderText>{`${sale.name} Initial Sale`}</HeaderText>
-      <StatusText>Private</StatusText>
+      <HeaderText>{`${sale.name}`}</HeaderText>
+      <StatusText>Public</StatusText>
       {isSaleOpen(sale) && <TimeText data-testid="format_time">{format_time}</TimeText>}
     </HeaderContainer>
   )

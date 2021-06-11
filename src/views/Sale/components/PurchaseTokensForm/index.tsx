@@ -8,12 +8,11 @@ import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
-import { Button } from 'src/components/Button'
 import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
 
 // Components
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -24,24 +23,16 @@ import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
+import { LinkedButtons } from 'src/components/LinkedButtons'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
   fontWeight: 500,
   fontSize: '14px',
   lineHeight: '48px',
-  marginRight: '24px',
+  marginRight: '0px',
   width: '80px',
   color: '#000629',
-})
-
-const FormDescription = styled.div({
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  fontSize: '12px',
-  lineHeight: '17px',
-  marginTop: '8px',
-  color: '#7B7F93',
 })
 
 const FormContainer = styled.div({
@@ -62,50 +53,44 @@ const FormText = styled.div({
   lineHeight: '48px',
   margin: '0 16px',
   userSelect: 'none',
-})
-
-const FixedTerm = styled.div({
-  border: '1px dashed #DDDDE3',
-  borderWidth: '1px 0 0 0',
-  padding: '16px 0 8px 0',
-  textAlign: 'center',
-  fontSize: '14px',
-  lineHeight: '21px',
-  color: '#7B7F93',
-  fontWeight: 400,
-})
-
-const MaxButton = styled.div({
-  border: '1px solid #DDDDE3',
-  padding: '0 4px',
-  fontStyle: 'normal',
-  fontWeight: 500,
-  fontSize: '14px',
-  lineHeight: '21px',
-  textAlign: 'center',
-  color: '#7B7F93',
-  position: 'absolute',
-  right: '16px',
-  top: '13px',
-  cursor: 'pointer',
-  zIndex: 200,
+  right: 0,
+  zIndex: 999,
 })
 
 const FormInput = styled.input({
   flex: 1,
   height: 'unset',
-  background: 'transparent',
+  background: '#F2F2F2',
   border: 'none',
-  color: 'transparent',
+  color: '#7B7F93',
   padding: '0 16px',
   fontSize: '14px',
   lineHeight: '21px',
   zIndex: 100,
   ':focus': {
-    backgroundColor: 'transparent',
-    color: 'transparent',
+    background: '#F2F2F2',
+    color: '#7B7F93',
   },
 })
+
+const Message = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  alignSelf: 'center',
+  margin: '10px auto',
+})
+
+const SuccessMessage = styled(Message)({
+  color: '#4B9E98',
+})
+
+const PurchaseErrorMessage = styled(Message)({
+  color: '#E15F5F',
+})
+
+const FormFull = styled(Form)`
+  width: 100%;
+`
 
 interface PurchaseTokensFormComponentProps {
   saleId: string
@@ -131,50 +116,52 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   })
 
   const [validationError, setValidationError] = useState<Error>()
-  // Store tokens as 18 decimal BigNumber
-  const [tokenAmount, setTokenAmount] = useState(0)
+  const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
+  const [tokenQuantity, setTokenQuantity] = useState<number>(0)
 
   // A form is valid when
-  // 1. tokenAmount >= minimum Allocation
-  // 2. tokenAmount <= max allocation (including previous purchases)
+  // 1. purchaseValue >= minimum Allocation
+  // 2. purchaseValue <= max allocation (including previous purchases)
   // 3. bidding token balance <= purchaseValue
-  const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Assume that there are no validation errors
+  const onPurchaseValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value) {
+      return setPurchaseValue(undefined)
+    }
     let newValidationError = undefined
-    // Convert minimum allocation
-    const purchaseMinimumAllocation = BigNumber.from(sale?.allocationMin || 0)
-    // Convert sale.tokenPrice to BigNumber for accurate math operations
-    // It also avoids dealing with native JavaScript operations
-    const tokenPrice = BigNumber.from(sale?.tokenPrice || 0)
-    // Parse to 18 deciamals
-    const newTokenAmount = parseFloat(event.target.value || '0')
-    const newTokenAmountBigNumber = utils.formatEther(event.target.value || '0')
-    // Calcualte purchase value = tokenPrice (BigNumber) * tokenAmount (BigNumberish-number)
-    const purchaseValue = tokenPrice.mul(newTokenAmount)
+    const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
+    // Convert min max allocations
+    // Converting BigNumbers to normal numbers due to lack of decimal support
+    const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
+    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
+    const tokenPrice = parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice)))
 
-    console.log(purchaseMinimumAllocation.toString())
+    const newPurchaseValue = parseFloat(event.target.value)
 
-    console.log({
-      purchaseMinimumAllocation,
-      newTokenAmountBigNumber,
-      utils,
-    })
+    const quantity = newPurchaseValue / tokenPrice
 
-    // tokeAmount is less than minimum allocation
-    if (purchaseMinimumAllocation.lt(newTokenAmount)) {
-      newValidationError = new Error(`Token amount is less than ${utils.formatUnits(sale?.allocationMin)}`)
+    // purchaseValue is less than minimum allocation
+    if (purchaseMinimumAllocation > quantity) {
+      newValidationError = new Error(
+        `Minimum is ${purchaseMinimumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
+          sale?.allocationMin
+        )} ${sale?.tokenOut.symbol}`
+      )
     }
-    // User's tokenIn (i.e. USDC, DAI) balance is zero
-    else if (tokenBalance.isZero()) {
-      newValidationError = new Error('Insufficient funds')
+    if (purchaseMaximumAllocation < quantity) {
+      newValidationError = new Error(
+        `Maximum is ${purchaseMaximumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
+          sale?.allocationMax
+        )} ${sale?.tokenOut.symbol}`
+      )
     }
-    // Purchase value is greater than user's tokeIn balance
-    else if (purchaseValue.gt(tokenBalance)) {
+    // // Purchase value is greater than user's tokeIn balance
+    else if (parsedTokenBalance < newPurchaseValue) {
       newValidationError = new Error('Insufficient funds to process purchase')
     }
 
     // Update Component state and re-render
-    setTokenAmount(newTokenAmount) // Convert back to number
+    setPurchaseValue(newPurchaseValue)
+    setTokenQuantity(quantity)
     setValidationError(newValidationError)
   }
 
@@ -196,14 +183,18 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         return console.error('no connected signer')
       }
 
+      if (!tokenQuantity) {
+        return console.error('token amount == null')
+      }
+
       const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
 
       // Update state
       setTxPending(true)
-      // Convert tokenAmount (number) to 18-decimal BigNumber
+      // Convert tokenQuantity (number) to 18-decimal BigNumber
       // Sign and send transaction
       fixedPriceSaleContract
-        .buyTokens(utils.parseEther(tokenAmount.toString()))
+        .buyTokens(utils.parseEther(tokenQuantity.toString()))
         .then(tx => tx.wait(1)) // wait one network confirmation
         .then(receipt => {
           console.log(receipt)
@@ -227,7 +218,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   if (error) {
     return (
       <Center>
-        <ErrorMesssage error={error as Error} />
+        <ErrorMessage error={error as Error} />
       </Center>
     )
   }
@@ -235,45 +226,57 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   if (!sale) {
     return (
       <Center>
-        <ErrorMesssage error="Could not fetch sale" />
+        <ErrorMessage error="Could not fetch sale" />
       </Center>
     )
   }
 
   return (
-    <Form id="placePurchaseForm" onSubmit={onSubmit}>
+    <FormFull id="placePurchaseForm" onSubmit={onSubmit}>
       <FormGroup>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">
-              {tokenAmount} {sale.tokenOut.symbol}
-            </FormText>
+            <FormText data-testid="amount-value">{sale.tokenIn.symbol}</FormText>
             <FormInput
-              aria-label="tokenAmount"
-              id="tokenAmount"
+              aria-label="purchaseValue"
+              id="purchaseValue"
               type="number"
-              value={tokenAmount}
-              onChange={onTokenAmountChange}
+              step="0.01"
+              placeholder="0.0"
+              value={purchaseValue}
+              onChange={onPurchaseValueChange}
             />
           </FormContainer>
         </Flex>
       </FormGroup>
 
-      {validationError && (
-        <FormGroup>
-          <ErrorMesssage error={validationError} />
-        </FormGroup>
-      )}
-      {txPending || approvalState == ApprovalState.PENDING ? (
-        <Button disabled={true}>Transaction in Progress</Button>
-      ) : approvalState == ApprovalState.APPROVED ? (
-        <Button disabled={validationError instanceof Error}>Purchase {sale.tokenOut.symbol}</Button>
-      ) : (
-        <Button type="button" onClick={approve}>
-          Approve {sale.tokenIn.symbol}
-        </Button>
-      )}
-    </Form>
+      <FormGroup>
+        {validationError ? (
+          <PurchaseErrorMessage>{validationError.message}</PurchaseErrorMessage>
+        ) : (
+          <SuccessMessage>{`You get ${tokenQuantity} ${sale.tokenOut.symbol}`}</SuccessMessage>
+        )}
+      </FormGroup>
+      <LinkedButtons
+        buttons={[
+          {
+            title: `${approvalState == ApprovalState.APPROVED ? 'Approved' : `Approve ${sale.tokenIn.symbol}`} `,
+            id: 'approve',
+            onClick: approve,
+          },
+          {
+            title: `Purchase ${sale.tokenOut.symbol}`,
+            id: 'purchase',
+            onClick: () => {
+              console.log('purchase')
+            },
+          },
+        ]}
+        active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
+        disabled={!!validationError}
+        loading={txPending || approvalState == ApprovalState.PENDING}
+      />
+    </FormFull>
   )
 }

@@ -14,7 +14,7 @@ import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Components
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
 import { FormButton } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
@@ -38,7 +38,7 @@ import { Center } from 'src/layouts/Center'
 
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
-import { timeEnd, secondsTohms } from 'src/views/Sale/components/Timer'
+import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
@@ -84,7 +84,7 @@ export function FixedPriceSaleView() {
   if (error) {
     return (
       <Center>
-        <ErrorMesssage error={error} />
+        <ErrorMessage error={error} />
       </Center>
     )
   }
@@ -119,11 +119,10 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(sale.allocationMin, sale.tokenOut.decimals)).format(
-                        '0,0'
-                      )} - ${numeral(formatBigInt(sale.allocationMax, sale.tokenOut.decimals)).format('0,0')} ${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                        sale.allocationMax,
+                        sale.tokenOut.decimals
+                      )} ${sale.tokenOut?.symbol}`}
                     />
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
@@ -135,7 +134,7 @@ export function FixedPriceSaleView() {
                       <HeaderItem
                         isMobile
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale as FIX_LATER}
@@ -152,9 +151,10 @@ export function FixedPriceSaleView() {
                     />
                     <HeaderItem
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${numeral(formatBigInt(sale.allocationMin)).format('0,0')} - ${numeral(
-                        formatBigInt(sale.allocationMax)
-                      ).format('0,0')} ${sale.tokenOut?.symbol}`}
+                      description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                        sale.allocationMax,
+                        sale.tokenOut.decimals
+                      )} ${sale.tokenOut?.symbol}`}
                       flexAmount={1.5}
                     />
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
@@ -167,7 +167,7 @@ export function FixedPriceSaleView() {
                     {isSaleOpen(sale as FIX_LATER) && (
                       <HeaderItem
                         title="Ends In"
-                        description={secondsTohms(sale.endDate)}
+                        description=""
                         textAlign="right"
                         saleLive={true}
                         sale={sale as FIX_LATER}
@@ -257,7 +257,9 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. 3,500 ${sale.tokenOut?.symbol}`}</FixedFormMax>
+                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
+                      sale.tokenOut?.symbol
+                    }`}</FixedFormMax>
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>

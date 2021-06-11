@@ -18,7 +18,7 @@ afterEach(cleanup)
 
 //wrapper
 
-const wrapper = (saletype: 'private' | 'presale') => {
+const wrapper = (saletype: 'public' | 'presale') => {
   return render(
     <ThemeProvider theme={theme}>
       <BadgeCard saleType={saletype} />
@@ -31,8 +31,8 @@ describe('BadgeCard', () => {
     const { getByText } = wrapper('presale')
     expect(getByText('Pre-sale')).toBeInTheDocument()
   }),
-    test('should display private when private props is input', () => {
-      const { getByText } = wrapper('private')
-      expect(getByText('Private')).toBeInTheDocument()
+    test('should display public when public props is input', () => {
+      const { getByText } = wrapper('public')
+      expect(getByText('Public')).toBeInTheDocument()
     })
 })

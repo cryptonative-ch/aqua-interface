@@ -1,7 +1,6 @@
 // External
 import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { ethers } from 'ethers'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -25,7 +24,7 @@ import { GridListSection } from 'src/components/Grid'
 
 // interface
 import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
 import { TokenClaim } from './components/TokenClaim'
@@ -78,21 +77,38 @@ export function TokenView() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
-  let filteredData: FixedPriceSalePurchase[] | undefined
+  const [filteredData, setFilteredData] = useState<FixedPriceSalePurchase[] | undefined>()
   const account = (window as any).ethereum.selectedAddress
 
+  //  const fetchdata = async () => {
+  //    try {
+  //      const data = await mesa.subgraph.query(userSalesQuery(account))
+  //      const unixDateNow = dayjs(Date.now()).unix()
+  //      const filteredData = data.fixedPriceSalePurchases.filter(
+  //        (element: FixedPriceSalePurchase) =>
+  //          BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
+  //          unixDateNow > element.sale!.endDate
+  //      )
+  //      return filteredData
+  //    } catch (error) {
+  //      setError(error)
+  //      setLoading(false)
+  //    }
+  //  }
+  //
   useEffect(() => {
     mesa.subgraph
       .query(userSalesQuery(account))
       .then(({ data }) => {
         const { fixedPriceSalePurchases } = data
         const unixDateNow = dayjs(Date.now()).unix()
-        filteredData = fixedPriceSalePurchases.filter(
-          (element: FixedPriceSalePurchase) =>
-            BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
-            unixDateNow > element.sale!.endDate
+        setFilteredData(
+          fixedPriceSalePurchases.filter(
+            (element: FixedPriceSalePurchase) =>
+              BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
+              unixDateNow > element.sale!.endDate
+          )
         )
-        console.log(filteredData)
       })
       .catch(error => {
         setError(error)
@@ -102,7 +118,7 @@ export function TokenView() {
         setLoading(false)
       })
     dispatch(setPageTitle(t('pagesTitles.tokens')))
-  }, [account])
+  }, [])
 
   if (loading) {
     return (
@@ -126,7 +142,7 @@ export function TokenView() {
         <Container>
           <Title>{t('texts.claimTokens')}</Title>
           <GridListSection>
-            <ErrorMesssage error={error} />
+            <ErrorMessage error={error} />
           </GridListSection>
         </Container>
         {!isMobile && <Footer />}
@@ -140,8 +156,10 @@ export function TokenView() {
       <Container>
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
-          {filteredData?.map(tokens => <TokenClaim key={tokens.id} purchase={tokens} />) || (
-            <h1>No Tokens Available</h1>
+          {filteredData?.length ? (
+            filteredData?.map(tokens => <TokenClaim key={tokens.id} purchase={tokens} />)
+          ) : (
+            <h1>No Tokens Available to Claim</h1>
           )}
         </GridListSection>
       </Container>

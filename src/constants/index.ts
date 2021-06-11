@@ -26,3 +26,4 @@ export const XDAI_CHAIN_PARAMETER = {
   rpcUrls: ['https://rpc.xdaichain.com/'],
   blockExplorerUrls: ['https://blockscout.com/xdai/mainnet'],
 }
+export const SHOW_TERMS_AND_CONDITIONS = false

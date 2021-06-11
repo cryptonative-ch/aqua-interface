@@ -193,7 +193,6 @@ export const Header: React.FC = () => {
     <ColumnWrapper>
       {!isValidNetwork && (
         <Banner error>
-          {t('texts.invalidNetwork')}
           <Button
             onClick={changeNetwork}
             backgroundColor={'#DDDDE3'}
@@ -201,7 +200,7 @@ export const Header: React.FC = () => {
             display="inline"
             margin="0 16px"
           >
-            <ButtonText>{t('buttons.changeNetwork')}</ButtonText>
+            <ButtonText>{t('buttons.changetoxDaiNetwork')}</ButtonText>
           </Button>
         </Banner>
       )}

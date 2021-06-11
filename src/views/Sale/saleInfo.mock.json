@@ -1,0 +1,39 @@
+{
+  "saleIcon": "https://img.icons8.com/question",
+  "description": [
+    {
+      "title": "That's a title",
+      "p": "This is a description"
+    },
+    {
+      "title": "Another title",
+      "p": "This is another description"
+    }
+  ],
+  "website": {
+    "url": "https://exwhyzed.finance"
+  },
+  "socials": [
+    {
+      "name": "Github",
+      "link": "https://github.com/cryptonative-ch"
+    },
+    {
+      "name": "Twitter",
+      "link": "https://twitter.com/mesa_eth"
+    },
+    {
+      "name": "Discord",
+      "link": "https://discord.com/invite/4QXEJQkvHH"
+    },
+    {
+      "name": "Telegram",
+      "link": "https://t.me/dxDAO"
+    },
+    {
+      "name": "Custom Social",
+      "icon": "https://img.icons8.com/globe",
+      "link": "https://daotalk.org/c/daos/dx-dao/15"
+    }
+  ]
+}

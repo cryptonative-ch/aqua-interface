@@ -20,28 +20,13 @@ dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
 
 // Component
-import { secondsTohms, SaleHeader } from './index'
+import { SaleHeader } from './index'
+import { secondsTohms } from 'src/views/Sale/components/Timer'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { getSaleDefault, addHours, dateUTC } from 'src/utils/Defaults'
-
-describe('seconds to HMS function', () => {
-  describe('convert seconds into different formats', () => {
-    test('tests conversion of seconds to minutes', () => {
-      expect(secondsTohms(60)).toBe('1m ')
-    }),
-      test('tests conversion of seconds into days, hours, minutes', () => {
-        expect(secondsTohms(20000)).toBe('5h 33m 20s')
-      }),
-      test('tests negative input', () => {
-        expect(() => {
-          secondsTohms(-100)
-        }).toThrow('seconds cannot be negative')
-      })
-  })
-})
 
 describe('SaleHeader', () => {
   test('it should render the correct sale header', async () => {
@@ -60,7 +45,7 @@ describe('SaleHeader', () => {
     }
     const { getByText, getByTestId } = render(<SaleHeader sale={sale} />)
     expect(await getByTestId('format_time')).toHaveTextContent(format_time, { normalizeWhitespace: false })
-    expect(getByText('Omen Initial Sale')).toBeInTheDocument()
-    expect(getByText('Private')).toBeInTheDocument()
+    expect(getByText('Omen')).toBeInTheDocument()
+    expect(getByText('Public')).toBeInTheDocument()
   })
 })

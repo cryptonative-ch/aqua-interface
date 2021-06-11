@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import React, { useEffect } from 'react'
 
 // General Components
-import { ErrorMesssage } from 'src/components/ErrorMessage'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Redux Actions
 import { setPageTitle } from 'src/redux/page'
@@ -42,7 +42,7 @@ export function SaleView() {
   if (error) {
     return (
       <Center>
-        <ErrorMesssage error={error} />
+        <ErrorMessage error={error} />
       </Center>
     )
   }

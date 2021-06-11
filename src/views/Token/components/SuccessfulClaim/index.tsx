@@ -5,9 +5,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 
-// interface
-import { TokenClaimProps } from 'src/views/Token/components/TokenClaim'
-
 // Components
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
@@ -22,6 +19,7 @@ import link from 'src/assets/svg/External-Link.svg'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 
 const Circle = styled.div({
   height: '45px',
@@ -30,7 +28,7 @@ const Circle = styled.div({
   borderRadius: '50%',
 })
 
-const Link = styled.p<SpaceProps>(
+const Link = styled.a<SpaceProps>(
   {
     color: '#304FFE',
     cursor: 'pointer',
@@ -51,8 +49,14 @@ const Icon = styled.img<SpaceProps>(
   space
 )
 
-export const SuccessfulClaim = ({ purchase: { sale, amount } }: TokenClaimProps) => {
+interface SuccessfulClaimProps {
+  purchase: FixedPriceSalePurchase
+  tx: string
+}
+
+export const SuccessfulClaim = ({ purchase: { sale, amount }, tx }: SuccessfulClaimProps) => {
   const [t] = useTranslation()
+  const blockExplorerUrl = `https://blockscout.com/xdai/mainnet/tx/${tx}`
   return (
     <Card>
       <CardBody height="100%" textAlign="center">
@@ -64,10 +68,9 @@ export const SuccessfulClaim = ({ purchase: { sale, amount } }: TokenClaimProps)
           </Flex>
           <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
           <CardText color="grey">
-            {' '}
-            `${formatBigInt(amount, sale?.tokenOut.decimals)} ${sale?.tokenOut.name} has been sent to your address.`
+            {`${formatBigInt(amount, sale?.tokenOut.decimals)} ${sale?.tokenOut.name} has been sent to your address.`}
           </CardText>
-          <Link marginTop="24px">
+          <Link marginTop="24px" href={blockExplorerUrl}>
             See this transaction on block explorer
             <StyledSVG src={link} color="#304FFE" />
           </Link>
