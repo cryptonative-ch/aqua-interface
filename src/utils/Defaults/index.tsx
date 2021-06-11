@@ -3,7 +3,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 
 // Interface
-import { Sale, SaleType, FairSale, FixedPriceSale } from 'src/interfaces/Sale'
+import { Sale, SaleType, FairSale, FixedPriceSale, SaleDetails } from 'src/interfaces/Sale'
 
 //svg
 import Omen from 'src/assets/svg/Omen.svg'
@@ -132,6 +132,35 @@ export const getSaleDefault = (a?: Partial<Sale>, saletype: SaleType = 'FairSale
         ...getFairSale(),
         ...a,
       }
+
+// Sale details mocks
+export const getSaleDetails = (): SaleDetails => ({
+  description: [
+    {
+      title: 'Sale Description title',
+      p: 'Sale description content',
+    },
+  ],
+  website: {
+    url: 'https://exwhyzed.finance',
+  },
+  socials: [
+    {
+      name: 'Telegram',
+      link: 'https://exwhyzed.finance/telegram',
+    },
+    {
+      name: 'Some Other Social',
+      link: 'https://exwhyzed.finance/other-social',
+      icon: 'https://exwhyzed.finance/other-social.png',
+    },
+  ],
+})
+
+export const getSaleDetailsDefault = (a?: Partial<SaleDetails>) => ({
+  ...getSaleDetails(),
+  ...a,
+})
 
 // resize window mock function
 export const resizeWindow = (x: number, y: number) => {

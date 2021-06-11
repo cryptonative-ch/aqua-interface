@@ -43,8 +43,9 @@ import { formatBigInt } from 'src/utils/Defaults'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchase, SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
+import { useIpfsFile } from 'src/hooks/useIpfsFile'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -65,6 +66,7 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
+  const saleDetails = useIpfsFile("TEMP") as SaleDetails;
   const bids: FixedPriceSalePurchase[] = []
 
   const toggleGraph = () => {
@@ -243,7 +245,7 @@ export function FixedPriceSaleView() {
                 <SelfBidList sale={sale as FIX_LATER} isFixed={true} bids={bids as any} />
               </Card>
             )}
-            <TokenFooter sale={sale as FIX_LATER} />
+            <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
           </Flex>
           {!isMobile && isSaleOpen(sale as FIX_LATER) && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
