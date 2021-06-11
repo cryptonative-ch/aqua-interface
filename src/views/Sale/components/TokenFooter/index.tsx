@@ -125,7 +125,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterPro
     windowSize: { width: windowWidth },
   } = useWindowSize()
 
-  const walletAddress = sale.id ? `${sale.id.substr(0, 6)}...${sale.id.substr(-4)}` : ''
+  const walletAddress = sale?.tokenOut.id ? `${sale.tokenOut.id.substr(0, 6)}...${sale.tokenOut.id.substr(-4)}` : ''
 
   const mobileWrapper: WrapperProps = {}
   if (isMobile) {
@@ -176,9 +176,9 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterPro
         </Flex>
         {walletAddress && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
-            <Title>Address</Title>
+            <Title>Token Address</Title>
             <Link
-              href={`${XDAI_CHAIN_PARAMETER.blockExplorerUrls[0]}/address/${sale.id}`}
+              href={`${XDAI_CHAIN_PARAMETER.blockExplorerUrls[0]}/address/${sale.tokenOut.id}`}
               target="_blank"
               color="#000629"
               margin="0 8px 0 0"
