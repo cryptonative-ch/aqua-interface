@@ -6,6 +6,7 @@ import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { utils } from 'ethers'
 
 // Hooks
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
@@ -114,10 +115,10 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${formatBigInt(
-                        sale.allocationMin,
+                      description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                        sale.allocationMax,
                         sale.tokenOut.decimals
-                      )} - ${formatBigInt(sale.allocationMax, sale.tokenOut.decimals)} ${sale.tokenOut?.symbol}`}
+                      )} ${sale.tokenOut?.symbol}`}
                     />
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
@@ -146,10 +147,10 @@ export function FixedPriceSaleView() {
                     />
                     <HeaderItem
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${formatBigInt(
-                        sale.allocationMin,
+                      description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                        sale.allocationMax,
                         sale.tokenOut.decimals
-                      )} - ${formatBigInt(sale.allocationMax, sale.tokenOut.decimals)} ${sale.tokenOut?.symbol}`}
+                      )} ${sale.tokenOut?.symbol}`}
                       flexAmount={1.5}
                     />
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
@@ -250,7 +251,9 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. 3,500 ${sale.tokenOut?.symbol}`}</FixedFormMax>
+                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
+                      sale.tokenOut?.symbol
+                    }`}</FixedFormMax>
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>

@@ -19,6 +19,7 @@ import GithubSVG from 'src/assets/svg/Github.svg'
 
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
+import { XDAI_CHAIN_PARAMETER } from 'src/constants'
 
 type WrapperProps = SpaceProps & BorderProps & LayoutProps
 
@@ -87,6 +88,21 @@ const Title = styled.div<TitleProps>(
   space
 )
 
+const Link = styled.a<TitleProps>(
+  () => ({
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: '14px',
+    lineHeight: '21px',
+    color: '#7B7F93',
+    margin: '0 0 4px 0',
+    cursor: 'pointer',
+    userSelect: 'none',
+  }),
+  color,
+  space
+)
+
 type IconImgProps = SpaceProps & LayoutProps
 
 const IconImg = styled.img<IconImgProps>(
@@ -111,7 +127,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterPro
     windowSize: { width: windowWidth },
   } = useWindowSize()
 
-  const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
+  const walletAddress = sale.id ? `${sale.id.substr(0, 6)}...${sale.id.substr(-4)}` : ''
 
   const mobileWrapper: WrapperProps = {}
   if (isMobile) {
@@ -153,22 +169,27 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterPro
         )}
         <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
           <Title>Website</Title>
-          <Flex flexDirection="row" alignItems="center">
-            <Title color="#000629" margin="0 8px 0 0">
-              exwhyzed.finance
-            </Title>
-            <IconImg src={ExternalLinkSVG} />
-          </Flex>
-        </Flex>
-        {walletAddress.length > 0 && (
-          <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
-            <Title>Address</Title>
+          <Link href={``} target="_blank" color="#000629" margin="0 8px 0 0">
             <Flex flexDirection="row" alignItems="center">
-              <Title color="#000629" margin="0 8px 0 0">
-                {walletAddress}
-              </Title>
+              exwhyzed.finance
               <IconImg src={ExternalLinkSVG} />
             </Flex>
+          </Link>
+        </Flex>
+        {walletAddress && (
+          <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
+            <Title>Address</Title>
+            <Link
+              href={`${XDAI_CHAIN_PARAMETER.blockExplorerUrls[0]}/address/${sale.id}`}
+              target="_blank"
+              color="#000629"
+              margin="0 8px 0 0"
+            >
+              <Flex flexDirection="row" alignItems="center">
+                {walletAddress}
+                <IconImg src={ExternalLinkSVG} />
+              </Flex>
+            </Link>
           </Flex>
         )}
         {!isMobile && (

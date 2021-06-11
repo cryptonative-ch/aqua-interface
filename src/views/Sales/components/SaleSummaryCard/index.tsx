@@ -39,7 +39,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
             <CardText fontSize="title">{sale.name}</CardText>
           </Flex>
           <BadgeFlex>
-            <BadgeCard saleType="private" />
+            <BadgeCard saleType="public" />
           </BadgeFlex>
         </Flex>
         <Divider />

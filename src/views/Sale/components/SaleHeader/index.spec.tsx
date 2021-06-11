@@ -45,7 +45,7 @@ describe('SaleHeader', () => {
     }
     const { getByText, getByTestId } = render(<SaleHeader sale={sale} />)
     expect(await getByTestId('format_time')).toHaveTextContent(format_time, { normalizeWhitespace: false })
-    expect(getByText('Omen Initial Sale')).toBeInTheDocument()
-    expect(getByText('Private')).toBeInTheDocument()
+    expect(getByText('Omen')).toBeInTheDocument()
+    expect(getByText('Public')).toBeInTheDocument()
   })
 })

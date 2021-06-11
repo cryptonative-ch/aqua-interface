@@ -128,8 +128,8 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
       <HeaderContainer isMobile={isMobile}>
         <MobileTokenContainer src={sale.tokenOut?.icon || noToken} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
-          <MobileHeaderText>{`${sale.name} Initial Sale`}</MobileHeaderText>
-          <MobileStatusText>Private</MobileStatusText>
+          <MobileHeaderText>{`${sale.name}`}</MobileHeaderText>
+          <MobileStatusText>Public</MobileStatusText>
         </Flex>
       </HeaderContainer>
     )
@@ -138,8 +138,8 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
   return (
     <HeaderContainer isMobile={isMobile}>
       <TokenIconContainer src={sale.tokenOut?.icon || noToken} />
-      <HeaderText>{`${sale.name} Initial Sale`}</HeaderText>
-      <StatusText>Private</StatusText>
+      <HeaderText>{`${sale.name}`}</HeaderText>
+      <StatusText>Public</StatusText>
       {isSaleOpen(sale) && <TimeText data-testid="format_time">{format_time}</TimeText>}
     </HeaderContainer>
   )
