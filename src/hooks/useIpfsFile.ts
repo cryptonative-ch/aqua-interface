@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { FIX_LATER } from "src/interfaces";
 
 // Mocks

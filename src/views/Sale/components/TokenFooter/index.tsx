@@ -119,7 +119,7 @@ interface TokenFooterProps {
   saleDetails?: SaleDetails
 }
 
-export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {} }: TokenFooterProps) => {
+export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: TokenFooterProps) => {
   const {
     isMobile,
     windowSize: { width: windowWidth },
@@ -137,7 +137,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
   return (
     <Wrapper {...mobileWrapper}>
       <FooterTitle>{`About ${sale.name}`}</FooterTitle>
-      {saleDetails.description && (
+      {saleDetails?.description && (
         <FooterDescription
           marginY="16px"
           maxWidth={isMobile ? windowWidth - 48 : '578px'}
@@ -156,7 +156,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
         maxWidth={isMobile ? windowWidth - 48 : '578px'}
         alignItems={isMobile ? 'flex-start' : 'center'}
       >
-        {isMobile && saleDetails.socials && (
+        {isMobile && saleDetails?.socials && (
           <Flex paddingRight="40px" flexDirection="column">
             <Title marginBottom="8px">Socials</Title>
             <Flex flexDirection="row" alignItems="center">
@@ -174,7 +174,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
             </Flex>
           </Flex>
         )}
-        {saleDetails.website && (
+        {saleDetails?.website && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Website</Title>
             <a href={saleDetails.website.url} target="_blank" rel="noreferrer" data-testid="info-website">
@@ -203,7 +203,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
             </Link>
           </Flex>
         )}
-        {!isMobile && saleDetails.socials && (
+        {!isMobile && saleDetails?.socials && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
             <Flex flexDirection="row" alignItems="center" data-testid="info-socials">
