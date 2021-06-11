@@ -1,6 +1,5 @@
 // External
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
-import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import React from 'react'
 
@@ -121,7 +120,6 @@ interface TokenFooterProps {
 }
 
 export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterProps) => {
-  const { account } = useWeb3React()
   const {
     isMobile,
     windowSize: { width: windowWidth },
