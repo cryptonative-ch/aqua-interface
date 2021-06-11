@@ -141,10 +141,18 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
     // purchaseValue is less than minimum allocation
     if (purchaseMinimumAllocation > quantity) {
-      newValidationError = new Error(`Token amount is less than ${utils.formatUnits(sale?.allocationMin)}`)
+      newValidationError = new Error(
+        `Minimum is ${purchaseMinimumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
+          sale?.allocationMin
+        )} ${sale?.tokenOut.symbol}`
+      )
     }
     if (purchaseMaximumAllocation < quantity) {
-      newValidationError = new Error(`Token amount is more than ${utils.formatUnits(sale?.allocationMax)}`)
+      newValidationError = new Error(
+        `Maximum is ${purchaseMaximumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
+          sale?.allocationMax
+        )} ${sale?.tokenOut.symbol}`
+      )
     }
     // // Purchase value is greater than user's tokeIn balance
     else if (parsedTokenBalance < newPurchaseValue) {
@@ -247,7 +255,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         {validationError ? (
           <PurchaseErrorMessage>{validationError.message}</PurchaseErrorMessage>
         ) : (
-          <SuccessMessage>{`Youll get ${tokenQuantity} ${sale.tokenOut.symbol}`}</SuccessMessage>
+          <SuccessMessage>{`You get ${tokenQuantity} ${sale.tokenOut.symbol}`}</SuccessMessage>
         )}
       </FormGroup>
       <LinkedButtons
