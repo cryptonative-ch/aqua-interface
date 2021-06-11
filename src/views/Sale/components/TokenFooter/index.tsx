@@ -138,7 +138,11 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
     <Wrapper {...mobileWrapper}>
       <FooterTitle>{`About ${sale.name}`}</FooterTitle>
       {saleDetails.description && (
-        <FooterDescription marginY="16px" maxWidth={isMobile ? windowWidth - 48 : '578px'}>
+        <FooterDescription
+          marginY="16px"
+          maxWidth={isMobile ? windowWidth - 48 : '578px'}
+          data-testid="info-description"
+        >
           {saleDetails.description.map((block, index) => (
             <span key={index}>
               {block.title && <Title marginBottom="6px">{block.title}</Title>}
@@ -173,7 +177,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
         {saleDetails.website && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Website</Title>
-            <a href={saleDetails.website.url} target="_blank" rel="noreferrer">
+            <a href={saleDetails.website.url} target="_blank" rel="noreferrer" data-testid="info-website">
               <Flex flexDirection="row" alignItems="center">
                 <Title color="#000629" margin="0 8px 0 0">
                   {saleDetails.website.url}
@@ -202,7 +206,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails = {}
         {!isMobile && saleDetails.socials && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
-            <Flex flexDirection="row" alignItems="center">
+            <Flex flexDirection="row" alignItems="center" data-testid="info-socials">
               {saleDetails.socials.map((social, index) => (
                 <a key={index} href={social.link} target="_blank" rel="noreferrer">
                   <IconImg src={social.icon || socialIcons[social.name]} margin="0 16px 0 0" alt={social.name} />
