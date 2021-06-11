@@ -10,7 +10,7 @@ export const ColumnWrapper = styled.div<SpaceProps & ColorProps>(() => ({
   outline: '0',
   display: 'flex',
   flexDirection: 'column',
-  margin: '20px 0',
+  marginBottom: '16px',
 }))
 
 export const Wrapper = styled.div<SpaceProps & ColorProps>(() => ({

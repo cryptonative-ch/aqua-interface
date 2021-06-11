@@ -16,10 +16,11 @@ interface ButtonObject {
 interface LinkedButtonsProps {
   buttons: ButtonObject[]
   active: string
+  disabled?: boolean
   loading?: boolean
 }
 
-export const LinkedButtons: React.FC<LinkedButtonsProps> = ({ buttons, active, loading = false }) => {
+export const LinkedButtons: React.FC<LinkedButtonsProps> = ({ buttons, active, loading = false, disabled = false }) => {
   const [arrayOfButtons, setArrayOfButtons] = useState<Array<React.ReactNode>>([])
   const [progressLineArray, setProgressLineArray] = useState<Array<React.ReactNode>>([])
   const numberOfButtons = buttons.length
@@ -35,7 +36,11 @@ export const LinkedButtons: React.FC<LinkedButtonsProps> = ({ buttons, active, l
         beforeActive = false
       }
       tempButtons.push(
-        <StyledButton buttonSize={`${buttonSize}%`} onClick={button.onClick} disabled={!(button.id == active)}>
+        <StyledButton
+          buttonSize={`${buttonSize}%`}
+          onClick={button.onClick}
+          disabled={!(button.id == active) || disabled}
+        >
           {button.title}
           {loading && button.id == active && <Spinner size="10px" color="white" />}
         </StyledButton>
