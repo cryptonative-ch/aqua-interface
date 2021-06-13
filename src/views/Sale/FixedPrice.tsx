@@ -46,6 +46,7 @@ import { NotFoundView } from 'src/views/NotFound'
 import { FixedPriceSalePurchase, SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 import { useIpfsFile } from 'src/hooks/useIpfsFile'
+import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -66,7 +67,7 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const saleDetails = useIpfsFile("TEMP") as SaleDetails;
+  const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails;
   const bids: FixedPriceSalePurchase[] = []
 
   const toggleGraph = () => {

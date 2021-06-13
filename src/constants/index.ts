@@ -27,3 +27,5 @@ export const XDAI_CHAIN_PARAMETER = {
   blockExplorerUrls: ['https://blockscout.com/xdai/mainnet'],
 }
 export const SHOW_TERMS_AND_CONDITIONS = false
+export const IPFS_GATEWAY_URL = "https://gateway.pinata.cloud"
+export const SALE_INFO_IPFS_HASH_MOCK = "QmRVKi23YQmXLStgSK5bQS9QyiAeWZmjVNQTbx61NUAhcg"
