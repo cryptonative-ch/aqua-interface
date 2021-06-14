@@ -48,7 +48,27 @@ const Icon = styled.img<SpaceProps>(
   },
   space
 )
-
+const tokenClaim = async (saleId: string, signer: Signer) => {
+  await FixedPriceSale__factory.connect(saleId, signer)
+    .closeSale()
+    .then((tx: ContractTransaction) => {
+      tx.wait(1)
+    })
+    .catch((error: Error) => {
+      console.log(error)
+    })
+  await FixedPriceSale__factory.connect(saleId, signer)
+    .claimTokens()
+    .then((tx: ContractTransaction) => {
+      tx.wait(1)
+    })
+    .then(receipt => {
+      console.log(receipt)
+    })
+    .catch((error: Error) => {
+      console.log(error)
+    })
+}
 export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
