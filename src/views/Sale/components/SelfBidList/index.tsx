@@ -306,7 +306,6 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
     </Flex>
   )
 }
-
 SelfBidList.defaultProps = {
   status: 'active',
   showGraph: false,

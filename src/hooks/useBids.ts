@@ -42,8 +42,11 @@ export function useBids(
   } = useSelector(({ bids }) => bids)
 
   const { bids: totalBids } = useChain(saleId, saleType, provider, decimal)
-  const bids = totalBids.filter((bid: any) => bid.buyer === account?.toLowerCase())
+  // TODO: bids only updates once per page load,
+  const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
+  console.log(bids)
 
+  console.log(totalBids)
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
     const timeNow = dayjs.utc().unix()
@@ -73,7 +76,7 @@ export function useBids(
       .catch(bidsError => {
         dispatch(initialBidFailure(bidsError))
       })
-  }, [account])
+  }, [account, dispatch])
 
   return {
     totalBids,
