@@ -42,7 +42,6 @@ export function useBids(
   } = useSelector(({ bids }) => bids)
 
   const { bids: totalBids } = useChain(saleId, saleType, provider, decimal)
-  // TODO: bids only updates once per page load,
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
   console.log(bids)
 
