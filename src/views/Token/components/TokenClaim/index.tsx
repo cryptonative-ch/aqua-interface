@@ -1,8 +1,8 @@
 // Externals
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Signer } from '@ethersproject/abstract-signer'
-import { ethers, ContractTransaction } from 'ethers'
+import { useWeb3React } from '@web3-react/core'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 import numeral from 'numeral'
@@ -30,12 +30,10 @@ import noToken from 'src/assets/svg/no-token-image.svg'
 
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { useTokenClaim } from 'src/hooks/useTokenClaim'
 
 // Theme
 import { theme } from 'src/styles/theme'
-
-// contracts
-import { FixedPriceSale__factory } from 'src/contracts'
 
 // interfaces
 export interface TokenClaimProps {
@@ -48,65 +46,15 @@ const Icon = styled.img<SpaceProps>(
   },
   space
 )
-const tokenClaim = async (saleId: string, signer: Signer) => {
-  await FixedPriceSale__factory.connect(saleId, signer)
-    .closeSale()
-    .then((tx: ContractTransaction) => {
-      tx.wait(1)
-    })
-    .catch((error: Error) => {
-      console.log(error)
-    })
-  await FixedPriceSale__factory.connect(saleId, signer)
-    .claimTokens()
-    .then((tx: ContractTransaction) => {
-      tx.wait(1)
-    })
-    .then(receipt => {
-      console.log(receipt)
-    })
-    .catch((error: Error) => {
-      console.log(error)
-    })
-}
 export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
-  const [claim, setClaim] = useState<'unclaimed' | 'verify' | 'failed' | 'claimed'>('unclaimed')
-  const [error, setError] = useState<Error>()
-  const [tx, setTx] = useState<ContractTransaction>()
-  const claimTokens = async (saleId: string, signer: Signer) => {
-    //take this out before production
-    await FixedPriceSale__factory.connect(saleId, signer)
-      .closeSale()
-      .then((tx: ContractTransaction) => {
-        tx.wait(1)
-      })
-      .catch((error: Error) => {
-        console.log(error)
-        setError(error)
-      })
-    await FixedPriceSale__factory.connect(saleId, signer)
-      .claimTokens()
-      .then((tx: ContractTransaction) => {
-        setClaim('verify')
-        tx.wait(1)
-        setTx(tx)
-      })
-      .then(receipt => {
-        console.log(receipt)
-        setClaim('claimed')
-      })
-      .catch((error: Error) => {
-        setError(error)
-        console.log(error)
-        setClaim('failed')
-      })
-  }
+  const { account, library } = useWeb3React()
 
   const provider = new ethers.providers.Web3Provider((window as any).ethereum)
   const signer = provider.getSigner(0)
 
+  const { claimTokens, claim, transaction, error } = useTokenClaim(sale!.id, signer)
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
 
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
@@ -122,7 +70,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
   const purchase: FixedPriceSalePurchase = { sale, amount, ...rest }
 
   if (claim === 'claimed') {
-    return <SuccessfulClaim purchase={purchase} tx={tx!.hash} />
+    return <SuccessfulClaim purchase={purchase} tx={transaction!.hash} />
   }
 
   return (

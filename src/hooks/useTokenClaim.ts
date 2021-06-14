@@ -1,5 +1,5 @@
 // Externals
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Signer, ContractTransaction } from 'ethers'
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
@@ -10,6 +10,7 @@ interface useTokenClaimReturns {
   claim: Claim
   transaction: ContractTransaction | undefined
   error: Error | undefined
+  claimTokens: (saleId: string, signer: Signer) => void
 }
 
 export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimReturns {
@@ -17,7 +18,7 @@ export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimRetu
   const [error, setError] = useState<Error>()
   const [transaction, setTransaction] = useState<ContractTransaction>()
   //take this out before production
-  const claimTokens = async (saleId: string, signer: Signer) => {
+  const claimTokens = (saleId: string, signer: Signer) => {
     //take this out before production
     FixedPriceSale__factory.connect(saleId, signer)
       .closeSale()
@@ -45,10 +46,14 @@ export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimRetu
         setClaim('failed')
       })
   }
+  useEffect(() => {
+    claimTokens(saleId, signer)
+  })
 
   return {
     claim,
     transaction,
     error,
+    claimTokens,
   }
 }
