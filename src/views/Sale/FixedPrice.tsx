@@ -20,8 +20,6 @@ import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
@@ -81,7 +79,7 @@ export function FixedPriceSaleView() {
   }
 
   if (loading) {
-    return <Center>loading</Center>
+    return <Center minHeight="100vh">loading</Center>
   }
 
   if (error) {
@@ -95,10 +93,9 @@ export function FixedPriceSaleView() {
   if (!sale) {
     return <NotFoundView />
   }
-
+  console.log('test')
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <SaleHeader sale={sale as any} />
@@ -273,7 +270,6 @@ export function FixedPriceSaleView() {
           )}
         </Flex>
       </Container>
-      {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>
   )
