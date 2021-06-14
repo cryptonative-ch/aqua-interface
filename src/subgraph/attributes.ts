@@ -21,6 +21,7 @@ export const FIXED_PRICE_SALE_FIELDS = gql`
     status
     startDate
     endDate
+    soldAmount
     sellAmount
     minimumRaise
     allocationMin

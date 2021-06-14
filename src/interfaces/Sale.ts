@@ -12,7 +12,7 @@ interface BaseSale {
   type: SaleType // sale type, i.e fairsale or fixedPriceSale
 }
 
-interface Bid {
+export interface Bid {
   id: string
   baseSale: Pick<BaseSale, 'id'>
   createdAt: number // The UTC timestamp at which the bid was placed
@@ -140,13 +140,13 @@ interface SaleWebsite {
 }
 
 interface SaleSocial {
-  name: string,
-  link: string,
+  name: string
+  link: string
   icon?: string
 }
 
 export interface SaleDetails {
-  description?: SaleDescription[],
-  website?: SaleWebsite,
+  description?: SaleDescription[]
+  website?: SaleWebsite
   socials?: SaleSocial[]
 }

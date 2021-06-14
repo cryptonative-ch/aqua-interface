@@ -4,12 +4,12 @@ import TwitterSVG from 'src/assets/svg/Twitter.svg'
 import GithubSVG from './svg/Github.svg'
 
 interface SocialIconsMap {
-    [key: string]: string;
- } 
+  [key: string]: string
+}
 
 export const socialIcons: SocialIconsMap = {
   Github: GithubSVG,
   Twitter: TwitterSVG,
   Discord: DiscordSVG,
-  Telegram: TelegramSVG
+  Telegram: TelegramSVG,
 }

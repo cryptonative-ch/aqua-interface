@@ -68,12 +68,12 @@ export type BidActionTypes =
   | UpdateBidSuccess
   | UpdateBidFailure
 
+// initial fetch data from subgraph
 export const initialBidRequest = (payload: boolean) => ({
   payload,
   type: ActionTypes.INITIAL_BID_REQUEST,
 })
 
-// initial fetch data from api
 export const initialBidSuccess = (payload: BidsBySaleId) => ({
   payload,
   type: ActionTypes.INITIAL_BID_SUCCESS,
@@ -84,6 +84,7 @@ export const initialBidFailure = (payload: Error) => ({
   type: ActionTypes.INITIAL_BID_FAILURE,
 })
 
+// fetch data from chain
 export const updateBidRequest = (payload: boolean) => ({
   payload,
   type: ActionTypes.UPDATE_BID_REQUEST,
@@ -154,6 +155,10 @@ const keyFinder = (object: BidsBySaleId) => {
   return String(Object.getOwnPropertyNames(object)[0])
 }
 
+const eventExists = (events: SaleBid[], event: SaleBid[]) => {
+  return events.some(e => e.id === event[0].id)
+}
+
 /**
  * Reducer
  * @param state
@@ -174,17 +179,21 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
 
       // create a cache timestamp
       const updatedAt = dayjs.utc().unix()
-
       return {
         ...state,
         isLoading: false,
         bidsBySaleId: {
           ...state.bidsBySaleId,
           [id]: state.bidsBySaleId[id]
-            ? {
-                updatedAt: updatedAt,
-                bids: [...state.bidsBySaleId[id].bids, ...action.payload[id].bids],
-              }
+            ? eventExists(state.bidsBySaleId[id].bids, action.payload[id].bids)
+              ? {
+                  updatedAt: state.bidsBySaleId[id].updatedAt,
+                  bids: state.bidsBySaleId[id].bids,
+                }
+              : {
+                  updatedAt: updatedAt,
+                  bids: [...state.bidsBySaleId[id].bids, ...action.payload[id].bids],
+                }
             : {
                 updatedAt: updatedAt,
                 bids: action.payload[id].bids,
@@ -217,10 +226,15 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
         ...state,
         bidsBySaleId: {
           ...bidsBySaleId,
-          [id]: {
-            updatedAt: updatedAt,
-            bids: [...bidsBySaleId[id].bids, action.payload],
-          },
+          [id]: eventExists(bidsBySaleId[id].bids, [action.payload])
+            ? {
+                updatedAt: bidsBySaleId[id].updatedAt,
+                bids: [...bidsBySaleId[id].bids],
+              }
+            : {
+                updatedAt: updatedAt,
+                bids: [...bidsBySaleId[id].bids, action.payload],
+              },
         },
       }
     }

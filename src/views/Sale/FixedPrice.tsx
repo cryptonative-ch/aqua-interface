@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
 
 // Hooks
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
@@ -43,10 +43,13 @@ import { formatBigInt } from 'src/utils/Defaults'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
-import { FixedPriceSalePurchase, SaleDetails } from 'src/interfaces/Sale'
+import { SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
+
+//bids
+import { useBids } from 'src/hooks/useBids'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -67,8 +70,9 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails;
-  const bids: FixedPriceSalePurchase[] = []
+  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider)
+  const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -176,17 +180,18 @@ export function FixedPriceSaleView() {
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale as FIX_LATER) && bids && bids.length > 0 && (
+              {isSaleOpen(sale as FIX_LATER) && totalBids && totalBids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
+                    bids={totalBids}
                   />
                 </CardBody>
               )}
-              {isSaleClosed(sale as FIX_LATER) && (!bids || bids.length === 0) && (
+              {isSaleClosed(sale as FIX_LATER) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}
@@ -194,6 +199,7 @@ export function FixedPriceSaleView() {
                     toggleGraph={toggleGraph}
                     isFixed={true}
                     status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
+                    bids={totalBids}
                   />
                 </CardBody>
               )}
@@ -254,7 +260,7 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
+                    <FixedFormMax>{`Max. ${ethers.utils.formatUnits(sale?.allocationMax)} ${
                       sale.tokenOut?.symbol
                     }`}</FixedFormMax>
                   </Flex>
