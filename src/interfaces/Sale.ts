@@ -129,3 +129,24 @@ export interface BaseSaleTemplate {
   // Exists
   verified: boolean
 }
+
+interface SaleDescription {
+  title?: string
+  p?: string
+}
+
+interface SaleWebsite {
+  url: string
+}
+
+interface SaleSocial {
+  name: string,
+  link: string,
+  icon?: string
+}
+
+export interface SaleDetails {
+  description?: SaleDescription[],
+  website?: SaleWebsite,
+  socials?: SaleSocial[]
+}

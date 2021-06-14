@@ -11,13 +11,10 @@ import { Flex } from 'src/components/Flex'
 
 // Svg
 import ExternalLinkSVG from 'src/assets/svg/External-Link.svg'
-import TelegramSVG from 'src/assets/svg/Telegram.svg'
-import DiscordSVG from 'src/assets/svg/Discord.svg'
-import TwitterSVG from 'src/assets/svg/Twitter.svg'
-import GithubSVG from 'src/assets/svg/Github.svg'
+import { socialIcons } from 'src/assets'
 
 // Interfaces
-import { Sale } from 'src/interfaces/Sale'
+import { Sale, SaleDetails } from 'src/interfaces/Sale'
 import { XDAI_CHAIN_PARAMETER } from 'src/constants'
 
 type WrapperProps = SpaceProps & BorderProps & LayoutProps
@@ -58,17 +55,7 @@ const FooterTitle = styled.div({
   color: '#000629',
 })
 
-const FooterDescription = styled.div<DivProps>(
-  () => ({
-    fontStyle: 'normal',
-    fontWeight: 400,
-    fontSize: '14px',
-    lineHeight: '21px',
-    color: '#7B7F93',
-  }),
-  layout,
-  space
-)
+const FooterDescription = styled.div<DivProps>(layout, space)
 
 type TitleProps = ColorProps & SpaceProps
 
@@ -82,6 +69,18 @@ const Title = styled.div<TitleProps>(
     margin: '0 0 4px 0',
     cursor: 'pointer',
     userSelect: 'none',
+  }),
+  color,
+  space
+)
+
+const Paragraph = styled.p<DivProps>(
+  () => ({
+    fontStyle: 'normal',
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '21px',
+    color: '#7B7F93',
   }),
   color,
   space
@@ -117,9 +116,10 @@ const IconImg = styled.img<IconImgProps>(
 interface TokenFooterProps {
   onClick?: () => void
   sale: Sale
+  saleDetails?: SaleDetails
 }
 
-export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterProps) => {
+export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: TokenFooterProps) => {
   const {
     isMobile,
     windowSize: { width: windowWidth },
@@ -137,43 +137,56 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterPro
   return (
     <Wrapper {...mobileWrapper}>
       <FooterTitle>{`About ${sale.name}`}</FooterTitle>
-      <FooterDescription marginY="16px" maxWidth={isMobile ? windowWidth - 48 : '578px'}>
-        This can be a description for the project. Diam purus diam, nam sagittis risus. Nunc consequat felis tincidunt
-        volutpat et. Malesuada tortor, auctor quis id nisl mattis platea.
-      </FooterDescription>
+      {saleDetails?.description && (
+        <FooterDescription
+          marginY="16px"
+          maxWidth={isMobile ? windowWidth - 48 : '578px'}
+          data-testid="info-description"
+        >
+          {saleDetails.description.map((block, index) => (
+            <span key={index}>
+              {block.title && <Title marginBottom="6px">{block.title}</Title>}
+              {block.p && <Paragraph>{block.p}</Paragraph>}
+            </span>
+          ))}
+        </FooterDescription>
+      )}
       <Row
         flexDirection={isMobile ? 'column' : 'row'}
         maxWidth={isMobile ? windowWidth - 48 : '578px'}
         alignItems={isMobile ? 'flex-start' : 'center'}
       >
-        {isMobile && (
+        {isMobile && saleDetails?.socials && (
           <Flex paddingRight="40px" flexDirection="column">
             <Title marginBottom="8px">Socials</Title>
             <Flex flexDirection="row" alignItems="center">
-              <a href="https://twitter.com/" target="_blank" rel="noreferrer">
-                <IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" />
-              </a>
-              <a href="https://discord.com/invite/" target="_blank" rel="noreferrer">
-                <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
-              </a>
-              <a href="https://t.me/" target="_blank" rel="noreferrer">
-                <IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" />
-              </a>
-              <a href="https://github.com/" target="_blank" rel="noreferrer">
-                <IconImg src={GithubSVG} height="24px" width="24px" margin="0 24px 0 0" />
-              </a>
+              {saleDetails.socials.map((social, index) => (
+                <a key={index} href={social.link} target="_blank" rel="noreferrer">
+                  <IconImg
+                    src={social.icon || socialIcons[social.name]}
+                    height="24px"
+                    width="24px"
+                    margin="0 24px 0 0"
+                    alt={social.name}
+                  />
+                </a>
+              ))}
             </Flex>
           </Flex>
         )}
-        <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
-          <Title>Website</Title>
-          <Link href={``} target="_blank" color="#000629" margin="0 8px 0 0">
-            <Flex flexDirection="row" alignItems="center">
-              exwhyzed.finance
-              <IconImg src={ExternalLinkSVG} />
-            </Flex>
-          </Link>
-        </Flex>
+        {saleDetails?.website && (
+          <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
+            <Title>Website</Title>
+            <a href={saleDetails.website.url} target="_blank" rel="noreferrer" data-testid="info-website">
+              <Flex flexDirection="row" alignItems="center">
+                <Title color="#000629" margin="0 8px 0 0">
+                  {saleDetails.website.url}
+                </Title>
+                <IconImg src={ExternalLinkSVG} />
+              </Flex>
+            </a>
+          </Flex>
+        )}
         {walletAddress && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Token Address</Title>
@@ -190,22 +203,15 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale }: TokenFooterPro
             </Link>
           </Flex>
         )}
-        {!isMobile && (
+        {!isMobile && saleDetails?.socials && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Socials</Title>
-            <Flex flexDirection="row" alignItems="center">
-              <a href="https://github.com/cryptonative-ch">
-                <IconImg src={GithubSVG} height="21px" margin="0 16px 0 0" />
-              </a>
-              <a href="https://twitter.com/mesa_eth">
-                <IconImg src={TwitterSVG} height="21px" margin="0 16px 0 0" />
-              </a>
-              <a href="https://discord.com/invite/4QXEJQkvHH">
-                <IconImg src={DiscordSVG} height="21px" margin="0 16px 0 0" />
-              </a>
-              <a href="https://t.me/dxDAO">
-                <IconImg src={TelegramSVG} height="21px" margin="0 16px 0 0" />
-              </a>
+            <Flex flexDirection="row" alignItems="center" data-testid="info-socials">
+              {saleDetails.socials.map((social, index) => (
+                <a key={index} href={social.link} target="_blank" rel="noreferrer">
+                  <IconImg src={social.icon || socialIcons[social.name]} margin="0 16px 0 0" alt={social.name} />
+                </a>
+              ))}
             </Flex>
           </Flex>
         )}
