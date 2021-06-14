@@ -9,7 +9,6 @@ import { SaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Redux
 import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
-import { formatDecimal } from 'src/utils/Defaults'
 
 interface UseChainReturns {
   loading: boolean
@@ -20,8 +19,7 @@ interface UseChainReturns {
 export function useChain(
   contractAddress: string,
   saleType: SaleType,
-  provider: providers.JsonRpcProvider,
-  decimal: number
+  provider: providers.JsonRpcProvider
 ): UseChainReturns {
   const dispatch = useDispatch()
   const {
@@ -65,7 +63,7 @@ export function useChain(
       const bids: SaleBid = {
         id: String(await (await provider.getBlock(event.blockNumber)).timestamp),
         buyer: buyer,
-        amount: formatDecimal(amount, decimal),
+        amount: amount,
         baseSale: {
           id: contractAddress,
         },

@@ -26,12 +26,7 @@ interface UseBidsReturn {
   totalBids: SaleBid[]
 }
 
-export function useBids(
-  saleId: string,
-  saleType: SaleType,
-  provider: providers.JsonRpcProvider,
-  decimal: number
-): UseBidsReturn {
+export function useBids(saleId: string, saleType: SaleType, provider: providers.JsonRpcProvider): UseBidsReturn {
   const dispatch = useDispatch()
   const { account } = useWeb3React()
   const mesa = useMesa()
@@ -41,7 +36,7 @@ export function useBids(
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
-  const { bids: totalBids } = useChain(saleId, saleType, provider, decimal)
+  const { bids: totalBids } = useChain(saleId, saleType, provider)
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
   console.log(bids)
 

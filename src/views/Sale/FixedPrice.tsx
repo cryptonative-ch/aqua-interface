@@ -43,7 +43,10 @@ import { formatBigInt } from 'src/utils/Defaults'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
+import { SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
+import { useIpfsFile } from 'src/hooks/useIpfsFile'
+import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 //bids
 import { useBids } from 'src/hooks/useBids'
@@ -68,7 +71,8 @@ export function FixedPriceSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
   const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider, sale?.tokenOut.decimals)
+  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider)
+  const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -248,7 +252,7 @@ export function FixedPriceSaleView() {
                 <SelfBidList sale={sale as FIX_LATER} isFixed={true} bids={bids as any} />
               </Card>
             )}
-            <TokenFooter sale={sale as FIX_LATER} />
+            <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
           </Flex>
           {!isMobile && isSaleOpen(sale as FIX_LATER) && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
