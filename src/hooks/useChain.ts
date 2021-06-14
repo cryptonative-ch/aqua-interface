@@ -11,13 +11,6 @@ import { SaleBid, SaleType } from 'src/interfaces/Sale'
 import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
 import { formatDecimal } from 'src/utils/Defaults'
 
-// TODO: REPEAT BIDS
-// TODO: AGGREGATING BIDS
-// TODO: REFACTOR OF CODE
-// TODO: CLAIMTOKENS LOGIC
-// TODO: :w
-//
-
 interface UseChainReturns {
   loading: boolean
   bids: SaleBid[]
@@ -43,7 +36,7 @@ export function useChain(
 
       fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
         const bids: SaleBid = {
-          id: ownerId + orderTokenIn + orderTokenOut,
+          id: String(await (await provider.getBlock(event.blockNumber)).timestamp),
           address: ownerId,
           tokenIn: orderTokenIn,
           tokenOut: orderTokenOut,
@@ -52,7 +45,7 @@ export function useChain(
           },
 
           createdAt: await (await provider.getBlock(event.blockNumber)).timestamp,
-          updatedAt: null,
+          updatedAt: await (await provider.getBlock(event.blockNumber)).timestamp,
           deletedAt: null,
         }
 
@@ -70,14 +63,14 @@ export function useChain(
 
     fixedPriceSaleContract.on('NewPurchase', async (buyer, amount, event) => {
       const bids: SaleBid = {
-        id: buyer + amount,
+        id: String(await (await provider.getBlock(event.blockNumber)).timestamp),
         buyer: buyer,
         amount: formatDecimal(amount, decimal),
         baseSale: {
           id: contractAddress,
         },
         createdAt: await (await provider.getBlock(event.blockNumber)).timestamp,
-        updatedAt: null,
+        updatedAt: await (await provider.getBlock(event.blockNumber)).timestamp,
         deletedAt: null,
       }
       dispatch(updateBidRequest(true))

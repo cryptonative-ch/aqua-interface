@@ -226,10 +226,15 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
         ...state,
         bidsBySaleId: {
           ...bidsBySaleId,
-          [id]: {
-            updatedAt: updatedAt,
-            bids: [...bidsBySaleId[id].bids, action.payload],
-          },
+          [id]: eventExists(bidsBySaleId[id].bids, [action.payload])
+            ? {
+                updatedAt: updatedAt,
+                bids: [...bidsBySaleId[id].bids, action.payload],
+              }
+            : {
+                updatedAt: bidsBySaleId[id].updatedAt,
+                bids: bidsBySaleId[id].bids,
+              },
         },
       }
     }
