@@ -10,6 +10,5 @@ export const Wrapper = styled.div({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  // position: 'absolute',
   bottom: '0',
 })

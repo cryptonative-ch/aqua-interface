@@ -93,7 +93,7 @@ export function FixedPriceSaleView() {
   if (!sale) {
     return <NotFoundView />
   }
-  console.log('test')
+
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Container noPadding>
