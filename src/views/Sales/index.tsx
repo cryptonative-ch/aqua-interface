@@ -101,7 +101,7 @@ export function SalesView() {
 
   return (
     <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
-      <Container minHeight="100vh" inner={false} noPadding={true}>
+      <Container minHeight="100%" inner={false} noPadding={true}>
         <Container>
           <Title>Token Sales</Title>
           <SaleNavBar />

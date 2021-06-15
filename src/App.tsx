@@ -3,6 +3,7 @@ import { Mesa, MesaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/mesa'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
 import { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { CookiesProvider } from 'react-cookie'
@@ -34,6 +35,11 @@ import { Center } from './layouts/Center'
 // Contexts
 import { SanctionContext } from 'src/contexts'
 import { MesaContext } from 'src/mesa'
+
+export const Container = styled.div`
+  position: relative;
+  min-height: 100vh;
+`
 
 export const App = () => {
   const { isMobile } = useWindowSize()
@@ -87,15 +93,17 @@ export const App = () => {
               <GlobalStyle />
               <Suspense fallback={<Center minHeight="100vh">LOADING</Center>}>
                 <BrowserRouter>
-                  <Header />
-                  <AppRouter />
-                  <Modal
-                    isShown={SHOW_TERMS_AND_CONDITIONS && isShown}
-                    hide={toggle}
-                    modalContent={content}
-                    headerText="Confirmation"
-                  />
-                  {!isMobile && <Footer />}
+                  <Container>
+                    <Header />
+                    <AppRouter />
+                    <Modal
+                      isShown={SHOW_TERMS_AND_CONDITIONS && isShown}
+                      hide={toggle}
+                      modalContent={content}
+                      headerText="Confirmation"
+                    />
+                    {!isMobile && <Footer />}
+                  </Container>
                 </BrowserRouter>
               </Suspense>
             </ThemeProvider>
