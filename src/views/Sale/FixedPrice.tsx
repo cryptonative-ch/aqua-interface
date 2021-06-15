@@ -2,11 +2,12 @@
 
 // External
 import { useTranslation } from 'react-i18next'
+import { useWeb3React } from '@web3-react/core'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
+import { utils } from 'ethers'
 
 // Hooks
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
@@ -65,7 +66,7 @@ export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
-//const ClaimButtons = styled<ButtonProps>(FormButton)(props => ({
+//const ClaimButtons = styled<ButtonProps>(FormButton)<ClaimButtonsProps>(props => ({
 //  height: '40px',
 //  fontWeight: '500',
 //  padding: '0 16px',
@@ -83,9 +84,9 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-  const signer = provider.getSigner(0)
-  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider)
+  const { library } = useWeb3React()
+  const signer = library?.getSigner()
+  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, library!)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
   const { error: claimError, transaction, claim, claimTokens } = useTokenClaim(params.saleId, signer)
 
@@ -308,7 +309,7 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. ${ethers.utils.formatUnits(sale?.allocationMax)} ${
+                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
                       sale.tokenOut?.symbol
                     }`}</FixedFormMax>
                   </Flex>
