@@ -24,6 +24,7 @@ import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
+import { Spinner } from 'src/components/Spinner'
 
 import { PurchaseTokensForm } from './components/PurchaseTokensForm'
 import { HeaderControl } from './components/HeaderControl'
@@ -48,7 +49,8 @@ import { FIX_LATER } from 'src/interfaces'
 import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
-//bids
+// Hooks
+import { useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useBids } from 'src/hooks/useBids'
 
 const FixedFormMax = styled.div({
@@ -71,8 +73,10 @@ export function FixedPriceSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
   const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  const signer = provider.getSigner(0)
   const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
+  const { error: claimError, transaction, claim, claimTokens } = useTokenClaim(params.saleId, signer)
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -219,20 +223,53 @@ export function FixedPriceSaleView() {
                   <Flex flex={1} />
                   {isSaleClosed(sale as FIX_LATER) && !isMobile && (
                     <>
-                      <FormButton
-                        disabled={false}
-                        type="button"
-                        height="40px"
-                        fontWeight="500"
-                        padding="0 16px"
-                        fontSize="14px"
-                        lineHeight="21px"
-                        background="#304FFE"
-                        color="#fff"
-                        mr="16px"
-                      >
-                        Claim Tokens
-                      </FormButton>
+                      {claim === 'verify' ? (
+                        <FormButton
+                          disabled={false}
+                          type="button"
+                          height="40px"
+                          fontWeight="500"
+                          padding="0 16px"
+                          fontSize="14px"
+                          lineHeight="21px"
+                          background="#304FFE"
+                          color="#fff"
+                          mr="16px"
+                        >
+                          <Spinner />
+                        </FormButton>
+                      ) : claim === 'failed' ? (
+                        <FormButton
+                          disabled={false}
+                          type="button"
+                          height="40px"
+                          fontWeight="500"
+                          padding="0 16px"
+                          fontSize="14px"
+                          lineHeight="21px"
+                          background="#304FFE"
+                          color="#fff"
+                          mr="16px"
+                        >
+                          Transaction Error
+                        </FormButton>
+                      ) : (
+                        <FormButton
+                          disabled={false}
+                          type="button"
+                          height="40px"
+                          fontWeight="500"
+                          padding="0 16px"
+                          fontSize="14px"
+                          lineHeight="21px"
+                          background="#304FFE"
+                          color="#fff"
+                          mr="16px"
+                          onClick={() => claimTokens(params.saleId, signer)}
+                        >
+                          Claim Tokens
+                        </FormButton>
+                      )}
                       <FormButton
                         disabled={false}
                         type="button"

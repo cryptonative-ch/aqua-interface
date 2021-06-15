@@ -1,5 +1,5 @@
 // Externals
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Signer, ContractTransaction } from 'ethers'
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
@@ -46,10 +46,6 @@ export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimRetu
         setClaim('failed')
       })
   }
-  useEffect(() => {
-    claimTokens(saleId, signer)
-  })
-
   return {
     claim,
     transaction,
