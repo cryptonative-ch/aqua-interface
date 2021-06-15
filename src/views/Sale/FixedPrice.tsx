@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Property } from 'csstype'
 import { utils } from 'ethers'
 
 // Hooks
@@ -66,17 +67,17 @@ export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
-//const ClaimButtons = styled<ButtonProps>(FormButton)<ClaimButtonsProps>(props => ({
-//  height: '40px',
-//  fontWeight: '500',
-//  padding: '0 16px',
-//  fontSize: '14px',
-//  lineHeight: '21px',
-//  background: props.background || '#304FFE',
-//  color: props.color || '#fff',
-//  mr: '16px',
-//}))
-//
+const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
+  height: '40px',
+  fontWeight: '500' as Property.FontWeight,
+  padding: '0 16px',
+  fontSize: '14px',
+  lineHeight: '21px',
+  background: (props.background as Property.Background) || '#304FFE',
+  color: props.color || '#fff',
+  mr: '16px',
+}))
+
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
