@@ -4,18 +4,21 @@ import { Signer, ContractTransaction } from 'ethers'
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
 
+// interface
+import { MetaMaskError } from 'src/interfaces/Sale'
+
 type Claim = 'unclaimed' | 'verify' | 'failed' | 'claimed'
 
 interface useTokenClaimReturns {
   claim: Claim
   transaction: ContractTransaction | undefined
-  error: Error | undefined
+  error: MetaMaskError | undefined
   claimTokens: (saleId: string, signer: Signer) => void
 }
 
 export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimReturns {
   const [claim, setClaim] = useState<Claim>('unclaimed')
-  const [error, setError] = useState<Error>()
+  const [error, setError] = useState<MetaMaskError>()
   const [transaction, setTransaction] = useState<ContractTransaction>()
   //take this out before production
   const claimTokens = (saleId: string, signer: Signer) => {
@@ -25,7 +28,7 @@ export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimRetu
       .then((tx: ContractTransaction) => {
         tx.wait(1)
       })
-      .catch((error: Error) => {
+      .catch((error: MetaMaskError) => {
         console.log(error)
         setError(error)
       })
@@ -40,7 +43,7 @@ export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimRetu
         console.log(receipt)
         setClaim('claimed')
       })
-      .catch((error: Error) => {
+      .catch((error: MetaMaskError) => {
         setError(error)
         console.log(error)
         setClaim('failed')

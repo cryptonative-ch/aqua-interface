@@ -15,7 +15,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
-import { FormButton } from 'src/components/FormButton'
+import { FormButton, ButtonProps } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
@@ -65,6 +65,17 @@ export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
+//const ClaimButtons = styled<ButtonProps>(FormButton)(props => ({
+//  height: '40px',
+//  fontWeight: '500',
+//  padding: '0 16px',
+//  fontSize: '14px',
+//  lineHeight: '21px',
+//  background: props.background || '#304FFE',
+//  color: props.color || '#fff',
+//  mr: '16px',
+//}))
+//
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
@@ -251,7 +262,7 @@ export function FixedPriceSaleView() {
                           color="#fff"
                           mr="16px"
                         >
-                          Transaction Error
+                          {claimError?.data.message}
                         </FormButton>
                       ) : (
                         <FormButton
