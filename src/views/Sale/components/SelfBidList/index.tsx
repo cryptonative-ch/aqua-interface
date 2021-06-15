@@ -164,7 +164,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
               </Flex>
 
               <Flex flex={3}>
-                <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0')} ${
+                <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[00]')} ${
                   sale.tokenOut?.symbol
                 }`}</TokenPriceLabel>
               </Flex>
