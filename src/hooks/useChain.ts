@@ -1,7 +1,7 @@
 // External
 import { useDispatch, useSelector } from 'react-redux'
+import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
-import { providers } from 'ethers'
 import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
 
 // interfaces
@@ -16,12 +16,9 @@ interface UseChainReturns {
   error: Error | null
 }
 
-export function useChain(
-  contractAddress: string,
-  saleType: SaleType,
-  provider: providers.JsonRpcProvider
-): UseChainReturns {
+export function useChain(contractAddress: string, saleType: SaleType): UseChainReturns {
   const dispatch = useDispatch()
+  const { account, library, chainId } = useWeb3React()
   const {
     isLoading,
     error,
@@ -29,12 +26,15 @@ export function useChain(
   } = useSelector(({ bids }) => bids)
 
   useEffect(() => {
+    if (!account || !library || !chainId) {
+      return
+    }
     if (saleType == 'FairSale') {
-      const fairSaleContract = FairSale__factory.connect(contractAddress, provider)
+      const fairSaleContract = FairSale__factory.connect(contractAddress, library)
 
       fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
         const bids: SaleBid = {
-          id: String(await (await provider.getBlock(event.blockNumber)).timestamp),
+          id: String(await (await library.getBlock(event.blockNumber)).timestamp),
           address: ownerId,
           tokenIn: orderTokenIn,
           tokenOut: orderTokenOut,
@@ -42,8 +42,8 @@ export function useChain(
             id: contractAddress,
           },
 
-          createdAt: await (await provider.getBlock(event.blockNumber)).timestamp,
-          updatedAt: await (await provider.getBlock(event.blockNumber)).timestamp,
+          createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
+          updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
           deletedAt: null,
         }
 
@@ -57,18 +57,18 @@ export function useChain(
       })
     }
 
-    const fixedPriceSaleContract = FixedPriceSale__factory.connect(contractAddress, provider)
+    const fixedPriceSaleContract = FixedPriceSale__factory.connect(contractAddress, library)
 
     fixedPriceSaleContract.on('NewPurchase', async (buyer, amount, event) => {
       const bids: SaleBid = {
-        id: String(await (await provider.getBlock(event.blockNumber)).timestamp),
+        id: String(await (await library.getBlock(event.blockNumber)).timestamp),
         buyer: buyer,
         amount: amount,
         baseSale: {
           id: contractAddress,
         },
-        createdAt: await (await provider.getBlock(event.blockNumber)).timestamp,
-        updatedAt: await (await provider.getBlock(event.blockNumber)).timestamp,
+        createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
+        updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
         deletedAt: null,
       }
       dispatch(updateBidRequest(true))

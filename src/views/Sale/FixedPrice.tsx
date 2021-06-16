@@ -2,7 +2,6 @@
 
 // External
 import { useTranslation } from 'react-i18next'
-import { useWeb3React } from '@web3-react/core'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
@@ -75,7 +74,6 @@ const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
   lineHeight: '21px',
   background: (props.background as Property.Background) || '#304FFE',
   color: props.color || '#fff',
-  mr: '16px',
 }))
 
 export function FixedPriceSaleView() {
@@ -85,11 +83,9 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const { library } = useWeb3React()
-  const signer = library?.getSigner()
-  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, library!)
+  const { bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
-  const { error: claimError, transaction, claim, claimTokens } = useTokenClaim(params.saleId, signer)
+  const { error: claimError, claim, claimTokens } = useTokenClaim()
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -237,65 +233,26 @@ export function FixedPriceSaleView() {
                   {isSaleClosed(sale as FIX_LATER) && !isMobile && (
                     <>
                       {claim === 'verify' ? (
-                        <FormButton
-                          disabled={false}
-                          type="button"
-                          height="40px"
-                          fontWeight="500"
-                          padding="0 16px"
-                          fontSize="14px"
-                          lineHeight="21px"
-                          background="#304FFE"
-                          color="#fff"
-                          mr="16px"
-                        >
+                        <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
                           <Spinner />
-                        </FormButton>
+                        </ClaimButtons>
                       ) : claim === 'failed' ? (
-                        <FormButton
-                          disabled={false}
-                          type="button"
-                          height="40px"
-                          fontWeight="500"
-                          padding="0 16px"
-                          fontSize="14px"
-                          lineHeight="21px"
-                          background="#304FFE"
-                          color="#fff"
-                          mr="16px"
-                        >
+                        <ClaimButtons mr="16px" disabled={false} type="button">
                           {claimError?.data.message}
-                        </FormButton>
+                        </ClaimButtons>
                       ) : (
-                        <FormButton
+                        <ClaimButtons
                           disabled={false}
-                          type="button"
-                          height="40px"
-                          fontWeight="500"
-                          padding="0 16px"
-                          fontSize="14px"
-                          lineHeight="21px"
-                          background="#304FFE"
-                          color="#fff"
                           mr="16px"
-                          onClick={() => claimTokens(params.saleId, signer)}
+                          type="button"
+                          onClick={() => claimTokens(params.saleId)}
                         >
                           Claim Tokens
-                        </FormButton>
+                        </ClaimButtons>
                       )}
-                      <FormButton
-                        disabled={false}
-                        type="button"
-                        height="40px"
-                        fontWeight="500"
-                        padding="0 16px"
-                        fontSize="14px"
-                        lineHeight="21px"
-                        background="#7B7F93"
-                        color="#fff"
-                      >
+                      <ClaimButtons disabled={false} type="button" background="#7B7F93" color="#fff">
                         Withdraw Failed Bids
-                      </FormButton>
+                      </ClaimButtons>
                     </>
                   )}
                 </CardBody>

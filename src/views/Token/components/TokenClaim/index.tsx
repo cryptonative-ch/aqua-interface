@@ -1,7 +1,6 @@
 // Externals
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
@@ -49,12 +48,8 @@ const Icon = styled.img<SpaceProps>(
 export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
-  const { account, library } = useWeb3React()
 
-  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-  const signer = provider.getSigner(0)
-
-  const { claimTokens, claim, transaction, error } = useTokenClaim(sale!.id, signer)
+  const { claimTokens, claim, transaction, error } = useTokenClaim()
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
 
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
@@ -98,7 +93,7 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
               '0.0'
             )} ${sale?.tokenIn.symbol}`}</CardText>
           </Flex>
-          <Button onClick={() => claimTokens(sale!.id, signer)} width="90%">
+          <Button onClick={() => claimTokens(sale!.id)} width="90%">
             {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
           </Button>
         </Flex>

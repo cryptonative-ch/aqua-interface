@@ -1,6 +1,7 @@
 // Externals
-import { useState } from 'react'
-import { Signer, ContractTransaction } from 'ethers'
+import { useState, useEffect } from 'react'
+import { ContractTransaction } from 'ethers'
+import { useWeb3React } from '@web3-react/core'
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
 
@@ -13,15 +14,23 @@ interface useTokenClaimReturns {
   claim: Claim
   transaction: ContractTransaction | undefined
   error: MetaMaskError | undefined
-  claimTokens: (saleId: string, signer: Signer) => void
+  claimTokens: (saleId: string) => void
 }
 
-export function useTokenClaim(saleId: string, signer: Signer): useTokenClaimReturns {
+export function useTokenClaim(): useTokenClaimReturns {
   const [claim, setClaim] = useState<Claim>('unclaimed')
   const [error, setError] = useState<MetaMaskError>()
   const [transaction, setTransaction] = useState<ContractTransaction>()
-  //take this out before production
-  const claimTokens = (saleId: string, signer: Signer) => {
+  const { account, library, chainId } = useWeb3React()
+  const signer = library?.getSigner()
+
+  useEffect(() => {
+    if (!chainId || !library || !account) {
+      return
+    }
+  }, [account, chainId, library])
+
+  const claimTokens = (saleId: string) => {
     //take this out before production
     FixedPriceSale__factory.connect(saleId, signer)
       .closeSale()
