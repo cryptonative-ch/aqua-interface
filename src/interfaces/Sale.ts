@@ -26,6 +26,14 @@ export interface FairSaleBid extends Bid {
   address: string // The bidder's Ethereum address
 }
 
+export interface MetaMaskError {
+  code: number
+  message: string
+  data: {
+    code: string
+    message: string
+  }
+}
 export type FairBidPick = Pick<FairSaleBid, 'address' | 'tokenOut' | 'tokenIn'>
 
 export type FixedPricePick = Pick<FixedPriceSalePurchase, 'amount' | 'buyer'>

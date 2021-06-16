@@ -6,7 +6,8 @@ import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
+import { Property } from 'csstype'
+import { utils } from 'ethers'
 
 // Hooks
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
@@ -15,13 +16,14 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
-import { FormButton } from 'src/components/FormButton'
+import { FormButton, ButtonProps } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
+import { Spinner } from 'src/components/Spinner'
 
 import { PurchaseTokensForm } from './components/PurchaseTokensForm'
 import { HeaderControl } from './components/HeaderControl'
@@ -46,7 +48,8 @@ import { FIX_LATER } from 'src/interfaces'
 import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
-//bids
+// Hooks
+import { useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useBids } from 'src/hooks/useBids'
 
 const FixedFormMax = styled.div({
@@ -61,6 +64,16 @@ export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
+const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
+  height: '40px',
+  fontWeight: '500' as Property.FontWeight,
+  padding: '0 16px',
+  fontSize: '14px',
+  lineHeight: '21px',
+  background: (props.background as Property.Background) || '#304FFE',
+  color: props.color || '#fff',
+}))
+
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
@@ -68,9 +81,9 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
-  const { bids, totalBids } = useBids(params.saleId, sale!.__typename, provider)
+  const { bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
+  const { error: claimError, claim, claimTokens, withdrawTokens, withdrawError, claimWithdraw } = useTokenClaim()
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -216,33 +229,55 @@ export function FixedPriceSaleView() {
                   <Flex flex={1} />
                   {isSaleClosed(sale as FIX_LATER) && !isMobile && (
                     <>
-                      <FormButton
-                        disabled={false}
-                        type="button"
-                        height="40px"
-                        fontWeight="500"
-                        padding="0 16px"
-                        fontSize="14px"
-                        lineHeight="21px"
-                        background="#304FFE"
-                        color="#fff"
-                        mr="16px"
-                      >
-                        Claim Tokens
-                      </FormButton>
-                      <FormButton
-                        disabled={false}
-                        type="button"
-                        height="40px"
-                        fontWeight="500"
-                        padding="0 16px"
-                        fontSize="14px"
-                        lineHeight="21px"
-                        background="#7B7F93"
-                        color="#fff"
-                      >
-                        Withdraw Failed Bids
-                      </FormButton>
+                      {claim === 'verify' ? (
+                        <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
+                          <Spinner />
+                        </ClaimButtons>
+                      ) : claim === 'failed' ? (
+                        <ClaimButtons mr="16px" disabled={false} type="button">
+                          {claimError?.message}
+                        </ClaimButtons>
+                      ) : (
+                        <ClaimButtons
+                          disabled={false}
+                          mr="16px"
+                          type="button"
+                          onClick={() => claimTokens(params.saleId)}
+                        >
+                          Claim Tokens
+                        </ClaimButtons>
+                      )}
+                      {claimWithdraw === 'verify' ? (
+                        <ClaimButtons
+                          disabled={claim === 'claimed' ? true : false}
+                          type="button"
+                          onClick={() => withdrawTokens(params.saleId)}
+                          background="#7B7F93"
+                          color="#fff"
+                        >
+                          <Spinner />
+                        </ClaimButtons>
+                      ) : claimWithdraw === 'failed' ? (
+                        <ClaimButtons
+                          disabled={true}
+                          type="button"
+                          onClick={() => withdrawTokens(params.saleId)}
+                          background="#7B7F93"
+                          color="#fff"
+                        >
+                          {withdrawError?.message}
+                        </ClaimButtons>
+                      ) : (
+                        <ClaimButtons
+                          disabled={claimWithdraw === 'claimed' ? true : false}
+                          type="button"
+                          onClick={() => withdrawTokens(params.saleId)}
+                          background="#7B7F93"
+                          color="#fff"
+                        >
+                          Withdraw Failed Bids
+                        </ClaimButtons>
+                      )}
                     </>
                   )}
                 </CardBody>
@@ -257,7 +292,7 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. ${ethers.utils.formatUnits(sale?.allocationMax)} ${
+                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
                       sale.tokenOut?.symbol
                     }`}</FixedFormMax>
                   </Flex>

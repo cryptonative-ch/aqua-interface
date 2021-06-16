@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { providers } from 'ethers'
 
 // Hooks
 import { useMesa } from './useMesa'
@@ -26,9 +25,9 @@ interface UseBidsReturn {
   totalBids: SaleBid[]
 }
 
-export function useBids(saleId: string, saleType: SaleType, provider: providers.JsonRpcProvider): UseBidsReturn {
+export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const dispatch = useDispatch()
-  const { account } = useWeb3React()
+  const { account, library, chainId } = useWeb3React()
   const mesa = useMesa()
   const {
     isLoading,
@@ -36,12 +35,13 @@ export function useBids(saleId: string, saleType: SaleType, provider: providers.
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
-  const { bids: totalBids } = useChain(saleId, saleType, provider)
+  const { bids: totalBids } = useChain(saleId, saleType)
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
-  console.log(bids)
 
-  console.log(totalBids)
   useEffect(() => {
+    if (!account || !library || !chainId) {
+      return
+    }
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
     const timeNow = dayjs.utc().unix()
     const delta = Math.abs(updatedAt - timeNow)
@@ -70,7 +70,7 @@ export function useBids(saleId: string, saleType: SaleType, provider: providers.
       .catch(bidsError => {
         dispatch(initialBidFailure(bidsError))
       })
-  }, [account, dispatch])
+  }, [account, dispatch, library, chainId])
 
   return {
     totalBids,
