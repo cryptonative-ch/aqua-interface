@@ -24,8 +24,6 @@ import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
 import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
 import { Flex } from 'src/components/Flex'
 import { Card } from 'src/components/Card'
 // View Components
@@ -119,7 +117,6 @@ export function FairSaleView() {
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <SaleHeader sale={sale} />
@@ -313,7 +310,6 @@ export function FairSaleView() {
           )}
         </Flex>
       </Container>
-      {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>
   )

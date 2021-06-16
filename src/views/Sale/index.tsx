@@ -36,7 +36,7 @@ export function SaleView() {
   }, [sale])
 
   if (loading) {
-    return <Center>Loading</Center>
+    return <Center minHeight="100vh">Loading</Center>
   }
   // Error
   if (error) {

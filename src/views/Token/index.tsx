@@ -9,14 +9,10 @@ import { useDispatch } from 'react-redux'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
-import { AbsoluteContainer } from 'src/components/AbsoluteContainer'
 import { Container } from 'src/components/Container'
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
 import { Title } from 'src/components/Title'
 
 // Hooks
-import { useWindowSize } from 'src/hooks/useWindowSize'
 import { useMesa } from 'src/hooks/useMesa'
 
 // Layouts
@@ -71,7 +67,6 @@ query getTokenClaims {
 // { data: buyer { saleId:.., tokens}}
 
 export function TokenView() {
-  const { isMobile } = useWindowSize()
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
@@ -122,37 +117,32 @@ export function TokenView() {
 
   if (loading) {
     return (
-      <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
-        <Header />
+      <Container minHeight="100vh" inner={false} noPadding={true}>
         <Container>
           <Title>{t('texts.claimTokens')}</Title>
           <GridListSection>
             <h1>Loading!</h1>
           </GridListSection>
         </Container>
-        {!isMobile && <Footer />}
-      </AbsoluteContainer>
+      </Container>
     )
   }
 
   if (error) {
     return (
-      <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
-        <Header />
+      <Container minHeight="100vh" inner={false} noPadding={true}>
         <Container>
           <Title>{t('texts.claimTokens')}</Title>
           <GridListSection>
             <ErrorMessage error={error} />
           </GridListSection>
         </Container>
-        {!isMobile && <Footer />}
-      </AbsoluteContainer>
+      </Container>
     )
   }
 
   return (
-    <AbsoluteContainer minHeight="200%" inner={false} noPadding={true}>
-      <Header />
+    <Container minHeight="100vh" inner={false} noPadding={true}>
       <Container>
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
@@ -163,7 +153,6 @@ export function TokenView() {
           )}
         </GridListSection>
       </Container>
-      {!isMobile && <Footer />}
-    </AbsoluteContainer>
+    </Container>
   )
 }
