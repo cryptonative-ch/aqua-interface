@@ -17,8 +17,6 @@ import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
 import { CardBody } from 'src/components/CardBody'
-import { Header } from 'src/components/Header'
-import { Footer } from 'src/components/Footer'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
@@ -50,7 +48,6 @@ export function StaticView() {
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
-      <Header />
       <Container noPadding>
         {!isMobile && <BackButton />}
         <StaticHeader />
@@ -72,7 +69,6 @@ export function StaticView() {
           </Flex>
         </Flex>
       </Container>
-      {!isMobile && <Footer />}
       {isMobile && <MobileFooter />}
     </Container>
   )
