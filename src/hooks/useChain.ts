@@ -79,7 +79,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
         dispatch(updateBidFailure(error))
       }
     })
-  }, [dispatch])
+  }, [dispatch, account, library, chainId])
   return {
     bids,
     loading: isLoading,

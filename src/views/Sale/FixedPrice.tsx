@@ -85,7 +85,7 @@ export function FixedPriceSaleView() {
   const theme = useTheme()
   const { bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
-  const { error: claimError, claim, claimTokens } = useTokenClaim()
+  const { error: claimError, claim, claimTokens, withdrawTokens, withdrawError, claimWithdraw } = useTokenClaim()
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -238,7 +238,7 @@ export function FixedPriceSaleView() {
                         </ClaimButtons>
                       ) : claim === 'failed' ? (
                         <ClaimButtons mr="16px" disabled={false} type="button">
-                          {claimError?.data.message}
+                          {claimError?.message}
                         </ClaimButtons>
                       ) : (
                         <ClaimButtons
@@ -250,9 +250,37 @@ export function FixedPriceSaleView() {
                           Claim Tokens
                         </ClaimButtons>
                       )}
-                      <ClaimButtons disabled={false} type="button" background="#7B7F93" color="#fff">
-                        Withdraw Failed Bids
-                      </ClaimButtons>
+                      {claimWithdraw === 'verify' ? (
+                        <ClaimButtons
+                          disabled={claim === 'claimed' ? true : false}
+                          type="button"
+                          onClick={() => withdrawTokens(params.saleId)}
+                          background="#7B7F93"
+                          color="#fff"
+                        >
+                          <Spinner />
+                        </ClaimButtons>
+                      ) : claimWithdraw === 'failed' ? (
+                        <ClaimButtons
+                          disabled={true}
+                          type="button"
+                          onClick={() => withdrawTokens(params.saleId)}
+                          background="#7B7F93"
+                          color="#fff"
+                        >
+                          {withdrawError?.message}
+                        </ClaimButtons>
+                      ) : (
+                        <ClaimButtons
+                          disabled={claimWithdraw === 'claimed' ? true : false}
+                          type="button"
+                          onClick={() => withdrawTokens(params.saleId)}
+                          background="#7B7F93"
+                          color="#fff"
+                        >
+                          Withdraw Failed Bids
+                        </ClaimButtons>
+                      )}
                     </>
                   )}
                 </CardBody>
