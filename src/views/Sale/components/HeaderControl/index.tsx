@@ -1,8 +1,7 @@
 // External
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
 import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
-import React, { useEffect } from 'react'
+import React from 'react'
 import numeral from 'numeral'
 import { ethers } from 'ethers'
 
@@ -124,14 +123,12 @@ interface HeaderControlProps {
 
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
-  const { account, library, chainId } = useWeb3React()
   const { totalBids, bids } = useBids(sale.id, sale.type)
-  console.log(bids)
   console.log(totalBids)
 
-  if (isFixed && bids && bids.length > 0) {
+  if ((isFixed && bids && bids.length > 0) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
-    const Threshold = formatBigInt(sale.minimumRaise)
+    const Threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
     const totalAmountPurchased = totalBids.reduce((accumulator: any, purchases: any) => {
       return BigNumber.from(accumulator).add(purchases.amount)
     }, BigNumber.from(0))
@@ -139,19 +136,13 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
     const amountDisplayed = Number(ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5))
     const percentageSold = (amountDisplayed / totalSupply) * 100
 
-    useEffect(() => {
-      if (!chainId || !library || !account) {
-        return
-      }
-    }, [totalBids, account, library, chainId])
-
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>Sale Progress</FixedTitle>
           <FixedDescription>
-            {numeral(amountDisplayed).format('0')}
-            <FixedDescription2>{`(${numeral(percentageSold).format('0')}%)`}</FixedDescription2>
+            {numeral(amountDisplayed).format('0.[00]')}
+            <FixedDescription2>{`(${numeral(percentageSold).format('0.[00]')}%)`}</FixedDescription2>
             <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
           </FixedDescription>
         </Flex>
@@ -159,7 +150,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
           <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={Threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml={`calc( ${percentageSold} - 66px)`}>{`${numeral(Threshold).format(
+        <ControlButton ml={`calc( ${Threshold}% )`}>{`${numeral(Threshold).format(
           '0'
         )}%:  Min. Threshold `}</ControlButton>
       </Flex>
