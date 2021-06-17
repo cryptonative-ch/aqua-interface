@@ -17,7 +17,7 @@ import UpSVG from 'src/assets/svg/Up-Arrow.svg'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
-import { Sale, SaleBid } from 'src/interfaces/Sale'
+import { Sale } from 'src/interfaces/Sale'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
@@ -120,18 +120,19 @@ interface HeaderControlProps {
   isFixed?: boolean
   toggleGraph: () => void
   sale: Sale
-  bids: SaleBid[]
 }
 
-export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, bids }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
   const { account, library, chainId } = useWeb3React()
-  const { totalBids } = useBids(sale.id, sale.type)
+  const { totalBids, bids } = useBids(sale.id, sale.type)
+  console.log(bids)
+  console.log(totalBids)
 
   if (isFixed && bids && bids.length > 0) {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const Threshold = formatBigInt(sale.minimumRaise)
-    const totalAmountPurchased: any = totalBids.reduce((accumulator: any, purchases: any) => {
+    const totalAmountPurchased = totalBids.reduce((accumulator: any, purchases: any) => {
       return BigNumber.from(accumulator).add(purchases.amount)
     }, BigNumber.from(0))
 
@@ -142,7 +143,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, b
       if (!chainId || !library || !account) {
         return
       }
-    }, [totalBids])
+    }, [totalBids, account, library, chainId])
 
     return (
       <Flex flexDirection="column" flex={1}>

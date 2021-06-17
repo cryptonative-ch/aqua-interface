@@ -197,7 +197,6 @@ export function FixedPriceSaleView() {
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
-                    bids={totalBids}
                   />
                 </CardBody>
               )}
@@ -209,7 +208,6 @@ export function FixedPriceSaleView() {
                     toggleGraph={toggleGraph}
                     isFixed={true}
                     status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
-                    bids={totalBids}
                   />
                 </CardBody>
               )}
