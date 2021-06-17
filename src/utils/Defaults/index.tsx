@@ -87,7 +87,7 @@ const getFairSale = (): FairSale => ({
   minFundingThreshold: 100,
 })
 
-const getFixedPriceSales = (): FixedPriceSale => ({
+export const getFixedPriceSales = (): FixedPriceSale => ({
   id: '0x141',
   createdAt: 1585481341,
   updatedAt: null,
