@@ -30,9 +30,5 @@ describe('HeaderControl', () => {
     expect(getByText('Missed out on the sale? You can get ERT on')).toBeInTheDocument()
     expect(getByText('Go to Swapr')).toBeInTheDocument()
     expect(getByTestId('logo-img')).toBeInTheDocument()
-  }),
-    test('should display graph image', () => {
-      const { getByTestId } = wrapper('active')
-      expect(getByTestId('graph-img')).toBeInTheDocument()
-    })
+  })
 })
