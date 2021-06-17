@@ -146,7 +146,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
 
         {bids.map((bid: FixedPriceSalePurchase, index: number) => {
           const bidValue =
-            formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
+            formatBigInt(sale.tokenPrice, sale.tokenIn.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
 
           return (
             <Flex

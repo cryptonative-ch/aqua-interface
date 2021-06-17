@@ -251,20 +251,13 @@ export function FixedPriceSaleView() {
                         <ClaimButtons
                           disabled={claim === 'claimed' ? true : false}
                           type="button"
-                          onClick={() => withdrawTokens(params.saleId)}
                           background="#7B7F93"
                           color="#fff"
                         >
                           <Spinner />
                         </ClaimButtons>
                       ) : claimWithdraw === 'failed' ? (
-                        <ClaimButtons
-                          disabled={true}
-                          type="button"
-                          onClick={() => withdrawTokens(params.saleId)}
-                          background="#7B7F93"
-                          color="#fff"
-                        >
+                        <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
                           {withdrawError?.message}
                         </ClaimButtons>
                       ) : (

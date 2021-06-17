@@ -37,6 +37,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
   const { bids: totalBids } = useChain(saleId, saleType)
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
+  console.log(bids)
 
   useEffect(() => {
     if (!account || !library || !chainId) {

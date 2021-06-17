@@ -1,7 +1,8 @@
 // External
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import numeral from 'numeral'
 
 // Components
@@ -19,6 +20,9 @@ import { Sale, SaleBid } from 'src/interfaces/Sale'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+
+// hooks
+import { useChain } from 'src/hooks/useChain'
 
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
@@ -119,12 +123,24 @@ interface HeaderControlProps {
 
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, bids }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
+  const { account, library, chainId } = useWeb3React()
+  const { counter } = useChain(sale.id, sale.type)
 
   if (isFixed && bids && bids.length > 0) {
-    const tokenSold = formatBigInt(sale.soldAmount, sale.tokenOut.decimals)
+    const tokenSold = formatBigInt(sale.soldAmount, sale.tokenOut.decimals) + counter
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const Threshold = formatBigInt(sale.minimumRaise)
     const percentageSold = (tokenSold / totalSupply) * 100
+    const [progressBarUpdate, setProgressBarUpdate] = useState(0)
+
+    useEffect(() => {
+      if (!chainId || !library || !account) {
+        return
+      }
+      setProgressBarUpdate(percentageSold)
+      console.log(counter)
+    })
+
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
@@ -136,7 +152,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, b
           </FixedDescription>
         </Flex>
         <BarContainer>
-          <BarActive width={percentageSold}></BarActive>
+          <BarActive width={progressBarUpdate}></BarActive>
           <BarMarker marginLeft={Threshold}></BarMarker>
         </BarContainer>
         <ControlButton ml="calc(20% - 66px)">{`Min. Threshold: ${numeral(Threshold).format('0')}%`}</ControlButton>
