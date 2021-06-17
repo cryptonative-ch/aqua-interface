@@ -2,8 +2,9 @@
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import numeral from 'numeral'
+import { ethers } from 'ethers'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -22,7 +23,8 @@ import { Sale, SaleBid } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // hooks
-import { useChain } from 'src/hooks/useChain'
+import { useBids } from 'src/hooks/useBids'
+import { BigNumber } from '@ethersproject/bignumber'
 
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
@@ -124,35 +126,36 @@ interface HeaderControlProps {
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, bids }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
   const { account, library, chainId } = useWeb3React()
-  const { counter } = useChain(sale.id, sale.type)
+  const { totalBids } = useBids(sale.id, sale.type)
 
   if (isFixed && bids && bids.length > 0) {
-    const tokenSold = formatBigInt(sale.soldAmount, sale.tokenOut.decimals) + counter
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const Threshold = formatBigInt(sale.minimumRaise)
-    const percentageSold = (tokenSold / totalSupply) * 100
-    const [progressBarUpdate, setProgressBarUpdate] = useState(0)
+    const totalAmountPurchased: any = totalBids.reduce((accumulator: any, purchases: any) => {
+      return BigNumber.from(accumulator).add(purchases.amount)
+    }, BigNumber.from(0))
+
+    const amountDisplayed = Number(ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5))
+    const percentageSold = (amountDisplayed / totalSupply) * 100
 
     useEffect(() => {
       if (!chainId || !library || !account) {
         return
       }
-      setProgressBarUpdate(percentageSold)
-      console.log(counter)
-    })
+    }, [totalBids])
 
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>Sale Progress</FixedTitle>
           <FixedDescription>
-            {numeral(tokenSold).format('0')}
+            {numeral(amountDisplayed).format('0')}
             <FixedDescription2>{`(${numeral(percentageSold).format('0')}%)`}</FixedDescription2>
             <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
           </FixedDescription>
         </Flex>
         <BarContainer>
-          <BarActive width={progressBarUpdate}></BarActive>
+          <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={Threshold}></BarMarker>
         </BarContainer>
         <ControlButton ml="calc(20% - 66px)">{`Min. Threshold: ${numeral(Threshold).format('0')}%`}</ControlButton>

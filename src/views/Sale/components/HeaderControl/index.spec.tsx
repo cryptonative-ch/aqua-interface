@@ -14,6 +14,8 @@ import { getFixedPriceSales } from 'src/utils/Defaults'
 // redux
 import { store } from 'src/redux/store'
 
+const mockData = getFixedPriceSales()
+
 const wrapper = (status: string) => {
   return render(
     <Provider store={store}>
@@ -22,7 +24,6 @@ const wrapper = (status: string) => {
   )
 }
 
-const mockData = getFixedPriceSales()
 describe('HeaderControl', () => {
   test('should display texts and logo img', () => {
     const { getByText, getByTestId } = wrapper('closed')
