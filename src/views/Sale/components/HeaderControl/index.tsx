@@ -91,7 +91,7 @@ const BarMarker = styled.div<BarBallMarker>(props => ({
   width: '6px',
   height: '6px',
   borderRadius: '6px',
-  backgroundColor: '#7B7F93',
+  backgroundColor: 'white',
   position: 'absolute',
 }))
 
@@ -158,7 +158,9 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, b
           <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={Threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml="calc(20% - 66px)">{`Min. Threshold: ${numeral(Threshold).format('0')}%`}</ControlButton>
+        <ControlButton ml={`calc( ${percentageSold} - 66px)`}>{`${numeral(Threshold).format(
+          '0'
+        )}%:  Min. Threshold `}</ControlButton>
       </Flex>
     )
   }
