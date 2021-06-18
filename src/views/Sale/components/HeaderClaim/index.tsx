@@ -41,7 +41,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const { isMobile } = useWindowSize()
   const theme = useTheme()
   const [t] = useTranslation()
-  const { error: claimError, claim, claimTokens, withdrawTokens, withdrawError, claimWithdraw } = useTokenClaim()
+  const { error: claimError, claim, claimTokens, withdrawTokens } = useTokenClaim()
   return (
     <CardBody
       display="flex"
@@ -56,30 +56,31 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
       <Flex flex={1} />
       {isSaleClosed(sale as FIX_LATER) && !isMobile && (
         <>
-          {claim === 'verify' ? (
-            <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
+          {sale.soldAmount >= sale.minimumRaise ? (
+            claim == 'verify' ? (
+              <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
+                <Spinner />
+              </ClaimButtons>
+            ) : claim === 'failed' ? (
+              <ClaimButtons mr="16px" disabled={false} type="button">
+                {claimError?.message}
+              </ClaimButtons>
+            ) : (
+              <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(sale.id)}>
+                Claim Tokens
+              </ClaimButtons>
+            )
+          ) : claim === 'verify' ? (
+            <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
               <Spinner />
             </ClaimButtons>
           ) : claim === 'failed' ? (
-            <ClaimButtons mr="16px" disabled={false} type="button">
+            <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
               {claimError?.message}
             </ClaimButtons>
           ) : (
-            <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(sale.id)}>
-              Claim Tokens
-            </ClaimButtons>
-          )}
-          {claimWithdraw === 'verify' ? (
-            <ClaimButtons disabled={claim === 'claimed' ? true : false} type="button" background="#7B7F93" color="#fff">
-              <Spinner />
-            </ClaimButtons>
-          ) : claimWithdraw === 'failed' ? (
-            <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
-              {withdrawError?.message}
-            </ClaimButtons>
-          ) : (
             <ClaimButtons
-              disabled={claimWithdraw === 'claimed' ? true : false}
+              disabled={claim === 'claimed' ? true : false}
               type="button"
               onClick={() => withdrawTokens(sale.id)}
               background="#7B7F93"

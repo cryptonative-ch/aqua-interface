@@ -16,15 +16,11 @@ interface useTokenClaimReturns {
   error: MetaMaskError | undefined
   claimTokens: (saleId: string) => void
   withdrawTokens: (saleId: string) => void
-  withdrawError: MetaMaskError | undefined
-  claimWithdraw: Claim
 }
 
 export function useTokenClaim(): useTokenClaimReturns {
   const [claim, setClaim] = useState<Claim>('unclaimed')
-  const [claimWithdraw, setClaimWithdraw] = useState<Claim>('unclaimed')
   const [error, setError] = useState<MetaMaskError>()
-  const [withdrawError, setWithdrawError] = useState<MetaMaskError>()
   const [transaction, setTransaction] = useState<ContractTransaction>()
   const { account, library, chainId } = useWeb3React()
   const signer = library?.getSigner()
@@ -68,18 +64,18 @@ export function useTokenClaim(): useTokenClaimReturns {
     FixedPriceSale__factory.connect(saleId, signer)
       .releaseTokens()
       .then((tx: ContractTransaction) => {
-        setClaimWithdraw('verify')
+        setClaim('verify')
         tx.wait(1)
         setTransaction(tx)
       })
       .then(receipt => {
         console.log(receipt)
-        setClaimWithdraw('claimed')
+        setClaim('claimed')
       })
       .catch((error: MetaMaskError) => {
-        setWithdrawError(error)
+        setError(error)
         console.log(error)
-        setClaimWithdraw('failed')
+        setClaim('failed')
       })
   }
   return {
@@ -88,7 +84,5 @@ export function useTokenClaim(): useTokenClaimReturns {
     error,
     claimTokens,
     withdrawTokens,
-    claimWithdraw,
-    withdrawError,
   }
 }

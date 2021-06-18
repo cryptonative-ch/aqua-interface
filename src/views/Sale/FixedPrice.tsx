@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // External
-import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
@@ -66,7 +65,6 @@ export function FixedPriceSaleView() {
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
-  const [t] = useTranslation()
   const theme = useTheme()
   const { totalPurchased, bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
