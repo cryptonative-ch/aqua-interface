@@ -22,6 +22,7 @@ import { FIX_LATER } from 'src/interfaces'
 // Hooks
 import { useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { BigNumber } from '@ethersproject/bignumber'
 
 const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
   height: '40px',
@@ -42,6 +43,8 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const theme = useTheme()
   const [t] = useTranslation()
   const { error: claimError, claim, claimTokens, withdrawTokens } = useTokenClaim()
+  const threshold = BigNumber.from(sale.minimumRaise)
+  const tokensSold = BigNumber.from(sale.soldAmount)
   return (
     <CardBody
       display="flex"
@@ -56,7 +59,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
       <Flex flex={1} />
       {isSaleClosed(sale as FIX_LATER) && !isMobile && (
         <>
-          {sale.soldAmount >= sale.minimumRaise ? (
+          {tokensSold.gte(threshold) ? (
             claim == 'verify' ? (
               <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
                 <Spinner />
