@@ -5,11 +5,13 @@ import styled from 'styled-components'
 
 export const StyledTooltip = styled(ReactTooltip)(
   () => ({
-    maxWidth: '30vh',
     filter: 'drop-shadow(0px 4px 12px rgba(0, 6, 41, 0.1))',
-    fontSize: '14px',
+    fontSize: '14px !important',
     fontWeight: 500,
     lineHeight: 1.5,
+    maxWidth: '30vh',
+    textAlign: 'center',
+    padding: '12px !important',
   }),
   () => `
   &.type-light {
@@ -53,7 +55,7 @@ export const Tooltip: React.FC<StyledTooltipProps & TooltipProps> = ({ children,
   return (
     <>
       <span data-tip>{children}</span>
-      <StyledTooltip multiline type="light" effect="solid" place="bottom" {...props}>
+      <StyledTooltip type="light" effect="solid" place="bottom" {...props}>
         {content}
       </StyledTooltip>
     </>

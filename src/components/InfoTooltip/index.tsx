@@ -15,7 +15,7 @@ const InfoIconImg = styled.img({
 
 export const InfoTooltip: React.FC = ({ children }) => {
   return (
-    <Tooltip content={<span>{children}</span>}>
+    <Tooltip clickable delayHide={250} delayUpdate={500} multiline content={<span>{children}</span>}>
       <InfoIconImg src={InfoIconSVG} />
     </Tooltip>
   )
