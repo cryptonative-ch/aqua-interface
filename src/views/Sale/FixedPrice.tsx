@@ -81,7 +81,7 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const [t] = useTranslation()
   const theme = useTheme()
-  const { bids, totalBids } = useBids(params.saleId, sale!.__typename)
+  const { totalPurchased, bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
   const { error: claimError, claim, claimTokens, withdrawTokens, withdrawError, claimWithdraw } = useTokenClaim()
 
@@ -125,9 +125,9 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${
+                        sale.tokenIn?.symbol
+                      }/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -158,9 +158,9 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${
+                        sale.tokenIn?.symbol
+                      }/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
@@ -272,7 +272,11 @@ export function FixedPriceSaleView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList sale={sale as FIX_LATER} isFixed={true} bids={bids as any} />
+                <SelfBidList
+                  sale={sale as FIX_LATER}
+                  isFixed={true}
+                  bids={sale.status === 'settled' ? (totalPurchased(bids) as any) : (bids as any)}
+                />
               </Card>
             )}
             <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
