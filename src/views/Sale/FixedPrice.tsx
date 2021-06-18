@@ -27,6 +27,7 @@ import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
 import { HeaderItem } from './components/HeaderItem'
 import { SaleHeader } from './components/SaleHeader'
+import { HeaderClaim } from './components/HeaderClaim'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -38,6 +39,7 @@ import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
+
 // Interfaces
 import { SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
@@ -45,7 +47,6 @@ import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 // Hooks
-import { useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useBids } from 'src/hooks/useBids'
 
 const FixedFormMax = styled.div({
@@ -69,7 +70,6 @@ export function FixedPriceSaleView() {
   const theme = useTheme()
   const { totalPurchased, bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
-  const { error: claimError, claim, claimTokens, withdrawTokens, withdrawError, claimWithdraw } = useTokenClaim()
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -200,6 +200,7 @@ export function FixedPriceSaleView() {
             </Card>
             {bids && bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
+                <HeaderClaim sale={sale as any} />
                 <SelfBidList
                   sale={sale as FIX_LATER}
                   isFixed={true}

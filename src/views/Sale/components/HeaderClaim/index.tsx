@@ -65,7 +65,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
               {claimError?.message}
             </ClaimButtons>
           ) : (
-            <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(params.saleId)}>
+            <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(sale.id)}>
               Claim Tokens
             </ClaimButtons>
           )}
@@ -81,7 +81,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
             <ClaimButtons
               disabled={claimWithdraw === 'claimed' ? true : false}
               type="button"
-              onClick={() => withdrawTokens(params.saleId)}
+              onClick={() => withdrawTokens(sale.id)}
               background="#7B7F93"
               color="#fff"
             >
