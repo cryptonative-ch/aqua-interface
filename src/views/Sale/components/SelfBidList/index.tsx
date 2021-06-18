@@ -170,7 +170,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
               </Flex>
 
               <Flex flex={6}>
-                <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} DAI`}</TokenPriceLabel>
+                <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
                 <Flex flex={1} />
                 {isSaleClosed(sale) ? (
                   <>
@@ -245,7 +245,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
           >
             <Flex flex={3}>
               <TokenPriceLabel backgroundColor={vsp <= bidPrice ? '#4B9E985A' : '#E15F5F5A'}>
-                {`${numeral(bidPrice).format('0.[00]')} DAI`}
+                {`${numeral(bidPrice).format('0.[00]')} ${sale.tokenIn?.symbol}`}
               </TokenPriceLabel>
             </Flex>
             <Flex flex={3}>
@@ -257,7 +257,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
               <Flex flex={3}>
                 <TokenPriceLabel>{`${numeral(formatBigInt(bid.tokenIn, sale.tokenIn.decimals)).format(
                   '0'
-                )} DAI`}</TokenPriceLabel>
+                )} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
               </Flex>
             )}
             {isSaleOpen(sale) ? (

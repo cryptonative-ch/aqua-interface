@@ -135,7 +135,7 @@ export function FairSaleView() {
                       title={isSaleUpcoming(sale) ? 'Min. Price' : isSaleOpen(sale) ? 'Current Price' : 'Final Price'}
                       description={`${(
                         1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 1)
-                      ).toFixed(2)} DAI/${sale.tokenOut?.symbol}`}
+                      ).toFixed(2)} ${sale.tokenIn?.symbol}/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -165,7 +165,7 @@ export function FairSaleView() {
                       title={isSaleUpcoming(sale) ? 'Min. Price' : isSaleOpen(sale) ? 'Current Price' : 'Final Price'}
                       description={`${(
                         1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 1)
-                      ).toFixed(2)} DAI/${sale.tokenOut?.symbol}`}
+                      ).toFixed(2)} ${sale.tokenIn?.symbol}/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isSaleClosed(sale) ? 'Amount Sold' : 'Amount for Sale'}

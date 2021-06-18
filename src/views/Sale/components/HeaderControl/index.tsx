@@ -150,9 +150,9 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
           <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={Threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml={`calc( ${Threshold}% )`}>{`${numeral(Threshold).format(
+        <ControlButton ml={`calc( ${Threshold}% - 2px )`}>{`${numeral(Threshold).format(
           '0'
-        )}%:  Min. Threshold `}</ControlButton>
+        )}% Soft Cap `}</ControlButton>
       </Flex>
     )
   }
