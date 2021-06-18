@@ -24,7 +24,7 @@ interface UseBidsReturn {
   error: Error | null
   bids: SaleBid[]
   totalBids: SaleBid[]
-  totalPurchased(bids: SaleBid[]): Partial<FixedPriceSalePurchase | 'buyer' | 'amount'>[]
+  totalPurchased(bids: SaleBid[]): Pick<FixedPriceSalePurchase, 'buyer' | 'amount'>[]
 }
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {

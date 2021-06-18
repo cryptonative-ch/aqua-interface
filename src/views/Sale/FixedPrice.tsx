@@ -6,7 +6,6 @@ import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Property } from 'csstype'
 import { utils } from 'ethers'
 
 // Hooks
@@ -16,14 +15,11 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
-import { FormButton, ButtonProps } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
-import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
-import { Spinner } from 'src/components/Spinner'
 
 import { PurchaseTokensForm } from './components/PurchaseTokensForm'
 import { HeaderControl } from './components/HeaderControl'
@@ -63,16 +59,6 @@ const FixedFormMax = styled.div({
 export interface FixedPriceSaleViewParams {
   saleId: string
 }
-
-const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
-  height: '40px',
-  fontWeight: '500' as Property.FontWeight,
-  padding: '0 16px',
-  fontSize: '14px',
-  lineHeight: '21px',
-  background: (props.background as Property.Background) || '#304FFE',
-  color: props.color || '#fff',
-}))
 
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
@@ -214,64 +200,6 @@ export function FixedPriceSaleView() {
             </Card>
             {bids && bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
-                <CardBody
-                  display="flex"
-                  padding={isMobile ? '16px' : theme.space[4]}
-                  border="none"
-                  flexDirection="row"
-                  alignItems="center"
-                >
-                  <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">
-                    {t('texts.yourActivity')}
-                  </CardTitle>
-                  <Flex flex={1} />
-                  {isSaleClosed(sale as FIX_LATER) && !isMobile && (
-                    <>
-                      {claim === 'verify' ? (
-                        <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
-                          <Spinner />
-                        </ClaimButtons>
-                      ) : claim === 'failed' ? (
-                        <ClaimButtons mr="16px" disabled={false} type="button">
-                          {claimError?.message}
-                        </ClaimButtons>
-                      ) : (
-                        <ClaimButtons
-                          disabled={false}
-                          mr="16px"
-                          type="button"
-                          onClick={() => claimTokens(params.saleId)}
-                        >
-                          Claim Tokens
-                        </ClaimButtons>
-                      )}
-                      {claimWithdraw === 'verify' ? (
-                        <ClaimButtons
-                          disabled={claim === 'claimed' ? true : false}
-                          type="button"
-                          background="#7B7F93"
-                          color="#fff"
-                        >
-                          <Spinner />
-                        </ClaimButtons>
-                      ) : claimWithdraw === 'failed' ? (
-                        <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
-                          {withdrawError?.message}
-                        </ClaimButtons>
-                      ) : (
-                        <ClaimButtons
-                          disabled={claimWithdraw === 'claimed' ? true : false}
-                          type="button"
-                          onClick={() => withdrawTokens(params.saleId)}
-                          background="#7B7F93"
-                          color="#fff"
-                        >
-                          Withdraw Failed Bids
-                        </ClaimButtons>
-                      )}
-                    </>
-                  )}
-                </CardBody>
                 <SelfBidList
                   sale={sale as FIX_LATER}
                   isFixed={true}
