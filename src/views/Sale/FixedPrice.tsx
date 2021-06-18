@@ -125,7 +125,7 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} DAI/${
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
                         sale.tokenOut?.symbol
                       }`}
                     />
@@ -158,7 +158,7 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} DAI/${
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
                         sale.tokenOut?.symbol
                       }`}
                     />
@@ -197,7 +197,6 @@ export function FixedPriceSaleView() {
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     isFixed={true}
-                    bids={totalBids}
                   />
                 </CardBody>
               )}
@@ -209,7 +208,6 @@ export function FixedPriceSaleView() {
                     toggleGraph={toggleGraph}
                     isFixed={true}
                     status={isSaleClosed(sale as FIX_LATER) ? 'closed' : 'active'}
-                    bids={totalBids}
                   />
                 </CardBody>
               )}
@@ -251,20 +249,13 @@ export function FixedPriceSaleView() {
                         <ClaimButtons
                           disabled={claim === 'claimed' ? true : false}
                           type="button"
-                          onClick={() => withdrawTokens(params.saleId)}
                           background="#7B7F93"
                           color="#fff"
                         >
                           <Spinner />
                         </ClaimButtons>
                       ) : claimWithdraw === 'failed' ? (
-                        <ClaimButtons
-                          disabled={true}
-                          type="button"
-                          onClick={() => withdrawTokens(params.saleId)}
-                          background="#7B7F93"
-                          color="#fff"
-                        >
+                        <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
                           {withdrawError?.message}
                         </ClaimButtons>
                       ) : (

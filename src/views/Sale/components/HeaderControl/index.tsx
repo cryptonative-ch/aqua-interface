@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
 import React from 'react'
 import numeral from 'numeral'
+import { ethers } from 'ethers'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -15,10 +16,14 @@ import UpSVG from 'src/assets/svg/Up-Arrow.svg'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
-import { Sale, SaleBid } from 'src/interfaces/Sale'
+import { Sale } from 'src/interfaces/Sale'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
+
+// hooks
+import { useBids } from 'src/hooks/useBids'
+import { BigNumber } from '@ethersproject/bignumber'
 
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
@@ -85,7 +90,7 @@ const BarMarker = styled.div<BarBallMarker>(props => ({
   width: '6px',
   height: '6px',
   borderRadius: '6px',
-  backgroundColor: '#7B7F93',
+  backgroundColor: 'white',
   position: 'absolute',
 }))
 
@@ -114,32 +119,40 @@ interface HeaderControlProps {
   isFixed?: boolean
   toggleGraph: () => void
   sale: Sale
-  bids: SaleBid[]
 }
 
-export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale, bids }: HeaderControlProps) {
+export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
+  const { totalBids } = useBids(sale.id, sale.type)
+  console.log(totalBids)
 
-  if (isFixed && bids && bids.length > 0) {
-    const tokenSold = formatBigInt(sale.soldAmount, sale.tokenOut.decimals)
+  if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
-    const Threshold = formatBigInt(sale.minimumRaise)
-    const percentageSold = (tokenSold / totalSupply) * 100
+    const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
+    const totalAmountPurchased = totalBids.reduce((accumulator: any, purchases: any) => {
+      return BigNumber.from(accumulator).add(purchases.amount)
+    }, BigNumber.from(0))
+    // truncated. not rounded
+    const amountDisplayed = Number(ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5))
+    const percentageSold = (amountDisplayed / totalSupply) * 100
+
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>Sale Progress</FixedTitle>
           <FixedDescription>
-            {numeral(tokenSold).format('0')}
-            <FixedDescription2>{`(${numeral(percentageSold).format('0')}%)`}</FixedDescription2>
+            {numeral(amountDisplayed).format('0.[00]')}
+            <FixedDescription2>{`(${numeral(percentageSold).format('0.[00]')}%)`}</FixedDescription2>
             <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
           </FixedDescription>
         </Flex>
         <BarContainer>
           <BarActive width={percentageSold}></BarActive>
-          <BarMarker marginLeft={Threshold}></BarMarker>
+          <BarMarker marginLeft={threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml="calc(20% - 66px)">{`Min. Threshold: ${numeral(Threshold).format('0')}%`}</ControlButton>
+        <ControlButton ml={`calc( ${0.89 * threshold}%)`}>{`${numeral(threshold).format(
+          '0'
+        )}% Soft Cap `}</ControlButton>
       </Flex>
     )
   }
