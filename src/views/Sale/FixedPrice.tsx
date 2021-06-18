@@ -125,7 +125,7 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} DAI/${
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
                         sale.tokenOut?.symbol
                       }`}
                     />
@@ -158,7 +158,7 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} DAI/${
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
                         sale.tokenOut?.symbol
                       }`}
                     />
