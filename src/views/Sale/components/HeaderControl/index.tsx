@@ -126,7 +126,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
   const { totalBids, bids } = useBids(sale.id, sale.type)
   console.log(totalBids)
 
-  if ((isFixed && bids && bids.length > 0) || status != 'closed') {
+  if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const Threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
     const totalAmountPurchased = totalBids.reduce((accumulator: any, purchases: any) => {
