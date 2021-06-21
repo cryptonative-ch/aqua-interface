@@ -45,7 +45,6 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const { error: claimError, claim, claimTokens, withdrawTokens } = useTokenClaim()
   const threshold = BigNumber.from(sale.minimumRaise)
   const tokensSold = BigNumber.from(sale.soldAmount)
-  console.log(sale)
   return (
     <CardBody
       display="flex"
