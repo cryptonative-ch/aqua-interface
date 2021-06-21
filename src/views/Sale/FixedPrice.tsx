@@ -174,7 +174,7 @@ export function FixedPriceSaleView() {
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale as FIX_LATER) && totalBids && totalBids.length > 0 && (
+              {isSaleOpen(sale as FIX_LATER) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}

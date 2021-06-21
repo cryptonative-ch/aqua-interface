@@ -54,9 +54,6 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   }
 
   useEffect(() => {
-    if (!account || !library || !chainId) {
-      return
-    }
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
     const timeNow = dayjs.utc().unix()
     const delta = Math.abs(updatedAt - timeNow)
