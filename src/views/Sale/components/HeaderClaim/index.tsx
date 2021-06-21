@@ -77,10 +77,6 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
             <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
               <Spinner />
             </ClaimButtons>
-          ) : claim === 'failed' ? (
-            <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
-              {claimError?.message}
-            </ClaimButtons>
           ) : (
             <ClaimButtons
               disabled={claim === 'claimed' ? true : false}

@@ -2,6 +2,8 @@
 import { BigNumberish } from '@ethersproject/bignumber'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useWeb3React } from '@web3-react/core'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 import { useCallback, useMemo, useState } from 'react'
 
@@ -29,13 +31,14 @@ export function useApproveCallback({
   spender,
 }: UseApproveCallbackProps): [ApprovalState, () => Promise<void>] {
   const { account, library } = useWeb3React()
-
+  const [t] = useTranslation()
   const [txPending, setTxPending] = useState(false)
   const currentAllowance = useTokenAllowance(tokenAddress, account || '', spender)
   const tokenContract = useTokenContract(tokenAddress)
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
+    console.log({ currentAllowance })
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
     /**
      * Comment for now
@@ -44,6 +47,16 @@ export function useApproveCallback({
     // if (amountToApprove.currency.isNative) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
+
+    // approved if currentAllowance > 0
+    if (currentAllowance.gt(0)) {
+      // If was previously pending then show success message and stop loading
+      if (txPending) {
+        setTxPending(false)
+        toast.success(t('success.approve'))
+      }
+      return ApprovalState.APPROVED
+    }
 
     // Use signed tx and waiting
     if (txPending) {
@@ -55,8 +68,7 @@ export function useApproveCallback({
       return ApprovalState.NOT_APPROVED
     }
 
-    // amountToApprove will be defined if currentAllowance is
-    return ApprovalState.APPROVED
+    return ApprovalState.NOT_APPROVED
   }, [amountToApprove, currentAllowance, spender])
 
   const approve = useCallback(async (): Promise<void> => {
@@ -99,10 +111,9 @@ export function useApproveCallback({
       })
       .catch((error: Error) => {
         console.debug('Failed to approve token', error)
+        toast.error(t('errors.approve'))
         throw error
       })
-
-      .finally(() => setTxPending(false))
   }, [approvalState, tokenAddress, amountToApprove, spender, tokenContract])
 
   return [approvalState, approve]

@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import { ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
 
@@ -28,8 +30,11 @@ export function useTokenClaim(): useTokenClaimReturns {
   const [error, setError] = useState<MetaMaskError>()
   const [transaction, setTransaction] = useState<ContractTransaction>()
   const { account, library, chainId } = useWeb3React()
+  const [t] = useTranslation()
   const signer = library?.getSigner()
 
+  const errMesg = t('texts.currentPrice')
+  console.log({ errMesg })
   useEffect(() => {
     if (!chainId || !library || !account) {
       return
@@ -56,11 +61,13 @@ export function useTokenClaim(): useTokenClaimReturns {
       })
       .then(receipt => {
         console.log(receipt)
+        toast.success(t('success.claim'))
         return setClaim(ClaimState.CLAIMED)
       })
       .catch((error: MetaMaskError) => {
         setError(error)
         console.log(error)
+        toast.error(t('errors.claim'))
         return setClaim(ClaimState.FAILED)
       })
   }
@@ -74,11 +81,13 @@ export function useTokenClaim(): useTokenClaimReturns {
       })
       .then(receipt => {
         console.log(receipt)
+        toast.success(t('success.withdraw'))
         return setClaim(ClaimState.CLAIMED)
       })
       .catch((error: MetaMaskError) => {
         setError(error)
         console.log(error)
+        toast.error(t('errors.withdraw'))
         return setClaim(ClaimState.FAILED)
       })
   }

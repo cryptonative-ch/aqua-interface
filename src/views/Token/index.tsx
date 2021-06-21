@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 // Redux
 import { setPageTitle } from 'src/redux/page'
@@ -107,6 +108,7 @@ export function TokenView() {
       })
       .catch(error => {
         setError(error)
+        toast.error(t('errors.fetchTokens'))
         setLoading(false)
       })
       .then(() => {

@@ -58,5 +58,22 @@
     "shortClaim": "Claim",
     "done": "Done",
     "changetoxDaiNetwork": "Change to xDai Network"
+  },
+  "errors": {
+    "claim": "Failed to claim",
+    "withdraw": "Failed to withdraw",
+    "approve": "Failed to approve",
+    "fetchBids": "Failed to fetch bids",
+    "updatePurchase": "Failed to update purchase list",
+    "fetchSale": "Failed to fetch sales",
+    "fetchBalance": "Failed to fetch token balance for user",
+    "fetchTokens": "Failed to fetch tokens for user",
+    "purchase": "Failed to purchase tokens"
+  },
+  "success": {
+    "claim": "Claimed tokens",
+    "withdraw": "Withdrew tokens",
+    "purchase": "Purchased tokens",
+    "approve": "Approved funds"
   }
 }

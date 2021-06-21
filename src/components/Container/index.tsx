@@ -14,6 +14,7 @@ export const Container = styled.div<ContainerProps>(
     width: '100%',
     paddingLeft: props.noPadding ? 0 : props.theme.space[3],
     paddingRight: props.noPadding ? 0 : props.theme.space[3],
+    paddingBottom: props.theme.space[3],
     marginLeft: 'auto',
     marginRight: 'auto',
     justifyContent: 'center',
