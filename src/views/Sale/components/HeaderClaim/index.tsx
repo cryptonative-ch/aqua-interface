@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Property } from 'csstype'
+import { BigNumber } from '@ethersproject/bignumber'
 
 // Components
 import { CardTitle } from 'src/components/CardTitle'
@@ -22,7 +23,6 @@ import { FIX_LATER } from 'src/interfaces'
 // Hooks
 import { useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useWindowSize } from 'src/hooks/useWindowSize'
-import { BigNumber } from '@ethersproject/bignumber'
 
 const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
   height: '40px',

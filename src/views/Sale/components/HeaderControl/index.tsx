@@ -148,9 +148,9 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
           <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml={`calc( ${0.89 * threshold}%)`}>{`${numeral(threshold).format(
-          '0'
-        )}% Soft Cap `}</ControlButton>
+        <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.6 : 0.89) * threshold}%)`}>{`${numeral(
+          threshold
+        ).format('0')}% Soft Cap `}</ControlButton>
       </Flex>
     )
   }

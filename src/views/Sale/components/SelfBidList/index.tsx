@@ -123,7 +123,6 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
     ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) /
       formatBigInt(clearingPrice.tokenOut, sale.tokenOut.decimals)
     : 0
-  console.log(bids)
 
   if (isFixed) {
     return (
