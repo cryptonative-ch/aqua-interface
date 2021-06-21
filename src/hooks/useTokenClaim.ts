@@ -6,25 +6,26 @@ import { useWeb3React } from '@web3-react/core'
 import { FixedPriceSale__factory } from 'src/contracts'
 
 // interface
-import { MetaMaskError } from 'src/interfaces/Sale'
+import { MetaMaskError } from 'src/interfaces/Error'
 
-type Claim = 'unclaimed' | 'verify' | 'failed' | 'claimed'
+enum ClaimState {
+  UNCLAIMED = 'unclaimed',
+  VERIFY = 'verify',
+  FAILED = 'failed',
+  CLAIMED = 'claimed',
+}
 
 interface useTokenClaimReturns {
-  claim: Claim
+  claim: ClaimState
   transaction: ContractTransaction | undefined
   error: MetaMaskError | undefined
   claimTokens: (saleId: string) => void
   withdrawTokens: (saleId: string) => void
-  withdrawError: MetaMaskError | undefined
-  claimWithdraw: Claim
 }
 
 export function useTokenClaim(): useTokenClaimReturns {
-  const [claim, setClaim] = useState<Claim>('unclaimed')
-  const [claimWithdraw, setClaimWithdraw] = useState<Claim>('unclaimed')
+  const [claim, setClaim] = useState<ClaimState>(ClaimState.UNCLAIMED)
   const [error, setError] = useState<MetaMaskError>()
-  const [withdrawError, setWithdrawError] = useState<MetaMaskError>()
   const [transaction, setTransaction] = useState<ContractTransaction>()
   const { account, library, chainId } = useWeb3React()
   const signer = library?.getSigner()
@@ -40,46 +41,45 @@ export function useTokenClaim(): useTokenClaimReturns {
     FixedPriceSale__factory.connect(saleId, signer)
       .closeSale()
       .then((tx: ContractTransaction) => {
-        tx.wait(1)
+        return tx.wait(1)
       })
       .catch((error: MetaMaskError) => {
         console.log(error)
-        setError(error)
+        return setError(error)
       })
     FixedPriceSale__factory.connect(saleId, signer)
       .claimTokens()
       .then((tx: ContractTransaction) => {
-        setClaim('verify')
-        tx.wait(1)
+        setClaim(ClaimState.VERIFY)
         setTransaction(tx)
+        return tx.wait(1)
       })
       .then(receipt => {
         console.log(receipt)
-        setClaim('claimed')
+        return setClaim(ClaimState.CLAIMED)
       })
       .catch((error: MetaMaskError) => {
         setError(error)
         console.log(error)
-        setClaim('failed')
+        return setClaim(ClaimState.FAILED)
       })
   }
   const withdrawTokens = (saleId: string) => {
-    //take this out before production
     FixedPriceSale__factory.connect(saleId, signer)
       .releaseTokens()
       .then((tx: ContractTransaction) => {
-        setClaimWithdraw('verify')
-        tx.wait(1)
+        setClaim(ClaimState.VERIFY)
         setTransaction(tx)
+        return tx.wait(1)
       })
       .then(receipt => {
         console.log(receipt)
-        setClaimWithdraw('claimed')
+        return setClaim(ClaimState.CLAIMED)
       })
       .catch((error: MetaMaskError) => {
-        setWithdrawError(error)
+        setError(error)
         console.log(error)
-        setClaimWithdraw('failed')
+        return setClaim(ClaimState.FAILED)
       })
   }
   return {
@@ -88,7 +88,5 @@ export function useTokenClaim(): useTokenClaimReturns {
     error,
     claimTokens,
     withdrawTokens,
-    claimWithdraw,
-    withdrawError,
   }
 }

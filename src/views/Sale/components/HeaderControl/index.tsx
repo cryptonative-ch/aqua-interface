@@ -124,15 +124,13 @@ interface HeaderControlProps {
 
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
   const { isMobile } = useWindowSize()
-  const { totalBids } = useBids(sale.id, sale.type)
+  const { totalBids, totalPurchased } = useBids(sale.id, sale.type)
   console.log(totalBids)
 
   if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
-    const totalAmountPurchased = totalBids.reduce((accumulator: any, purchases: any) => {
-      return BigNumber.from(accumulator).add(purchases.amount)
-    }, BigNumber.from(0))
+    const totalAmountPurchased = totalPurchased(totalBids)[0].amount
     // truncated. not rounded
     const amountDisplayed = Number(ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5))
     const percentageSold = (amountDisplayed / totalSupply) * 100
@@ -151,9 +149,8 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
           <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml={`calc( ${0.89 * threshold}%)`}>{`${numeral(threshold).format(
-          '0'
-        )}% Soft Cap `}
+        <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.55 : 0.85) * threshold}%)`}>
+          {`${numeral(threshold).format('0')}% Soft Cap `}
           <InfoTooltip>The auction will not execute, unless the minimum funding threshold is met.</InfoTooltip>
         </ControlButton>
       </Flex>

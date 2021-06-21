@@ -28,7 +28,9 @@ export function SaleFinalPrice({ sale }: SaleFinalPriceProps) {
   return (
     <Flex>
       <CardText data-testid="openprice">{pricePerToken}</CardText>
-      <CardText fontWeight="light">&nbsp;{sale.tokenIn?.symbol}/{sale.tokenOut?.symbol}</CardText>
+      <CardText fontWeight="light">
+        &nbsp;{sale.tokenIn?.symbol}/{sale.tokenOut?.symbol}
+      </CardText>
     </Flex>
   )
 }

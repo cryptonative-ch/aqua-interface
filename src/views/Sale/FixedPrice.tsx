@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // External
-import { useTranslation } from 'react-i18next'
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Property } from 'csstype'
 import { utils } from 'ethers'
 
 // Hooks
@@ -16,14 +14,11 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
 import { MobileFooter } from 'src/components/MobileFooter'
-import { FormButton, ButtonProps } from 'src/components/FormButton'
 import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
-import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
-import { Spinner } from 'src/components/Spinner'
 
 import { PurchaseTokensForm } from './components/PurchaseTokensForm'
 import { HeaderControl } from './components/HeaderControl'
@@ -31,6 +26,7 @@ import { SelfBidList } from './components/SelfBidList'
 import { TokenFooter } from './components/TokenFooter'
 import { HeaderItem } from './components/HeaderItem'
 import { SaleHeader } from './components/SaleHeader'
+import { HeaderClaim } from './components/HeaderClaim'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -42,6 +38,7 @@ import { formatBigInt } from 'src/utils/Defaults'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
+
 // Interfaces
 import { SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
@@ -49,7 +46,6 @@ import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 // Hooks
-import { useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useBids } from 'src/hooks/useBids'
 
 const FixedFormMax = styled.div({
@@ -64,26 +60,14 @@ export interface FixedPriceSaleViewParams {
   saleId: string
 }
 
-const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
-  height: '40px',
-  fontWeight: '500' as Property.FontWeight,
-  padding: '0 16px',
-  fontSize: '14px',
-  lineHeight: '21px',
-  background: (props.background as Property.Background) || '#304FFE',
-  color: props.color || '#fff',
-}))
-
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
-  const [t] = useTranslation()
   const theme = useTheme()
-  const { bids, totalBids } = useBids(params.saleId, sale!.__typename)
+  const { totalPurchased, bids, totalBids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
-  const { error: claimError, claim, claimTokens, withdrawTokens, withdrawError, claimWithdraw } = useTokenClaim()
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -125,9 +109,9 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${
+                        sale.tokenIn?.symbol
+                      }/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
@@ -158,9 +142,9 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${sale.tokenIn?.symbol}/${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${
+                        sale.tokenIn?.symbol
+                      }/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
@@ -214,65 +198,12 @@ export function FixedPriceSaleView() {
             </Card>
             {bids && bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
-                <CardBody
-                  display="flex"
-                  padding={isMobile ? '16px' : theme.space[4]}
-                  border="none"
-                  flexDirection="row"
-                  alignItems="center"
-                >
-                  <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">
-                    {t('texts.yourActivity')}
-                  </CardTitle>
-                  <Flex flex={1} />
-                  {isSaleClosed(sale as FIX_LATER) && !isMobile && (
-                    <>
-                      {claim === 'verify' ? (
-                        <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
-                          <Spinner />
-                        </ClaimButtons>
-                      ) : claim === 'failed' ? (
-                        <ClaimButtons mr="16px" disabled={false} type="button">
-                          {claimError?.message}
-                        </ClaimButtons>
-                      ) : (
-                        <ClaimButtons
-                          disabled={false}
-                          mr="16px"
-                          type="button"
-                          onClick={() => claimTokens(params.saleId)}
-                        >
-                          Claim Tokens
-                        </ClaimButtons>
-                      )}
-                      {claimWithdraw === 'verify' ? (
-                        <ClaimButtons
-                          disabled={claim === 'claimed' ? true : false}
-                          type="button"
-                          background="#7B7F93"
-                          color="#fff"
-                        >
-                          <Spinner />
-                        </ClaimButtons>
-                      ) : claimWithdraw === 'failed' ? (
-                        <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
-                          {withdrawError?.message}
-                        </ClaimButtons>
-                      ) : (
-                        <ClaimButtons
-                          disabled={claimWithdraw === 'claimed' ? true : false}
-                          type="button"
-                          onClick={() => withdrawTokens(params.saleId)}
-                          background="#7B7F93"
-                          color="#fff"
-                        >
-                          Withdraw Failed Bids
-                        </ClaimButtons>
-                      )}
-                    </>
-                  )}
-                </CardBody>
-                <SelfBidList sale={sale as FIX_LATER} isFixed={true} bids={bids as any} />
+                <HeaderClaim sale={sale as any} />
+                <SelfBidList
+                  sale={sale as FIX_LATER}
+                  isFixed={true}
+                  bids={sale.status === 'settled' ? (totalPurchased(bids) as any) : (bids as any)}
+                />
               </Card>
             )}
             <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
