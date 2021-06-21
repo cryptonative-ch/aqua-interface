@@ -66,7 +66,7 @@ export function FixedPriceSaleView() {
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const theme = useTheme()
-  const { totalPurchased, bids, totalBids } = useBids(params.saleId, sale!.__typename)
+  const { totalPurchased, bids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
 
   const toggleGraph = () => {
@@ -174,7 +174,7 @@ export function FixedPriceSaleView() {
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale as FIX_LATER) && totalBids && totalBids.length > 0 && (
+              {isSaleOpen(sale as FIX_LATER) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}
