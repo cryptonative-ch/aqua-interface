@@ -8,6 +8,7 @@ import { ethers } from 'ethers'
 // Components
 import { Flex } from 'src/components/Flex'
 import { FormButton } from 'src/components/FormButton'
+import { InfoTooltip } from 'src/components/InfoTooltip'
 
 // Svg
 import LogoSVG from 'src/assets/svg/Logo.svg'
@@ -148,9 +149,10 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
           <BarActive width={percentageSold}></BarActive>
           <BarMarker marginLeft={threshold}></BarMarker>
         </BarContainer>
-        <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.6 : 0.89) * threshold}%)`}>{`${numeral(
-          threshold
-        ).format('0')}% Soft Cap `}</ControlButton>
+        <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.55 : 0.85) * threshold}%)`}>
+          {`${numeral(threshold).format('0')}% Soft Cap `}
+          <InfoTooltip>The auction will not execute, unless the minimum funding threshold is met.</InfoTooltip>
+        </ControlButton>
       </Flex>
     )
   }
