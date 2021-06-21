@@ -72,7 +72,6 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     mesa.subgraph
       .query(saleBidsQuery(saleId))
       .then(({ data }) => {
-        console.log({ data })
         const { fixedPriceSales, fairSales } = data
         const saleBids = fixedPriceSales ? fixedPriceSales[0].purchases : fairSales[0].bids
         const sales = saleBids.reduce(

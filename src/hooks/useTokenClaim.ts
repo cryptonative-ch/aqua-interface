@@ -33,8 +33,6 @@ export function useTokenClaim(): useTokenClaimReturns {
   const [t] = useTranslation()
   const signer = library?.getSigner()
 
-  const errMesg = t('texts.currentPrice')
-  console.log({ errMesg })
   useEffect(() => {
     if (!chainId || !library || !account) {
       return

@@ -38,7 +38,6 @@ export function useApproveCallback({
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    console.log({ currentAllowance })
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
     /**
      * Comment for now

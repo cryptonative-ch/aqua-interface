@@ -139,7 +139,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     const newPurchaseValue = parseFloat(event.target.value)
 
     const quantity = newPurchaseValue / tokenPrice
-    console.log({ quantity })
 
     // purchaseValue is less than minimum allocation
     if (purchaseMinimumAllocation > quantity) {
