@@ -66,7 +66,7 @@ export function FixedPriceSaleView() {
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const theme = useTheme()
-  const { totalPurchased, bids, totalBids } = useBids(params.saleId, sale!.__typename)
+  const { totalPurchased, bids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
 
   const toggleGraph = () => {
