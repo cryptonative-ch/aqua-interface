@@ -4,8 +4,6 @@ import { BigNumber } from 'ethers'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { toast } from 'react-toastify'
-import { useTranslation } from 'react-i18next'
 
 // Hooks
 import { useMesa } from './useMesa'
@@ -31,7 +29,6 @@ interface UseBidsReturn {
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const dispatch = useDispatch()
-  const [t] = useTranslation()
   const { account, library, chainId } = useWeb3React()
   const mesa = useMesa()
   const {
