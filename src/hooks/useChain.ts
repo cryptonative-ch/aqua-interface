@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 // interfaces
 import { SaleBid, SaleType } from 'src/interfaces/Sale'
@@ -19,6 +21,7 @@ interface UseChainReturns {
 export function useChain(contractAddress: string, saleType: SaleType): UseChainReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
+  const [t] = useTranslation()
   const {
     isLoading,
     error,
@@ -76,6 +79,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
         dispatch(updateBidSuccess(bids))
       } catch (error) {
         console.log(error)
+        toast.error(t('error.updatePurchase'))
         dispatch(updateBidFailure(error))
       }
     })

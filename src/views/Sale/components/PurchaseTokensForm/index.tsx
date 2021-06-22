@@ -4,6 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { utils } from 'ethers'
+import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // Components
@@ -201,8 +202,12 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         })
         .catch(error => {
           console.error(error)
+          toast.error(t('errors.purchase'))
         })
-        .then(() => setTxPending(false))
+        .then(() => {
+          toast.success(t('success.purchase'))
+          setTxPending(false)
+        })
     },
     [sale, library, account]
   )

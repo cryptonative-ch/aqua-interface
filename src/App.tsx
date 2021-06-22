@@ -2,8 +2,8 @@
 import { Mesa, MesaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/mesa'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
-import { ThemeProvider } from 'styled-components'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
+import { ToastContainer } from 'react-toastify'
 import { BrowserRouter } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { CookiesProvider } from 'react-cookie'
@@ -12,6 +12,7 @@ import Axios from 'axios'
 // Styles
 import { GlobalStyle } from './styles/Global'
 import { theme } from './styles/theme'
+import 'react-toastify/dist/ReactToastify.css'
 
 // Hooks
 import { useModal } from 'src/hooks/useModal'
@@ -103,6 +104,17 @@ export const App = () => {
                       headerText="Confirmation"
                     />
                     {!isMobile && <Footer />}
+                    <ToastContainer
+                      position="bottom-right"
+                      autoClose={10000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                    />
                   </Container>
                 </BrowserRouter>
               </Suspense>

@@ -2,6 +2,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import dayjs from 'dayjs'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 // Redux actions
 import { fetchSalesComplete, fetchSalesError, fetchSalesRequest, fetchSalesSuccess } from 'src/redux/sales'
@@ -85,6 +87,7 @@ function isCacheExpired(delta: number) {
  * @returns
  */
 export function useSales(): UseSalesReturn {
+  const [t] = useTranslation()
   const mesa = useMesa()
   const dispatch = useDispatch()
   const { isLoading, error, sales, updatedAt } = useSelector(({ sales }) => sales)
@@ -105,7 +108,10 @@ export function useSales(): UseSalesReturn {
         const { fixedPriceSales, fairSales } = data
         dispatch(fetchSalesSuccess([...fixedPriceSales, ...fairSales] as Sale[]))
       })
-      .catch(error => dispatch(fetchSalesError(error)))
+      .catch(error => {
+        toast.error(t('error.fetchSale'))
+        dispatch(fetchSalesError(error))
+      })
       .then(() => dispatch(fetchSalesComplete()))
   }, [dispatch])
 

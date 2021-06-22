@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 // Redux
 import { setInvalidChainId, setValidChainId } from 'src/redux/network'
@@ -73,6 +74,7 @@ export const Header: React.FC = () => {
     setIsConnecting(true)
     activate(injected)
       .catch(error => {
+        toast.error('Failed to connect wallet')
         console.log(getErrorMessage(error))
       })
       .finally(() => setIsConnecting(false))

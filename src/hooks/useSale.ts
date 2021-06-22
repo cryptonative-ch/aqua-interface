@@ -1,6 +1,8 @@
 // External
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 // Hooks
 import { useMesa } from './useMesa'
@@ -82,6 +84,7 @@ export const salesQuery = (saleId: string) => `
  */
 export function useSale(saleId: string): UseSaleReturn {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
@@ -106,6 +109,7 @@ export function useSale(saleId: string): UseSaleReturn {
       })
       .catch(error => {
         setError(error)
+        toast.error(t('errors.fetchSale'))
         dispatch(fetchSalesError(error))
       })
       .then(() => {
