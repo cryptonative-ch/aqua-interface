@@ -147,12 +147,14 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
         </Flex>
         <BarContainer>
           <BarActive width={percentageSold}></BarActive>
-          <BarMarker marginLeft={threshold}></BarMarker>
+          {threshold > 0 ? <BarMarker marginLeft={threshold}></BarMarker> : undefined}
         </BarContainer>
-        <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.55 : 0.85) * threshold}%)`}>
-          {`${numeral(threshold).format('0')}% Soft Cap `}
-          <InfoTooltip>The auction will not execute, unless the minimum funding threshold is met.</InfoTooltip>
-        </ControlButton>
+        {threshold > 0 ? (
+          <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.55 : 0.85) * threshold}%)`}>
+            {`${numeral(threshold).format('0')}% Soft Cap `}
+            <InfoTooltip>The auction will not execute, unless the minimum funding threshold is met.</InfoTooltip>
+          </ControlButton>
+        ) : undefined}
       </Flex>
     )
   }
