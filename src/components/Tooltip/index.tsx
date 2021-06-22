@@ -1,5 +1,5 @@
 // Externals
-import React from 'react'
+import React, { useState } from 'react'
 import ReactTooltip, { TooltipProps } from 'react-tooltip'
 import styled from 'styled-components'
 
@@ -52,10 +52,14 @@ export interface StyledTooltipProps {
 }
 
 export const Tooltip: React.FC<StyledTooltipProps & TooltipProps> = ({ children, content, ...props }) => {
+  const [randomID] = useState(String(Math.random()))
+
   return (
     <>
-      <span data-tip>{children}</span>
-      <StyledTooltip type="light" effect="solid" place="bottom" {...props}>
+      <span data-tip={randomID} data-for={randomID}>
+        {children}
+      </span>
+      <StyledTooltip id={randomID} type="light" effect="solid" place="bottom" {...props}>
         {content}
       </StyledTooltip>
     </>
