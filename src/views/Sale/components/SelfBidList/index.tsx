@@ -126,7 +126,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
 
   if (isFixed) {
     return (
-      <Flex flexDirection="column" style={{ position: 'relative' }}>
+      <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
         <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding={isMobile ? '0 8px' : '0 16px'}>
           <Flex flex={isMobile ? 2.5 : 3}>
             <ColumnLabel>Type</ColumnLabel>
@@ -143,51 +143,52 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
             </Flex>
           ) : null}
         </Flex>
+        <Flex style={{ overflowY: 'scroll' }} flexDirection="column">
+          {bids.map((bid: FixedPriceSalePurchase, index: number) => {
+            const bidValue =
+              formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
 
-        {bids.map((bid: FixedPriceSalePurchase, index: number) => {
-          const bidValue =
-            formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
+            return (
+              <Flex
+                key={index}
+                flexDirection="row"
+                alignItems="center"
+                minHeight="50px"
+                borderTop="1px dashed #DDDDE3"
+                padding={isMobile ? '0 8px' : '0 16px'}
+              >
+                <Flex flex={3}>
+                  <TokenPriceLabel color={isSaleOpen(sale) ? '#4B9E98' : '#000629'}>
+                    {isSaleOpen(sale) ? 'Buy Order' : 'Withdrawal'}
+                  </TokenPriceLabel>
+                </Flex>
 
-          return (
-            <Flex
-              key={index}
-              flexDirection="row"
-              alignItems="center"
-              height="50px"
-              borderTop="1px dashed #DDDDE3"
-              padding={isMobile ? '0 8px' : '0 16px'}
-            >
-              <Flex flex={3}>
-                <TokenPriceLabel color={isSaleOpen(sale) ? '#4B9E98' : '#000629'}>
-                  {isSaleOpen(sale) ? 'Buy Order' : 'Withdrawal'}
-                </TokenPriceLabel>
+                <Flex flex={3}>
+                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[00]')} ${
+                    sale.tokenOut?.symbol
+                  }`}</TokenPriceLabel>
+                </Flex>
+
+                <Flex flex={6}>
+                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
+                  <Flex flex={1} />
+                  {isSaleClosed(sale) ? (
+                    <>
+                      <IconImg src={WarningSVG} margin={'4px 4px 0 8px'} />
+                      {!isMobile && (
+                        <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                          Unclaimed
+                        </TokenPriceLabel>
+                      )}
+                    </>
+                  ) : (
+                    <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
+                  )}
+                </Flex>
               </Flex>
-
-              <Flex flex={3}>
-                <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[00]')} ${
-                  sale.tokenOut?.symbol
-                }`}</TokenPriceLabel>
-              </Flex>
-
-              <Flex flex={6}>
-                <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
-                <Flex flex={1} />
-                {isSaleClosed(sale) ? (
-                  <>
-                    <IconImg src={WarningSVG} margin={'4px 4px 0 8px'} />
-                    {!isMobile && (
-                      <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                        Unclaimed
-                      </TokenPriceLabel>
-                    )}
-                  </>
-                ) : (
-                  <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
-                )}
-              </Flex>
-            </Flex>
-          )
-        })}
+            )
+          })}
+        </Flex>
         {bidMenu !== -1 && (
           <ModalContainer itemIndex={bidMenu}>
             <ModalMenu>Withdraw Bid</ModalMenu>
@@ -239,7 +240,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
             key={index}
             flexDirection="row"
             alignItems="center"
-            height="50px"
+            minHeight="50px"
             borderTop="1px dashed #DDDDE3"
             padding={isMobile ? '0 8px' : '0 16px'}
           >
