@@ -3,21 +3,32 @@ import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
 
 // Components
-import { Button } from 'src/components/Button'
 import CloseIcon from 'src/assets/svg/Close.svg'
 
 //Internal
-import { Wrapper, Header, StyledModal, HeaderText, CloseButton, Content, Backdrop, ConfirmationButton } from './style'
+import { Wrapper, Header, StyledModal, HeaderText, CloseButton, Content, Backdrop, Footer, ModalButton } from './style'
 
 export interface ModalProps {
   isShown: boolean
   hide: () => void
   modalContent: JSX.Element
   headerText: string
+  confirmText?: string
+  cancelText?: string
   onConfirm?: () => void
+  onCancel?: () => void
 }
 
-export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, headerText, onConfirm }) => {
+export const Modal: React.FC<ModalProps> = ({
+  isShown,
+  hide,
+  modalContent,
+  headerText,
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  onConfirm,
+  onCancel,
+}) => {
   const modal = (
     <Fragment>
       <Backdrop />
@@ -30,16 +41,20 @@ export const Modal: React.FC<ModalProps> = ({ isShown, hide, modalContent, heade
             </CloseButton>
           </Header>
           <Content>{modalContent}</Content>
-          {onConfirm ? (
-            <ConfirmationButton>
-              <Button margin onClick={hide}>
-                Cancel
-              </Button>
-              <Button margin onClick={onConfirm}>
-                Confirm
-              </Button>
-            </ConfirmationButton>
-          ) : null}
+          <Footer>
+            {onConfirm && <ModalButton onClick={onConfirm}>{confirmText}</ModalButton>}
+            {onCancel && (
+              <ModalButton
+                variant="secondary"
+                onClick={() => {
+                  onCancel()
+                  hide()
+                }}
+              >
+                {cancelText}
+              </ModalButton>
+            )}
+          </Footer>
         </StyledModal>
       </Wrapper>
     </Fragment>
