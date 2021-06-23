@@ -128,13 +128,13 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
     return (
       <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
         <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding={isMobile ? '0 8px' : '0 16px'}>
-          <Flex flex={isMobile ? 2.5 : 3}>
+          <Flex flex={isMobile ? 2.5 : 3} justifyContent="center">
             <ColumnLabel>Type</ColumnLabel>
           </Flex>
-          <Flex flex={3}>
+          <Flex flex={3} justifyContent="center">
             <ColumnLabel>Amount</ColumnLabel>
           </Flex>
-          <Flex flex={3} flexDirection="row" alignItems="center">
+          <Flex flex={3} flexDirection="row" justifyContent="center" alignItems="center">
             <ColumnLabel>Value</ColumnLabel>
           </Flex>
           <Flex flex={isMobile ? 1 : 3} flexDirection="row" alignItems="center" justifyContent="flex-start">
@@ -155,17 +155,17 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
                 borderTop="1px dashed #DDDDE3"
                 padding={isMobile ? '0 8px' : '0 16px'}
               >
-                <Flex flex={3}>
+                <Flex flex={3} justifyContent="center">
                   <TokenPriceLabel color="#000629">{'Withdrawal'}</TokenPriceLabel>
                 </Flex>
 
-                <Flex flex={3}>
+                <Flex flex={3} justifyContent="center">
                   <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]')} ${
                     sale.tokenOut?.symbol
                   }`}</TokenPriceLabel>
                 </Flex>
 
-                <Flex flex={3}>
+                <Flex flex={3} justifyContent="center">
                   <TokenPriceLabel>{`${numeral(bidValue).format('0.[0000]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
                 </Flex>
                 <Flex flex={isMobile ? 1 : 3}>
