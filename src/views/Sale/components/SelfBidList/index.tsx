@@ -124,7 +124,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
       formatBigInt(clearingPrice.tokenOut, sale.tokenOut.decimals)
     : 0
 
-  if (isFixed) {
+  if (isFixed && isSaleClosed(sale)) {
     return (
       <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
         <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding={isMobile ? '0 8px' : '0 16px'}>
@@ -181,9 +181,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
                         </TokenPriceLabel>
                       )}
                     </>
-                  ) : (
-                    <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
-                  )}
+                  ) : null}
                 </Flex>
               </Flex>
             )
@@ -191,6 +189,87 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
         </Flex>
         {bidMenu !== -1 && (
           <ModalContainer itemIndex={bidMenu}>
+            <ModalMenu>Change Bid Price</ModalMenu>
+            <ModalMenu>Withdraw Bid</ModalMenu>
+          </ModalContainer>
+        )}
+      </Flex>
+    )
+  }
+
+  if (isFixed && isSaleOpen(sale)) {
+    return (
+      <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
+        <Flex
+          justifyContent="space-evenly"
+          flexDirection="row"
+          alignItems="center"
+          marginBottom="8px"
+          padding={isMobile ? '0 8px' : '0 16px'}
+        >
+          <Flex>
+            <ColumnLabel>Type</ColumnLabel>
+          </Flex>
+          <Flex>
+            <ColumnLabel>Amount</ColumnLabel>
+          </Flex>
+          <Flex flexDirection="row" alignItems="center">
+            <ColumnLabel>Value</ColumnLabel>
+          </Flex>
+          {isSaleClosed(sale) ? (
+            <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+              <ColumnLabel>Status</ColumnLabel>
+            </Flex>
+          ) : null}
+        </Flex>
+        <Flex style={{ overflowY: 'scroll' }} flexDirection="column">
+          {bids.map((bid: FixedPriceSalePurchase, index: number) => {
+            const bidValue =
+              formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
+
+            return (
+              <Flex
+                key={index}
+                flexDirection="row"
+                alignItems="center"
+                minHeight="50px"
+                borderTop="1px dashed #DDDDE3"
+                padding={isMobile ? '0 8px' : '0 16px'}
+                justifyContent="space-evenly"
+              >
+                <Flex>
+                  <TokenPriceLabel color={isSaleOpen(sale) ? '#4B9E98' : '#000629'}>
+                    {isSaleOpen(sale) ? 'Buy Order' : 'Withdrawal'}
+                  </TokenPriceLabel>
+                </Flex>
+
+                <Flex>
+                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[00]')} ${
+                    sale.tokenOut?.symbol
+                  }`}</TokenPriceLabel>
+                </Flex>
+
+                <Flex>
+                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
+                  <Flex flex={1} />
+                  {isSaleClosed(sale) ? (
+                    <>
+                      <IconImg src={WarningSVG} margin={'4px 4px 0 8px'} />
+                      {!isMobile && (
+                        <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                          Unclaimed
+                        </TokenPriceLabel>
+                      )}
+                    </>
+                  ) : null}
+                </Flex>
+              </Flex>
+            )
+          })}
+        </Flex>
+        {bidMenu !== -1 && (
+          <ModalContainer itemIndex={bidMenu}>
+            <ModalMenu>Change Bid Price</ModalMenu>
             <ModalMenu>Withdraw Bid</ModalMenu>
           </ModalContainer>
         )}
