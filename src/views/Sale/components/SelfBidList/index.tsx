@@ -164,13 +164,13 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
                 </Flex>
 
                 <Flex flex={3}>
-                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[00]')} ${
+                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]')} ${
                     sale.tokenOut?.symbol
                   }`}</TokenPriceLabel>
                 </Flex>
 
                 <Flex flex={6}>
-                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
+                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[0000]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
                   <Flex flex={1} />
                   {isSaleClosed(sale) ? (
                     <>
@@ -244,13 +244,13 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
                 </Flex>
 
                 <Flex>
-                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[00]')} ${
+                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]')} ${
                     sale.tokenOut?.symbol
                   }`}</TokenPriceLabel>
                 </Flex>
 
                 <Flex>
-                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[00]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
+                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[0000]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
                   <Flex flex={1} />
                   {isSaleClosed(sale) ? (
                     <>
