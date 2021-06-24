@@ -2,6 +2,7 @@
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
+import { Property } from 'css'
 
 // Components
 import { FlexProps, Flex } from 'src/components/Flex'
@@ -91,11 +92,11 @@ const IconImg = styled.img<IconImgProps>(
   space
 )
 
-const HeaderColumn = styled(Flex)(props => ({
+const HeaderColumn = styled(Flex)<FlexProps>(props => ({
   justifyContent: 'center',
   flexDirection: 'row',
   alignItems: 'center',
-  flex: props.flex || '3',
+  flex: (props.flex as Property.flex) || '3',
 }))
 
 const TableRow = styled(Flex)({
@@ -132,11 +133,12 @@ interface ColumnDataProps {
 interface TableProps {
   headData: ColumnDataProps[]
   bodyData: ColumnDataProps[]
+  isClosed: boolean
 }
 
 // const body =  [ {type, }, amount, price ]
 
-export const Table = ({ headData, bodyData }: TableProps) => {
+export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
   const [tableMenu, setBidMenu] = useState<number>(-1)
 
   const { isMobile } = useWindowSize()
@@ -148,6 +150,8 @@ export const Table = ({ headData, bodyData }: TableProps) => {
     }
     setBidMenu(index)
   }
+  // <InfoImg src={InfoSVG} />
+  // <IconImg src={MoreSVG} marginRight="8px" isButton={true} onClick={() => toggleBidMenu(index)} />
 
   return (
     <TableContainer>
@@ -171,14 +175,16 @@ export const Table = ({ headData, bodyData }: TableProps) => {
           )
         })}
         <TableRow>
-          <Flex flex={isMobile ? 1 : 3}>
-            <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
-            {!isMobile && (
-              <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                Unclaimed
-              </TokenPriceLabel>
-            )}
-          </Flex>
+          {isClosed ? (
+            <Flex flex={isMobile ? 1 : 3}>
+              <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
+              {!isMobile && (
+                <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                  Unclaimed
+                </TokenPriceLabel>
+              )}
+            </Flex>
+          ) : null}
         </TableRow>
       </TableBody>
       {tableMenu !== -1 && (
