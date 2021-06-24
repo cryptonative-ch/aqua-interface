@@ -148,6 +148,8 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         )} ${sale?.tokenOut.symbol}`
       )
     }
+    console.log({ purchaseMaximumAllocation })
+    console.log({ quantity })
     if (purchaseMaximumAllocation < quantity) {
       newValidationError = new Error(
         `Maximum is ${purchaseMaximumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
