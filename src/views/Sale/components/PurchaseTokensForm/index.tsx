@@ -244,17 +244,17 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       <p>{t('texts.saleUnderSoftCap')}</p>
 
       <p>
-        <Trans
-          i18nKey="texts.softCapReachedResult"
-          values={{ tokenQuantity: `${tokenQuantity}`, tokenOutSymbol: `${sale?.tokenOut.symbol}` }}
-        />
+        {t('texts.softCapReachedResult', {
+          tokenQuantity: `${tokenQuantity}`,
+          tokenOutSymbol: `${sale?.tokenOut.symbol}`,
+        })}
       </p>
 
       <p>
-        <Trans
-          i18nKey="texts.softCapNotReachedResult"
-          values={{ purchaseValue: `${purchaseValue}`, tokenInSymbol: `${sale?.tokenIn.symbol}` }}
-        />
+        {t('texts.softCapNotReachedResult', {
+          purchaseValue: `${purchaseValue}`,
+          tokenInSymbol: `${sale?.tokenIn.symbol}`,
+        })}
       </p>
     </div>
   )
