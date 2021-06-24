@@ -4,7 +4,7 @@ import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
 
 // Components
-import { Flex } from 'src/components/Flex'
+import { FlexProps, Flex } from 'src/components/Flex'
 
 // Utility
 import { useWindowSize } from 'src/hooks/useWindowSize'
@@ -17,12 +17,12 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 type ColumnLabelProps = SpaceProps
 
 const ColumnLabel = styled.div<ColumnLabelProps>(
-  () => ({
+  props => ({
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '12px',
     lineHeight: '140%',
-    color: '#7B7F93',
+    color: props.color || '#7B7F93',
     marginLeft: '8px',
   }),
   space
@@ -91,12 +91,12 @@ const IconImg = styled.img<IconImgProps>(
   space
 )
 
-const HeaderColumn = styled(Flex)({
+const HeaderColumn = styled(Flex)(props => ({
   justifyContent: 'center',
   flexDirection: 'row',
   alignItems: 'center',
-  flex: '3',
-})
+  flex: props.flex || '3',
+}))
 
 const TableRow = styled(Flex)({
   flexDirection: 'row',
@@ -122,11 +122,19 @@ const TableBody = styled(Flex)({
   overflowY: 'scroll',
   flexDirection: 'column',
 })
-interface TableProps {
-  headData: string[]
-  bodyData: any[]
-  customClass: any
+
+interface ColumnDataProps {
+  title: string
+  colour?: string
+  flex?: string | number
 }
+
+interface TableProps {
+  headData: ColumnDataProps[]
+  bodyData: ColumnDataProps[]
+}
+
+// const body =  [ {type, }, amount, price ]
 
 export const Table = ({ headData, bodyData }: TableProps) => {
   const [tableMenu, setBidMenu] = useState<number>(-1)
@@ -144,20 +152,20 @@ export const Table = ({ headData, bodyData }: TableProps) => {
   return (
     <TableContainer>
       <TableHead>
-        {headData.map((headers, index) => {
+        {headData.map(({ title, flex }, index) => {
           return (
-            <HeaderColumn key={index}>
-              <ColumnLabel>{headers}</ColumnLabel>
+            <HeaderColumn key={index} flex={flex}>
+              <ColumnLabel>{title}</ColumnLabel>
             </HeaderColumn>
           )
         })}
       </TableHead>
       <TableBody>
-        {bodyData.map((body, index) => {
+        {bodyData.map(({ title, colour }, index) => {
           return (
             <TableRow key={index} padding={isMobile ? '0 8px' : '0 16px'}>
               <TableColumn>
-                <TokenPriceLabel color="#000629">{body}</TokenPriceLabel>
+                <TokenPriceLabel color={colour}>{title}</TokenPriceLabel>
               </TableColumn>
             </TableRow>
           )
