@@ -97,6 +97,22 @@ const IconImg = styled.img<IconImgProps>(
   space
 )
 
+const HeaderColumn = styled(Flex)({
+  justifyContent: 'center',
+  flexDirection: 'row',
+  alignItems: 'center',
+  flex: '3',
+})
+
+const TableRow = styled(Flex)({
+  flexDirection: 'row',
+  alignItems: 'center',
+  minHeight: '50px',
+  borderTop: '1px dashed #DDDDE3',
+})
+
+const TableColumn = styled(HeaderColumn)({})
+
 interface SelfBidListProps {
   sale: Sale
   bids: FairSaleBid[] & FixedPriceSalePurchase[]
@@ -128,16 +144,16 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
     return (
       <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
         <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding={isMobile ? '0 8px' : '0 16px'}>
-          <Flex flex={isMobile ? 2.5 : 3} justifyContent="center">
+          <HeaderColumn flex={isMobile ? 2.5 : 3}>
             <ColumnLabel>Type</ColumnLabel>
-          </Flex>
-          <Flex flex={3} justifyContent="center">
+          </HeaderColumn>
+          <HeaderColumn>
             <ColumnLabel>Amount</ColumnLabel>
-          </Flex>
-          <Flex flex={3} flexDirection="row" justifyContent="center" alignItems="center">
+          </HeaderColumn>
+          <HeaderColumn>
             <ColumnLabel>Value</ColumnLabel>
-          </Flex>
-          <Flex flex={isMobile ? 1 : 3} flexDirection="row" alignItems="center" justifyContent="flex-start">
+          </HeaderColumn>
+          <Flex flex={isMobile ? 1 : 3} justifyContent="flex-start">
             <ColumnLabel>Status</ColumnLabel>
           </Flex>
         </Flex>
@@ -147,27 +163,20 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
               formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
 
             return (
-              <Flex
-                key={index}
-                flexDirection="row"
-                alignItems="center"
-                minHeight="50px"
-                borderTop="1px dashed #DDDDE3"
-                padding={isMobile ? '0 8px' : '0 16px'}
-              >
-                <Flex flex={3} justifyContent="center">
+              <TableRow key={index} padding={isMobile ? '0 8px' : '0 16px'}>
+                <TableColumn>
                   <TokenPriceLabel color="#000629">{'Withdrawal'}</TokenPriceLabel>
-                </Flex>
+                </TableColumn>
 
-                <Flex flex={3} justifyContent="center">
+                <TableColumn>
                   <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]')} ${
                     sale.tokenOut?.symbol
                   }`}</TokenPriceLabel>
-                </Flex>
+                </TableColumn>
 
-                <Flex flex={3} justifyContent="center">
+                <TableColumn>
                   <TokenPriceLabel>{`${numeral(bidValue).format('0.[0000]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
-                </Flex>
+                </TableColumn>
                 <Flex flex={isMobile ? 1 : 3}>
                   <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
                   {!isMobile && (
@@ -176,7 +185,7 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
                     </TokenPriceLabel>
                   )}
                 </Flex>
-              </Flex>
+              </TableRow>
             )
           })}
         </Flex>
@@ -209,11 +218,6 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
           <Flex flexDirection="row" alignItems="center">
             <ColumnLabel>Value</ColumnLabel>
           </Flex>
-          {isSaleClosed(sale) ? (
-            <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-              <ColumnLabel>Status</ColumnLabel>
-            </Flex>
-          ) : null}
         </Flex>
         <Flex style={{ overflowY: 'scroll' }} flexDirection="column">
           {bids.map((bid: FixedPriceSalePurchase, index: number) => {
