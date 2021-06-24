@@ -47,6 +47,7 @@ import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 // Hooks
 import { useBids } from 'src/hooks/useBids'
+import { useTranslation } from 'react-i18next'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
@@ -68,6 +69,7 @@ export function FixedPriceSaleView() {
   const theme = useTheme()
   const { totalPurchased, bids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
+  const [t] = useTranslation()
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -120,6 +122,7 @@ export function FixedPriceSaleView() {
                         sale.allocationMax,
                         sale.tokenOut.decimals
                       )} ${sale.tokenOut?.symbol}`}
+                      tooltip={t('texts.minMaxAllocationInfo')}
                     />
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
@@ -153,6 +156,7 @@ export function FixedPriceSaleView() {
                         sale.tokenOut.decimals
                       )} ${sale.tokenOut?.symbol}`}
                       flexAmount={1.5}
+                      tooltip={t('texts.minMaxAllocationInfo')}
                     />
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
                     {isSaleClosed(sale as FIX_LATER) && (

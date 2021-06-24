@@ -4,6 +4,8 @@ import styled from 'styled-components'
 
 // Svg
 import InfoIconSVG from 'src/assets/svg/Info-Icon.svg'
+
+// Components
 import { Tooltip } from '../Tooltip'
 
 const InfoIconImg = styled.img({

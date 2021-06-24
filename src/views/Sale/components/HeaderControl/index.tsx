@@ -25,6 +25,7 @@ import { formatBigInt } from 'src/utils/Defaults'
 // hooks
 import { useBids } from 'src/hooks/useBids'
 import { BigNumber } from '@ethersproject/bignumber'
+import { useTranslation } from 'react-i18next'
 
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
@@ -74,6 +75,7 @@ const FixedDescription2 = styled.div({
 
 const FixedDescription3 = styled.div({
   color: '#000629',
+  marginRight: '5px',
 })
 
 const BarContainer = styled.div({
@@ -123,6 +125,7 @@ interface HeaderControlProps {
 }
 
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
+  const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const { totalBids, totalPurchased } = useBids(sale.id, sale.type)
   console.log(totalBids)
@@ -143,6 +146,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
             {numeral(amountDisplayed).format('0.[00]')}
             <FixedDescription2>{`(${numeral(percentageSold).format('0.[00]')}%)`}</FixedDescription2>
             <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
+            <InfoTooltip>{t('texts.supplyDemandInfo')}</InfoTooltip>
           </FixedDescription>
         </Flex>
         <BarContainer>
@@ -152,7 +156,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
         {threshold > 0 ? (
           <ControlButton ml={`calc( ${(isMobile && threshold > 80 ? 0.55 : 0.85) * threshold}%)`}>
             {`${numeral(threshold).format('0')}% Soft Cap `}
-            <InfoTooltip>The auction will not execute, unless the minimum funding threshold is met.</InfoTooltip>
+            <InfoTooltip>{t('texts.minThresholdInfo')}</InfoTooltip>
           </ControlButton>
         ) : undefined}
       </Flex>
