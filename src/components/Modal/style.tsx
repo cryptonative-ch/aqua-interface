@@ -8,7 +8,8 @@ export const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 700;
-  width: 30%;
+  width: 40%;
+  min-width: 400px;
   outline: 0;
 `
 export const Backdrop = styled.div`

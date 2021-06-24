@@ -31,7 +31,7 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const modal = (
     <Fragment>
-      <Backdrop />
+      <Backdrop onClick={hide} />
       <Wrapper>
         <StyledModal>
           <Header>
