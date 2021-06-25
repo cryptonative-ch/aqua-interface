@@ -1,121 +1,65 @@
 // Externals
-
 import React from 'react'
 import { render, cleanup, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
+import i18n from 'i18next'
 
 // Components
 import { SaleNavBar } from './index'
-import { SaleContext, SaleStatus, SaleContextType } from '../../index'
+import { SaleStatus } from '../../index'
 
 //clean up
 
 afterEach(cleanup)
+beforeEach(() => {
+  i18n.init({
+    fallbackLng: 'en',
+    react: {
+      useSuspense: false,
+    },
+  })
+})
 
 // helper function
-const wrapper = (sale: SaleContextType) => {
-  return render(
-    <SaleContext.Provider value={sale}>
-      <SaleNavBar />
-    </SaleContext.Provider>
-  )
+const wrapper = (state: SaleStatus, setStatus: (SaleStatus: SaleStatus) => void) => {
+  return render(<SaleNavBar state={state} setStatus={setStatus} />)
 }
 
 describe('testing SaleNavBar', () => {
   test('should display the correct style when SaleStatus is Live', () => {
-    const test: SaleContextType = {
-      SaleShow: SaleStatus.LIVE,
-      setSaleShow: jest.fn(),
-    }
-    const { getByTestId } = wrapper(test)
-    expect(getByTestId('Live')).toHaveTextContent('Live')
+    const { getByTestId } = wrapper(SaleStatus.LIVE, jest.fn())
+    expect(getByTestId('live')).toHaveTextContent('texts.live')
   })
   test('should display the correct style when SaleStatus is Upcoming', () => {
-    const test: SaleContextType = {
-      SaleShow: SaleStatus.UPCOMING,
-      setSaleShow: jest.fn(),
-    }
-    const { getByTestId } = wrapper(test)
-    expect(getByTestId('Upcoming')).toHaveTextContent('Upcoming')
+    const { getByTestId } = wrapper(SaleStatus.UPCOMING, jest.fn())
+    expect(getByTestId('upcoming')).toHaveTextContent('texts.upcoming')
   })
   test('should display the correct style when SaleStatus is Closed', () => {
-    const test: SaleContextType = {
-      SaleShow: SaleStatus.CLOSED,
-      setSaleShow: jest.fn(),
-    }
-    const { getByTestId } = wrapper(test)
-    expect(getByTestId('Closed')).toHaveTextContent('Closed')
+    const { getByTestId } = wrapper(SaleStatus.CLOSED, jest.fn())
+    expect(getByTestId('closed')).toHaveTextContent('texts.closed')
   }),
     test('button should be called when upcoming is clicked when on closed status', async () => {
-      const test: SaleContextType = {
-        SaleShow: SaleStatus.CLOSED,
-        setSaleShow: jest.fn(),
-      }
+      const mock = jest.fn()
+      const { getByTestId } = wrapper(SaleStatus.LIVE, mock)
 
-      const { getByTestId } = wrapper(test)
+      fireEvent.click(getByTestId('closed'))
 
-      fireEvent.click(getByTestId('closedupcomingclick'))
-
-      expect(test.setSaleShow).toHaveBeenCalled()
+      expect(mock).toHaveBeenCalledWith(SaleStatus.CLOSED)
     }),
-    test('button should be called when live is clicked when on upcoming status', async () => {
-      const test: SaleContextType = {
-        SaleShow: SaleStatus.CLOSED,
-        setSaleShow: jest.fn(),
-      }
+    test('button should be called when upcoming is clicked when on closed status', async () => {
+      const mock = jest.fn()
+      const { getByTestId } = wrapper(SaleStatus.CLOSED, mock)
 
-      const { getByTestId } = wrapper(test)
+      fireEvent.click(getByTestId('upcoming'))
 
-      fireEvent.click(getByTestId('closed live click'))
-
-      expect(test.setSaleShow).toHaveBeenCalled()
+      expect(mock).toHaveBeenCalledWith(SaleStatus.UPCOMING)
     }),
-    test('button should be called when closed is clicked when on live status', async () => {
-      const test: SaleContextType = {
-        SaleShow: SaleStatus.LIVE,
-        setSaleShow: jest.fn(),
-      }
+    test('button should be called when upcoming is clicked when on closed status', async () => {
+      const mock = jest.fn()
+      const { getByTestId } = wrapper(SaleStatus.CLOSED, mock)
 
-      const { getByTestId } = wrapper(test)
+      fireEvent.click(getByTestId('live'))
 
-      fireEvent.click(getByTestId('live closed click'))
-
-      expect(test.setSaleShow).toHaveBeenCalled()
-    }),
-    test('button should be called when live is clicked when on upcoming status', async () => {
-      const test: SaleContextType = {
-        SaleShow: SaleStatus.UPCOMING,
-        setSaleShow: jest.fn(),
-      }
-
-      const { getByTestId } = wrapper(test)
-
-      fireEvent.click(getByTestId('upcoming live click'))
-
-      expect(test.setSaleShow).toHaveBeenCalled()
-    }),
-    test('button should be called when upcoming is clicked when on live status', async () => {
-      const test: SaleContextType = {
-        SaleShow: SaleStatus.LIVE,
-        setSaleShow: jest.fn(),
-      }
-
-      const { getByTestId } = wrapper(test)
-
-      fireEvent.click(getByTestId('live upcoming click'))
-
-      expect(test.setSaleShow).toHaveBeenCalled()
-    }),
-    test('button should be called when close is clicked when on upcoming status', async () => {
-      const test: SaleContextType = {
-        SaleShow: SaleStatus.UPCOMING,
-        setSaleShow: jest.fn(),
-      }
-
-      const { getByTestId } = wrapper(test)
-
-      fireEvent.click(getByTestId('upcoming close click'))
-
-      expect(test.setSaleShow).toHaveBeenCalled()
+      expect(mock).toHaveBeenCalledWith(SaleStatus.LIVE)
     })
 })
