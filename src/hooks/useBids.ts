@@ -63,6 +63,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
     //pull past bids from subgraph
     dispatch(initialBidRequest(true))
+
     mesa.subgraph
       .query(saleBidsQuery(saleId))
       .then(({ data }) => {

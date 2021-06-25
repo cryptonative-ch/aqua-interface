@@ -20,6 +20,9 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
 
+// Table
+import { Table } from 'src/components/Table'
+
 type ColumnLabelProps = SpaceProps
 
 const ColumnLabel = styled.div<ColumnLabelProps>(
@@ -140,63 +143,22 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
       formatBigInt(clearingPrice.tokenOut, sale.tokenOut.decimals)
     : 0
 
+  const isFixedHeadData = [{ title: 'type' }, { title: 'Amount' }, { title: 'Value' }, { title: 'Status' }]
+
+  const isFixedBodyData = [
+    {
+      title: 'Withdraw',
+      purchases: [
+        { name: 'lmao', amount: 63 },
+        { name: 'lmfao', amount: 87 },
+      ] as any,
+    },
+  ]
+  console.log(isFixedBodyData)
+
   if (isFixed && isSaleClosed(sale)) {
-    return (
-      <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
-        <Flex flexDirection="row" alignItems="center" marginBottom="8px" padding={isMobile ? '0 8px' : '0 16px'}>
-          <HeaderColumn flex={isMobile ? 2.5 : 3}>
-            <ColumnLabel>Type</ColumnLabel>
-          </HeaderColumn>
-          <HeaderColumn>
-            <ColumnLabel>Amount</ColumnLabel>
-          </HeaderColumn>
-          <HeaderColumn>
-            <ColumnLabel>Value</ColumnLabel>
-          </HeaderColumn>
-          <Flex flex={isMobile ? 1 : 3} justifyContent="flex-start">
-            <ColumnLabel>Status</ColumnLabel>
-          </Flex>
-        </Flex>
-        <Flex style={{ overflowY: 'scroll' }} flexDirection="column">
-          {bids.map((bid: FixedPriceSalePurchase, index: number) => {
-            const bidValue =
-              formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
-
-            return (
-              <TableRow key={index} padding={isMobile ? '0 8px' : '0 16px'}>
-                <TableColumn>
-                  <TokenPriceLabel color="#000629">{'Withdrawal'}</TokenPriceLabel>
-                </TableColumn>
-
-                <TableColumn>
-                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]')} ${
-                    sale.tokenOut?.symbol
-                  }`}</TokenPriceLabel>
-                </TableColumn>
-
-                <TableColumn>
-                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[0000]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
-                </TableColumn>
-                <Flex flex={isMobile ? 1 : 3}>
-                  <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
-                  {!isMobile && (
-                    <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                      Unclaimed
-                    </TokenPriceLabel>
-                  )}
-                </Flex>
-              </TableRow>
-            )
-          })}
-        </Flex>
-        {bidMenu !== -1 && (
-          <ModalContainer itemIndex={bidMenu}>
-            <ModalMenu>Change Bid Price</ModalMenu>
-            <ModalMenu>Withdraw Bid</ModalMenu>
-          </ModalContainer>
-        )}
-      </Flex>
-    )
+    console.log(bids)
+    return <Table headData={isFixedHeadData} bodyData={isFixedBodyData} isClosed={true} />
   }
 
   if (isFixed && isSaleOpen(sale)) {

@@ -196,7 +196,7 @@ export function FixedPriceSaleView() {
                 </CardBody>
               )}
             </Card>
-            {bids && bids.length > 0 && (
+            {
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
                 <HeaderClaim sale={sale as any} />
                 <SelfBidList
@@ -205,7 +205,7 @@ export function FixedPriceSaleView() {
                   bids={isSaleClosed(sale as FIX_LATER) ? (totalPurchased(bids) as any) : (bids as any)}
                 />
               </Card>
-            )}
+            }
             <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
           </Flex>
           {!isMobile && isSaleOpen(sale as FIX_LATER) && (

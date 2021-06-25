@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
 import React, { useState } from 'react'
-import { Property } from 'css'
+import { Property } from 'csstype'
 
 // Components
 import { FlexProps, Flex } from 'src/components/Flex'
@@ -14,6 +14,9 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import InfoSVG from 'src/assets/svg/Info-Icon.svg'
 import MoreSVG from 'src/assets/svg/More-Icon.svg'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
+
+// Interfaces
+import { FixedPriceSalePurchase } from '@dxdao/mesa'
 
 type ColumnLabelProps = SpaceProps
 
@@ -96,7 +99,7 @@ const HeaderColumn = styled(Flex)<FlexProps>(props => ({
   justifyContent: 'center',
   flexDirection: 'row',
   alignItems: 'center',
-  flex: (props.flex as Property.flex) || '3',
+  flex: (props.flex as Property.Flex) || '3',
 }))
 
 const TableRow = styled(Flex)({
@@ -104,6 +107,7 @@ const TableRow = styled(Flex)({
   alignItems: 'center',
   minHeight: '50px',
   borderTop: '1px dashed #DDDDE3',
+  justifyContent: 'space-evenly',
 })
 
 const TableColumn = styled(HeaderColumn)({})
@@ -130,9 +134,15 @@ interface ColumnDataProps {
   flex?: string | number
 }
 
+interface BodyDataProps {
+  title: string
+  purchases: any[]
+  color?: string
+}
+
 interface TableProps {
   headData: ColumnDataProps[]
-  bodyData: ColumnDataProps[]
+  bodyData: BodyDataProps[]
   isClosed: boolean
 }
 
@@ -165,27 +175,30 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
         })}
       </TableHead>
       <TableBody>
-        {bodyData.map(({ title, colour }, index) => {
-          return (
-            <TableRow key={index} padding={isMobile ? '0 8px' : '0 16px'}>
-              <TableColumn>
-                <TokenPriceLabel color={colour}>{title}</TokenPriceLabel>
-              </TableColumn>
-            </TableRow>
-          )
-        })}
-        <TableRow>
-          {isClosed ? (
-            <Flex flex={isMobile ? 1 : 3}>
-              <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
-              {!isMobile && (
-                <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                  Unclaimed
-                </TokenPriceLabel>
-              )}
-            </Flex>
-          ) : null}
-        </TableRow>
+        {bodyData.map(({ purchases, color, title }) =>
+          purchases.map((purchase: any, index) => {
+            return (
+              <TableRow key={index} padding={isMobile ? '0 8px' : '0 16px'}>
+                <TableColumn>
+                  <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
+                </TableColumn>
+                <TableColumn key={index}>
+                  <TokenPriceLabel color={color}>{purchase}</TokenPriceLabel>
+                </TableColumn>
+                {isClosed ? (
+                  <Flex flex={isMobile ? 1 : 3}>
+                    <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
+                    {!isMobile && (
+                      <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                        Unclaimed
+                      </TokenPriceLabel>
+                    )}
+                  </Flex>
+                ) : null}
+              </TableRow>
+            )
+          })
+        )}
       </TableBody>
       {tableMenu !== -1 && (
         <ModalContainer itemIndex={tableMenu}>

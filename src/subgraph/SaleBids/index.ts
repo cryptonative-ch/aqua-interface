@@ -1,7 +1,7 @@
 export const saleBidsQuery = (saleid: string) => {
   return `
       {
-        fixedPriceSales (where: {id:"${saleid}"}) {
+        fixedPriceSales (id:"${saleid}") {
           id
     purchases {
       id
@@ -13,7 +13,7 @@ export const saleBidsQuery = (saleid: string) => {
     }
    }
 
-  fairSales (where: {id: "${saleid}"}) {
+  fairSales (id: "${saleid}") {
     id
     bids {
       id
