@@ -1,3 +1,4 @@
+/* eslint-disable */
 // External
 import styled from 'styled-components'
 import { space, SpaceProps, color, ColorProps } from 'styled-system'
@@ -182,9 +183,13 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                 <TableColumn>
                   <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
                 </TableColumn>
-                <TableColumn key={index}>
-                  <TokenPriceLabel color={color}>{purchase}</TokenPriceLabel>
-                </TableColumn>
+                {Object.keys(purchase).map((element: any, _index) => {
+                  return (
+                    <TableColumn key={_index}>
+                      <TokenPriceLabel color={color}>{purchase[element]}</TokenPriceLabel>
+                    </TableColumn>
+                  )
+                })}
                 {isClosed ? (
                   <Flex flex={isMobile ? 1 : 3}>
                     <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
