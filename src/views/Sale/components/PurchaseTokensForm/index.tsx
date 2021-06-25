@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { ethers, utils } from 'ethers'
 import { toast } from 'react-toastify'
-import { useTranslation, Trans } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
