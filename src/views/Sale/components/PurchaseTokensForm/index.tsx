@@ -15,6 +15,9 @@ import { Flex } from 'src/components/Flex'
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
+// Utils
+import { fixRounding } from 'src/utils/Defaults'
+
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
@@ -138,21 +141,21 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
     const newPurchaseValue = parseFloat(event.target.value)
 
-    const quantity = newPurchaseValue / tokenPrice
+    const quantity = fixRounding(newPurchaseValue / tokenPrice, 8)
 
     // purchaseValue is less than minimum allocation
     if (purchaseMinimumAllocation > quantity) {
       newValidationError = new Error(
-        `Minimum is ${purchaseMinimumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
-          sale?.allocationMin
-        )} ${sale?.tokenOut.symbol}`
+        `Minimum is ${fixRounding(purchaseMinimumAllocation * tokenPrice, 8)} ${
+          sale?.tokenIn.symbol
+        } / ${utils.formatUnits(sale?.allocationMin)} ${sale?.tokenOut.symbol}`
       )
     }
     if (purchaseMaximumAllocation < quantity) {
       newValidationError = new Error(
-        `Maximum is ${purchaseMaximumAllocation * tokenPrice} ${sale?.tokenIn.symbol} / ${utils.formatUnits(
-          sale?.allocationMax
-        )} ${sale?.tokenOut.symbol}`
+        `Maximum is ${fixRounding(purchaseMaximumAllocation * tokenPrice, 8)} ${
+          sale?.tokenIn.symbol
+        } / ${utils.formatUnits(sale?.allocationMax)} ${sale?.tokenOut.symbol}`
       )
     }
     // // Purchase value is greater than user's tokeIn balance
