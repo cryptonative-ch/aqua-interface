@@ -247,7 +247,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
               aria-label="purchaseValue"
               id="purchaseValue"
               type="number"
-              step="0.01"
               placeholder="0.0"
               value={purchaseValue}
               onChange={onPurchaseValueChange}
