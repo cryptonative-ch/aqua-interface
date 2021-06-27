@@ -183,7 +183,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                 <TableColumn>
                   <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
                 </TableColumn>
-                {Object.keys(purchase).map((element: any, _index) => {
+                {Object.getOwnPropertyNames(purchase).map((element: any, _index) => {
                   return (
                     <TableColumn key={_index}>
                       <TokenPriceLabel color={color}>{purchase[element]}</TokenPriceLabel>
@@ -191,7 +191,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                   )
                 })}
                 {isClosed ? (
-                  <Flex flex={isMobile ? 1 : 3}>
+                  <Flex justifyContent="flex-end">
                     <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
                     {!isMobile && (
                       <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
@@ -213,4 +213,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
       )}
     </TableContainer>
   )
+}
+Table.defaultProps = {
+  isClosed: false,
 }

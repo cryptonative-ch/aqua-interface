@@ -100,22 +100,6 @@ const IconImg = styled.img<IconImgProps>(
   space
 )
 
-const HeaderColumn = styled(Flex)({
-  justifyContent: 'center',
-  flexDirection: 'row',
-  alignItems: 'center',
-  flex: '3',
-})
-
-const TableRow = styled(Flex)({
-  flexDirection: 'row',
-  alignItems: 'center',
-  minHeight: '50px',
-  borderTop: '1px dashed #DDDDE3',
-})
-
-const TableColumn = styled(HeaderColumn)({})
-
 interface SelfBidListProps {
   sale: Sale
   bids: FairSaleBid[] & FixedPriceSalePurchase[]
@@ -143,85 +127,37 @@ export function SelfBidList({ sale, clearingPrice, bids, isFixed }: SelfBidListP
       formatBigInt(clearingPrice.tokenOut, sale.tokenOut.decimals)
     : 0
 
-  const isFixedHeadData = [{ title: 'type' }, { title: 'Amount' }, { title: 'Value' }, { title: 'Status' }]
+  const isFixedHeadData = [
+    { title: 'type', flex: isMobile ? 3.5 : 3 },
+    { title: 'Amount' },
+    { title: 'Value' },
+    { title: 'Status', flex: isMobile ? 2 : 3 },
+  ]
 
+  const isFixedHeadDataOpen = [{ title: 'type' }, { title: 'Amount' }, { title: 'Value' }]
   const isFixedBodyData = [
     {
-      title: 'Withdraw',
-      purchases: [
-        { name: 'lmao', amount: 63 },
-        { name: 'lmfao', amount: 87 },
-      ] as any,
+      title: isSaleClosed(sale) ? 'Withdraw' : 'buy Order',
+      color: isSaleClosed(sale) ? undefined : 'green',
+      purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
+        amount:
+          numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenOut.symbol,
+        value:
+          numeral(
+            formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
+          ).format('0.[0000]') +
+          ' ' +
+          sale.tokenIn.symbol,
+      })),
     },
   ]
-  console.log(isFixedBodyData)
 
   if (isFixed && isSaleClosed(sale)) {
-    console.log(bids)
     return <Table headData={isFixedHeadData} bodyData={isFixedBodyData} isClosed={true} />
   }
 
   if (isFixed && isSaleOpen(sale)) {
-    return (
-      <Flex maxHeight="200px" flexDirection="column" style={{ position: 'relative' }}>
-        <Flex
-          justifyContent="space-evenly"
-          flexDirection="row"
-          alignItems="center"
-          marginBottom="8px"
-          padding={isMobile ? '0 8px' : '0 16px'}
-        >
-          <Flex>
-            <ColumnLabel>Type</ColumnLabel>
-          </Flex>
-          <Flex>
-            <ColumnLabel>Amount</ColumnLabel>
-          </Flex>
-          <Flex flexDirection="row" alignItems="center">
-            <ColumnLabel>Value</ColumnLabel>
-          </Flex>
-        </Flex>
-        <Flex style={{ overflowY: 'scroll' }} flexDirection="column">
-          {bids.map((bid: FixedPriceSalePurchase, index: number) => {
-            const bidValue =
-              formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
-
-            return (
-              <Flex
-                key={index}
-                flexDirection="row"
-                alignItems="center"
-                minHeight="50px"
-                borderTop="1px dashed #DDDDE3"
-                padding={isMobile ? '0 8px' : '0 16px'}
-                justifyContent="space-evenly"
-              >
-                <Flex>
-                  <TokenPriceLabel color="#4B9E98">{'Buy Order'}</TokenPriceLabel>
-                </Flex>
-
-                <Flex>
-                  <TokenPriceLabel>{`${numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]')} ${
-                    sale.tokenOut?.symbol
-                  }`}</TokenPriceLabel>
-                </Flex>
-
-                <Flex>
-                  <TokenPriceLabel>{`${numeral(bidValue).format('0.[0000]')} ${sale.tokenIn?.symbol}`}</TokenPriceLabel>
-                  <Flex flex={1} />
-                </Flex>
-              </Flex>
-            )
-          })}
-        </Flex>
-        {bidMenu !== -1 && (
-          <ModalContainer itemIndex={bidMenu}>
-            <ModalMenu>Change Bid Price</ModalMenu>
-            <ModalMenu>Withdraw Bid</ModalMenu>
-          </ModalContainer>
-        )}
-      </Flex>
-    )
+    return <Table headData={isFixedHeadDataOpen} bodyData={isFixedBodyData} />
   }
 
   return (
