@@ -32,7 +32,7 @@ export function SaleView() {
   const { loading, sale, error } = useSaleQuery(params.saleId)
 
   useEffect(() => {
-    dispatch(setPageTitle(sale?.tokenIn.name || 'Sale'))
+    dispatch(setPageTitle(sale?.tokenOut.name || 'Sale'))
   }, [sale])
 
   if (loading) {
