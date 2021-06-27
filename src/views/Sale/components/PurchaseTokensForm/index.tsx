@@ -199,13 +199,13 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         .then(tx => tx.wait(1)) // wait one network confirmation
         .then(receipt => {
           console.log(receipt)
+          toast.success(t('success.purchase'))
         })
         .catch(error => {
           console.error(error)
           toast.error(t('errors.purchase'))
         })
         .then(() => {
-          toast.success(t('success.purchase'))
           setTxPending(false)
         })
     },
