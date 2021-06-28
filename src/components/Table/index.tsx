@@ -21,7 +21,7 @@ import {
   IconImg,
   ModalContainer,
   ModalMenu,
-} from './style'
+} from 'src/components/Table/style'
 import { Flex } from 'src/components/Flex'
 
 interface ColumnDataProps {
