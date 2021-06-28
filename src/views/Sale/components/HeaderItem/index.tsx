@@ -1,5 +1,5 @@
 // External
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactNode } from 'react'
 import styled from 'styled-components'
 import { typography, TypographyProps } from 'styled-system'
 import dayjs from 'dayjs'
@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { Flex } from 'src/components/Flex'
 import { Sale } from 'src/interfaces/Sale'
 import { secondsTohms } from 'src/views/Sale/components/Timer'
+import { InfoTooltip } from 'src/components/InfoTooltip'
 
 // Mesa Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
@@ -61,6 +62,7 @@ interface HeaderItemProps {
   saleLive?: boolean
   sale?: Sale
   flexAmount?: number
+  tooltip?: ReactNode
 }
 
 export function HeaderItem({
@@ -72,6 +74,7 @@ export function HeaderItem({
   flexAmount,
   saleLive,
   sale,
+  tooltip
 }: HeaderItemProps) {
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState<number>(0)
@@ -108,7 +111,7 @@ export function HeaderItem({
       flex={flexAmount}
     >
       <HeaderTitle textAlign={textAlign === 'left' ? 'left' : 'right'} color={color}>
-        {title}
+        {title} {tooltip && <InfoTooltip>{tooltip}</InfoTooltip>}
       </HeaderTitle>
       {isMobile ? (
         <MobileHeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>

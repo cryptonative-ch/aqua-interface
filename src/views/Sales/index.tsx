@@ -1,12 +1,12 @@
 // External
-import React, { useState, createContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 // Redux
-import { setPageTitle } from 'src/redux/page'
+import { setPageTitle, setSelectedSaleStatus } from 'src/redux/page'
 
 // Components
 import { SaleSummaryCard } from './components/SaleSummaryCard'
@@ -25,6 +25,7 @@ import { useSalesQuery } from 'src/hooks/useSalesQuery'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
+import { Sale } from 'src/interfaces/Sale'
 
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -50,12 +51,6 @@ export enum SaleStatus {
   CLOSED = 'closed',
 }
 
-export type SaleContextType = {
-  SaleShow: SaleStatus
-  setSaleShow: (value: SaleStatus) => void
-}
-
-export const SaleContext = createContext<SaleContextType>({} as SaleContextType)
 const saleFilterMap = {
   [SaleStatus.UPCOMING]: isSaleUpcoming,
   [SaleStatus.CLOSED]: isSaleClosed,
@@ -65,55 +60,56 @@ const saleFilterMap = {
 export function SalesView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const [SaleShow, setSaleShow] = useState<SaleStatus>(SaleStatus.LIVE)
+  const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
+  const [filteredSales, setFilteredSales] = useState<Sale[]>()
   const { loading, sales, error } = useSalesQuery()
+
+  const setStatus = (status: SaleStatus) => {
+    dispatch(setSelectedSaleStatus(status))
+  }
 
   useMountEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
 
-  if (loading) {
-    return (
-      <Center>
-        <Container>
-          <Title>Token Sales</Title>
-          <GridListSection>Loading</GridListSection>
-        </Container>
-      </Center>
-    )
+  const sortByStatus = (unsortedSale: Sale[]) => {
+    if (saleStatus === SaleStatus.UPCOMING) {
+      return unsortedSale.sort((a: Sale, b: Sale) => b.startDate - a.startDate)
+    } else if (saleStatus === SaleStatus.LIVE) {
+      return unsortedSale.sort((a: Sale, b: Sale) => a.endDate - b.endDate)
+    } else {
+      return unsortedSale.sort((a: Sale, b: Sale) => b.endDate - a.endDate)
+    }
   }
 
-  if (error) {
-    return (
-      <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
-        <Center>
-          <Container>
-            <Title>Token Sales</Title>
-            <SaleNavBar />
-            <GridListSection>
-              <ErrorMessage error={error} />
-            </GridListSection>
-          </Container>
-        </Center>
-      </SaleContext.Provider>
-    )
-  }
+  useEffect(() => {
+    if (sales) {
+      const tempSales = [...sales].filter(saleFilterMap[saleStatus])
+      setFilteredSales(sortByStatus(tempSales))
+    }
+  }, [saleStatus, loading])
 
   return (
-    <SaleContext.Provider value={{ SaleShow, setSaleShow }}>
-      <Container minHeight="100%" inner={false} noPadding={true}>
-        <Container>
-          <Title>Token Sales</Title>
-          <SaleNavBar />
-          <GridListSection>
-            {sales.filter(saleFilterMap[SaleShow]).map(sale => (
+    <Container minHeight="100%" inner={false} noPadding={true}>
+      <Container>
+        <Title>Token Sales</Title>
+        <SaleNavBar state={saleStatus} setStatus={setStatus} />
+        <GridListSection>
+          {error ? (
+            <Center>
+              <ErrorMessage error={error} />
+            </Center>
+          ) : loading ? (
+            t('texts.loading')
+          ) : (
+            filteredSales?.map(sale => (
               <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
                 <SaleSummaryCard sale={sale} />
               </SaleSummaryWrapper>
-            ))}
-          </GridListSection>
-        </Container>
+            ))
+          )}
+        </GridListSection>
       </Container>
-    </SaleContext.Provider>
+    </Container>
   )
 }

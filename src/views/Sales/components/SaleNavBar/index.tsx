@@ -1,63 +1,44 @@
 // Externals
-import React, { useContext } from 'react'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 // Components
-import { ActiveBadge, TextBadge, BackgroundBadge } from 'src/components/SaleBadge'
+import { Badge, BackgroundBadge } from 'src/components/SaleBadge'
 
 // context
-import { SaleContext, SaleStatus } from 'src/views/Sales'
+import { SaleStatus } from 'src/views/Sales'
 
-export const SaleNavBar: React.FC = () => {
-  const { SaleShow, setSaleShow } = useContext(SaleContext)
+export interface NavBarProps {
+  state: SaleStatus
+  setStatus: (SaleStatus: SaleStatus) => void
+}
 
-  if (SaleShow === SaleStatus.UPCOMING) {
-    return (
-      <BackgroundBadge>
-        <TextBadge data-testid="upcoming live click" textAlign="left" onClick={() => setSaleShow(SaleStatus.LIVE)}>
-          Live
-        </TextBadge>
-        <ActiveBadge>
-          <TextBadge color="active" data-testid="Upcoming">
-            Upcoming
-          </TextBadge>
-        </ActiveBadge>
-        <TextBadge data-testid="upcoming close click" textAlign="right" onClick={() => setSaleShow(SaleStatus.CLOSED)}>
-          Closed
-        </TextBadge>
-      </BackgroundBadge>
-    )
-  }
+export const SaleNavBar: React.FC<NavBarProps> = ({ state, setStatus }) => {
+  const [t] = useTranslation()
 
-  if (SaleShow === SaleStatus.CLOSED) {
-    return (
-      <BackgroundBadge>
-        <TextBadge data-testid="closed live click" textAlign="left" onClick={() => setSaleShow(SaleStatus.LIVE)}>
-          Live
-        </TextBadge>
-        <TextBadge data-testid="closedupcomingclick" onClick={() => setSaleShow(SaleStatus.UPCOMING)}>
-          Upcoming
-        </TextBadge>
-        <ActiveBadge>
-          <TextBadge color="active" data-testid="Closed">
-            Closed
-          </TextBadge>
-        </ActiveBadge>
-      </BackgroundBadge>
-    )
-  }
   return (
     <BackgroundBadge>
-      <ActiveBadge>
-        <TextBadge color="active" data-testid="Live">
-          Live
-        </TextBadge>
-      </ActiveBadge>
-      <TextBadge data-testid="live upcoming click" onClick={() => setSaleShow(SaleStatus.UPCOMING)}>
-        Upcoming
-      </TextBadge>
-      <TextBadge data-testid="live closed click" textAlign="right" onClick={() => setSaleShow(SaleStatus.CLOSED)}>
-        Closed
-      </TextBadge>
+      <Badge
+        data-testid="live"
+        active={state == SaleStatus.LIVE ? true : false}
+        onClick={() => setStatus(SaleStatus.LIVE)}
+      >
+        {t('texts.live')}
+      </Badge>
+      <Badge
+        data-testid="upcoming"
+        active={state == SaleStatus.UPCOMING ? true : false}
+        onClick={() => setStatus(SaleStatus.UPCOMING)}
+      >
+        {t('texts.upcoming')}
+      </Badge>
+      <Badge
+        data-testid="closed"
+        active={state == SaleStatus.CLOSED ? true : false}
+        onClick={() => setStatus(SaleStatus.CLOSED)}
+      >
+        {t('texts.closed')}
+      </Badge>
     </BackgroundBadge>
   )
 }

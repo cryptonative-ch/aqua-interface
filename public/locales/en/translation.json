@@ -19,6 +19,7 @@
     "bids": "Bids",
     "graph": "Graph",
     "active": "Active",
+    "live": "Live",
     "closed": "Closed",
     "loading": "Loading",
     "upcoming": "Upcoming",
@@ -44,7 +45,15 @@
     "claimSuccessful": "Claim Successful!",
     "failedTransaction": "Transaction Failed",
     "invalidNetwork": "Please connect to the xDai network",
-    "connectWallet": "Connect wallet to network to participate"
+    "connectWallet": "Connect wallet to network to participate",
+    "minThresholdInfo": "The auction will not execute, unless the minimum funding threshold is met.",
+    "minMaxAllocationInfo": "The minimum and maximum amount of tokens a single wallet address can purchase.",
+    "supplyDemandInfo": "The amount of tokens currently sold, and the total amount of tokens available for sale.",
+    "saleUnderSoftCap": "The sale is still under the soft-cap!",
+    "softCapReachedResult": "If the minimal fund-raising goals are reached, you will be able to claim {{tokenQuantity}} {{tokenOutSymbol}} after the sale is closed.",
+    "softCapNotReachedResult": "If the minimal fund-raising goals are not reached, you will be able to claim {{purchaseValue}} {{tokenInSymbol}} after the sale is closed.",
+    "confirmation": "Confirmation",
+    "continuePurchase": "Continue Purchase"
   },
   "buttons": {
     "back": "Back",

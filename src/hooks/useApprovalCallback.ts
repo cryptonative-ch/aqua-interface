@@ -52,7 +52,9 @@ export function useApproveCallback({
       // If was previously pending then show success message and stop loading
       if (txPending) {
         setTxPending(false)
-        toast.success(t('success.approve'))
+        toast.success(t('success.approve'), {
+          toastId: 'approve',
+        })
       }
       return ApprovalState.APPROVED
     }

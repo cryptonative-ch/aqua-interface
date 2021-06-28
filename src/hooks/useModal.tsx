@@ -1,19 +1,13 @@
 import { useState } from 'react'
-import { useCookies } from 'react-cookie'
 
-export const useModal = () => {
-  const [cookies, setCookie] = useCookies(['termsofsale'])
-  const [isShown, setShown] = useState<boolean>(cookies.termsofsale !== 'true')
-
-  const toggle = (flag = false) => {
-    if (flag) {
-      setCookie('termsofsale', 'true', { path: '/' })
-    }
-    setShown(!isShown)
-  }
+export const useModal = (initialState = false) => {
+  const [isShown, setShown] = useState<boolean>(initialState)
+  
+  const toggle = () => setShown(!isShown)
 
   return {
     isShown,
     toggle,
+    setShown,
   }
 }

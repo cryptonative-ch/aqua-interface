@@ -206,3 +206,9 @@ export const formatBigInt = (number: BigNumberish, decimals = 18): number => {
 
   return Number(value)
 }
+
+// Fix javascripts accuracy issues with small numbers
+export const fixRounding = (value: number, precision: number): number => {
+  const power = Math.pow(10, precision || 0)
+  return Math.round(value * power) / power
+}
