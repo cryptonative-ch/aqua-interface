@@ -39,8 +39,6 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
   const { bids: totalBids } = useChain(saleId, saleType)
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
-  console.log(bids)
-  console.log(totalBids)
 
   const totalPurchased = (bids: SaleBid[]) => {
     const reduceTotalAmount = bids.reduce((accumulator: any, purchases: any) => {
