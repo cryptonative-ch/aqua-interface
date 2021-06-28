@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, FormEvent, useCallback } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { utils } from 'ethers'
+import { ethers, utils } from 'ethers'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { FormGroup } from 'src/components/FormGroup'
 import { Form } from 'src/components/Form'
 import { Flex } from 'src/components/Flex'
+import { Modal } from 'src/components/Modal'
 
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
@@ -22,12 +23,15 @@ import { fixRounding } from 'src/utils/Defaults'
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
+import { useModal } from 'src/hooks/useModal'
+import { useBids } from 'src/hooks/useBids'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
+import { formatBigInt } from 'src/utils/Defaults'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -58,7 +62,7 @@ const FormText = styled.div({
   margin: '0 16px',
   userSelect: 'none',
   right: 0,
-  zIndex: 999,
+  zIndex: 101,
 })
 
 const FormInput = styled.input({
@@ -113,6 +117,8 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     tokenAddress: sale?.tokenIn.id,
     owner: account ?? undefined,
   })
+  const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
+  const { totalBids, totalPurchased } = useBids(saleId, 'FixedPriceSale')
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
@@ -169,50 +175,91 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     setValidationError(newValidationError)
   }
 
+  const purchaseTokens = useCallback(() => {
+    console.log('Buying tokens')
+
+    if (!sale) {
+      return console.error('no sale')
+    }
+
+    if (!account || !library) {
+      return console.error('no connected signer')
+    }
+
+    if (!tokenQuantity) {
+      return console.error('token amount == null')
+    }
+
+    const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
+
+    // Update state
+    setTxPending(true)
+    // Convert tokenQuantity (number) to 18-decimal BigNumber
+    // Sign and send transaction
+    fixedPriceSaleContract
+      .buyTokens(utils.parseEther(tokenQuantity.toString()))
+      .then(tx => tx.wait(1)) // wait one network confirmation
+      .then(receipt => {
+        toast.success(t('success.purchase'))
+        console.log(receipt)
+      })
+      .catch(error => {
+        console.error(error)
+        toast.error(t('errors.purchase'))
+      })
+      .then(() => {
+        setTxPending(false)
+      })
+  }, [account, library, sale, tokenQuantity, t])
+
   /**
    * Handles the form submission
    * @param event
    */
-
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
-      console.log('Buying tokens')
 
-      if (!sale) {
-        return console.error('no sale')
+      if (!sale || !purchaseValue) return null
+
+      if (sale.minimumRaise > BigNumber.from(0)) {
+        const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
+        const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
+        const totalAmountPurchased = totalPurchased(totalBids)[0].amount
+        const amountDisplayed = Number(
+          ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
+        )
+        const percentageSold = (amountDisplayed / totalSupply) * 100
+
+        if (percentageSold < threshold) {
+          toggleConfirmation()
+          return
+        }
       }
 
-      if (!account || !library) {
-        return console.error('no connected signer')
-      }
-
-      if (!tokenQuantity) {
-        return console.error('token amount == null')
-      }
-
-      const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
-
-      // Update state
-      setTxPending(true)
-      // Convert tokenQuantity (number) to 18-decimal BigNumber
-      // Sign and send transaction
-      fixedPriceSaleContract
-        .buyTokens(utils.parseEther(tokenQuantity.toString()))
-        .then(tx => tx.wait(1)) // wait one network confirmation
-        .then(receipt => {
-          console.log(receipt)
-          toast.success(t('success.purchase'))
-        })
-        .catch(error => {
-          console.error(error)
-          toast.error(t('errors.purchase'))
-        })
-        .then(() => {
-          setTxPending(false)
-        })
+      purchaseTokens()
     },
-    [sale, library, account]
+    [toggleConfirmation, sale, totalBids, totalPurchased, purchaseTokens, purchaseValue]
+  )
+
+  const confirmationModalContent = (
+    <div>
+      <p>{t('texts.saleUnderSoftCap')}</p>
+
+      <p>
+        {t('texts.softCapReachedResult', {
+          tokenQuantity: `${tokenQuantity}`,
+          tokenOutSymbol: `${sale?.tokenOut.symbol}`,
+        })}
+      </p>
+
+      <p>
+        {t('texts.softCapNotReachedResult', {
+          purchaseValue: `${purchaseValue}`,
+          tokenInSymbol: `${sale?.tokenIn.symbol}`,
+        })}
+      </p>
+    </div>
   )
 
   if (!account) {
@@ -283,6 +330,18 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
         disabled={!!validationError}
         loading={txPending || approvalState == ApprovalState.PENDING}
+      />
+
+      <Modal
+        isShown={isModalShown}
+        hide={toggleConfirmation}
+        modalContent={confirmationModalContent}
+        headerText={t('texts.confirmation')}
+        onConfirm={() => {
+          toggleConfirmation()
+          purchaseTokens()
+        }}
+        confirmText={t('texts.continuePurchase')}
       />
     </FormFull>
   )

@@ -15,7 +15,7 @@ import { theme } from './styles/theme'
 import 'react-toastify/dist/ReactToastify.css'
 
 // Hooks
-import { useModal } from 'src/hooks/useModal'
+import { useCookieModal } from 'src/hooks/useCookieModal'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // App Router
@@ -25,7 +25,6 @@ import { AppRouter } from './router'
 import { CHAIN_ID, SANCTION_LIST, SHOW_TERMS_AND_CONDITIONS, SUBGRAPH_ENDPOINT } from 'src/constants'
 
 // Components
-import { ConfirmButton } from 'src/components/ConfirmButton'
 import { Modal } from 'src/components/Modal'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
@@ -44,7 +43,7 @@ export const Container = styled.div`
 
 export const App = () => {
   const { isMobile } = useWindowSize()
-  const { isShown, toggle } = useModal()
+  const { isShown, toggle } = useCookieModal('termsofsale')
   const [sanction, setSanction] = useState<boolean>(false)
   const { library, chainId } = useWeb3React()
   // Default: XDAI
@@ -81,7 +80,6 @@ export const App = () => {
   const content = (
     <>
       <div>You agree to the Terms and Conditions of sale by pressing the Continue</div>
-      <ConfirmButton onClick={() => toggle(true)}>Continue</ConfirmButton>
     </>
   )
 
@@ -102,6 +100,7 @@ export const App = () => {
                       hide={toggle}
                       modalContent={content}
                       headerText="Confirmation"
+                      onConfirm={() => toggle(true)}
                     />
                     {!isMobile && <Footer />}
                     <ToastContainer
