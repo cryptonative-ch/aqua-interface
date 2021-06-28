@@ -16,6 +16,9 @@ import { convertUtcTimestampToLocal } from 'src/utils/date'
 type HeaderTitleProps = TypographyProps & {
   color: string
 }
+type HeaderDescProps = TypographyProps & {
+  error?: boolean
+}
 
 const HeaderTitle = styled.div<HeaderTitleProps>(
   props => ({
@@ -28,26 +31,26 @@ const HeaderTitle = styled.div<HeaderTitleProps>(
   typography
 )
 
-const HeaderDescription = styled.div<TypographyProps>(
-  () => ({
+const HeaderDescription = styled.div<HeaderDescProps>(
+  props => ({
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontSize: '24px',
     lineHeight: '29px',
     marginTop: '7px',
     fontFeatureSettings: 'ss01 on',
-    color: '#000629',
+    color: props.error ? '#E15F5F' : '#000629',
   }),
   typography
 )
 
-const MobileHeaderDescription = styled.div<TypographyProps>(
-  () => ({
+const MobileHeaderDescription = styled.div<HeaderDescProps>(
+  props => ({
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontSize: '16px',
     lineHeight: '19px',
-    color: '#000629',
+    color: props.error ? '#E15F5F' : '#000629',
     marginLeft: 'auto',
   }),
   typography
@@ -63,6 +66,7 @@ interface HeaderItemProps {
   sale?: Sale
   flexAmount?: number
   tooltip?: ReactNode
+  error?: boolean
 }
 
 export function HeaderItem({
@@ -74,7 +78,8 @@ export function HeaderItem({
   flexAmount,
   saleLive,
   sale,
-  tooltip
+  tooltip,
+  error = false,
 }: HeaderItemProps) {
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState<number>(0)
@@ -114,12 +119,14 @@ export function HeaderItem({
         {title} {tooltip && <InfoTooltip>{tooltip}</InfoTooltip>}
       </HeaderTitle>
       {isMobile ? (
-        <MobileHeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>
+        <MobileHeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'} error={error}>
           {descriptionText}
         </MobileHeaderDescription>
       ) : (
         descriptionText.length > 0 && (
-          <HeaderDescription textAlign={textAlign === 'left' ? 'left' : 'right'}>{descriptionText}</HeaderDescription>
+          <HeaderDescription error={error} textAlign={textAlign === 'left' ? 'left' : 'right'}>
+            {descriptionText}
+          </HeaderDescription>
         )
       )}
     </Flex>

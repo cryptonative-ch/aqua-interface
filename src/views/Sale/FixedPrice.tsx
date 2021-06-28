@@ -92,7 +92,7 @@ export function FixedPriceSaleView() {
   if (!sale) {
     return <NotFoundView />
   }
-
+  console.log(sale.soldAmount < sale.minimumRaise)
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Container noPadding>
@@ -149,7 +149,23 @@ export function FixedPriceSaleView() {
                         sale.tokenIn?.symbol
                       }/${sale.tokenOut?.symbol}`}
                     />
-                    <HeaderItem
+                    {isSaleClosed(sale as FIX_LATER) ? (
+                      <HeaderItem
+                        title={sale.soldAmount < sale.minimumRaise ? 'Soft Cap not reached' : 'Amount Sold'}
+                        description={`${formatBigInt(sale.soldAmount)} ${sale.tokenOut?.symbol}`}
+                        error={sale.soldAmount < sale.minimumRaise}
+                      />
+                    ) : (
+                      <HeaderItem
+                        title={'Min. - Max. Allocation'}
+                        description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                          sale.allocationMax,
+                          sale.tokenOut.decimals
+                        )} ${sale.tokenOut?.symbol}`}
+                        tooltip={t('texts.minMaxAllocationInfo')}
+                      />
+                    )}
+                    {/* <HeaderItem
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
                       description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
                         sale.allocationMax,
@@ -157,7 +173,7 @@ export function FixedPriceSaleView() {
                       )} ${sale.tokenOut?.symbol}`}
                       flexAmount={1.5}
                       tooltip={t('texts.minMaxAllocationInfo')}
-                    />
+                    /> */}
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
