@@ -74,7 +74,7 @@ export function HeaderItem({
   flexAmount,
   saleLive,
   sale,
-  tooltip
+  tooltip,
 }: HeaderItemProps) {
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState<number>(0)

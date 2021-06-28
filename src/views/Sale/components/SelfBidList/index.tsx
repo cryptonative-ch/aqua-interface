@@ -62,27 +62,29 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
     { title: 'Est. Invested' },
     { title: sale.tokenOut.symbol },
   ]
-  const isFairSaleBodyData = [
-    {
-      bids: (bids as FairSaleBid[]).map(bid => ({
-        bidPrice:
-          numeral(
-            formatBigInt(bid.tokenIn, sale.tokenIn.decimals) / formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
-          ).format('0.[0000]') +
-          ' ' +
-          sale.tokenIn.symbol,
-        tokenIn: numeral(formatBigInt(bid.tokenIn, sale.tokenIn.decimals)).format('0.[0000]'),
-        tokenOut: numeral(formatBigInt(bid.tokenOut, sale.tokenOut.decimals)).format('0.[0.0000]'),
+  const isFairSaleBodyData = isFixed
+    ? []
+    : [
+        {
+          bids: (bids as FairSaleBid[]).map(bid => ({
+            bidPrice:
+              numeral(
+                formatBigInt(bid.tokenIn, sale.tokenIn.decimals) / formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
+              ).format('0.[0000]') +
+              ' ' +
+              sale.tokenIn.symbol,
+            tokenIn: numeral(formatBigInt(bid.tokenIn, sale.tokenIn.decimals)).format('0.[0000]'),
+            tokenOut: numeral(formatBigInt(bid.tokenOut, sale.tokenOut.decimals)).format('0.[0.0000]'),
 
-        totalToken:
-          numeral(
-            formatBigInt(bid.tokenIn, sale.tokenIn.decimals) * formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
-          ).format('0.[0000]') +
-          ' ' +
-          sale.tokenOut.symbol,
-      })),
-    },
-  ]
+            totalToken:
+              numeral(
+                formatBigInt(bid.tokenIn, sale.tokenIn.decimals) * formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
+              ).format('0.[0000]') +
+              ' ' +
+              sale.tokenOut.symbol,
+          })),
+        },
+      ]
 
   if (isFixed && isSaleClosed(sale)) {
     return <Table headData={isFixedHeadData} bodyData={isFixedBodyData} isClosed={true} />
@@ -97,6 +99,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   }
   return <Table headData={isFairSaleHeadData} bodyData={isFairSaleBodyData as any} />
 }
+
 SelfBidList.defaultProps = {
   status: 'active',
   showGraph: false,
