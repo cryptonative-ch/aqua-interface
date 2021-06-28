@@ -213,7 +213,7 @@ export function FixedPriceSaleView() {
                 <SelfBidList
                   sale={sale as FIX_LATER}
                   isFixed={true}
-                  bids={sale.status === 'settled' ? (totalPurchased(bids) as any) : (bids as any)}
+                  bids={isSaleClosed(sale as FIX_LATER) ? (totalPurchased(bids) as any) : (bids as any)}
                 />
               </Card>
             )}
