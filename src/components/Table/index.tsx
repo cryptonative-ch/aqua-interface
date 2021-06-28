@@ -77,7 +77,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                 {Object.getOwnPropertyNames(purchase).map((element: any, _index) => {
                   return (
                     <TableColumn key={_index}>
-                      <TokenPriceLabel color={color}>{purchase[element]}</TokenPriceLabel>
+                      <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
                     </TableColumn>
                   )
                 })}
