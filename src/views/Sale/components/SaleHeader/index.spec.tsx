@@ -20,7 +20,7 @@ dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
 
 // Component
-import { SaleHeader } from './index'
+import { SaleHeader } from 'src/views/Sale/components/SaleHeader/index'
 import { secondsTohms } from 'src/views/Sale/components/Timer'
 
 // Utils

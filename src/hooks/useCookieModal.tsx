@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie'
-import { useModal } from './useModal'
+import { useModal } from 'src/hooks/useModal'
 
 export const useCookieModal = (cookieName: string) => {
   const [cookies, setCookie] = useCookies([cookieName])

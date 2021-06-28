@@ -14,7 +14,7 @@ import { BidModalContext } from 'src/contexts'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
 import { Flex } from 'src/components/Flex'
-import { ApproveButton } from '../ApproveButton'
+import { ApproveButton } from 'src/views/Sale/components/ApproveButton'
 
 const FormBody = styled.form({
   flex: 1,

@@ -27,7 +27,7 @@ import {
   MenuOption,
   MenuBorder,
   ColumnWrapper,
-} from './style'
+} from 'src/components/Header/style'
 
 // Components
 import { Flex } from 'src/components/Flex'

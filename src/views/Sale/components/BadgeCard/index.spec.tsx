@@ -5,7 +5,7 @@ import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { BadgeCard } from './index'
+import { BadgeCard } from 'src/views/Sale/components/BadgeCard/index'
 
 // theme
 

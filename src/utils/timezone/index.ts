@@ -1,5 +1,5 @@
 // Mesa utils
-import Abbreviations from './abbreviations.json'
+import Abbreviations from 'src/utils/timezone/abbreviations.json'
 
 export const timezoneAbbreviation = (timezoneString: string): string => {
   const timezoneAbbreviations = JSON.parse(JSON.stringify(Abbreviations))

@@ -21,7 +21,7 @@ dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
 
 // Component
-import { HeaderControl } from './index'
+import { HeaderControl } from 'src/views/Sale/components/HeaderControl/index'
 
 // Mesa Utils
 import { getFixedPriceSales } from 'src/utils/Defaults'

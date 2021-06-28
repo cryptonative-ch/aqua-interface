@@ -20,13 +20,13 @@ import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
-import { PurchaseTokensForm } from './components/PurchaseTokensForm'
-import { HeaderControl } from './components/HeaderControl'
-import { SelfBidList } from './components/SelfBidList'
-import { TokenFooter } from './components/TokenFooter'
-import { HeaderItem } from './components/HeaderItem'
-import { SaleHeader } from './components/SaleHeader'
-import { HeaderClaim } from './components/HeaderClaim'
+import { PurchaseTokensForm } from 'src/views/Sale/components/PurchaseTokensForm'
+import { HeaderControl } from 'src/views/Sale/components/HeaderControl'
+import { SelfBidList } from 'src/views/Sale/components/SelfBidList'
+import { TokenFooter } from 'src/views/Sale/components/TokenFooter'
+import { HeaderItem } from 'src/views/Sale/components/HeaderItem'
+import { SaleHeader } from 'src/views/Sale/components/SaleHeader'
+import { HeaderClaim } from 'src/views/Sale/components/HeaderClaim'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -149,15 +149,22 @@ export function FixedPriceSaleView() {
                         sale.tokenIn?.symbol
                       }/${sale.tokenOut?.symbol}`}
                     />
-                    <HeaderItem
-                      title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
-                        sale.allocationMax,
-                        sale.tokenOut.decimals
-                      )} ${sale.tokenOut?.symbol}`}
-                      flexAmount={1.5}
-                      tooltip={t('texts.minMaxAllocationInfo')}
-                    />
+                    {isSaleClosed(sale as FIX_LATER) ? (
+                      <HeaderItem
+                        title={sale.soldAmount < sale.minimumRaise ? 'Soft Cap not reached' : 'Amount Sold'}
+                        description={`${formatBigInt(sale.soldAmount)} ${sale.tokenOut?.symbol}`}
+                        error={sale.soldAmount < sale.minimumRaise}
+                      />
+                    ) : (
+                      <HeaderItem
+                        title={'Min. - Max. Allocation'}
+                        description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                          sale.allocationMax,
+                          sale.tokenOut.decimals
+                        )} ${sale.tokenOut?.symbol}`}
+                        tooltip={t('texts.minMaxAllocationInfo')}
+                      />
+                    )}
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />

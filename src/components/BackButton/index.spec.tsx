@@ -4,11 +4,11 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { BrowserRouter as Router } from 'react-router-dom'
-import '../../i18n'
+import 'src/i18n'
 
 import i18n from 'i18next'
 // Component
-import { BackButton } from './index'
+import { BackButton } from 'src/components/BackButton/index'
 
 describe('BackButton', () => {
   test('should display the backToSales text in the button', () => {

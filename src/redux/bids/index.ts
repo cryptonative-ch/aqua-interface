@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 
 // redux
 
-import { AppThunk } from '../store'
+import { AppThunk } from 'src/redux/store'
 
 // interface
 import { SaleBid } from 'src/interfaces/Sale'

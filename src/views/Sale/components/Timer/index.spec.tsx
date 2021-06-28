@@ -9,7 +9,7 @@ import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Component
-import { secondsTohms, timeEnd } from './index'
+import { secondsTohms, timeEnd } from 'src/views/Sale/components/Timer/index'
 
 // Extends dayjs
 dayjs.extend(DayjsRelativeTime)

@@ -24,7 +24,7 @@ import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
-import { TokenClaim } from './components/TokenClaim'
+import { TokenClaim } from 'src/views/Token/components/TokenClaim'
 
 const userSalesQuery = (userAddress: string) => `
 

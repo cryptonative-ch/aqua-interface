@@ -1,6 +1,6 @@
 //External
 import styled from 'styled-components'
-import { Button } from '../Button'
+import { Button } from 'src/components/Button'
 
 export const Wrapper = styled.div`
   position: fixed;

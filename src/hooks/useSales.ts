@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { fetchSalesComplete, fetchSalesError, fetchSalesRequest, fetchSalesSuccess } from 'src/redux/sales'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
-import { useMesa } from './useMesa'
+import { useMesa } from 'src/hooks/useMesa'
 
 interface UseSalesReturn {
   loading: boolean

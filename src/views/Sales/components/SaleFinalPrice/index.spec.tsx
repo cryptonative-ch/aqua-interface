@@ -5,7 +5,7 @@ import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Components
-import { SaleFinalPrice } from './index'
+import { SaleFinalPrice } from 'src/views/Sales/components/SaleFinalPrice/index'
 
 // utils
 import { getSaleDefault, addHours, dateUTC } from 'src/utils/Defaults'
