@@ -26,17 +26,17 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   const { isMobile } = useWindowSize()
 
   const isFixedHeadData = [
-    { title: 'type', flex: isMobile ? 3.5 : 3 },
+    { title: 'Type', flex: isMobile ? 3.5 : 3 },
     { title: 'Amount' },
     { title: 'Value' },
     { title: 'Status', flex: isMobile ? 2 : 3 },
   ]
 
-  const isFixedHeadDataOpen = [{ title: 'type' }, { title: 'Amount' }, { title: 'Value' }]
+  const isFixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
   const isFixedBodyData = [
     {
-      title: isSaleClosed(sale) ? 'Withdraw' : 'buy Order',
-      color: isSaleClosed(sale) ? undefined : 'green',
+      title: isSaleClosed(sale) ? 'Withdraw' : 'Buy Order',
+      color: isSaleClosed(sale) ? undefined : '#4B9E98',
       purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
         amount:
           numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenOut.symbol,

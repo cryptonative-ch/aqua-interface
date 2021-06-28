@@ -70,14 +70,14 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
         {bodyData.map(({ purchases, color, title }) =>
           purchases.map((purchase: any, index) => {
             return (
-              <TableRow key={index} padding={isMobile ? '0 8px' : '0 16px'}>
+              <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
                 <TableColumn>
                   <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
                 </TableColumn>
                 {Object.getOwnPropertyNames(purchase).map((element: any, _index) => {
                   return (
                     <TableColumn key={_index}>
-                      <TokenPriceLabel color={color}>{purchase[element]}</TokenPriceLabel>
+                      <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
                     </TableColumn>
                   )
                 })}
