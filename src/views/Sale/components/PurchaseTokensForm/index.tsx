@@ -287,7 +287,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   }
 
   return (
-    <FormFull id="placePurchaseForm" onSubmit={onSubmit}>
+    <FormFull id="placePurchaseForm" noValidate onSubmit={onSubmit}>
       <FormGroup>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
