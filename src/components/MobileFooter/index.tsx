@@ -2,7 +2,7 @@
 import React from 'react'
 
 //Internal
-import { Wrapper } from './style'
+import { Wrapper } from 'src/components/MobileFooter/style'
 import { Button, ButtonText } from 'src/components/Header/style'
 
 export interface MobileFooterProps {

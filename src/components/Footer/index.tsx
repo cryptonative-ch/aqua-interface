@@ -8,7 +8,7 @@ import { layout, LayoutProps, space, SpaceProps } from 'styled-system'
 import { Link } from 'src/components/Link'
 
 //Internal
-import { Wrapper } from './style'
+import { Wrapper } from 'src/components/Footer/style'
 import { Row, Title } from 'src/components/Header/style'
 import { FE_VERSION, SC_VERSION } from 'src/constants'
 

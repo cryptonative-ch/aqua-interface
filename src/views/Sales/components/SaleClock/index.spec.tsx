@@ -10,7 +10,7 @@ import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Components
-import { SaleClock } from './index'
+import { SaleClock } from 'src/views/Sales/components/SaleClock/index'
 
 // defaults
 import { getSaleDefault, addHours, dateUTC, resizeWindow } from 'src/utils/Defaults'

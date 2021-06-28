@@ -9,7 +9,7 @@ import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
 import { salesQuery } from 'src/subgraph/Sales'
 // Redux components
-import { ActionTypes, BidActionTypes, reducer, fetchSaleBids, BidsState } from './index'
+import { ActionTypes, BidActionTypes, reducer, fetchSaleBids, BidsState } from 'src/redux/bids/index'
 import { getSalesData, selectSaletype } from 'src/subgraph'
 
 const middlewares = [thunk]

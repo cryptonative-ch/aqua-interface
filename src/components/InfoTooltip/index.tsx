@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import InfoIconSVG from 'src/assets/svg/Info-Icon.svg'
 
 // Components
-import { Tooltip } from '../Tooltip'
+import { Tooltip } from 'src/components/Tooltip'
 
 const InfoIconImg = styled.img({
   position: 'relative',

@@ -2,7 +2,14 @@
 import React, { useState, useEffect } from 'react'
 
 // Internal
-import { Wrapper, ColumnWrapper, Dot, Line, ProgressLineWrapper, StyledButton } from './style'
+import {
+  Wrapper,
+  ColumnWrapper,
+  Dot,
+  Line,
+  ProgressLineWrapper,
+  StyledButton,
+} from 'src/components/LinkedButtons/style'
 
 // Components
 import { Spinner } from 'src/components/Spinner'

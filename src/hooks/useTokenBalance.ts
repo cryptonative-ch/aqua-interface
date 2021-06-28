@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // Hooks
-import { useTokenContract } from './useTokenContract'
+import { useTokenContract } from 'src/hooks/useTokenContract'
 
 // Interfaces
 interface UseTokenBalanceProps {

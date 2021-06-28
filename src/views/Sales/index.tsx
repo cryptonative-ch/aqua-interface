@@ -9,9 +9,9 @@ import styled from 'styled-components'
 import { setPageTitle, setSelectedSaleStatus } from 'src/redux/page'
 
 // Components
-import { SaleSummaryCard } from './components/SaleSummaryCard'
+import { SaleSummaryCard } from 'src/views/Sales/components/SaleSummaryCard'
 import { ErrorMessage } from 'src/components/ErrorMessage'
-import { SaleNavBar } from './components/SaleNavBar'
+import { SaleNavBar } from 'src/views/Sales/components/SaleNavBar'
 import { Container } from 'src/components/Container'
 import { Card } from 'src/components/CardSale'
 import { GridListSection } from 'src/components/Grid'

@@ -3,8 +3,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useEffect, useState } from 'react'
 
 // Hooks
-import { useTokenContract } from './useTokenContract'
-import { useBlockNumber } from './useBlockNumber'
+import { useTokenContract } from 'src/hooks/useTokenContract'
+import { useBlockNumber } from 'src/hooks/useBlockNumber'
 
 export function useTokenAllowance(tokenAddress: string, owner: string, spender: string): BigNumber | undefined {
   const [allowance, setAllownace] = useState<BigNumber>(BigNumber.from(0))

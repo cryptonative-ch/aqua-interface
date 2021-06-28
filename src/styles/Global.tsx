@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import { reboot } from 'styled-reboot'
-import './fonts.css'
+import 'src/styles/fonts.css'
 
 export const GlobalStyle = createGlobalStyle`
 

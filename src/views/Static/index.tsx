@@ -20,9 +20,9 @@ import { CardBody } from 'src/components/CardBody'
 import { Card } from 'src/components/Card'
 import { Flex } from 'src/components/Flex'
 
-import { StaticContent } from '../Static/components/StaticContent'
-import { StaticHeader } from '../Static/components/StaticHeader'
-import { HeaderItem } from '../Sale/components/HeaderItem'
+import { StaticContent } from 'src/views/Static/components/StaticContent'
+import { StaticHeader } from 'src/views/Static/components/StaticHeader'
+import { HeaderItem } from 'src/views/Sale/components/HeaderItem'
 
 interface StaticViewParams {
   staticId: string

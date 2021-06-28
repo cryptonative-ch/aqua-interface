@@ -5,7 +5,7 @@ import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { FairSaleBid, FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
 
 // Mesa
-import { calculateClearingPrice } from './price'
+import { calculateClearingPrice } from 'src/mesa/price'
 
 /**
  * Determines if the sale is active

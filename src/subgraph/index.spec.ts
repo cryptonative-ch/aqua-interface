@@ -5,11 +5,11 @@ import { mockServer } from 'graphql-tools'
 import { cleanup } from '@testing-library/react'
 
 //components
-import { getSalesData } from './index'
+import { getSalesData } from 'src/subgraph/index'
 import { salesQuery } from 'src/subgraph/Sales'
 
 //mocks
-import { schemaString, mocks, preserveResolvers } from './mock'
+import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
 
 //clean up
 
