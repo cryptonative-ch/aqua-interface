@@ -4,7 +4,7 @@ import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
 } from '@web3-react/injected-connector'
-import { CustomNetworkConnector } from './CustomNetworkConnector'
+import { CustomNetworkConnector } from 'src/connectors/CustomNetworkConnector'
 import { UnsupportedChainIdError } from '@web3-react/core'
 
 // Constants

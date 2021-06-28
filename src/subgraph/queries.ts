@@ -1,7 +1,11 @@
 import { gql } from '@apollo/client'
 
 // Attributes: DRY principles
-import { FAIR_PRICE_SALE_FIELDS, FIXED_PRICE_SALE_FIELDS, FIXED_PRICE_SALE_PURCHASE_FIELDS } from './attributes'
+import {
+  FAIR_PRICE_SALE_FIELDS,
+  FIXED_PRICE_SALE_FIELDS,
+  FIXED_PRICE_SALE_PURCHASE_FIELDS,
+} from 'src/subgraph/attributes'
 
 export const GET_ALL_SALES = gql`
   query GetAllSales {

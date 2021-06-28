@@ -13,7 +13,7 @@ import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Component
-import { SelfBidList } from './index'
+import { SelfBidList } from 'src/views/Sale/components/SelfBidList/index'
 
 // Extends dayjs
 dayjs.extend(DayjsRelativeTime)

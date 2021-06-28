@@ -10,7 +10,7 @@ import {
   ThemeFonts,
   ThemeSpacing,
   ThemeGrid,
-} from './theme'
+} from 'src/styles/theme'
 
 declare module 'styled-components' {
   export interface DefaultTheme extends RebootTheme, StyledSystemTheme {

@@ -15,8 +15,8 @@ import durationTime from 'dayjs/plugin/duration'
 import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
 // Component
-import { theme } from '../../../../styles/theme'
-import { PlaceBidForm } from './index'
+import { theme } from 'src/styles/theme'
+import { PlaceBidForm } from 'src/views/Sale/components/PlaceBidForm/index'
 import { calculateClearingPrice } from 'src/mesa/price'
 //defaults
 import { getSaleDefault } from 'src/utils/Defaults'

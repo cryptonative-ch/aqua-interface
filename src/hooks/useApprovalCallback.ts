@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next'
 import { useCallback, useMemo, useState } from 'react'
 
 // Hooks
-import { useTokenAllowance } from './useTokenAllowance'
-import { useTokenContract } from './useTokenContract'
+import { useTokenAllowance } from 'src/hooks/useTokenAllowance'
+import { useTokenContract } from 'src/hooks/useTokenContract'
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',

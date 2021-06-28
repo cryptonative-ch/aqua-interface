@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { TokenFooter } from './index'
+import { TokenFooter } from 'src/views/Sale/components/TokenFooter/index'
 
 // default
 import { getSaleDefault, getSaleDetailsDefault } from 'src/utils/Defaults'

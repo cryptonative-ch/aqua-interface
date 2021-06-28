@@ -5,8 +5,8 @@ import '@testing-library/jest-dom/extend-expect'
 import i18n from 'i18next'
 
 // Components
-import { SaleNavBar } from './index'
-import { SaleStatus } from '../../index'
+import { SaleNavBar } from 'src/views/Sales/components/SaleNavBar/index'
+import { SaleStatus } from 'src/views/Sales/index'
 
 //clean up
 

@@ -3,10 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import Thunk, { ThunkAction } from 'redux-thunk'
 
 // Reducers
-import { reducer as sales } from './sales'
-import { reducer as bids } from './bids'
-import { reducer as page } from './page'
-import { reducer as network } from './network'
+import { reducer as sales } from 'src/redux/sales'
+import { reducer as bids } from 'src/redux/bids'
+import { reducer as page } from 'src/redux/page'
+import { reducer as network } from 'src/redux/network'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {

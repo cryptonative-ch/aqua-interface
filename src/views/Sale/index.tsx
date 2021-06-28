@@ -16,10 +16,10 @@ import { Center } from 'src/layouts/Center'
 import { useSaleQuery } from 'src/hooks/useSaleQuery'
 
 // Views
-import { NotFoundView } from '../NotFound'
+import { NotFoundView } from 'src/views/NotFound'
 // Sub Views
-import { FixedPriceSaleView } from './FixedPrice'
-import { FairSaleView } from './FairSale'
+import { FixedPriceSaleView } from 'src/views/Sale/FixedPrice'
+import { FairSaleView } from 'src/views/Sale/FairSale'
 
 interface SaleViewParams {
   saleId: string

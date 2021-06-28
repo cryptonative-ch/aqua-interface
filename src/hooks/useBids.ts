@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 // Hooks
-import { useMesa } from './useMesa'
+import { useMesa } from 'src/hooks/useMesa'
 
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'

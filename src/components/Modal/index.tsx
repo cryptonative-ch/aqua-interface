@@ -6,7 +6,17 @@ import ReactDOM from 'react-dom'
 import CloseIcon from 'src/assets/svg/Close.svg'
 
 //Internal
-import { Wrapper, Header, StyledModal, HeaderText, CloseButton, Content, Backdrop, Footer, ModalButton } from './style'
+import {
+  Wrapper,
+  Header,
+  StyledModal,
+  HeaderText,
+  CloseButton,
+  Content,
+  Backdrop,
+  Footer,
+  ModalButton,
+} from 'src/components/Modal/style'
 
 export interface ModalProps {
   isShown: boolean

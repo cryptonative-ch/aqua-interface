@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { HeaderItem } from './index'
+import { HeaderItem } from 'src/views/Sale/components/HeaderItem/index'
 
 describe('HeaderItem', () => {
   test('should display texts', () => {

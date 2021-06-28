@@ -3,7 +3,7 @@ import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Components
-import { SaleAmount } from './index'
+import { SaleAmount } from 'src/views/Sales/components/SaleAmount/index'
 
 // defaults
 import { formatDecimal, getSaleDefault } from 'src/utils/Defaults'
