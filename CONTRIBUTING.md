@@ -140,7 +140,7 @@ As you can see, with the second example, the imported name can be dynamic. Pleas
 
 ## Group Imports
 
-Imports should be grouped by category:
+Imports should be grouped by category and use absolute paths:
 
 1. External imports
    1. functions, objects, interfaces, classes

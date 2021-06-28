@@ -141,11 +141,13 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
-          <FixedTitle>Sale Progress</FixedTitle>
+          <FixedTitle>{status === 'closed' ? 'Tokens Sold' : 'Sale Progress'}</FixedTitle>
           <FixedDescription>
             {numeral(amountDisplayed).format('0.[00]')}
             <FixedDescription2>{`(${numeral(percentageSold).format('0.[00]')}%)`}</FixedDescription2>
-            <FixedDescription3>/ {numeral(totalSupply).format('0')}</FixedDescription3>
+            <FixedDescription3>
+              / {numeral(totalSupply).format('0')} {sale.tokenOut.symbol}
+            </FixedDescription3>
             <InfoTooltip>{t('texts.supplyDemandInfo')}</InfoTooltip>
           </FixedDescription>
         </Flex>

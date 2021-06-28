@@ -5,7 +5,7 @@ import { Action } from 'redux'
 
 // interfaces
 import { Sale } from 'src/interfaces/Sale'
-import { AppThunk } from '../store'
+import { AppThunk } from 'src/redux/store'
 
 // subgraph
 import dayjs from 'dayjs'

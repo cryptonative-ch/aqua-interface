@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // Hooks
-import { useMesa } from './useMesa'
+import { useMesa } from 'src/hooks/useMesa'
 
 // Redux actions
 import { fetchSalesComplete, fetchSalesError, fetchSalesRequest, fetchSalesSuccess } from 'src/redux/sales'

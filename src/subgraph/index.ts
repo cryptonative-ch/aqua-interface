@@ -4,7 +4,7 @@
 import axios from 'axios'
 
 //interface
-import { Sale, SaleType } from '../interfaces/Sale'
+import { Sale, SaleType } from 'src/interfaces/Sale'
 import { BidsBySaleId } from 'src/redux/bids'
 
 // utils

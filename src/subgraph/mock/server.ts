@@ -7,7 +7,7 @@ import { addMocksToSchema } from 'graphql-tools'
 import cors from 'cors'
 
 // mocks
-import { schemaString, mocks } from './index'
+import { schemaString, mocks } from 'src/subgraph/mock/index'
 
 const app = express()
 

@@ -2,7 +2,7 @@
 import React from 'react'
 import { cleanup, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import '../../../../i18n'
+import 'src/i18n'
 import i18n from 'i18next'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -21,7 +21,7 @@ dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
 
 // Components
-import { SaleSummaryCard } from './index'
+import { SaleSummaryCard } from 'src/views/Sales/components/SaleSummaryCard/index'
 
 // Theme
 import { theme } from 'src/styles/theme'

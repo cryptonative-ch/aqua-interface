@@ -10,8 +10,8 @@ import { CookiesProvider } from 'react-cookie'
 import Axios from 'axios'
 
 // Styles
-import { GlobalStyle } from './styles/Global'
-import { theme } from './styles/theme'
+import { GlobalStyle } from 'src/styles/Global'
+import { theme } from 'src/styles/theme'
 import 'react-toastify/dist/ReactToastify.css'
 
 // Hooks
@@ -19,7 +19,7 @@ import { useCookieModal } from 'src/hooks/useCookieModal'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // App Router
-import { AppRouter } from './router'
+import { AppRouter } from 'src/router'
 
 // Constantsx
 import { CHAIN_ID, SANCTION_LIST, SHOW_TERMS_AND_CONDITIONS, SUBGRAPH_ENDPOINT } from 'src/constants'
@@ -30,7 +30,7 @@ import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
 
 // Layouts
-import { Center } from './layouts/Center'
+import { Center } from 'src/layouts/Center'
 
 // Contexts
 import { SanctionContext } from 'src/contexts'

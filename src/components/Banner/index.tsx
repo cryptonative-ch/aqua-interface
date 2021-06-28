@@ -2,7 +2,7 @@
 import React from 'react'
 
 // Internal
-import { Wrapper, Content, CloseButtonImage } from './style'
+import { Wrapper, Content, CloseButtonImage } from 'src/components/Banner/style'
 
 export interface BannerProps {
   error?: boolean

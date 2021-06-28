@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Components
-import { StaticContent } from './index'
+import { StaticContent } from 'src/views/Static/components/StaticContent/index'
 
 describe('StaticContent', () => {
   test('should display multiple texts on Content component', () => {

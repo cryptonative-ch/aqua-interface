@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 // Component
-import { StaticHeader } from './index'
+import { StaticHeader } from 'src/views/Static/components/StaticHeader/index'
 
 // Utils
 
