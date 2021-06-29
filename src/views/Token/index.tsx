@@ -1,6 +1,7 @@
 // External
 import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
+import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -25,6 +26,9 @@ import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
 import { TokenClaim } from 'src/views/Token/components/TokenClaim'
+
+// bids
+import { useBids } from 'src/hooks/useBids'
 
 const userSalesQuery = (userAddress: string) => `
 
@@ -65,34 +69,20 @@ query getTokenClaims {
 
 `
 
-// { data: buyer { saleId:.., tokens}}
-
 export function TokenView() {
   const dispatch = useDispatch()
+  const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
+  const { totalPurchased } = useBids(saleId, 'FixedPriceSale')
   const mesa = useMesa()
   const [filteredData, setFilteredData] = useState<FixedPriceSalePurchase[] | undefined>()
-  const account = (window as any).ethereum.selectedAddress
 
-  //  const fetchdata = async () => {
-  //    try {
-  //      const data = await mesa.subgraph.query(userSalesQuery(account))
-  //      const unixDateNow = dayjs(Date.now()).unix()
-  //      const filteredData = data.fixedPriceSalePurchases.filter(
-  //        (element: FixedPriceSalePurchase) =>
-  //          BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
-  //          unixDateNow > element.sale!.endDate
-  //      )
-  //      return filteredData
-  //    } catch (error) {
-  //      setError(error)
-  //      setLoading(false)
-  //    }
-  //  }
-  //
   useEffect(() => {
+    if (!account || !library || !chainId) {
+      return
+    }
     mesa.subgraph
       .query(userSalesQuery(account))
       .then(({ data }) => {
@@ -115,7 +105,7 @@ export function TokenView() {
         setLoading(false)
       })
     dispatch(setPageTitle(t('pagesTitles.tokens')))
-  }, [])
+  }, [account, chainId, library])
 
   if (loading) {
     return (
