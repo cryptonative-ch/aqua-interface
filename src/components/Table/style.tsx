@@ -112,6 +112,7 @@ export const TableHead = styled(Flex)({
 })
 
 export const TableBody = styled(Flex)({
-  overflowY: 'scroll',
+  minHeight: 0,
+  minWidth: 0,
   flexDirection: 'column',
 })

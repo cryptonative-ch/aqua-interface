@@ -1,7 +1,7 @@
 /* eslint-disable */
 // External
 import React, { useState } from 'react'
-
+import { Scrollbars } from 'react-custom-scrollbars'
 // Utility
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
@@ -67,34 +67,43 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
         })}
       </TableHead>
       <TableBody>
-        {bodyData.map(({ purchases, color, title }) =>
-          purchases.map((purchase: any, index) => {
-            return (
-              <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
-                <TableColumn>
-                  <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
-                </TableColumn>
-                {Object.getOwnPropertyNames(purchase).map((element: any, _index) => {
-                  return (
-                    <TableColumn key={_index}>
-                      <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
-                    </TableColumn>
-                  )
-                })}
-                {isClosed ? (
-                  <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-                    <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
-                    {!isMobile && (
-                      <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                        Unclaimed
-                      </TokenPriceLabel>
-                    )}
-                  </Flex>
-                ) : null}
-              </TableRow>
-            )
-          })
-        )}
+        <Scrollbars
+          autoHide
+          autoHideTimeout={1000}
+          autoHideDuration={200}
+          autoHeight
+          autoHeightMin={0}
+          autoHeightMax={200}
+        >
+          {bodyData.map(({ purchases, color, title }) =>
+            purchases.map((purchase: any, index) => {
+              return (
+                <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
+                  <TableColumn>
+                    <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
+                  </TableColumn>
+                  {Object.getOwnPropertyNames(purchase).map((element: any, _index) => {
+                    return (
+                      <TableColumn key={_index}>
+                        <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
+                      </TableColumn>
+                    )
+                  })}
+                  {isClosed ? (
+                    <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
+                      <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
+                      {!isMobile && (
+                        <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                          Unclaimed
+                        </TokenPriceLabel>
+                      )}
+                    </Flex>
+                  ) : null}
+                </TableRow>
+              )
+            })
+          )}
+        </Scrollbars>
       </TableBody>
       {tableMenu !== -1 && (
         <ModalContainer itemIndex={tableMenu}>
