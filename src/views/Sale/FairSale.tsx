@@ -298,7 +298,8 @@ export function FairSaleView() {
                 <CardBody display="flex" padding={theme.space[4]}>
                   <PlaceBidForm
                     onSubmit={() => {
-                      console.log('Add to Sale')
+                      {
+                      }
                     }}
                     sale={sale}
                     currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}

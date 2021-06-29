@@ -108,7 +108,8 @@ export function useApproveCallback({
     return tokenContract
       .approve(spender, amountToApprove)
       .then(() => {
-        console.log('Approved')
+        {
+        }
       })
       .catch((error: Error) => {
         console.debug('Failed to approve token', error)

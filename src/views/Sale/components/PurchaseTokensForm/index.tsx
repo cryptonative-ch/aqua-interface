@@ -320,7 +320,8 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
             title: `Purchase ${sale.tokenOut.symbol}`,
             id: 'purchase',
             onClick: () => {
-              console.log('purchase')
+              {
+              }
             },
           },
         ]}
