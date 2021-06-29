@@ -23,6 +23,7 @@ dayjs.extend(durationTime)
 
 // tests
 let addHours: (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
+let addDays: (dayjsInstance: Dayjs, days: number) => dayjs.Dayjs
 let utcDate: dayjs.Dayjs
 let dateUTC: dayjs.Dayjs
 
