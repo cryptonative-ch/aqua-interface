@@ -24,9 +24,9 @@ module.exports = {
     'no-use-before-define': 'off',
     'no-console': ['warn', { allow: ['warn', 'debug', 'error'] }],
     'no-restricted-imports': [
-      'warn',
+      'error',
       {
-        patterns: ["'.*'"],
+        patterns: ['./*', '../*'],
       },
     ],
     '@typescript-eslint/no-use-before-define': ['error'],
