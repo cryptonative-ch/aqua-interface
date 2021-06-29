@@ -54,7 +54,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
         try {
           dispatch(updateBidSuccess(bids))
         } catch (error) {
-          console.log(error)
+          console.error(error)
           dispatch(updateBidFailure(error))
         }
       })
@@ -78,7 +78,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
       try {
         dispatch(updateBidSuccess(bids))
       } catch (error) {
-        console.log(error)
+        console.error(error)
         toast.error(t('error.updatePurchase'))
         dispatch(updateBidFailure(error))
       }

@@ -25,7 +25,6 @@ dayjs.extend(durationTime)
 let addHours: (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
 let utcDate: dayjs.Dayjs
 let dateUTC: dayjs.Dayjs
-let addDays: (dayjsInstance: Dayjs, hours: number) => dayjs.Dayjs
 
 describe('Timer', () => {
   describe('seconds to HMS function', () => {

@@ -73,7 +73,7 @@ export const fetchSales = (): AppThunk => {
     try {
       dispatch(fetchSalesSuccess([]))
     } catch (error) {
-      console.log(error)
+      console.error(error)
       dispatch(fetchSalesError(error))
     }
   }

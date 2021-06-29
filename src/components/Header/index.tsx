@@ -75,7 +75,7 @@ export const Header: React.FC = () => {
     activate(injected)
       .catch(error => {
         toast.error('Failed to connect wallet')
-        console.log(getErrorMessage(error))
+        console.error(getErrorMessage(error))
       })
       .finally(() => setIsConnecting(false))
   }
