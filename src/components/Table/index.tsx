@@ -24,6 +24,11 @@ import {
 } from 'src/components/Table/style'
 import { Flex } from 'src/components/Flex'
 
+interface TableProps {
+  headData: ColumnDataProps[]
+  bodyData: BodyDataProps[]
+  isClosed: boolean
+}
 interface ColumnDataProps {
   title: string
   colour?: string
@@ -34,12 +39,6 @@ interface BodyDataProps {
   title: string
   purchases: any[]
   color?: string
-}
-
-interface TableProps {
-  headData: ColumnDataProps[]
-  bodyData: BodyDataProps[]
-  isClosed: boolean
 }
 
 export const Table = ({ headData, bodyData, isClosed }: TableProps) => {

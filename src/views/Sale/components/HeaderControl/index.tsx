@@ -128,7 +128,6 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
   const { totalBids, totalPurchased } = useBids(sale.id, sale.type)
-  console.log(totalBids)
 
   if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)

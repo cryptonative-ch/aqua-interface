@@ -22,6 +22,13 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     'react/jsx-filename-extension': 0,
     'no-use-before-define': 'off',
+    'no-console': ['warn', { allow: ['warn', 'debug', 'error'] }],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: ['./*', '../*'],
+      },
+    ],
     '@typescript-eslint/no-use-before-define': ['error'],
     'react/prop-types': 0,
     'linebreak-style': 0,

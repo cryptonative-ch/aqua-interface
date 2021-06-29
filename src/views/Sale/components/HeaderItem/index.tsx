@@ -81,7 +81,6 @@ export function HeaderItem({
   tooltip,
 
   error = false,
-
 }: HeaderItemProps) {
   // setting state to update the timer more frequently than the bids
   const [, setTime] = useState<number>(0)

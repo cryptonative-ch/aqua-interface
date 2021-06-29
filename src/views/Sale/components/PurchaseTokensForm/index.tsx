@@ -176,8 +176,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   }
 
   const purchaseTokens = useCallback(() => {
-    console.log('Buying tokens')
-
     if (!sale) {
       return console.error('no sale')
     }
@@ -199,9 +197,8 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     fixedPriceSaleContract
       .buyTokens(utils.parseEther(tokenQuantity.toString()))
       .then(tx => tx.wait(1)) // wait one network confirmation
-      .then(receipt => {
+      .then(() => {
         toast.success(t('success.purchase'))
-        console.log(receipt)
       })
       .catch(error => {
         console.error(error)
@@ -323,7 +320,8 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
             title: `Purchase ${sale.tokenOut.symbol}`,
             id: 'purchase',
             onClick: () => {
-              console.log('purchase')
+              {
+              }
             },
           },
         ]}

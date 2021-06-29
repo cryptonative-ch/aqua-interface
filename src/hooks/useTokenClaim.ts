@@ -47,7 +47,7 @@ export function useTokenClaim(): useTokenClaimReturns {
         return tx.wait(1)
       })
       .catch((error: MetaMaskError) => {
-        console.log(error)
+        console.error(error)
         return setError(error)
       })
     FixedPriceSale__factory.connect(saleId, signer)
@@ -57,14 +57,13 @@ export function useTokenClaim(): useTokenClaimReturns {
         setTransaction(tx)
         return tx.wait(1)
       })
-      .then(receipt => {
-        console.log(receipt)
+      .then(() => {
         toast.success(t('success.claim'))
         return setClaim(ClaimState.CLAIMED)
       })
       .catch((error: MetaMaskError) => {
         setError(error)
-        console.log(error)
+        console.error(error)
         toast.error(t('errors.claim'))
         return setClaim(ClaimState.FAILED)
       })
@@ -77,14 +76,13 @@ export function useTokenClaim(): useTokenClaimReturns {
         setTransaction(tx)
         return tx.wait(1)
       })
-      .then(receipt => {
-        console.log(receipt)
+      .then(() => {
         toast.success(t('success.withdraw'))
         return setClaim(ClaimState.CLAIMED)
       })
       .catch((error: MetaMaskError) => {
         setError(error)
-        console.log(error)
+        console.error(error)
         toast.error(t('errors.withdraw'))
         return setClaim(ClaimState.FAILED)
       })

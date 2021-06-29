@@ -133,7 +133,7 @@ export const fetchSaleBids = (saleId: string, saleType: SaleType, saleBidsReques
     try {
       dispatch(initialBidSuccess(await generateInitialSaleData(saleBidsRequest, saleType)))
     } catch (error) {
-      console.log(error)
+      console.error(error)
       dispatch(initialBidFailure(error))
     }
   }
@@ -145,7 +145,7 @@ export const fetchBidsFromChain = (bids: SaleBid): any => {
     try {
       dispatch(updateBidSuccess(bids))
     } catch (error) {
-      console.log(error)
+      console.error(error)
       dispatch(updateBidFailure(error))
     }
   }
