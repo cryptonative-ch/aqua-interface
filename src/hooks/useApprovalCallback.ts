@@ -114,6 +114,7 @@ export function useApproveCallback({
       .catch((error: Error) => {
         console.debug('Failed to approve token', error)
         toast.error(t('errors.approve'))
+        setTxPending(false)
         throw error
       })
   }, [approvalState, tokenAddress, amountToApprove, spender, tokenContract])
