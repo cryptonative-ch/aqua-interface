@@ -319,6 +319,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           {
             title: `Purchase ${sale.tokenOut.symbol}`,
             id: 'purchase',
+            typeSubmit: true,
             onClick: () => {
               {
               }
