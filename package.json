@@ -108,6 +108,7 @@
     "@types/d3": "^6.3.0",
     "@types/express": "^4.17.11",
     "@types/graphql": "^14.5.0",
+    "@types/lodash": "^4.14.170",
     "@types/react-custom-scrollbars": "^4.0.7",
     "@types/redux-mock-store": "^1.0.2",
     "@types/testing-library__dom": "^7.5.0",

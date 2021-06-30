@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import _ from 'lodash'
 import { toast } from 'react-toastify'
 
 // Redux
@@ -26,9 +27,6 @@ import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
 import { TokenClaim } from 'src/views/Token/components/TokenClaim'
-
-// bids
-import { useBids } from 'src/hooks/useBids'
 
 const userSalesQuery = (userAddress: string) => `
 
@@ -75,7 +73,6 @@ export function TokenView() {
   const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
-  const { totalPurchased } = useBids(saleId, 'FixedPriceSale')
   const mesa = useMesa()
   const [filteredData, setFilteredData] = useState<FixedPriceSalePurchase[] | undefined>()
 
@@ -83,6 +80,7 @@ export function TokenView() {
     if (!account || !library || !chainId) {
       return
     }
+
     mesa.subgraph
       .query(userSalesQuery(account))
       .then(({ data }) => {
@@ -95,6 +93,14 @@ export function TokenView() {
               unixDateNow > element.sale!.endDate
           )
         )
+        const newArray = _(filteredData)
+          .groupBy(purchase => purchase.sale?.id)
+          .map((purchase: any) => ({
+            amount: _.reduce(purchase, (total, n) => BigNumber.from(total.amount).add(BigNumber.from(n.amount))),
+          }))
+          .value()
+
+        console.log(newArray)
       })
       .catch(error => {
         setError(error)
