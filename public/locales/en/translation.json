@@ -53,7 +53,8 @@
     "softCapReachedResult": "If the minimal fund-raising goals are reached, you will be able to claim {{tokenQuantity}} {{tokenOutSymbol}} after the sale is closed.",
     "softCapNotReachedResult": "If the minimal fund-raising goals are not reached, you will be able to claim {{purchaseValue}} {{tokenInSymbol}} after the sale is closed.",
     "confirmation": "Confirmation",
-    "continuePurchase": "Continue Purchase"
+    "continuePurchase": "Continue Purchase",
+    "haveFeedback": "Have feedback about Aqua?"
   },
   "buttons": {
     "back": "Back",
@@ -66,7 +67,11 @@
     "claimTokens": "Claim Tokens",
     "shortClaim": "Claim",
     "done": "Done",
-    "changetoxDaiNetwork": "Change to xDai Network"
+    "changetoxDaiNetwork": "Change to xDai Network",
+    "sendFeedback": "Send Feedback",
+    "sendFeedbackDescription": "Use this form to send your feedback",
+    "reportBug": "Report bug or enhancement",
+    "reportBugDescription": "Open a new issue on Github"
   },
   "errors": {
     "claim": "Failed to claim",

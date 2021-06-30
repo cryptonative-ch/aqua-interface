@@ -28,6 +28,7 @@ import { CHAIN_ID, SANCTION_LIST, SHOW_TERMS_AND_CONDITIONS, SUBGRAPH_ENDPOINT }
 import { Modal } from 'src/components/Modal'
 import { Header } from 'src/components/Header'
 import { Footer } from 'src/components/Footer'
+import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -114,6 +115,7 @@ export const App = () => {
                       draggable
                       pauseOnHover
                     />
+                    <FeedbackOverlay />
                   </Container>
                 </BrowserRouter>
               </Suspense>
