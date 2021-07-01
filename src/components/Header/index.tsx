@@ -33,6 +33,7 @@ import {
 import { Flex } from 'src/components/Flex'
 import { Link } from 'src/components/Link'
 import { Banner } from 'src/components/Banner'
+import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
 
 // Constants
 import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS, XDAI_CHAIN_PARAMETER } from 'src/constants'
@@ -187,6 +188,8 @@ export const Header: React.FC = () => {
           </Button>
         )}
         <MenuIcon src={MenuImg} onClick={() => setMenuOpen(true)} />
+
+        {menuOpen && <FeedbackOverlay />}
       </Wrapper>
     )
   }

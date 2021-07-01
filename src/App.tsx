@@ -115,7 +115,7 @@ export const App = () => {
                       draggable
                       pauseOnHover
                     />
-                    <FeedbackOverlay />
+                    {!isMobile && <FeedbackOverlay />}
                   </Container>
                 </BrowserRouter>
               </Suspense>

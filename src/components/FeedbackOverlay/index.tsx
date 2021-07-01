@@ -7,12 +7,14 @@ import { useTranslation } from 'react-i18next'
 import ExternalLinkSVG from 'src/assets/svg/External-Link.svg'
 import MessageSVG from 'src/assets/svg/Message.svg'
 import GithubSVG from 'src/assets/svg/Github.svg'
+import CloseImg from 'src/assets/svg/Close-white.svg'
 
 //Internal
 import {
   ModalWrapper,
   Header,
   FeedbackModal,
+  CloseIcon,
   HeaderTitle,
   HeaderBrand,
   Content,
@@ -26,6 +28,8 @@ import {
   FeedbackCardDescription,
   FeedbackCardTitleIcon,
 } from 'src/components/FeedbackOverlay/style'
+
+// Constants
 import { FEEDBACK_FORM_URL, GITHUB_BUG_REPORT_URL } from 'src/constants'
 
 interface FeedbackListItemProps {
@@ -69,6 +73,7 @@ export const FeedbackOverlay: React.FC = () => {
                   <strong>Aqua</strong> from DXdao
                 </HeaderBrand>
                 <HeaderTitle>{t('texts.haveFeedback')}</HeaderTitle>
+                <CloseIcon src={CloseImg} onClick={() => setIsModalActive(false)} />
               </Header>
               <Content>
                 <FeedbackListCard

@@ -9,7 +9,7 @@ export const Backdrop = styled.div`
   left: 0;
   z-index: 500;
 
-  @media (max-width: 440px) {
+  @media (max-width: 640px) {
     background-color: rgba(0, 0, 0, 0.4);
   }
 `
@@ -23,9 +23,15 @@ export const ModalWrapper = styled.div`
   max-width: 400px;
   outline: 0;
 
-  @media (max-width: 440px) {
+  @media (max-width: 640px) {
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: initial;
   }
 `
 
@@ -40,6 +46,14 @@ export const Header = styled.div`
   background: #304ffe;
   padding: 28px;
   border-radius: 10px 10px 0 0;
+`
+export const CloseIcon = styled.img`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
 `
 export const HeaderBrand = styled.div`
   color: #fff;
@@ -67,6 +81,10 @@ export const Content = styled.div`
   max-height: 30rem;
   overflow-x: hidden;
   overflow-y: auto;
+
+  @media (max-width: 640px) {
+    border-radius: 0 0 10px 10px;
+  }
 `
 
 export const FeedbackWrapper = styled.div`
