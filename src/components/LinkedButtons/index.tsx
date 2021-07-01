@@ -18,6 +18,7 @@ interface ButtonObject {
   title: string
   id: string
   onClick: () => void
+  typeSubmit?: boolean
 }
 
 interface LinkedButtonsProps {
@@ -47,6 +48,7 @@ export const LinkedButtons: React.FC<LinkedButtonsProps> = ({ buttons, active, l
           buttonSize={`${buttonSize}%`}
           onClick={button.onClick}
           disabled={!(button.id == active) || disabled}
+          type={button.typeSubmit ? 'submit' : 'button'}
         >
           {button.title}
           {loading && button.id == active && <Spinner size="10px" color="white" />}

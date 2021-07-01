@@ -29,3 +29,5 @@ export const XDAI_CHAIN_PARAMETER = {
 export const SHOW_TERMS_AND_CONDITIONS = false
 export const IPFS_GATEWAY_URL = 'https://gateway.pinata.cloud'
 export const SALE_INFO_IPFS_HASH_MOCK = 'QmRVKi23YQmXLStgSK5bQS9QyiAeWZmjVNQTbx61NUAhcg'
+export const FEEDBACK_FORM_URL = 'https://forms.gle/JSSVTWsM5Yy44ZUi7'
+export const GITHUB_BUG_REPORT_URL = 'https://github.com/cryptonative-ch/mesa-interface/issues/new'

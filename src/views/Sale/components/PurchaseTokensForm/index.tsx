@@ -217,7 +217,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      if (!sale || !purchaseValue) return null
+      if (!sale || !purchaseValue || !(approvalState === ApprovalState.APPROVED)) return null
 
       if (sale.minimumRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
@@ -319,6 +319,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           {
             title: `Purchase ${sale.tokenOut.symbol}`,
             id: 'purchase',
+            typeSubmit: true,
             onClick: () => {
               {
               }
