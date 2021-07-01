@@ -74,7 +74,7 @@ export function TokenView() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const mesa = useMesa()
-  const [filteredData, setFilteredData] = useState<FixedPriceSalePurchase[] | undefined>()
+  const [filteredData, setFilteredData] = useState<any[] | undefined>()
 
   useEffect(() => {
     if (!account || !library || !chainId) {
@@ -86,21 +86,26 @@ export function TokenView() {
       .then(({ data }) => {
         const { fixedPriceSalePurchases } = data
         const unixDateNow = dayjs(Date.now()).unix()
-        setFilteredData(
-          fixedPriceSalePurchases.filter(
-            (element: FixedPriceSalePurchase) =>
-              BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
-              unixDateNow > element.sale!.endDate
-          )
+        const dataArray = fixedPriceSalePurchases.filter(
+          (element: FixedPriceSalePurchase) =>
+            BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
+            unixDateNow > element.sale!.endDate
         )
-        const newArray = _(filteredData)
-          .groupBy(purchase => purchase.sale?.id)
-          .map((purchase: any) => ({
-            amount: _.reduce(purchase, (total, n) => BigNumber.from(total.amount).add(BigNumber.from(n.amount))),
-          }))
-          .value()
-
-        console.log(newArray)
+        setFilteredData(
+          _(dataArray)
+            .groupBy(purchase => purchase.sale?.id)
+            .map((purchase: any) => ({
+              sale: purchase[0].sale,
+              amount: _.reduce(
+                purchase,
+                (total, n) => {
+                  return BigNumber.from(total).add(BigNumber.from(n.amount))
+                },
+                BigNumber.from(0)
+              ),
+            }))
+            .value()
+        )
       })
       .catch(error => {
         setError(error)
@@ -145,7 +150,7 @@ export function TokenView() {
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
           {filteredData?.length ? (
-            filteredData?.map(tokens => <TokenClaim key={tokens.id} purchase={tokens} />)
+            filteredData?.map(tokens => <TokenClaim key={tokens.sale?.id} purchase={tokens} />)
           ) : (
             <h1>No Tokens Available to Claim</h1>
           )}
