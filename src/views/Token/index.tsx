@@ -1,3 +1,4 @@
+/* eslint-disable */
 // External
 import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
@@ -26,7 +27,6 @@ import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
 import { TokenClaim } from 'src/views/Token/components/TokenClaim'
-import { useBids } from 'src/hooks/useBids'
 
 const userSalesQuery = (userAddress: string) => `
 
@@ -90,7 +90,6 @@ export function TokenView() {
       return
     }
 
-    console.log(filteredData)
     mesa.subgraph
       .query(userSalesQuery(account))
       .then(({ data }) => {
@@ -101,24 +100,23 @@ export function TokenView() {
             BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
             unixDateNow > element.sale!.endDate
         )
+        console.log(dataArray)
         console.log(
-          dataArray.reduce((a: any, c: any) => {
-            a[c.sale.id] = a[c.sale.id] || []
-            a[c.sale.id].push(c)
-            return a
-          }, [])
-        )
-        setFilteredData(
-          groupBy(dataArray, dataArray.sale.id).map((purchase: any) => ({
-            sale: purchase[0].sale,
-            amount: purchase.reduce(
-              purchase,
-              (total: any, n: any) => {
-                return BigNumber.from(total).add(BigNumber.from(n.amount))
-              },
-              BigNumber.from(0)
-            ),
-          }))
+          dataArray
+            .reduce((a: any, c: any) => {
+              a[c.sale.id] = a[c.sale.id] || []
+              a[c.sale.id].push(c)
+              return a
+            }, [])
+            .map((purchase: any) =>
+              purchase[Object.keys(purchase)[0]].map((e: any) => ({
+                amount: e.reduce((total: any, n: any) => {
+                  return BigNumber.from(total).add(BigNumber.from(n.amount))
+                }, BigNumber.from(0)),
+
+                sale: e[0].sale,
+              }))
+            )
         )
       })
       .catch(error => {
