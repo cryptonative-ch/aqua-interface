@@ -22,7 +22,7 @@ import { VerifyState } from 'src/views/Token/components/VerifyClaim'
 import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 
 // interface
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { Sale } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
@@ -33,11 +33,8 @@ import { useTokenClaim } from 'src/hooks/useTokenClaim'
 
 // Theme
 import { theme } from 'src/styles/theme'
+import { useBids } from 'src/hooks/useBids'
 
-// interfaces
-export interface TokenClaimProps {
-  purchase: FixedPriceSalePurchase
-}
 const Icon = styled.img<SpaceProps>(
   {
     height: '32px',
@@ -45,14 +42,25 @@ const Icon = styled.img<SpaceProps>(
   },
   space
 )
-export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimProps) => {
+
+interface TokenClaimProps {
+  sale: Sale
+}
+
+export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
+  // TODO: replace fixedpricesale with dynamic types
+  const { totalPurchased, bids } = useBids(sale!.id, 'FixedPriceSale')
 
   const { claimTokens, claim, transaction, error } = useTokenClaim()
+  const amount = totalPurchased(bids)[0].amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
-
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
+
+  if (!bids || bids.length == 0) {
+    return null
+  }
 
   if (claim === 'verify') {
     return <VerifyState />
@@ -62,10 +70,8 @@ export const TokenClaim = ({ purchase: { sale, amount, ...rest } }: TokenClaimPr
     return <FailedClaim error={JSON.stringify(error)} />
   }
 
-  const purchase: FixedPriceSalePurchase = { sale, amount, ...rest }
-
   if (claim === 'claimed') {
-    return <SuccessfulClaim purchase={purchase} tx={transaction!.hash} />
+    return <SuccessfulClaim purchase={{ ...sale, amount: amount }} tx={transaction!.hash} />
   }
 
   return (

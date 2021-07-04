@@ -1,4 +1,3 @@
-/* eslint-disable */
 // External
 import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
@@ -6,7 +5,6 @@ import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { toast } from 'react-toastify'
 
 // Redux
 import { setPageTitle } from 'src/redux/page'
@@ -16,93 +14,39 @@ import { Container } from 'src/components/Container'
 import { Title } from 'src/components/Title'
 
 // Hooks
-import { useMesa } from 'src/hooks/useMesa'
+import { useSalesQuery } from 'src/hooks/useSalesQuery'
 
 // Layouts
 import { GridListSection } from 'src/components/Grid'
 
 // interface
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { Sale } from 'src/interfaces/Sale'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // claims
 import { TokenClaim } from 'src/views/Token/components/TokenClaim'
-import { useBids } from 'src/hooks/useBids'
-
-const userSalesQuery = (userAddress: string) => `
-
-query getTokenClaims {
-  fixedPriceSalePurchases(where:{
-    buyer:"${userAddress}"})
-  {
-    sale {
-        id
-      soldAmount
-      minimumRaise
-      name
-      status
-      startDate
-      endDate
-      tokenPrice
-      sellAmount
-      tokenIn {
-        id
-        name
-        symbol
-        decimals
-      }
-      tokenOut {
-          id
-        name
-        symbol
-        decimals
-      }
-      allocationMin
-      allocationMax
-
-    }
-  }
-}
-
-`
 
 export function TokenView() {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error>()
-  const mesa = useMesa()
-  const [filteredData, setFilteredData] = useState<any[] | undefined>()
-  // const (totalPurchased) = useBids(saleId, saleType)
+  const [filteredData, setFilteredData] = useState<any[]>()
+  const { loading, error, sales } = useSalesQuery()
 
   useEffect(() => {
     if (!account || !library || !chainId) {
       return
     }
 
-    mesa.subgraph
-      .query(userSalesQuery(account))
-      .then(({ data }) => {
-        const { fixedPriceSalePurchases } = data
-        const unixDateNow = dayjs(Date.now()).unix()
-        const dataArray = fixedPriceSalePurchases.filter(
-          (element: FixedPriceSalePurchase) =>
-            BigNumber.from(element.sale?.soldAmount) >= BigNumber.from(element.sale?.minimumRaise) &&
-            unixDateNow > element.sale!.endDate
-        )
-        console.log(dataArray)
-      })
-      .catch(error => {
-        setError(error)
-        toast.error(t('errors.fetchTokens'))
-        setLoading(false)
-      })
-      .then(() => {
-        setLoading(false)
-      })
+    const unixDateNow = dayjs(Date.now()).unix()
+    setFilteredData(
+      sales.filter(
+        (element: Sale) =>
+          BigNumber.from(element.soldAmount) >= BigNumber.from(element.minimumRaise) && unixDateNow >= element.endDate
+      )
+    )
     dispatch(setPageTitle(t('pagesTitles.tokens')))
-  }, [account, chainId, library])
+  }, [account, chainId, library, loading])
 
   if (loading) {
     return (
@@ -136,7 +80,7 @@ export function TokenView() {
         <Title>{t('texts.claimTokens')}</Title>
         <GridListSection>
           {filteredData?.length ? (
-            filteredData?.map(tokens => <TokenClaim key={tokens.sale?.id} purchase={tokens} />)
+            filteredData?.map(tokens => <TokenClaim key={tokens.id} sale={tokens} />)
           ) : (
             <h1>No Tokens Available to Claim</h1>
           )}
