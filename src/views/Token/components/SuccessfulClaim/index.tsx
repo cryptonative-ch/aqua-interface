@@ -19,7 +19,8 @@ import link from 'src/assets/svg/External-Link.svg'
 
 // Mesa Utils
 import { formatBigInt } from 'src/utils/Defaults'
-import { FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { Sale } from 'src/interfaces/Sale'
+import { BigNumber } from '@ethersproject/bignumber'
 
 const Circle = styled.div({
   height: '45px',
@@ -50,11 +51,13 @@ const Icon = styled.img<SpaceProps>(
 )
 
 interface SuccessfulClaimProps {
-  purchase: FixedPriceSalePurchase
+  purchase: Omit<Sale, 'bids'> & {
+    amount: BigNumber
+  }
   tx: string
 }
 
-export const SuccessfulClaim = ({ purchase: { sale, amount }, tx }: SuccessfulClaimProps) => {
+export const SuccessfulClaim = ({ purchase: { amount, ...sale }, tx }: SuccessfulClaimProps) => {
   const [t] = useTranslation()
   const blockExplorerUrl = `https://blockscout.com/xdai/mainnet/tx/${tx}`
   return (
