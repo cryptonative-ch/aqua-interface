@@ -47,7 +47,7 @@ export const FAIR_PRICE_SALE_FIELDS = gql`
     status
     startDate
     endDate
-    tokenAmount
+    tokensForSale
     minimumBidAmount
     minFundingThreshold
     tokenIn {

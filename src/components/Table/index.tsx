@@ -95,7 +95,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                             <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />,
                             !isMobile && (
                               <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                                Unclaimed
+                                Claimed
                               </TokenPriceLabel>
                             ),
                           ]
