@@ -203,7 +203,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
     if (maxPurchase < purchaseMinimumAllocation) return
 
-    setValidatedPurchaseValue(maxPurchase)
+    setValidatedPurchaseValue(fixRounding(maxPurchase, 8))
   }
 
   const purchaseTokens = useCallback(() => {
