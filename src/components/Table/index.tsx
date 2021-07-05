@@ -90,7 +90,6 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                   })}
                   {isClosed ? (
                     <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-                      <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
                       {!isMobile && (
                         <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
                           Unclaimed
