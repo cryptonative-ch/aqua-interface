@@ -7,6 +7,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Svg
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
+import Tick from 'src/assets/svg/Check-Icon.svg'
 
 // Components
 import {
@@ -94,9 +95,9 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                     <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
                       {purchase.status === 'CLAIMED'
                         ? [
-                            <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />,
+                            <IconImg src={Tick} color="#4B9E98" margin={'4px 4px 4px 8px'} />,
                             !isMobile && (
-                              <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                              <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
                                 Claimed
                               </TokenPriceLabel>
                             ),
