@@ -68,6 +68,7 @@ export const FIXED_PRICE_SALE_PURCHASE_FIELDS = gql`
     deletedAt
     buyer
     amount
+    status
     sale {
       id
     }

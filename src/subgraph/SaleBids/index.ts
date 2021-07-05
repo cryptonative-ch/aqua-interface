@@ -7,6 +7,7 @@ export const saleBidsQuery = (saleid: string) => {
       id
       buyer
       amount
+      status
       sale {
         id
       }

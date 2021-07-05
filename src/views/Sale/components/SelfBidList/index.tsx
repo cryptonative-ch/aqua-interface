@@ -46,6 +46,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
           ).format('0.[0000]') +
           ' ' +
           sale.tokenIn.symbol,
+        status: bid.status,
       })),
     },
   ]

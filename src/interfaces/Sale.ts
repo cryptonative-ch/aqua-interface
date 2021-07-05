@@ -24,6 +24,7 @@ export interface FairSaleBid extends Bid {
   tokenIn: BigNumber // number of tokens the investor wants to buy
   tokenOut: BigNumber // number of tokens the investor wants to buy
   address: string // The bidder's Ethereum address
+  status?: string
 }
 
 export type FairBidPick = Pick<FairSaleBid, 'address' | 'tokenOut' | 'tokenIn'>
@@ -35,6 +36,7 @@ export type SalePickBid = FixedPricePick | FairBidPick
 export interface FixedPriceSalePurchase extends Bid {
   amount: BigNumber // number of tokens the investor wants to buy
   buyer: string // The bidder's Ethereum address
+  status?: string
   sale?: FixedPriceSale
 }
 

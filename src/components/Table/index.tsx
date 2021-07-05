@@ -81,13 +81,15 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                   <TableColumn>
                     <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
                   </TableColumn>
-                  {Object.getOwnPropertyNames(purchase).map((element: any, _index) => {
-                    return (
-                      <TableColumn key={_index}>
-                        <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
-                      </TableColumn>
-                    )
-                  })}
+                  {Object.getOwnPropertyNames(purchase)
+                    .filter(skip => skip !== 'status')
+                    .map((element: any, _index) => {
+                      return (
+                        <TableColumn key={_index}>
+                          <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
+                        </TableColumn>
+                      )
+                    })}
                   {isClosed ? (
                     <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
                       {purchase.status === 'CLAIMED'

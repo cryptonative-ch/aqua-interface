@@ -24,7 +24,7 @@ interface UseBidsReturn {
   error: Error | null
   bids: SaleBid[]
   totalBids: SaleBid[]
-  totalPurchased(bids: SaleBid[]): Pick<FixedPriceSalePurchase, 'buyer' | 'amount'>[]
+  totalPurchased(bids: SaleBid[]): Pick<FixedPriceSalePurchase, 'buyer' | 'amount' | 'status'>[]
 }
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
@@ -40,7 +40,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const { bids: totalBids } = useChain(saleId, saleType)
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
 
-  const totalPurchased = (bids: SaleBid[]) => {
+  const totalPurchased = (bids: any[]) => {
     const reduceTotalAmount = bids.reduce((accumulator: any, purchases: any) => {
       return BigNumber.from(accumulator).add(purchases.amount)
     }, BigNumber.from(0))
@@ -49,6 +49,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
       {
         buyer: account!,
         amount: reduceTotalAmount,
+        status: bids.length > 0 ? bids[0].status : null,
       },
     ]
   }
