@@ -77,6 +77,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
         >
           {bodyData.map(({ purchases, color, title }) =>
             purchases.map((purchase: any, index) => {
+              console.log(purchase)
               return (
                 <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
                   <TableColumn>
@@ -95,7 +96,11 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                     <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
                       {purchase.status === 'CLAIMED'
                         ? [
-                            <IconImg src={Tick} color="#4B9E98" margin={'4px 4px 4px 8px'} />,
+                            <IconImg
+                              src={Tick}
+                              color="#4B9E98"
+                              margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'}
+                            />,
                             !isMobile && (
                               <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
                                 Claimed
