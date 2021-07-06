@@ -1,9 +1,8 @@
 // Externals
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
 
 // Redux
 import { setInvalidChainId, setValidChainId } from 'src/redux/network'
@@ -28,6 +27,8 @@ import {
   MenuBorder,
   ColumnWrapper,
 } from 'src/components/Header/style'
+import { Web3ConnectionContext } from 'src/contexts'
+import { ConnectorNames } from 'src/providers/web3'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -37,13 +38,12 @@ import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
 
 // Constants
 import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS, XDAI_CHAIN_PARAMETER } from 'src/constants'
-import { getErrorMessage, injected } from 'src/connectors'
 
 export const Header: React.FC = () => {
   const [t] = useTranslation()
-  const [isConnecting, setIsConnecting] = useState<boolean>(false)
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const { account, activate, deactivate } = useWeb3React()
+  const { account } = useWeb3React()
+  const { connect: connectWallet, disconnect: disconnectWallet, isConnecting } = useContext(Web3ConnectionContext)
   const { isMobile } = useWindowSize()
   const isValidNetwork = useSelector(store => store.network.validChainId)
   const dispatch = useDispatch()
@@ -70,18 +70,6 @@ export const Header: React.FC = () => {
       })
     }
   }
-
-  const connectWallet = () => {
-    setIsConnecting(true)
-    activate(injected)
-      .catch(error => {
-        toast.error('Failed to connect wallet')
-        console.error(getErrorMessage(error))
-      })
-      .finally(() => setIsConnecting(false))
-  }
-
-  const disconnectWallet = () => deactivate()
 
   useEffect(() => {
     subscribeToNetworkChanges()
@@ -136,7 +124,7 @@ export const Header: React.FC = () => {
           ) : (
             <Flex padding="24px" flex={1} flexDirection="column">
               <Button
-                onClick={connectWallet}
+                onClick={() => connectWallet(ConnectorNames.Injected)}
                 backgroundColor="#7B7F93"
                 textColor="white"
                 padding="0"
@@ -182,7 +170,13 @@ export const Header: React.FC = () => {
           <Description marginLeft="0">from DXdao</Description>
         </Flex>
         {!account && !isConnecting && (
-          <Button onClick={connectWallet} backgroundColor="#7B7F93" textColor="white" padding="0 24px" margin="0">
+          <Button
+            onClick={() => connectWallet(ConnectorNames.Injected)}
+            backgroundColor="#7B7F93"
+            textColor="white"
+            padding="0 24px"
+            margin="0"
+          >
             <ButtonText>{isConnecting ? 'Connecting...' : !account ? 'Connect' : walletAddress}</ButtonText>
             {account && <ButtonImage />}
           </Button>
@@ -215,7 +209,7 @@ export const Header: React.FC = () => {
           <Description>from DXdao</Description>
         </Row>
         <Button
-          onClick={connectWallet}
+          onClick={() => connectWallet(ConnectorNames.Injected)}
           backgroundColor={!account ? '#304FFE' : '#DDDDE3'}
           textColor={!account ? 'white' : '#000629'}
         >
