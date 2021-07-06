@@ -21,6 +21,7 @@ import { Sale } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
+import { isSaleClosed } from 'src/mesa/sale'
 
 interface SaleSummaryProps {
   sale: Sale
@@ -48,14 +49,25 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
             <CardText color="grey">{t('texts.salesType')}</CardText>
             {sale.type == 'FixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}
           </Flex>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">{t('texts.currentPrice')}</CardText>
-            <SaleFinalPrice sale={sale} />
-          </Flex>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <CardText color="grey">{t('texts.amountForSale')}</CardText>
-            <SaleAmount sale={sale} />
-          </Flex>
+          {isSaleClosed(sale) ? (
+            <Flex flexDirection="row" justifyContent="space-between">
+              <CardText color="grey">{t('texts.amountSold')}</CardText>
+              <SaleAmount closed sale={sale} />
+            </Flex>
+          ) : (
+            <div>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <CardText color="grey">{t('texts.currentPrice')}</CardText>
+                <SaleFinalPrice sale={sale} />
+              </Flex>
+
+              <Flex flexDirection="row" justifyContent="space-between">
+                <CardText color="grey">{t('texts.amountForSale')}</CardText>
+                <SaleAmount sale={sale} />
+              </Flex>
+            </div>
+          )}
+
           <SaleClock sale={sale} />
         </Flex>
       </CardBody>
