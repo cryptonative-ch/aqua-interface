@@ -1,6 +1,7 @@
 // Externals
 import React from 'react'
 import numeral from 'numeral'
+import styled from 'styled-components'
 
 // Components
 import { CardText } from 'src/components/CardText'
@@ -11,21 +12,31 @@ import { Sale } from 'src/interfaces/Sale'
 // Mesa utils
 import { formatBigInt } from 'src/utils/Defaults'
 
-interface SaleAmountprops {
+interface SaleAmountProps {
   sale: Sale
+  closed?: boolean
+}
+interface TextProps {
+  closed?: boolean
 }
 
-export const SaleAmount: React.FC<SaleAmountprops> = ({ sale }) => {
+const SaleCardText = styled(CardText)<TextProps>`
+  color: ${props => (props.closed ? 'red' : 'black')};
+`
+
+export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
   return (
     <Flex>
-      <CardText>
+      <SaleCardText closed={closed}>
         {numeral(
           sale.type == 'FairSale'
             ? formatBigInt(sale.tokenAmount, sale.tokenOut.decimals)
-            : formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
+            : formatBigInt(closed ? sale.soldAmount : sale.sellAmount, sale.tokenOut.decimals)
         ).format('0,0')}
-      </CardText>
-      <CardText fontWeight="light">&nbsp;{sale.tokenOut?.symbol}</CardText>
+      </SaleCardText>
+      <SaleCardText closed={closed} fontWeight="light">
+        &nbsp;{sale.tokenOut?.symbol}
+      </SaleCardText>
     </Flex>
   )
 }

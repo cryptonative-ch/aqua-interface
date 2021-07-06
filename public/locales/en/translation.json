@@ -30,6 +30,7 @@
     "currentPrice": "Current Price",
     "minPrice": "Minimum Price",
     "amountForSale": "Amount for Sale",
+    "amountSold": "Amount Sold",
     "noBidsMessage": "There are no bids",
     "runningSales": "Running Sales",
     "upcomingSales": "Upcoming Sales",
