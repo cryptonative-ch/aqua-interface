@@ -17,24 +17,25 @@ interface SaleAmountProps {
   closed?: boolean
 }
 interface TextProps {
-  closed?: boolean
+  isFailed?: boolean
 }
 
 const SaleCardText = styled(CardText)<TextProps>`
-  color: ${props => (props.closed ? 'red' : 'black')};
+  color: ${props => (props.isFailed ? 'red' : 'black')};
 `
 
 export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
+  const isFailed = sale.soldAmount < sale.minimumRaise && closed
   return (
     <Flex>
-      <SaleCardText closed={closed}>
+      <SaleCardText isFailed={isFailed}>
         {numeral(
           sale.type == 'FairSale'
             ? formatBigInt(sale.tokenAmount, sale.tokenOut.decimals)
             : formatBigInt(closed ? sale.soldAmount : sale.sellAmount, sale.tokenOut.decimals)
         ).format('0,0')}
       </SaleCardText>
-      <SaleCardText closed={closed} fontWeight="light">
+      <SaleCardText isFailed={isFailed} fontWeight="light">
         &nbsp;{sale.tokenOut?.symbol}
       </SaleCardText>
     </Flex>
