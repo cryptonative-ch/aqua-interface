@@ -8,7 +8,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
 import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
-import { formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
 
 // Table
 import { Table } from 'src/components/Table'
@@ -42,7 +42,8 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
           numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenOut.symbol,
         value:
           numeral(
-            formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
+            convertToBuyerPrice(formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)) *
+              formatBigInt(bid.amount, sale.tokenOut.decimals)
           ).format('0.[0000]') +
           ' ' +
           sale.tokenIn.symbol,
