@@ -11,7 +11,7 @@ import { useMesa } from 'src/hooks/useMesa'
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
 // Interfaces
-import { SaleBid, SaleType, FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { SaleBid, SaleType } from 'src/interfaces/Sale'
 
 // Blockchain websocket
 import { useChain } from 'src/hooks/useChain'
@@ -24,7 +24,20 @@ interface UseBidsReturn {
   error: Error | null
   bids: SaleBid[]
   totalBids: SaleBid[]
-  totalPurchased(bids: SaleBid[]): Pick<FixedPriceSalePurchase, 'buyer' | 'amount' | 'status'>[]
+}
+
+export const aggregatePurchases = (bids: SaleBid[], account: string | null | undefined) => {
+  const reduceTotalAmount = bids.reduce((accumulator: any, purchases: any) => {
+    return BigNumber.from(accumulator).add(purchases.amount)
+  }, BigNumber.from(0))
+
+  return [
+    {
+      buyer: account!,
+      amount: reduceTotalAmount,
+      status: bids.length > 0 ? bids[0].status : undefined,
+    },
+  ]
 }
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
@@ -39,20 +52,6 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
   const { bids: totalBids } = useChain(saleId, saleType)
   const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
-
-  const totalPurchased = (bids: SaleBid[]) => {
-    const reduceTotalAmount = bids.reduce((accumulator: any, purchases: any) => {
-      return BigNumber.from(accumulator).add(purchases.amount)
-    }, BigNumber.from(0))
-
-    return [
-      {
-        buyer: account!,
-        amount: reduceTotalAmount,
-        status: bids.length > 0 ? bids[0].status : undefined,
-      },
-    ]
-  }
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -91,6 +90,5 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     bids,
     loading: isLoading,
     error,
-    totalPurchased,
   }
 }

@@ -24,7 +24,7 @@ import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
-import { useBids } from 'src/hooks/useBids'
+import { aggregatePurchases, useBids } from 'src/hooks/useBids'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -118,7 +118,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     owner: account ?? undefined,
   })
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
-  const { totalBids, totalPurchased } = useBids(saleId, 'FixedPriceSale')
+  const { totalBids } = useBids(saleId, 'FixedPriceSale')
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
@@ -222,7 +222,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       if (sale.minimumRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
-        const totalAmountPurchased = totalPurchased(totalBids)[0].amount
+        const totalAmountPurchased = aggregatePurchases(totalBids, account)[0].amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )
@@ -236,7 +236,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
       purchaseTokens()
     },
-    [toggleConfirmation, sale, totalBids, totalPurchased, purchaseTokens, purchaseValue]
+    [toggleConfirmation, sale, totalBids, aggregatePurchases, purchaseTokens, purchaseValue]
   )
 
   const confirmationModalContent = (
