@@ -1,6 +1,6 @@
 /* eslint-disable */
 // External
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 // Utility
 import { useWindowSize } from 'src/hooks/useWindowSize'
@@ -25,9 +25,9 @@ import {
 } from 'src/components/Table/style'
 import { Flex } from 'src/components/Flex'
 
-interface TableProps {
+interface TableProps<T> {
   headData: ColumnDataProps[]
-  bodyData: BodyDataProps[]
+  bodyData: BodyDataProps<T>[]
   isClosed: boolean
 }
 interface ColumnDataProps {
@@ -36,13 +36,17 @@ interface ColumnDataProps {
   flex?: string | number
 }
 
-interface BodyDataProps {
+interface BodyDataProps<T> {
   title: string
-  purchases: any[]
+  purchases: T[]
   color?: string
 }
 
-export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
+interface statusWise {
+  status: string | undefined
+}
+
+export const Table = <T extends statusWise>({ headData, bodyData, isClosed }: TableProps<T>) => {
   const [tableMenu, setBidMenu] = useState<number>(-1)
 
   const { isMobile } = useWindowSize()
@@ -76,7 +80,7 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
           autoHeightMax={200}
         >
           {bodyData.map(({ purchases, color, title }) =>
-            purchases.map((purchase: any, index) => {
+            purchases.map((purchase, index: number) => {
               return (
                 <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
                   <TableColumn>
@@ -84,10 +88,10 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
                   </TableColumn>
                   {Object.getOwnPropertyNames(purchase)
                     .filter(skip => skip !== 'status')
-                    .map((element: any, _index) => {
+                    .map((element, _index) => {
                       return (
                         <TableColumn key={_index}>
-                          <TokenPriceLabel>{purchase[element]}</TokenPriceLabel>
+                          <TokenPriceLabel>{purchase[element as keyof typeof purchase]}</TokenPriceLabel>
                         </TableColumn>
                       )
                     })}
