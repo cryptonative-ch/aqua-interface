@@ -62,7 +62,7 @@ export interface SaleUser {
 export interface FairSale extends BaseSale {
   // Specific to the FairSale
   // Total amount of tokens available for BaseSaleing
-  tokenAmount: BigNumber
+  tokensForSale: BigNumber
   // Minimum amount per bid
   minimumBidAmount: BigNumber
   // Bidding token (ie: DAI, USDC)

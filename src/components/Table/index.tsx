@@ -77,7 +77,6 @@ export const Table = ({ headData, bodyData, isClosed }: TableProps) => {
         >
           {bodyData.map(({ purchases, color, title }) =>
             purchases.map((purchase: any, index) => {
-              console.log(purchase)
               return (
                 <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
                   <TableColumn>
