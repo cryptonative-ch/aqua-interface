@@ -12,7 +12,7 @@ import { Flex } from 'src/components/Flex'
 import { Sale } from 'src/interfaces/Sale'
 
 // Mesa Utils
-import { formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleFinalPriceProps {
   sale: Sale
@@ -21,7 +21,7 @@ interface SaleFinalPriceProps {
 export function SaleFinalPrice({ sale }: SaleFinalPriceProps) {
   const pricePerToken = numeral(
     sale.type == 'FixedPriceSale'
-      ? formatBigInt(sale.tokenPrice || '0', sale.tokenOut.decimals)
+      ? convertToBuyerPrice(formatBigInt(sale.tokenPrice || '0', sale.tokenOut.decimals))
       : formatBigInt(sale.minimumBidAmount || '0', sale.tokenOut.decimals)
   ).format('0.00')
 

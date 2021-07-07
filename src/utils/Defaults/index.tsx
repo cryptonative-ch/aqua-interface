@@ -212,3 +212,10 @@ export const fixRounding = (value: number, precision: number): number => {
   const power = Math.pow(10, precision || 0)
   return Math.round(value * power) / power
 }
+
+// Convert price in SC to buyer price
+// SC tokenPrice = amount of tokenOut for 1 tokenIn
+// More understandable price = amount of tokenIn for 1 tokenOut
+export const convertToBuyerPrice = (price: number): number => {
+  return 1 / price
+}
