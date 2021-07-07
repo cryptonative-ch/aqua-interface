@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // External
-import React, { useStats } from 'react'
+import React, { useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 // Utility
 import { useWindowSize } from 'src/hooks/useWindowSize'
