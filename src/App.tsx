@@ -74,7 +74,7 @@ export const App = () => {
   // Construct the Mesa SDK
   const mesa = new Mesa(mesaConfig, library)
   const getGeoInfo = useCallback(() => {
-    // Axios.get('https://ipapi.co/json/').then(({ data }) => setSanction(SANCTION_LIST.includes(data.country_code)))
+    Axios.get('https://ipapi.co/json/').then(({ data }) => setSanction(SANCTION_LIST.includes(data.country_code)))
   }, [])
 
   useEffect(() => {

@@ -15,8 +15,16 @@ export const BidModalContext = React.createContext({
   },
 })
 
-export const Web3ConnectionContext = React.createContext({
+interface Web3ConnectionContextProps {
+  isConnecting: boolean,
+  activatingConnector?: ConnectorNames,
+  connect: (_: ConnectorNames) => void,
+  disconnect: () => void,
+}
+
+export const Web3ConnectionContext = React.createContext<Web3ConnectionContextProps>({
   isConnecting: false,
+  activatingConnector: undefined,
   connect: (_: ConnectorNames) => {
     //
   },

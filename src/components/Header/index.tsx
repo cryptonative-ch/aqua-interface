@@ -28,13 +28,13 @@ import {
   ColumnWrapper,
 } from 'src/components/Header/style'
 import { Web3ConnectionContext } from 'src/contexts'
-import { ConnectorNames } from 'src/providers/web3'
 
 // Components
 import { Flex } from 'src/components/Flex'
 import { Link } from 'src/components/Link'
 import { Banner } from 'src/components/Banner'
 import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
+import { Web3ProvidersModal } from 'src/components/Web3ProvidersModal'
 
 // Constants
 import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS, XDAI_CHAIN_PARAMETER } from 'src/constants'
@@ -43,10 +43,11 @@ export const Header: React.FC = () => {
   const [t] = useTranslation()
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const { account } = useWeb3React()
-  const { connect: connectWallet, disconnect: disconnectWallet, isConnecting } = useContext(Web3ConnectionContext)
+  const { disconnect: disconnectWallet, isConnecting } = useContext(Web3ConnectionContext)
   const { isMobile } = useWindowSize()
   const isValidNetwork = useSelector(store => store.network.validChainId)
   const dispatch = useDispatch()
+  const [isModalShown, setIsModalShown] = useState<boolean>(false)
 
   const walletAddress = account ? `${account.substr(0, 6)}...${account.substr(-4)}` : ''
 
@@ -82,6 +83,12 @@ export const Header: React.FC = () => {
       document.body.style.overflow = 'auto'
     }
   }, [menuOpen])
+
+  useEffect(() => {
+    if (account) {
+      setIsModalShown(false)
+    }
+  }, [account])
 
   const changeNetwork = () => {
     w.ethereum.request({
@@ -124,7 +131,7 @@ export const Header: React.FC = () => {
           ) : (
             <Flex padding="24px" flex={1} flexDirection="column">
               <Button
-                onClick={() => connectWallet(ConnectorNames.Injected)}
+                onClick={() => (account ? disconnectWallet() : setIsModalShown(true))}
                 backgroundColor="#7B7F93"
                 textColor="white"
                 padding="0"
@@ -171,7 +178,7 @@ export const Header: React.FC = () => {
         </Flex>
         {!account && !isConnecting && (
           <Button
-            onClick={() => connectWallet(ConnectorNames.Injected)}
+            onClick={() => setIsModalShown(true)}
             backgroundColor="#7B7F93"
             textColor="white"
             padding="0 24px"
@@ -184,6 +191,8 @@ export const Header: React.FC = () => {
         <MenuIcon src={MenuImg} onClick={() => setMenuOpen(true)} />
 
         {menuOpen && <FeedbackOverlay />}
+
+        <Web3ProvidersModal isShown={isModalShown} hide={() => setIsModalShown(false)} />
       </Wrapper>
     )
   }
@@ -209,7 +218,7 @@ export const Header: React.FC = () => {
           <Description>from DXdao</Description>
         </Row>
         <Button
-          onClick={() => connectWallet(ConnectorNames.Injected)}
+          onClick={() => (account ? disconnectWallet() : setIsModalShown(true))}
           backgroundColor={!account ? '#304FFE' : '#DDDDE3'}
           textColor={!account ? 'white' : '#000629'}
         >
@@ -217,6 +226,7 @@ export const Header: React.FC = () => {
           {account && <ButtonImage />}
         </Button>
       </Wrapper>
+      <Web3ProvidersModal isShown={isModalShown} hide={() => setIsModalShown(false)} />
     </ColumnWrapper>
   )
 }
