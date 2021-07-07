@@ -42,11 +42,11 @@ interface BodyDataProps<T> {
   color?: string
 }
 
-interface statusWise {
+interface StatusWise {
   status: string | undefined
 }
 
-export const Table = <T extends statusWise>({ headData, bodyData, isClosed }: TableProps<T>) => {
+export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: TableProps<T>) => {
   const [tableMenu, setBidMenu] = useState<number>(-1)
 
   const { isMobile } = useWindowSize()
