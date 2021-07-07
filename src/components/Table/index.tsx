@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // External
 import React, { useState, Fragment } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
@@ -97,28 +97,28 @@ export const Table = <T extends statusWise>({ headData, bodyData, isClosed }: Ta
                     })}
                   {isClosed ? (
                     <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-                      {purchase.status === 'CLAIMED'
-                        ? [
-                            <IconImg
-                              src={Tick}
-                              color="#4B9E98"
-                              margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'}
-                            />,
-                            !isMobile && (
-                              <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
-                                Claimed
-                              </TokenPriceLabel>
-                            ),
-                          ]
-                        : [
-                            <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />,
-
-                            !isMobile && (
-                              <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                                Unclaimed
-                              </TokenPriceLabel>
-                            ),
-                          ]}
+                      {purchase.status === 'CLAIMED' ? (
+                        <Fragment>
+                          <IconImg
+                            src={Tick}
+                            color="#4B9E98"
+                            margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'}
+                          />
+                          {!isMobile && (
+                            <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
+                              Claimed
+                            </TokenPriceLabel>
+                          )}
+                        </Fragment>
+                      ) : (
+                        <Fragment>
+                          <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
+                          <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                            Unclaimed
+                          </TokenPriceLabel>
+                          )
+                        </Fragment>
+                      )}
                     </Flex>
                   ) : null}
                 </TableRow>
