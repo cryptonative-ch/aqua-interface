@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // External
-import React, { useState, Fragment } from 'react'
+import React, { useStats } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 // Utility
 import { useWindowSize } from 'src/hooks/useWindowSize'
@@ -98,7 +98,7 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
                   {isClosed ? (
                     <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
                       {purchase.status === 'CLAIMED' ? (
-                        <Fragment>
+                        <>
                           <IconImg
                             src={Tick}
                             color="#4B9E98"
@@ -109,15 +109,15 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
                               Claimed
                             </TokenPriceLabel>
                           )}
-                        </Fragment>
+                        </>
                       ) : (
-                        <Fragment>
+                        <>
                           <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
                           <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
                             Unclaimed
                           </TokenPriceLabel>
                           )
-                        </Fragment>
+                        </>
                       )}
                     </Flex>
                   ) : null}
