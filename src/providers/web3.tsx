@@ -25,6 +25,14 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
   const [activatingConnector, setActivatingConnector] = useState<ConnectorNames>()
 
   useEffect(() => {
+    injected.isAuthorized().then(isAuthorized => {
+      if (isAuthorized) {
+        activate(injected, undefined, true)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
     if (activatingConnector && connectors[activatingConnector] === connector) {
       setActivatingConnector(undefined)
     }
