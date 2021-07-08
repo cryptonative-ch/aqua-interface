@@ -38,7 +38,7 @@ interface ColumnDataProps {
 
 interface BodyDataProps<T> {
   title: string
-  purchases: T[]
+  purchases: T[] | T
   color?: string
 }
 
@@ -79,7 +79,51 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
           autoHeightMin={0}
           autoHeightMax={200}
         >
-          {bodyData.map(({ purchases, color, title }) =>
+          {bodyData.map(({ purchases, color, title }) => {
+            if (!Array.isArray(purchases)) {
+              return (
+                <TableRow padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
+                  <TableColumn>
+                    <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
+                  </TableColumn>
+                  {Object.values(purchases)
+                    .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
+                    .map((purchase, index) => {
+                      return (
+                        <TableColumn key={index}>
+                          <TokenPriceLabel>{purchase}</TokenPriceLabel>
+                        </TableColumn>
+                      )
+                    })}
+                  {isClosed ? (
+                    <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
+                      {purchases.status === 'CLAIMED' ? (
+                        <>
+                          <IconImg
+                            src={Tick}
+                            color="#4B9E98"
+                            margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'}
+                          />
+                          {!isMobile && (
+                            <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
+                              Claimed
+                            </TokenPriceLabel>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
+                          <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                            Unclaimed
+                          </TokenPriceLabel>
+                          )
+                        </>
+                      )}
+                    </Flex>
+                  ) : null}
+                </TableRow>
+              )
+            }
             purchases.map((purchase, index: number) => {
               return (
                 <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
@@ -124,7 +168,7 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
                 </TableRow>
               )
             })
-          )}
+          })}
         </Scrollbars>
       </TableBody>
       {tableMenu !== -1 && (
