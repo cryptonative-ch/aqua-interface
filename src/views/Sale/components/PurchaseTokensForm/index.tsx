@@ -222,7 +222,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       if (sale.minimumRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
-        const totalAmountPurchased = aggregatePurchases(totalBids, account)[0].amount
+        const totalAmountPurchased = aggregatePurchases(totalBids, account).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )

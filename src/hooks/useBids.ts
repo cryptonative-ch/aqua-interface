@@ -26,18 +26,17 @@ interface UseBidsReturn {
   totalBids: SaleBid[]
 }
 
+/** sums up all the purchases of a single user from a single sale and returns the status, total amount and account string*/
 export const aggregatePurchases = (bids: SaleBid[], account: string | null | undefined) => {
-  const reduceTotalAmount = bids.reduce((accumulator: any, purchases: any) => {
+  const reduceTotalAmount = bids.reduce((accumulator: BigNumber, purchases: any) => {
     return BigNumber.from(accumulator).add(purchases.amount)
   }, BigNumber.from(0))
 
-  return [
-    {
-      buyer: account!,
-      amount: reduceTotalAmount,
-      status: bids.length > 0 ? bids[0].status : undefined,
-    },
-  ]
+  return {
+    buyer: account!,
+    amount: reduceTotalAmount,
+    status: bids.length > 0 ? bids[0].status : undefined,
+  }
 }
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {

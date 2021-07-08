@@ -134,7 +134,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
   if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
-    const totalAmountPurchased = aggregatePurchases(totalBids, account)[0].amount
+    const totalAmountPurchased = aggregatePurchases(totalBids, account).amount
     // truncated. not rounded
     const amountDisplayed = Number(ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5))
     const percentageSold = (amountDisplayed / totalSupply) * 100

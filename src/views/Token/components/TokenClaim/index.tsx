@@ -56,7 +56,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const { bids } = useBids(sale!.id, 'FixedPriceSale')
 
   const { claimTokens, claim, transaction, error } = useTokenClaim()
-  const amount = aggregatePurchases(bids, account)[0].amount
+  const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
