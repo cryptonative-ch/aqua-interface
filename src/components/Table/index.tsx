@@ -46,6 +46,54 @@ interface StatusWise {
   status: string | undefined
 }
 
+interface RowProps<T> extends BodyDataProps<T> {
+  isMobile: boolean
+  isClosed: boolean
+}
+
+const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, isMobile }: RowProps<T>) => {
+  return (
+    <TableRow padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
+      <TableColumn>
+        <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
+      </TableColumn>
+      {Object.values(purchases)
+        .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
+        .map((purchase, index) => {
+          return (
+            <TableColumn key={index}>
+              <TokenPriceLabel>{purchase}</TokenPriceLabel>
+            </TableColumn>
+          )
+        })}
+      {isClosed ? (
+        <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
+          {Array.isArray(purchases) ? (
+            purchases[0].status === 'CLAIMED'
+          ) : purchases.status === 'CLAIMED' ? (
+            <>
+              <IconImg src={Tick} color="#4B9E98" margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'} />
+              {!isMobile && (
+                <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
+                  Claimed
+                </TokenPriceLabel>
+              )}
+            </>
+          ) : (
+            <>
+              <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
+              <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                Unclaimed
+              </TokenPriceLabel>
+              )
+            </>
+          )}
+        </Flex>
+      ) : null}
+    </TableRow>
+  )
+}
+
 export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: TableProps<T>) => {
   const [tableMenu, setBidMenu] = useState<number>(-1)
 
@@ -82,90 +130,19 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
           {bodyData.map(({ purchases, color, title }) => {
             if (!Array.isArray(purchases)) {
               return (
-                <TableRow padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
-                  <TableColumn>
-                    <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
-                  </TableColumn>
-                  {Object.values(purchases)
-                    .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
-                    .map((purchase, index) => {
-                      return (
-                        <TableColumn key={index}>
-                          <TokenPriceLabel>{purchase}</TokenPriceLabel>
-                        </TableColumn>
-                      )
-                    })}
-                  {isClosed ? (
-                    <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-                      {purchases.status === 'CLAIMED' ? (
-                        <>
-                          <IconImg
-                            src={Tick}
-                            color="#4B9E98"
-                            margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'}
-                          />
-                          {!isMobile && (
-                            <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
-                              Claimed
-                            </TokenPriceLabel>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
-                          <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                            Unclaimed
-                          </TokenPriceLabel>
-                          )
-                        </>
-                      )}
-                    </Flex>
-                  ) : null}
-                </TableRow>
+                <TableRows isMobile={isMobile} isClosed={isClosed} purchases={purchases} color={color} title={title} />
               )
             }
             purchases.map((purchase, index: number) => {
               return (
-                <TableRow key={index} padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
-                  <TableColumn>
-                    <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
-                  </TableColumn>
-                  {Object.values(purchase)
-                    .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
-                    .map((element, _index) => {
-                      return (
-                        <TableColumn key={_index}>
-                          <TokenPriceLabel>{element}</TokenPriceLabel>
-                        </TableColumn>
-                      )
-                    })}
-                  {isClosed ? (
-                    <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-                      {purchase.status === 'CLAIMED' ? (
-                        <>
-                          <IconImg
-                            src={Tick}
-                            color="#4B9E98"
-                            margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'}
-                          />
-                          {!isMobile && (
-                            <TokenPriceLabel color="#4B9E98" padding="4px 8px 4px 0">
-                              Claimed
-                            </TokenPriceLabel>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
-                          <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                            Unclaimed
-                          </TokenPriceLabel>
-                          )
-                        </>
-                      )}
-                    </Flex>
-                  ) : null}
-                </TableRow>
+                <TableRows
+                  key={index}
+                  isMobile={isMobile}
+                  isClosed={isClosed}
+                  purchases={purchases}
+                  color={color}
+                  title={title}
+                />
               )
             })
           })}
