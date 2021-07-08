@@ -15,6 +15,7 @@ import { SaleClock } from 'src/views/Sales/components/SaleClock'
 import { Icon } from 'src/components/Icon'
 import { BadgeFlex } from 'src/layouts/BadgeFlex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
+import { SaleActiveBids } from 'src/views/Sales/components/SaleActiveBids'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
@@ -59,6 +60,10 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
               <Flex flexDirection="row" justifyContent="space-between">
                 <CardText color="grey">{t('texts.currentPrice')}</CardText>
                 <SaleFinalPrice sale={sale} />
+              </Flex>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <CardText color="grey">{t('texts.yourBids')}</CardText>
+                <SaleActiveBids sale={sale} />
               </Flex>
 
               <Flex flexDirection="row" justifyContent="space-between">
