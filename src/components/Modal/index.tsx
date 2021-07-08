@@ -25,6 +25,7 @@ export interface ModalProps {
   headerText: string
   confirmText?: string
   cancelText?: string
+  hideHeader?: boolean
   onConfirm?: () => void
   onCancel?: () => void
 }
@@ -38,18 +39,21 @@ export const Modal: React.FC<ModalProps> = ({
   cancelText = 'Cancel',
   onConfirm,
   onCancel,
+  hideHeader,
 }) => {
   const modal = (
     <Fragment>
       <Backdrop onClick={hide} />
       <Wrapper>
         <StyledModal>
-          <Header>
-            <HeaderText>{headerText}</HeaderText>
-            <CloseButton onClick={hide}>
-              <img src={CloseIcon} alt="close icon" />
-            </CloseButton>
-          </Header>
+          {!hideHeader && (
+            <Header>
+              <HeaderText>{headerText}</HeaderText>
+              <CloseButton onClick={hide}>
+                <img src={CloseIcon} alt="close icon" />
+              </CloseButton>
+            </Header>
+          )}
           <Content>{modalContent}</Content>
           <Footer>
             {onConfirm && <ModalButton onClick={onConfirm}>{confirmText}</ModalButton>}
