@@ -86,12 +86,12 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
                   <TableColumn>
                     <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
                   </TableColumn>
-                  {Object.getOwnPropertyNames(purchase)
-                    .filter(skip => skip !== 'status')
+                  {Object.values(purchase)
+                    .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
                     .map((element, _index) => {
                       return (
                         <TableColumn key={_index}>
-                          <TokenPriceLabel>{purchase[element as keyof typeof purchase]}</TokenPriceLabel>
+                          <TokenPriceLabel>{element}</TokenPriceLabel>
                         </TableColumn>
                       )
                     })}
