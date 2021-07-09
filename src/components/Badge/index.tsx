@@ -1,18 +1,16 @@
 // External
 import styled from 'styled-components'
-import { LayoutProps, ColorProps, layout, color } from 'styled-system'
+import { LayoutProps, background, ColorProps, layout, color, variant } from 'styled-system'
 
 type BadgeProps = LayoutProps &
   ColorProps & {
-    width?: string
+    varient?: string
   }
 
 export const Badge = styled.div<BadgeProps>(
-  props => ({
+  () => ({
     height: '27px',
-    width: props.width === 'presale' ? '80px' : '70px',
     borderRadius: '0px',
-    background: '#000629',
     justifyContent: 'center',
     margin: '4px 4px',
   }),
@@ -20,12 +18,25 @@ export const Badge = styled.div<BadgeProps>(
     `
 @media (max-width: ${props.theme.breakpoints[2]}) {
   height: 25px;
-  width: ${props.width === 'presale' ? '73px' : '63px'},;
   padding: 4px, 8px, 4px, 8px
 }
 `,
   layout,
-  color
+  color,
+  background,
+  variant({
+    variants: {
+      black: {
+        background: '#000629',
+      },
+      green: {
+        background: 'rgba(75, 158, 152, 0.35)',
+      },
+      red: {
+        background: 'rgba(225, 95, 95, 0.35)',
+      },
+    },
+  })
 )
 
 export const Content = styled.h3(
@@ -48,3 +59,7 @@ export const Content = styled.h3(
 }
 `
 )
+
+Badge.defaultProps = {
+  varient: 'black',
+}
