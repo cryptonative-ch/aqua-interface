@@ -51,19 +51,21 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
             {sale.type == 'FixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}
           </Flex>
           {isSaleClosed(sale) ? (
-            <Flex flexDirection="row" justifyContent="space-between">
-              <CardText color="grey">{t('texts.amountSold')}</CardText>
-              <SaleAmount closed sale={sale} />
-            </Flex>
+            <>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <CardText color="grey">{t('texts.amountSold')}</CardText>
+                <SaleAmount closed sale={sale} />
+              </Flex>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <CardText color="grey">{t('texts.yourBids')}</CardText>
+                <SaleActiveBids sale={sale} />
+              </Flex>
+            </>
           ) : (
             <div>
               <Flex flexDirection="row" justifyContent="space-between">
                 <CardText color="grey">{t('texts.currentPrice')}</CardText>
                 <SaleFinalPrice sale={sale} />
-              </Flex>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <CardText color="grey">{t('texts.yourBids')}</CardText>
-                <SaleActiveBids sale={sale} />
               </Flex>
 
               <Flex flexDirection="row" justifyContent="space-between">

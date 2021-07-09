@@ -5,7 +5,7 @@ import React from 'react'
 // Components
 
 import { Flex } from 'src/components/Flex'
-import { Badge, Content } from 'src/components/Badge'
+import { Badge } from 'src/components/Badge'
 
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
@@ -22,10 +22,10 @@ export function SaleActiveBids({ sale }: SaleActiveBidsProps) {
   console.log(bids)
 
   return (
-    <Flex>
-      <Badge>
-        <Content>2 IN</Content>
-      </Badge>
-    </Flex>
+    <>
+      <Flex>
+        <Badge variant="in">2 IN</Badge>
+      </Flex>
+    </>
   )
 }
