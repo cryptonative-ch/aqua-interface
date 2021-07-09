@@ -57,7 +57,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
                 <SaleAmount closed sale={sale} />
               </Flex>
               <Flex flexDirection="row" justifyContent="space-between">
-                <CardText color="grey">{t('texts.yourBids')}</CardText>
+                <CardText color="grey">{t('texts.yourPurchase')}</CardText>
                 <SaleActiveBids sale={sale} />
               </Flex>
             </>

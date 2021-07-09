@@ -1,6 +1,7 @@
 // External
 
 import React from 'react'
+import { utils } from 'ethers'
 
 // Components
 
@@ -18,13 +19,13 @@ interface SaleActiveBidsProps {
 }
 
 export function SaleActiveBids({ sale }: SaleActiveBidsProps) {
-  const { bids } = useBids(sale.id, sale.type)
-  console.log(bids)
+  const { bids, totalPurchased } = useBids(sale.id, sale.type)
 
+  const amount = utils.formatUnits(totalPurchased(bids)[0].amount, sale.tokenOut.decimals)
   return (
     <>
       <Flex>
-        <Badge variant="in">2 IN</Badge>
+        <Badge variant="in">{`${amount} ${sale.tokenOut.symbol}`}</Badge>
       </Flex>
     </>
   )
