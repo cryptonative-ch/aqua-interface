@@ -4,6 +4,7 @@ import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } 
 import React from 'react'
 import numeral from 'numeral'
 import { ethers } from 'ethers'
+import { useWeb3React } from '@web3-react/core'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -23,7 +24,7 @@ import { Sale } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // hooks
-import { useBids } from 'src/hooks/useBids'
+import { aggregatePurchases, useBids } from 'src/hooks/useBids'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'react-i18next'
 
@@ -126,13 +127,14 @@ interface HeaderControlProps {
 
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
   const [t] = useTranslation()
+  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const { totalBids, totalPurchased } = useBids(sale.id, sale.type)
+  const { totalBids } = useBids(sale.id, sale.type)
 
   if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
-    const totalAmountPurchased = totalPurchased(totalBids)[0].amount
+    const totalAmountPurchased = aggregatePurchases(totalBids, account).amount
     // truncated. not rounded
     const amountDisplayed = Number(ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5))
     const percentageSold = (amountDisplayed / totalSupply) * 100

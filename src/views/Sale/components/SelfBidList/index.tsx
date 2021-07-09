@@ -15,7 +15,7 @@ import { Table } from 'src/components/Table'
 
 interface SelfBidListProps {
   sale: Sale
-  bids: FairSaleBid[] & FixedPriceSalePurchase[]
+  bids: any
   clearingPrice?: FairBidPick
   status: string
   showGraph: boolean
@@ -35,20 +35,48 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   const isFixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
   const isFixedBodyData = [
     {
-      title: isSaleClosed(sale) ? 'Withdraw' : 'Buy Order',
-      color: isSaleClosed(sale) ? undefined : '#4B9E98',
-      purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
+      title: 'Withdraw',
+      purchases: {
         amount:
-          numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenOut.symbol,
+          numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format('0.[0000]') +
+          ' ' +
+          sale.tokenOut.symbol,
         value:
           numeral(
-            formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
+            formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
+              formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
           ).format('0.[0000]') +
           ' ' +
           sale.tokenIn.symbol,
-      })),
+        status: (bids as FixedPriceSalePurchase).status,
+      },
     },
   ]
+
+  const isFixedBodyDataOpen =
+    bids.length > 0
+      ? [
+          {
+            title: 'Buy Order',
+            color: '#4B9E98',
+            purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
+              amount:
+                numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') +
+                ' ' +
+                sale.tokenOut.symbol,
+              value:
+                numeral(
+                  formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
+                    formatBigInt(bid.amount, sale.tokenOut.decimals)
+                ).format('0.[0000]') +
+                ' ' +
+                sale.tokenIn.symbol,
+              status: bid.status,
+            })),
+          },
+        ]
+      : []
+
   const isFairSaleHeadData = [
     { title: 'Token Price' },
     { title: 'Amount' },
@@ -91,7 +119,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   }
 
   if (isFixed && isSaleOpen(sale)) {
-    return <Table headData={isFixedHeadDataOpen} bodyData={isFixedBodyData} />
+    return <Table headData={isFixedHeadDataOpen} bodyData={isFixedBodyDataOpen} />
   }
 
   if (isSaleOpen(sale)) {

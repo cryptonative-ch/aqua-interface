@@ -2,6 +2,7 @@
 
 // External
 import { useTheme } from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -46,7 +47,7 @@ import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 // Hooks
-import { useBids } from 'src/hooks/useBids'
+import { useBids, aggregatePurchases } from 'src/hooks/useBids'
 import { useTranslation } from 'react-i18next'
 
 const FixedFormMax = styled.div({
@@ -63,11 +64,12 @@ export interface FixedPriceSaleViewParams {
 
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
+  const { account } = useWeb3React()
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const theme = useTheme()
-  const { totalPurchased, bids } = useBids(params.saleId, sale!.__typename)
+  const { bids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
   const [t] = useTranslation()
 
@@ -213,7 +215,7 @@ export function FixedPriceSaleView() {
                 <SelfBidList
                   sale={sale as FIX_LATER}
                   isFixed={true}
-                  bids={isSaleClosed(sale as FIX_LATER) ? (totalPurchased(bids) as any) : (bids as any)}
+                  bids={isSaleClosed(sale as FIX_LATER) ? (aggregatePurchases(bids, account) as any) : (bids as any)}
                 />
               </Card>
             )}

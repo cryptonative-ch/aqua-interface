@@ -1,6 +1,7 @@
 // Externals
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
@@ -30,10 +31,10 @@ import noToken from 'src/assets/svg/no-token-image.svg'
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { useTokenClaim } from 'src/hooks/useTokenClaim'
+import { useBids, aggregatePurchases } from 'src/hooks/useBids'
 
 // Theme
 import { theme } from 'src/styles/theme'
-import { useBids } from 'src/hooks/useBids'
 
 const Icon = styled.img<SpaceProps>(
   {
@@ -50,11 +51,12 @@ interface TokenClaimProps {
 export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
+  const { account } = useWeb3React()
   // TODO: replace fixedpricesale with dynamic types
-  const { totalPurchased, bids } = useBids(sale!.id, 'FixedPriceSale')
+  const { bids } = useBids(sale!.id, 'FixedPriceSale')
 
   const { claimTokens, claim, transaction, error } = useTokenClaim()
-  const amount = totalPurchased(bids)[0].amount
+  const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 

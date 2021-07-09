@@ -7,6 +7,13 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum FixedPriceSaleStatus {
+  ENDED = 'ENDED',
+  OPEN = 'OPEN',
+  SETTLED = 'SETTLED',
+  UPCOMING = 'UPCOMING',
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
