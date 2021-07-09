@@ -1,6 +1,7 @@
 // External
 import { useTranslation } from 'react-i18next'
 import React from 'react'
+import { utils } from 'ethers'
 
 // Components
 import { SaleFinalPrice } from 'src/views/Sales/components/SaleFinalPrice'
@@ -24,12 +25,18 @@ import { Sale } from 'src/interfaces/Sale'
 import noToken from 'src/assets/svg/no-token-image.svg'
 import { isSaleClosed } from 'src/mesa/sale'
 
+// hooks
+import { useBids } from 'src/hooks/useBids'
+
 interface SaleSummaryProps {
   sale: Sale
 }
 
 export function SaleSummaryCard({ sale }: SaleSummaryProps) {
   const [t] = useTranslation()
+  const { bids, totalPurchased } = useBids(sale.id, sale.type)
+  const amount = utils.formatUnits(totalPurchased(bids)[0].amount, sale.tokenOut.decimals)
+
   return (
     <Card>
       <CardBody>
@@ -56,10 +63,12 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
                 <CardText color="grey">{t('texts.amountSold')}</CardText>
                 <SaleAmount closed sale={sale} />
               </Flex>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <CardText color="grey">{t('texts.yourPurchase')}</CardText>
-                <SaleActiveBids sale={sale} />
-              </Flex>
+              {bids && bids.length > 0 && (
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <CardText color="grey">{t('texts.yourPurchase')}</CardText>
+                  <SaleActiveBids sale={sale} amount={amount} />
+                </Flex>
+              )}
             </>
           ) : (
             <div>
