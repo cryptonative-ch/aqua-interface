@@ -42,7 +42,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const { isMobile } = useWindowSize()
   const theme = useTheme()
   const [t] = useTranslation()
-  const { error: claimError, claim, claimTokens, withdrawTokens } = useTokenClaim()
+  const { error: claimError, claim, claimTokens } = useTokenClaim()
   const threshold = BigNumber.from(sale.minimumRaise)
   const tokensSold = BigNumber.from(sale.soldAmount)
   return (
@@ -81,7 +81,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
             <ClaimButtons
               disabled={claim === 'claimed' ? true : false}
               type="button"
-              onClick={() => withdrawTokens(sale.id)}
+              onClick={() => claimTokens(sale.id)}
               background="#7B7F93"
               color="#fff"
             >

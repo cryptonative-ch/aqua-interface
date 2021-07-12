@@ -195,7 +195,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     // Convert purchaseValue (number) to 18-decimal BigNumber
     // Sign and send transaction
     fixedPriceSaleContract
-      .buyTokens(utils.parseEther(purchaseValue.toString()))
+      .commitTokens(utils.parseEther(purchaseValue.toString()))
       .then(tx => tx.wait(1)) // wait one network confirmation
       .then(() => {
         toast.success(t('success.purchase'))
