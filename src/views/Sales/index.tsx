@@ -22,12 +22,13 @@ import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useSalesQuery } from 'src/hooks/useSalesQuery'
+import { useFixedPriceSalePurchasesByBuyerQuery } from 'src/hooks/useFixedPriceSalePurchasesByBuyerId'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
 import { Sale } from 'src/interfaces/Sale'
 import { Divider } from 'src/components/Divider'
-import { useBids } from 'src/hooks/useBids'
+import { useWeb3React } from '@web3-react/core'
 
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -65,6 +66,10 @@ export function SalesView() {
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
   const [filteredSales, setFilteredSales] = useState<Sale[]>()
   const { loading, sales, error } = useSalesQuery()
+  const { account } = useWeb3React()
+  const { purchases, ...rest } = useFixedPriceSalePurchasesByBuyerQuery(account!)
+  console.log(purchases)
+  console.log(rest)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
