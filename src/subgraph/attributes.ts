@@ -73,3 +73,17 @@ export const FIXED_PRICE_SALE_PURCHASE_FIELDS = gql`
     }
   }
 `
+
+export const FIXED_PRICE_SALE_PURCHASE_ALL = gql`
+  fragment fixedPriceSalePurchaseResultsAll on FixedPriceSalePurchases {
+    id
+    createdAt
+    updatedAt
+    deletedAt
+    buyer
+    amount
+    sale {
+      ...fixedPriceSaleResults
+    }
+  }
+`

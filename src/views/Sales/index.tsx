@@ -26,6 +26,8 @@ import { useSalesQuery } from 'src/hooks/useSalesQuery'
 // Layouts
 import { Center } from 'src/layouts/Center'
 import { Sale } from 'src/interfaces/Sale'
+import { Divider } from 'src/components/Divider'
+import { useBids } from 'src/hooks/useBids'
 
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -94,6 +96,15 @@ export function SalesView() {
       <Container>
         <Title>Token Sales</Title>
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
+        <Divider />
+        <GridListSection>
+          {filteredSales?.map(sale => (
+            <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
+              <SaleSummaryCard sale={sale} />
+            </SaleSummaryWrapper>
+          ))}
+        </GridListSection>
+        <Divider />
         <GridListSection>
           {error ? (
             <Center>

@@ -41,11 +41,7 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
   // Workaround for WalletConnect not showing QR Code after the first open
   // https://github.com/NoahZinsmeister/web3-react/issues/124
   const resetWalletConnect = (connector: AbstractConnector) => {
-    if (
-      connector &&
-      connector instanceof WalletConnectConnector &&
-      connector.walletConnectProvider?.wc?.uri
-    ) {
+    if (connector && connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
       connector.walletConnectProvider = undefined
     }
   }
@@ -54,7 +50,7 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
     setActivatingConnector(connectorName)
 
     if (connectorName == ConnectorNames.WalletConnect) {
-      resetWalletConnect(connectors[connectorName]);
+      resetWalletConnect(connectors[connectorName])
     }
 
     activate(connectors[connectorName]).catch(error => {
@@ -65,8 +61,8 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
 
   const disconnect = () => {
     if (connector instanceof WalletConnectConnector) {
-      connector.close();
-      resetWalletConnect(connector);
+      connector.close()
+      resetWalletConnect(connector)
     }
     deactivate()
   }
