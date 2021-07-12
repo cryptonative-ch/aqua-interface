@@ -27,7 +27,9 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
   useEffect(() => {
     injected.isAuthorized().then(isAuthorized => {
       if (isAuthorized) {
-        activate(injected, undefined, true)
+        activate(injected, undefined, true).catch(error => {
+          console.error(getErrorMessage(error))
+        })
       }
     })
   }, [])
