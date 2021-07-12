@@ -9,6 +9,9 @@ import { useWeb3React } from '@web3-react/core'
 import { CookiesProvider } from 'react-cookie'
 import Axios from 'axios'
 
+// Providers
+import { Web3ConnectionProvider } from "src/providers/web3";
+
 // Styles
 import { GlobalStyle } from 'src/styles/Global'
 import { theme } from 'src/styles/theme'
@@ -85,44 +88,46 @@ export const App = () => {
   )
 
   return (
-    <CookiesProvider>
-      <ApolloProvider client={apolloClient}>
-        <MesaContext.Provider value={mesa}>
-          <SanctionContext.Provider value={sanction}>
-            <ThemeProvider theme={theme}>
-              <GlobalStyle />
-              <Suspense fallback={<Center minHeight="100vh">LOADING</Center>}>
-                <BrowserRouter>
-                  <Container>
-                    <Header />
-                    <AppRouter />
-                    <Modal
-                      isShown={SHOW_TERMS_AND_CONDITIONS && isShown}
-                      hide={toggle}
-                      modalContent={content}
-                      headerText="Confirmation"
-                      onConfirm={() => toggle(true)}
-                    />
-                    {!isMobile && <Footer />}
-                    <ToastContainer
-                      position="bottom-right"
-                      autoClose={10000}
-                      hideProgressBar={false}
-                      newestOnTop={false}
-                      closeOnClick
-                      rtl={false}
-                      pauseOnFocusLoss
-                      draggable
-                      pauseOnHover
-                    />
-                    {!isMobile && <FeedbackOverlay />}
-                  </Container>
-                </BrowserRouter>
-              </Suspense>
-            </ThemeProvider>
-          </SanctionContext.Provider>
-        </MesaContext.Provider>
-      </ApolloProvider>
-    </CookiesProvider>
+    <Web3ConnectionProvider>
+      <CookiesProvider>
+        <ApolloProvider client={apolloClient}>
+          <MesaContext.Provider value={mesa}>
+            <SanctionContext.Provider value={sanction}>
+              <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <Suspense fallback={<Center minHeight="100vh">LOADING</Center>}>
+                  <BrowserRouter>
+                    <Container>
+                      <Header />
+                      <AppRouter />
+                      <Modal
+                        isShown={SHOW_TERMS_AND_CONDITIONS && isShown}
+                        hide={toggle}
+                        modalContent={content}
+                        headerText="Confirmation"
+                        onConfirm={() => toggle(true)}
+                      />
+                      {!isMobile && <Footer />}
+                      <ToastContainer
+                        position="bottom-right"
+                        autoClose={10000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                      />
+                      {!isMobile && <FeedbackOverlay />}
+                    </Container>
+                  </BrowserRouter>
+                </Suspense>
+              </ThemeProvider>
+            </SanctionContext.Provider>
+          </MesaContext.Provider>
+        </ApolloProvider>
+      </CookiesProvider>
+    </Web3ConnectionProvider>
   )
 }

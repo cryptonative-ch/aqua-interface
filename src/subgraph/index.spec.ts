@@ -15,7 +15,7 @@ import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
 
 afterEach(cleanup)
 
-describe('testing subgraph integration', () => {
+describe.skip('testing subgraph integration', () => {
   let server: any
   let salesRequest: any
   beforeEach(async () => {

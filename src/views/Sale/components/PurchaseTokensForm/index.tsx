@@ -24,7 +24,7 @@ import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
-import { useBids } from 'src/hooks/useBids'
+import { aggregatePurchases, useBids } from 'src/hooks/useBids'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -54,15 +54,32 @@ const FormContainer = styled.div({
 const FormText = styled.div({
   position: 'absolute',
   flex: 1,
-  background: 'transparent',
+  background: '#F2F2F2',
   border: 'none',
   color: '#7B7F93',
   fontSize: '14px',
   lineHeight: '48px',
-  margin: '0 16px',
+  padding: '0 16px',
   userSelect: 'none',
   right: 0,
   zIndex: 101,
+})
+
+const MaxButton = styled.a({
+  border: '1px solid #DDDDE3',
+  padding: '0 4px',
+  fontStyle: 'normal',
+  fontSize: '14px',
+  lineHeight: '21px',
+  textAlign: 'center',
+  color: '#7B7F93',
+  marginRight: '16px',
+  cursor: 'pointer',
+
+  ':hover': {
+    borderColor: '#304FFE',
+    color: '#304FFE !important',
+  },
 })
 
 const FormInput = styled.input({
@@ -118,7 +135,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     owner: account ?? undefined,
   })
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
-  const { totalBids, totalPurchased } = useBids(saleId, 'FixedPriceSale')
+  const { totalBids } = useBids(saleId, 'FixedPriceSale')
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
@@ -133,10 +150,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   // 1. purchaseValue >= minimum Allocation
   // 2. purchaseValue <= max allocation (including previous purchases)
   // 3. bidding token balance <= purchaseValue
-  const onPurchaseValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.value) {
-      return setPurchaseValue(undefined)
-    }
+  const setValidatedPurchaseValue = (value: number) => {
     let newValidationError = undefined
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
     // Convert min max allocations
@@ -145,9 +159,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
     const tokenPrice = convertToBuyerPrice(parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice))))
 
-    const newPurchaseValue = parseFloat(event.target.value)
-
-    const quantity = fixRounding(newPurchaseValue / tokenPrice, 8)
+    const quantity = fixRounding(value / tokenPrice, 8)
 
     // purchaseValue is less than minimum allocation
     if (purchaseMinimumAllocation > newPurchaseValue) {
@@ -165,14 +177,33 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       )
     }
     // // Purchase value is greater than user's tokeIn balance
-    else if (parsedTokenBalance < newPurchaseValue) {
+    else if (parsedTokenBalance < value) {
       newValidationError = new Error('Insufficient funds to process purchase')
     }
 
     // Update Component state and re-render
-    setPurchaseValue(newPurchaseValue)
+    setPurchaseValue(value)
     setTokenQuantity(quantity)
     setValidationError(newValidationError)
+  }
+
+  const onPurchaseValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+    if (!value) {
+      return setPurchaseValue(undefined)
+    }
+
+    setValidatedPurchaseValue(parseFloat(value))
+  }
+
+  const onMaxButtonClick = () => {
+    const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
+    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
+    const maxPurchase = parsedTokenBalance < purchaseMaximumAllocation ? parsedTokenBalance : purchaseMaximumAllocation
+    const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
+    if (maxPurchase < purchaseMinimumAllocation) return
+
+    setValidatedPurchaseValue(fixRounding(maxPurchase, 8))
   }
 
   const purchaseTokens = useCallback(() => {
@@ -222,7 +253,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       if (sale.minimumRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
-        const totalAmountPurchased = totalPurchased(totalBids)[0].amount
+        const totalAmountPurchased = aggregatePurchases(totalBids, account).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )
@@ -236,7 +267,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
       purchaseTokens()
     },
-    [toggleConfirmation, sale, totalBids, totalPurchased, purchaseTokens, purchaseValue]
+    [toggleConfirmation, sale, totalBids, aggregatePurchases, purchaseTokens, purchaseValue]
   )
 
   const confirmationModalContent = (
@@ -289,7 +320,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">{sale.tokenIn.symbol}</FormText>
+            <FormText data-testid="amount-value">
+              <MaxButton onClick={onMaxButtonClick}>Max</MaxButton>
+              {sale.tokenIn.symbol}
+            </FormText>
             <FormInput
               aria-label="purchaseValue"
               id="purchaseValue"

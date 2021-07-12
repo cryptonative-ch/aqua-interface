@@ -112,7 +112,6 @@ export const TableHead = styled(Flex)({
 })
 
 export const TableBody = styled(Flex)({
-  minHeight: 0,
-  minWidth: 0,
   flexDirection: 'column',
+  minHeight: '50px',
 })
