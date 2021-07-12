@@ -1,6 +1,7 @@
 // External
 import { useTranslation } from 'react-i18next'
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { utils } from 'ethers'
 
 // Components
@@ -26,7 +27,7 @@ import noToken from 'src/assets/svg/no-token-image.svg'
 import { isSaleClosed } from 'src/mesa/sale'
 
 // hooks
-import { useBids } from 'src/hooks/useBids'
+import { useBids, aggregatePurchases } from 'src/hooks/useBids'
 
 interface SaleSummaryProps {
   sale: Sale
@@ -34,8 +35,9 @@ interface SaleSummaryProps {
 
 export function SaleSummaryCard({ sale }: SaleSummaryProps) {
   const [t] = useTranslation()
-  const { bids, totalPurchased } = useBids(sale.id, sale.type)
-  const amount = utils.formatUnits(totalPurchased(bids)[0].amount, sale.tokenOut.decimals)
+  const { bids } = useBids(sale.id, sale.type)
+  const { account } = useWeb3React()
+  const amount = utils.formatUnits(aggregatePurchases(bids, account).amount, sale.tokenOut.decimals)
 
   return (
     <Card>

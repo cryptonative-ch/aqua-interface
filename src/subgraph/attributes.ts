@@ -83,6 +83,7 @@ export const FIXED_PRICE_SALE_PURCHASE_ALL = gql`
     deletedAt
     buyer
     amount
+    status
     sale {
       ...fixedPriceSaleResults
     }

@@ -3,23 +3,49 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { FixedPriceSaleStatus } from './../../../__generated__/globalTypes'
+
 // ====================================================
 // GraphQL fragment: fixedPriceSaleResults
 // ====================================================
 
 export interface fixedPriceSaleResults_tokenIn {
   __typename: 'Token'
+  /**
+   * Token address
+   */
   id: string
+  /**
+   * Token name, from the smart contract ERC20.name()
+   */
   name: string | null
+  /**
+   * The token symbol from ERC20.symbol()
+   */
   symbol: string | null
+  /**
+   * The token decimals, from ERC.decimals()
+   */
   decimals: any
 }
 
 export interface fixedPriceSaleResults_tokenOut {
   __typename: 'Token'
+  /**
+   * Token address
+   */
   id: string
+  /**
+   * Token name, from the smart contract ERC20.name()
+   */
   name: string | null
+  /**
+   * The token symbol from ERC20.symbol()
+   */
   symbol: string | null
+  /**
+   * The token decimals, from ERC.decimals()
+   */
   decimals: any
 }
 
@@ -36,7 +62,7 @@ export interface fixedPriceSaleResults {
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: string
+  status: FixedPriceSaleStatus
   /**
    * The UTC timestamp at which the sale starts
    */
