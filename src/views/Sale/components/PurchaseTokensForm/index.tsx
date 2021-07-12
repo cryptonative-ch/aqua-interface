@@ -162,14 +162,14 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     const quantity = fixRounding(value / tokenPrice, 8)
 
     // purchaseValue is less than minimum allocation
-    if (purchaseMinimumAllocation > newPurchaseValue) {
+    if (purchaseMinimumAllocation > value) {
       newValidationError = new Error(
         `Minimum is ${fixRounding(purchaseMinimumAllocation * tokenPrice, 8)} ${
           sale?.tokenOut.symbol
         } / ${utils.formatUnits(sale?.allocationMin)} ${sale?.tokenIn.symbol}`
       )
     }
-    if (purchaseMaximumAllocation < newPurchaseValue) {
+    if (purchaseMaximumAllocation < value) {
       newValidationError = new Error(
         `Maximum is ${fixRounding(purchaseMaximumAllocation * tokenPrice, 8)} ${
           sale?.tokenOut.symbol
