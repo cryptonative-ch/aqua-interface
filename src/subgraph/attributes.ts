@@ -75,7 +75,7 @@ export const FIXED_PRICE_SALE_PURCHASE_FIELDS = gql`
 `
 
 export const FIXED_PRICE_SALE_PURCHASE_ALL = gql`
-  fragment fixedPriceSalePurchaseResultsAll on FixedPriceSalePurchases {
+  fragment fixedPriceSalePurchaseResultsAll on FixedPriceSalePurchase {
     id
     createdAt
     updatedAt
@@ -86,4 +86,5 @@ export const FIXED_PRICE_SALE_PURCHASE_ALL = gql`
       ...fixedPriceSaleResults
     }
   }
+  ${FIXED_PRICE_SALE_FIELDS}
 `

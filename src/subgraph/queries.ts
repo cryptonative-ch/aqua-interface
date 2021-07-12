@@ -60,12 +60,11 @@ export const GET_MESA_FACTORY = gql`
 `
 
 export const GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER = gql`
-  query GetFixedPriceSalePurchasesByBuyer($buyerId: String!) {
+  query GetFixedPriceSalePurchasesByBuyer($buyerId: Bytes!) {
     fixedPriceSalePurchases(where: {buyer: $buyerId}) {
       ...fixedPriceSalePurchaseResultsAll
     }
   ${FIXED_PRICE_SALE_PURCHASE_ALL}
-
   }
 
 
