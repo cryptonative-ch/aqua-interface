@@ -67,8 +67,9 @@ export function SalesView() {
   const [filteredSales, setFilteredSales] = useState<Sale[]>()
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
-  const { purchases, ...rest } = useFixedPriceSalePurchasesByBuyerQuery(account!)
+  const { purchases, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
   console.log(purchases)
+  console.log(userSales)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))

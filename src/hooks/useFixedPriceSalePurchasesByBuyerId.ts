@@ -9,10 +9,12 @@ import {
   GetFixedPriceSalePurchasesByBuyer,
   GetFixedPriceSalePurchasesByBuyerVariables,
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
+  GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale,
 } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
   purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[]
+  sales: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases | undefined
 }
 
 export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSalesQueryResult {
@@ -26,13 +28,20 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
   )
 
   let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
+  let sales: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases | undefined = undefined
 
   if (data) {
-    purchases = data.fixedPriceSalePurchases
+    purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.status !== 'CLAIMED')
+    sales = purchases.reduce((a: any, c: any) => {
+      a[c.sale.id] = a[c.sale.id] || []
+      a[c.sale.id].push(c)
+      return a
+    }, [])
   }
 
   return {
     purchases,
+    sales,
     ...rest,
   }
 }
