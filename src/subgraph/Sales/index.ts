@@ -38,7 +38,7 @@ export const salesQuery = `
       status
       startDate
       endDate
-      tokenAmount
+      tokensForSale
       minimumBidAmount
       minFundingThreshold
       tokenIn {

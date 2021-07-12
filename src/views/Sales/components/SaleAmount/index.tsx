@@ -31,7 +31,7 @@ export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
       <SaleCardText isFailed={isFailed}>
         {numeral(
           sale.type == 'FairSale'
-            ? formatBigInt(sale.tokenAmount, sale.tokenOut.decimals)
+            ? formatBigInt(sale.tokensForSale, sale.tokenOut.decimals)
             : formatBigInt(closed ? sale.soldAmount : sale.sellAmount, sale.tokenOut.decimals)
         ).format('0,0')}
       </SaleCardText>

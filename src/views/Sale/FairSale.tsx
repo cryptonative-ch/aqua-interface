@@ -140,7 +140,9 @@ export function FairSaleView() {
                     <HeaderItem
                       isMobile
                       title={isSaleClosed(sale) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(formatBigInt(sale.tokenAmount)).format('0,0')} ${sale.tokenOut?.symbol}`}
+                      description={`${numeral(formatBigInt(sale.tokensForSale)).format('0,0')} ${
+                        sale.tokenOut?.symbol
+                      }`}
                     />
                     {isSaleClosed(sale) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
@@ -169,9 +171,9 @@ export function FairSaleView() {
                     />
                     <HeaderItem
                       title={isSaleClosed(sale) ? 'Amount Sold' : 'Amount for Sale'}
-                      description={`${numeral(formatBigInt(sale.tokenAmount, sale.tokenOut.decimals)).format('0,0')} ${
-                        sale.tokenOut?.symbol
-                      }`}
+                      description={`${numeral(formatBigInt(sale.tokensForSale, sale.tokenOut.decimals)).format(
+                        '0,0'
+                      )} ${sale.tokenOut?.symbol}`}
                     />
                     {(isSaleClosed(sale) || isSaleUpcoming(sale)) && <Flex flex={0.2} />}
                     {isSaleClosed(sale) && (

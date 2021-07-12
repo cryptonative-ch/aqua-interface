@@ -63,7 +63,7 @@ const getFairSale = (): FairSale => ({
   status: 'closed',
   startDate: 1585654141,
   endDate: 1617193741,
-  tokenAmount: BigNumber.from(5000),
+  tokensForSale: BigNumber.from(5000),
   name: 'Omen',
   tokenIn: {
     id: '0x141',
