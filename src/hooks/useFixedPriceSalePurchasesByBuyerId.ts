@@ -9,12 +9,18 @@ import {
   GetFixedPriceSalePurchasesByBuyer,
   GetFixedPriceSalePurchasesByBuyerVariables,
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
-  GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale,
 } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
+//helpers
+import { aggregatePurchases } from 'src/utils/Defaults'
+
+type SummarySales = Omit<
+  GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
+  '__typename' | 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+>[]
+
 interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
-  purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[]
-  sales: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases | undefined
+  sales: SummarySales
 }
 
 export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSalesQueryResult {
@@ -28,19 +34,21 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
   )
 
   let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
-  let sales: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases | undefined = undefined
+  let sales: SummarySales = []
 
   if (data) {
     purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.status !== 'CLAIMED')
-    sales = purchases.reduce((a: any, c: any) => {
+    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)
       return a
     }, [])
+    sales = Object.keys(groupBy).map((purchases: string) => {
+      return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
+    })
   }
 
   return {
-    purchases,
     sales,
     ...rest,
   }

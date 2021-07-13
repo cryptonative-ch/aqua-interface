@@ -27,7 +27,10 @@ import noToken from 'src/assets/svg/no-token-image.svg'
 import { isSaleClosed } from 'src/mesa/sale'
 
 // hooks
-import { useBids, aggregatePurchases } from 'src/hooks/useBids'
+import { useBids } from 'src/hooks/useBids'
+
+//helpers
+import { aggregatePurchases } from 'src/utils/Defaults'
 
 interface SaleSummaryProps {
   sale: Sale
