@@ -102,9 +102,9 @@ export function SalesView() {
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
         <Divider />
         <GridListSection>
-          {filteredSales?.map(sale => (
-            <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-              <SaleSummaryCard sale={sale} />
+          {userSales.map(sale => (
+            <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
+              <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
             </SaleSummaryWrapper>
           ))}
         </GridListSection>

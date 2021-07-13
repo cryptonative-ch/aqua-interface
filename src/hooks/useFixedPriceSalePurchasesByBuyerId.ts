@@ -43,6 +43,7 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
       a[c.sale.id].push(c)
       return a
     }, [])
+
     sales = Object.keys(groupBy).map((purchases: string) => {
       return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
     })

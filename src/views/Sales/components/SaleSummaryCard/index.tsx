@@ -1,8 +1,7 @@
 // External
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 
 // Components
 import { SaleFinalPrice } from 'src/views/Sales/components/SaleFinalPrice'
@@ -26,21 +25,14 @@ import { Sale } from 'src/interfaces/Sale'
 import noToken from 'src/assets/svg/no-token-image.svg'
 import { isSaleClosed } from 'src/mesa/sale'
 
-// hooks
-import { useBids } from 'src/hooks/useBids'
-
-//helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
-
 interface SaleSummaryProps {
   sale: Sale
+  purchaseAmount?: BigNumber
 }
 
-export function SaleSummaryCard({ sale }: SaleSummaryProps) {
+export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
   const [t] = useTranslation()
-  const { bids } = useBids(sale.id, sale.type)
-  const { account } = useWeb3React()
-  const amount = utils.formatUnits(aggregatePurchases(bids, account).amount, sale.tokenOut.decimals)
+  const amount = purchaseAmount ? utils.formatUnits(purchaseAmount, sale.tokenOut.decimals) : undefined
 
   return (
     <Card>
@@ -68,7 +60,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
                 <CardText color="grey">{t('texts.amountSold')}</CardText>
                 <SaleAmount closed sale={sale} />
               </Flex>
-              {bids && bids.length > 0 && (
+              {amount && (
                 <Flex flexDirection="row" justifyContent="space-between">
                   <CardText color="grey">{t('texts.yourPurchase')}</CardText>
                   <SaleActiveBids sale={sale} amount={amount} />
