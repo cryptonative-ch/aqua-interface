@@ -68,6 +68,7 @@ export function SalesView() {
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
+  console.log(userSales)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -99,15 +100,19 @@ export function SalesView() {
       <Container>
         <Title>Token Sales</Title>
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
-        <Divider />
-        <GridListSection>
-          {userSales.map(sale => (
-            <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
-              <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
-            </SaleSummaryWrapper>
-          ))}
-        </GridListSection>
-        <Divider />
+        {userSales.length > 0 && (
+          <>
+            <Divider />
+            <GridListSection>
+              {userSales.map(sale => (
+                <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
+                  <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
+                </SaleSummaryWrapper>
+              ))}
+            </GridListSection>
+            <Divider />
+          </>
+        )}
         <GridListSection>
           {error ? (
             <Center>
