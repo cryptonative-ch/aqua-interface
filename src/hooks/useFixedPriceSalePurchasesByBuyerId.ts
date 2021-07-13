@@ -21,6 +21,7 @@ type SummarySales = Omit<
 
 interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
   sales: SummarySales
+  saleIds: string[]
 }
 
 export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSalesQueryResult {
@@ -35,6 +36,7 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
 
   let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
   let sales: SummarySales = []
+  let saleIds: string[] = []
 
   if (data) {
     purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.status !== 'CLAIMED')
@@ -47,10 +49,13 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
     sales = Object.keys(groupBy).map((purchases: string) => {
       return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
     })
+
+    saleIds = Object.keys(groupBy)
   }
 
   return {
     sales,
+    saleIds,
     ...rest,
   }
 }

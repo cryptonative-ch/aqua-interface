@@ -67,8 +67,7 @@ export function SalesView() {
   const [filteredSales, setFilteredSales] = useState<Sale[]>()
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
-  const { sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
-  console.log(userSales)
+  const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -117,11 +116,13 @@ export function SalesView() {
           ) : loading ? (
             t('texts.loading')
           ) : (
-            filteredSales?.map(sale => (
-              <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                <SaleSummaryCard sale={sale} />
-              </SaleSummaryWrapper>
-            ))
+            filteredSales
+              ?.filter(x => !saleIds.includes(x.id))
+              .map(sale => (
+                <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
+                  <SaleSummaryCard sale={sale} />
+                </SaleSummaryWrapper>
+              ))
           )}
         </GridListSection>
       </Container>
