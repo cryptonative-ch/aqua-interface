@@ -1,6 +1,7 @@
 // External
 
 import React from 'react'
+import numeral from 'numeral'
 
 // Components
 
@@ -19,7 +20,7 @@ export function SaleActiveBids({ sale, amount }: SaleActiveBidsProps) {
   return (
     <>
       <Flex>
-        <Badge variant="in">{`${amount} ${sale.tokenOut.symbol}`}</Badge>
+        <Badge variant="in">{`${numeral(amount).format('0.[0000]')} ${sale.tokenOut.symbol}`}</Badge>
       </Flex>
     </>
   )
