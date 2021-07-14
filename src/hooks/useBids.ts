@@ -50,7 +50,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   } = useSelector(({ bids }) => bids)
 
   const { bids: totalBids } = useChain(saleId, saleType)
-  const bids = totalBids.filter((bid: any) => bid.buyer.toLowerCase() === account?.toLowerCase())
+  const bids = totalBids.filter((bid: any) => bid.user?.address.toLowerCase() === account?.toLowerCase())
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -62,12 +62,11 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
     //pull past bids from subgraph
     dispatch(initialBidRequest(true))
-
     mesa.subgraph
       .query(saleBidsQuery(saleId))
       .then(({ data }) => {
-        const { fixedPriceSales, fairSales } = data
-        const saleBids = fixedPriceSales ? fixedPriceSales[0].purchases : fairSales[0].bids
+        const { fixedPriceSale, fairSales } = data
+        const saleBids = fixedPriceSale ? fixedPriceSale.commitments : fairSales[0]?.bids
         const sales = saleBids.reduce(
           (_: BidsBySaleId, x: any) => ({
             [x.sale.id]: {
@@ -80,6 +79,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
         dispatch(initialBidSuccess(sales))
       })
       .catch(bidsError => {
+        console.error({ bidsError })
         dispatch(initialBidFailure(bidsError))
       })
   }, [account, dispatch, library, chainId])

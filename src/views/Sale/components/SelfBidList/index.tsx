@@ -33,25 +33,26 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   ]
 
   const isFixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
-  const isFixedBodyData = [
-    {
-      title: 'Withdraw',
-      purchases: {
-        amount:
-          numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format('0.[0000]') +
-          ' ' +
-          sale.tokenOut.symbol,
-        value:
-          numeral(
-            convertToBuyerPrice(formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)) *
-              formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
-          ).format('0.[0000]') +
-          ' ' +
-          sale.tokenIn.symbol,
-        status: (bids as FixedPriceSalePurchase).status,
-      },
-    },
-  ]
+
+  // const isFixedBodyData = [
+  //   {
+  //     title: 'Withdraw',
+  //     purchases: {
+  //       amount:
+  //         numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format('0.[0000]') +
+  //         ' ' +
+  //         sale.tokenOut.symbol,
+  //       value:
+  //         numeral(
+  //           convertToBuyerPrice(formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)) *
+  //             formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
+  //         ).format('0.[0000]') +
+  //         ' ' +
+  //         sale.tokenIn.symbol,
+  //       status: (bids as FixedPriceSalePurchase).status,
+  //     },
+  //   },
+  // ]
 
   const isFixedBodyDataOpen =
     bids.length > 0
@@ -75,7 +76,28 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
             })),
           },
         ]
-      : []
+      : [
+          {
+            title: 'Withdraw',
+            purchases: {
+              amount:
+                numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
+                  '0.[0000]'
+                ) +
+                ' ' +
+                sale.tokenOut.symbol,
+              value:
+                numeral(
+                  convertToBuyerPrice(formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)) *
+                    formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
+                ).format('0.[0000]') +
+                ' ' +
+                sale.tokenIn.symbol,
+              status: (bids as FixedPriceSalePurchase).status,
+            },
+          },
+        ]
+  console.log({ isFixedBodyDataOpen })
 
   const isFairSaleHeadData = [
     { title: 'Token Price' },
@@ -115,7 +137,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
       ]
 
   if (isFixed && isSaleClosed(sale)) {
-    return <Table headData={isFixedHeadData} bodyData={isFixedBodyData} isClosed={true} />
+    return <Table headData={isFixedHeadData} bodyData={isFixedBodyDataOpen} isClosed={true} />
   }
 
   if (isFixed && isSaleOpen(sale)) {
