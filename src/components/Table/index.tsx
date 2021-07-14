@@ -52,16 +52,14 @@ interface RowProps<T> extends BodyDataProps<T> {
 }
 
 const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, isMobile }: RowProps<T>) => {
-  console.log({ isClosed })
   return (
     <TableRow padding={isMobile ? '0 0 0 10px' : '0 0 0 20px'}>
       <TableColumn>
         <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
       </TableColumn>
       {Object.values(purchases)
-        // .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
+        .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
         .map((purchase, index) => {
-          console.log('wooooo')
           return (
             <TableColumn key={index}>
               <TokenPriceLabel>{purchase}</TokenPriceLabel>
