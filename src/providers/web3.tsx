@@ -28,9 +28,11 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
   useEffect(() => {
     injected.isAuthorized().then(isAuthorized => {
       if (isAuthorized) {
-        activate(injected, undefined, true).catch(error => {
-          console.error(getErrorMessage(error))
-        })
+        activate(injected, undefined, true)
+          .then(() => setActivatedConnector(ConnectorNames.Injected))
+          .catch(error => {
+            console.error(getErrorMessage(error))
+          })
       }
     })
   }, [])
@@ -69,8 +71,8 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
       connector.close()
       resetWalletConnect(connector)
     }
-    deactivate();
-    setActivatedConnector(undefined);
+    deactivate()
+    setActivatedConnector(undefined)
   }
   return (
     <Web3ConnectionContext.Provider
