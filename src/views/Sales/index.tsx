@@ -27,7 +27,7 @@ import { useFixedPriceSalePurchasesByBuyerQuery, SummarySales } from 'src/hooks/
 
 // Layouts
 import { Center } from 'src/layouts/Center'
-import { Divider } from 'src/components/Divider'
+import { DividerWithText } from 'src/components/Divider'
 import { useWeb3React } from '@web3-react/core'
 
 const SaleSummaryWrapper = styled(NavLink)(Card, {
@@ -69,10 +69,6 @@ export function SalesView() {
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
-  console.log(userSales)
-  console.log(sales)
-  console.log(userSales)
-
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }
@@ -116,7 +112,7 @@ export function SalesView() {
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
         {userSales.length > 0 && (
           <>
-            <Divider />
+            <DividerWithText color="#7B7F93">OR</DividerWithText>
             <GridListSection>
               {filteredUserSales?.map(sale => (
                 <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
@@ -124,7 +120,6 @@ export function SalesView() {
                 </SaleSummaryWrapper>
               ))}
             </GridListSection>
-            <Divider />
           </>
         )}
         <GridListSection>
