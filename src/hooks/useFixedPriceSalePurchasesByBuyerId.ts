@@ -14,7 +14,7 @@ import {
 //helpers
 import { aggregatePurchases } from 'src/utils/Defaults'
 
-type SummarySales = Omit<
+export type SummarySales = Omit<
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
   '__typename' | 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >[]
