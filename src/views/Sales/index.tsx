@@ -112,7 +112,7 @@ export function SalesView() {
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
         {userSales.length > 0 && (
           <>
-            <DividerWithText color="#7B7F93">OR</DividerWithText>
+            <DividerWithText color="#7B7F93">Active Bids</DividerWithText>
             <GridListSection>
               {filteredUserSales?.map(sale => (
                 <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
@@ -122,6 +122,7 @@ export function SalesView() {
             </GridListSection>
           </>
         )}
+        <DividerWithText color="#7B7F93">Other Sales</DividerWithText>
         <GridListSection>
           {error ? (
             <Center>

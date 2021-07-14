@@ -16,8 +16,15 @@ export const Divider = styled.div<DividerProps>(props => ({
   margin: '0',
 }))
 
-const Content = styled.span({
+const Content = styled(Flex)({
   padding: '0 10px 0 10px',
+  fontFamily: 'Inter',
+  fontSize: '16px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  lineHeight: '19px',
+  letterSpacing: 0,
+  width: '130px',
 })
 
 interface DividerWithTextProps {
@@ -27,8 +34,10 @@ interface DividerWithTextProps {
 
 export const DividerWithText = ({ children, color }: DividerWithTextProps) => {
   return (
-    <Flex alignItems="center">
-      <Content>{children}</Content>
+    <Flex flexDirection="row" alignItems="center">
+      <Content flexDirection="row" color={color}>
+        {children}
+      </Content>
       <Divider color={color} />
     </Flex>
   )
