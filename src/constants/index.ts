@@ -47,17 +47,6 @@ export const SUPPORTED_CHAINS = {
     },
   },
 }
-export const XDAI_CHAIN_PARAMETER = {
-  chainId: '0x64',
-  chainName: 'xDai',
-  nativeCurrency: {
-    name: 'xDai',
-    symbol: 'xDai',
-    decimals: 18,
-  },
-  rpcUrls: ['https://rpc.xdaichain.com/'],
-  blockExplorerUrls: ['https://blockscout.com/xdai/mainnet'],
-}
 export const SHOW_TERMS_AND_CONDITIONS = false
 export const IPFS_GATEWAY_URL = 'https://gateway.pinata.cloud'
 export const SALE_INFO_IPFS_HASH_MOCK = 'QmRVKi23YQmXLStgSK5bQS9QyiAeWZmjVNQTbx61NUAhcg'

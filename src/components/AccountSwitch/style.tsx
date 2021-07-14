@@ -111,4 +111,5 @@ export const ItemIcon = styled.img`
 export const SectionDivider = styled.hr`
   border: 1px dashed #dddde3;
   margin: 0;
+  background: #f2f2f2;
 `

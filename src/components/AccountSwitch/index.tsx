@@ -101,7 +101,7 @@ export const AccountSwitch: React.FC<AccountSwitchProps> = ({ isActive, setActiv
           <Section grey>
             {activatedConnector && (
               <SectionTitle>
-                <ItemIcon src={Web3ProviderIcons[activatedConnector]} alt={connectorName} /> Connected to{' '}
+                <ItemIcon src={Web3ProviderIcons[activatedConnector]} alt={connectorName} /> Connected via{' '}
                 {connectorName}
               </SectionTitle>
             )}

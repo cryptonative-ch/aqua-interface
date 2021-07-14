@@ -38,7 +38,7 @@ import { Web3ProvidersModal } from 'src/components/Web3ProvidersModal'
 import { AccountSwitch } from 'src/components/AccountSwitch'
 
 // Constants
-import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS, XDAI_CHAIN_PARAMETER } from 'src/constants'
+import { CHAIN_ID, FE_VERSION, SC_VERSION, SUPPORTED_CHAINS, SUPPORTED_CHAIN_IDS } from 'src/constants'
 
 export const Header: React.FC = () => {
   const [t] = useTranslation()
@@ -95,7 +95,7 @@ export const Header: React.FC = () => {
   const changeNetwork = () => {
     w.ethereum.request({
       method: 'wallet_addEthereumChain',
-      params: [XDAI_CHAIN_PARAMETER],
+      params: [SUPPORTED_CHAINS[CHAIN_ID.XDAI].parameters],
     })
   }
 
