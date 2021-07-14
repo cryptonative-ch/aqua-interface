@@ -12,7 +12,7 @@ import EthereumSVG from 'src/assets/svg/ethereum.svg'
 import XDaiSVG from 'src/assets/svg/xdai.svg'
 
 // Constants
-import { CHAIN_NAMES } from 'src/constants'
+import { CHAIN_ID } from 'src/constants'
 
 interface SocialIconsMap {
   [key: string]: string
@@ -30,8 +30,7 @@ export const Web3ProviderIcons: { [connectorName in ConnectorNames]: string } = 
   [ConnectorNames.WalletConnect]: WalletConnectSVG,
 }
 
-export const NetworkIcons: { [NetworkName in CHAIN_NAMES]: string } = {
-  [CHAIN_NAMES.MAINNET]: EthereumSVG,
-  [CHAIN_NAMES.RINKEBY]: EthereumSVG,
-  [CHAIN_NAMES.XDAI]: XDaiSVG,
+export const NetworkIcons: { [chainId in CHAIN_ID]: string } = {
+  [CHAIN_ID.RINKEBY]: EthereumSVG,
+  [CHAIN_ID.XDAI]: XDaiSVG,
 }

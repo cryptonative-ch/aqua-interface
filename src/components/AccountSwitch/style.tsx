@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   position: absolute;
   top: 56px;
   right: 32px;
-  z-index: 700;
+  z-index: 500;
   width: 100%;
   max-width: 350px;
   outline: 0;
@@ -57,7 +57,6 @@ export const SectionTitle = styled.div`
   font-family: Inter;
   font-size: 16px;
   text-align: center;
-  margin-bottom: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,6 +78,10 @@ export const ListLabel = styled.div`
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
   margin: 8px 0;
+`
+
+export const ListWrapper = styled.div`
+  margin-top: 24px;
 `
 
 export const ItemWrapper = styled.div`
