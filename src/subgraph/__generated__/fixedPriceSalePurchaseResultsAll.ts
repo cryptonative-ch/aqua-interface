@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSalePurchaseStatus, FixedPriceSaleStatus } from './../../../__generated__/globalTypes'
+import { FixedPriceSalePurchaseStatus, FixedPriceSaleStatus } from './globalTypes'
 
 // ====================================================
 // GraphQL fragment: fixedPriceSalePurchaseResultsAll

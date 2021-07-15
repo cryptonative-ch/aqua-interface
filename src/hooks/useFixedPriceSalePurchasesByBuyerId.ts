@@ -10,6 +10,7 @@ import {
   GetFixedPriceSalePurchasesByBuyerVariables,
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
 } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { FixedPriceSaleStatus } from 'src/subgraph/__generated__/globalTypes'
 
 //helpers
 import { aggregatePurchases } from 'src/utils/Defaults'
@@ -39,18 +40,19 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
   let saleIds: string[] = []
 
   if (data) {
-    purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.status !== 'CLAIMED')
+    purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.sale.status === FixedPriceSaleStatus.OPEN)
+    console.log(purchases)
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)
       return a
     }, [])
 
-    sales = Object.keys(groupBy).map((purchases: string) => {
+    saleIds = Object.keys(groupBy)
+
+    sales = saleIds.map((purchases: string) => {
       return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
     })
-
-    saleIds = Object.keys(groupBy)
   }
 
   return {

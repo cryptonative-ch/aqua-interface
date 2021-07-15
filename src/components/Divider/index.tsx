@@ -34,7 +34,7 @@ interface DividerWithTextProps {
 
 export const DividerWithText = ({ children, color }: DividerWithTextProps) => {
   return (
-    <Flex flexDirection="row" alignItems="center">
+    <Flex flexDirection="row" alignItems="center" margin="0 0 32px 0">
       <Content flexDirection="row" color={color}>
         {children}
       </Content>
