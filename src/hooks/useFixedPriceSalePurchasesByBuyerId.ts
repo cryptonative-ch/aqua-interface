@@ -41,7 +41,6 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
 
   if (data) {
     purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.sale.status === FixedPriceSaleStatus.OPEN)
-    console.log(purchases)
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)

@@ -9,6 +9,9 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 import Tick from 'src/assets/svg/Check-Icon.svg'
 
+//interfaces
+import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
+
 // Components
 import {
   TableContainer,
@@ -46,9 +49,12 @@ interface StatusWise {
   status: string | undefined
 }
 
-interface RowProps<T> extends BodyDataProps<T> {
+interface RowProps<T> {
   isMobile: boolean
   isClosed: boolean
+  title: string
+  purchases: T
+  color?: string
 }
 
 const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, isMobile }: RowProps<T>) => {
@@ -58,7 +64,9 @@ const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, is
         <TokenPriceLabel color={color}>{title}</TokenPriceLabel>
       </TableColumn>
       {Object.values(purchases)
-        .filter(skip => skip !== 'SUBMITTED' && skip !== 'CLAIMED')
+        .filter(
+          skip => skip !== FixedPriceSalePurchaseStatus.SUBMITTED && skip !== FixedPriceSalePurchaseStatus.CLAIMED
+        )
         .map((purchase, index) => {
           return (
             <TableColumn key={index}>
@@ -68,9 +76,7 @@ const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, is
         })}
       {isClosed ? (
         <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-          {Array.isArray(purchases) ? (
-            purchases[0].status === 'CLAIMED'
-          ) : purchases.status === 'CLAIMED' ? (
+          {purchases.status === FixedPriceSalePurchaseStatus.CLAIMED ? (
             <>
               <IconImg src={Tick} color="#4B9E98" margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'} />
               {!isMobile && (
@@ -133,13 +139,13 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
                 <TableRows isMobile={isMobile} isClosed={isClosed} purchases={purchases} color={color} title={title} />
               )
             }
-            purchases.map((purchase, index: number) => {
+            purchases.map((purchase, purchaseIndex: number) => {
               return (
                 <TableRows
-                  key={index}
+                  key={purchaseIndex}
                   isMobile={isMobile}
                   isClosed={isClosed}
-                  purchases={purchases}
+                  purchases={purchase}
                   color={color}
                   title={title}
                 />

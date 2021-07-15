@@ -17,7 +17,7 @@ import { Card } from 'src/components/CardSale'
 import { GridListSection } from 'src/components/Grid'
 
 // interface
-import { SaleDate } from 'src/interfaces/Sale'
+import { SaleDate, Sale } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 
 // Hooks
@@ -64,11 +64,13 @@ export function SalesView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
-  const [filteredSales, setFilteredSales] = useState<SaleDate[]>()
-  const [filteredUserSales, setFilteredUserSales] = useState<SummarySales>()
+  const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
+  const [filteredUserSales, setFilteredUserSales] = useState<SummarySales>([])
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
+  console.log(userSales)
+  console.log(account)
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }
@@ -77,17 +79,24 @@ export function SalesView() {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
 
-  const sortByStatus = (unsortedSale: SaleDate[]) => {
-    if (saleStatus === SaleStatus.UPCOMING) {
-      return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.startDate - a.startDate)
-    } else if (saleStatus === SaleStatus.LIVE) {
-      return unsortedSale.sort((a: SaleDate, b: SaleDate) => a.endDate - b.endDate)
-    } else {
-      return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.endDate - a.endDate)
+  const isSaleDate = (array: SummarySales | SaleDate[]): array is SaleDate[] => {
+    if (array.length == 0) {
+      return false
     }
+    return typeof (array[0] as SaleDate).startDate !== 'undefined'
   }
 
-  const tempSortByStatus = (unsortedSale: SummarySales) => {
+  const sortByStatus = (unsortedSale: SaleDate[] | SummarySales) => {
+    if (isSaleDate(unsortedSale)) {
+      if (saleStatus === SaleStatus.UPCOMING) {
+        return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.startDate - a.startDate)
+      } else if (saleStatus === SaleStatus.LIVE) {
+        return unsortedSale.sort((a: SaleDate, b: SaleDate) => a.endDate - b.endDate)
+      } else {
+        return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.endDate - a.endDate)
+      }
+    }
+
     if (saleStatus === SaleStatus.UPCOMING) {
       return unsortedSale.sort((a: any, b: any) => b.sale.startDate - a.sale.startDate)
     } else if (saleStatus === SaleStatus.LIVE) {
@@ -96,14 +105,15 @@ export function SalesView() {
       return unsortedSale.sort((a: any, b: any) => b.sale.endDate - a.sale.endDate)
     }
   }
+
   useEffect(() => {
     if (sales || userSales) {
       const tempSales = [...sales].filter(saleFilterMap[saleStatus])
       const userTempSales = [...userSales].filter(x => saleFilterMap[saleStatus](x.sale))
-      setFilteredUserSales(tempSortByStatus(userTempSales))
-      setFilteredSales(sortByStatus(tempSales))
+      setFilteredUserSales(sortByStatus(userTempSales) as SummarySales)
+      setFilteredSales(sortByStatus(tempSales) as SaleDate[])
     }
-  }, [saleStatus, loading])
+  }, [saleStatus, loading, account])
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
@@ -140,7 +150,7 @@ export function SalesView() {
               ?.filter(x => !saleIds.includes(x.id))
               .map(sale => (
                 <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                  <SaleSummaryCard sale={sale as any} />
+                  <SaleSummaryCard sale={sale as Sale} />
                 </SaleSummaryWrapper>
               ))
           )}
