@@ -139,7 +139,7 @@ export const Table = <T extends StatusWise>({ headData, bodyData, isClosed }: Ta
                 <TableRows isMobile={isMobile} isClosed={isClosed} purchases={purchases} color={color} title={title} />
               )
             }
-            purchases.map((purchase, purchaseIndex: number) => {
+            return purchases.map((purchase, purchaseIndex: number) => {
               return (
                 <TableRows
                   key={purchaseIndex}
