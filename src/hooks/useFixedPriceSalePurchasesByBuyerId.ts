@@ -1,6 +1,6 @@
 // External
 import { QueryResult, useQuery } from '@apollo/client'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 // Query
 import { GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER } from 'src/subgraph/queries'

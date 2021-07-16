@@ -73,7 +73,6 @@ export function SalesView() {
     dispatch(setSelectedSaleStatus(status))
   }
 
-  console.log(userSales)
   useMountEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
@@ -106,20 +105,25 @@ export function SalesView() {
   }
 
   useEffect(() => {
-    if (sales || userSales) {
-      const tempSales = [...sales].filter(saleFilterMap[saleStatus])
-      const userTempSales = [...userSales].filter(x => saleFilterMap[saleStatus](x.sale))
-      setFilteredUserSales(sortByStatus(userTempSales) as SummarySales)
-      setFilteredSales(sortByStatus(tempSales.filter(x => !saleIds.includes(x.id))) as SaleDate[])
+    if (sales && userSales) {
+      setFilteredUserSales(sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale))) as SummarySales)
+      setFilteredSales(
+        sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]
+      )
     }
   }, [saleStatus, loading])
+
+  useEffect(() => {
+    const placeholder = 0
+    placeholder
+  }, [filteredUserSales])
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Container>
         <Title>Token Sales</Title>
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
-        {userSales.length > 0 && (
+        {filteredUserSales.length > 0 && (
           <>
             {saleStatus === SaleStatus.LIVE ? (
               <DividerWithText color="#7B7F93">Active Bids</DividerWithText>
@@ -136,7 +140,7 @@ export function SalesView() {
           </>
         )}
 
-        {userSales.length > 0 && filteredSales.length > 0 && (
+        {filteredUserSales.length > 0 && filteredSales.length > 0 && (
           <DividerWithText color="#7B7F93">Other Sales</DividerWithText>
         )}
         <GridListSection>
