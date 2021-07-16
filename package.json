@@ -75,7 +75,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start-mock": "env-cmd -f .env.mock react-scripts start",
-    "predeploy": "npm run build",
+    "predeploy": "Run npm run build-xdai",
     "deploy": "gh-pages -d build",
     "start-xdai": "env-cmd -f .env.development.xdai react-scripts start",
     "build-xdai": "env-cmd -f .env.production.xdai react-scripts build",
