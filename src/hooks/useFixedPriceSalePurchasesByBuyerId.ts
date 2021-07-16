@@ -1,5 +1,6 @@
 // External
 import { QueryResult, useQuery } from '@apollo/client'
+import { useState, useEffect } from 'react'
 
 // Query
 import { GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER } from 'src/subgraph/queries'
@@ -25,7 +26,7 @@ interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
   saleIds: string[]
 }
 
-export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSalesQueryResult {
+export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefined | null): UseSalesQueryResult {
   const { data, ...rest } = useQuery<GetFixedPriceSalePurchasesByBuyer, GetFixedPriceSalePurchasesByBuyerVariables>(
     GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER,
     {
@@ -35,12 +36,22 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string): UseSale
     }
   )
 
+  useEffect(() => {
+    if (!buyerId) {
+      return
+    }
+  }, [buyerId])
+
   let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
   let sales: SummarySales = []
   let saleIds: string[] = []
 
   if (data) {
-    purchases = data.fixedPriceSalePurchases.filter(purchase => purchase.sale.status === FixedPriceSaleStatus.OPEN)
+    purchases = data.fixedPriceSalePurchases.filter(
+      purchase =>
+        // included upcoming as subgraph does not update status from upcoming to open
+        purchase.sale.status === FixedPriceSaleStatus.OPEN || purchase.sale.status === FixedPriceSaleStatus.UPCOMING
+    )
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)

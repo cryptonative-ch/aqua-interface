@@ -68,13 +68,12 @@ export function SalesView() {
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales>([])
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
-  const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account!)
-  console.log(userSales)
-  console.log(account)
+  const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account)
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }
 
+  console.log(userSales)
   useMountEffect(() => {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
@@ -111,9 +110,9 @@ export function SalesView() {
       const tempSales = [...sales].filter(saleFilterMap[saleStatus])
       const userTempSales = [...userSales].filter(x => saleFilterMap[saleStatus](x.sale))
       setFilteredUserSales(sortByStatus(userTempSales) as SummarySales)
-      setFilteredSales(sortByStatus(tempSales) as SaleDate[])
+      setFilteredSales(sortByStatus(tempSales.filter(x => !saleIds.includes(x.id))) as SaleDate[])
     }
-  }, [saleStatus, loading, account])
+  }, [saleStatus, loading])
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
@@ -137,7 +136,9 @@ export function SalesView() {
           </>
         )}
 
-        {userSales.length > 0 && <DividerWithText color="#7B7F93">Other Sales</DividerWithText>}
+        {userSales.length > 0 && filteredSales.length > 0 && (
+          <DividerWithText color="#7B7F93">Other Sales</DividerWithText>
+        )}
         <GridListSection>
           {error ? (
             <Center>
@@ -146,13 +147,11 @@ export function SalesView() {
           ) : loading ? (
             t('texts.loading')
           ) : (
-            filteredSales
-              ?.filter(x => !saleIds.includes(x.id))
-              .map(sale => (
-                <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                  <SaleSummaryCard sale={sale as Sale} />
-                </SaleSummaryWrapper>
-              ))
+            filteredSales?.map(sale => (
+              <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
+                <SaleSummaryCard sale={sale as Sale} />
+              </SaleSummaryWrapper>
+            ))
           )}
         </GridListSection>
       </Container>

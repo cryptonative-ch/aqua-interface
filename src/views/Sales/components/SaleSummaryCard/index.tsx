@@ -33,7 +33,6 @@ interface SaleSummaryProps {
 export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
   const [t] = useTranslation()
   const amount = purchaseAmount ? utils.formatUnits(purchaseAmount, sale.tokenOut.decimals) : undefined
-
   return (
     <Card>
       <CardBody>
@@ -52,7 +51,7 @@ export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.salesType')}</CardText>
-            {sale.type == 'FixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}
+            <CardText>Fixed Price Sale</CardText>
           </Flex>
           {isSaleClosed(sale) ? (
             <>
@@ -60,12 +59,6 @@ export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
                 <CardText color="grey">{t('texts.amountSold')}</CardText>
                 <SaleAmount closed sale={sale} />
               </Flex>
-              {amount && (
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <CardText color="grey">{t('texts.yourPurchase')}</CardText>
-                  <SaleActiveBids sale={sale} amount={amount} />
-                </Flex>
-              )}
             </>
           ) : (
             <div>
@@ -78,6 +71,12 @@ export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
                 <CardText color="grey">{t('texts.amountForSale')}</CardText>
                 <SaleAmount sale={sale} />
               </Flex>
+              {amount && (
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <CardText color="grey">{t('texts.yourPurchase')}</CardText>
+                  <SaleActiveBids sale={sale} amount={amount} />
+                </Flex>
+              )}
             </div>
           )}
 
