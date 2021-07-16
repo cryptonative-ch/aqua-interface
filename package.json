@@ -1,4 +1,5 @@
 {
+  "homepage": "http://cryptonative-ch.github.io/mesa-interface",
   "name": "mesa-interface",
   "version": "0.1.0",
   "dependencies": {
@@ -74,6 +75,8 @@
   "scripts": {
     "start": "react-scripts start",
     "start-mock": "env-cmd -f .env.mock react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start-xdai": "env-cmd -f .env.development.xdai react-scripts start",
     "build-xdai": "env-cmd -f .env.production.xdai react-scripts build",
     "build-mainnet": "env-cmd -f .env.production.ethereum react-scripts build",
@@ -115,6 +118,7 @@
     "@types/testing-library__dom": "^7.5.0",
     "apollo": "^2.33.2",
     "cors": "^2.8.5",
+    "gh-pages": "^3.2.3",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "husky": "^5.1.3",

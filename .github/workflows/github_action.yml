@@ -31,3 +31,5 @@ jobs:
 
       - name: Build
         run: npm run build-xdai
+      - name: Deploy to GH Pages
+        run: npm run deploy
