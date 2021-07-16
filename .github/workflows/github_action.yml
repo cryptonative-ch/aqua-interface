@@ -31,4 +31,7 @@ jobs:
         run: npm test -- --coverage --passWithNoTests
 
       - name: Deploy to GH Pages
-        run: npm run deploy
+        run: |
+          git config --global user.email "cryptonative-ch@crypto.com"
+          git config --global user.name "cryptonative-ch"       
+          npm run deploy
