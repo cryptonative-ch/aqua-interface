@@ -49,12 +49,10 @@ interface StatusWise {
   status: string | undefined
 }
 
-interface RowProps<T> {
+interface RowProps<T> extends Omit<BodyDataProps<T>, 'purchases'> {
   isMobile: boolean
   isClosed: boolean
-  title: string
   purchases: T
-  color?: string
 }
 
 const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, isMobile }: RowProps<T>) => {

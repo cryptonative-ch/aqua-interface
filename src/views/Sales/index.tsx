@@ -65,7 +65,7 @@ export function SalesView() {
   const [t] = useTranslation()
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
   const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
-  const [filteredUserSales, setFilteredUserSales] = useState<SummarySales>([])
+  const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account)
@@ -77,14 +77,14 @@ export function SalesView() {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
 
-  const isSaleDate = (array: SummarySales | SaleDate[]): array is SaleDate[] => {
+  const isSaleDate = (array: SummarySales[] | SaleDate[]): array is SaleDate[] => {
     if (array.length == 0) {
       return false
     }
     return typeof (array[0] as SaleDate).startDate !== 'undefined'
   }
 
-  const sortByStatus = (unsortedSale: SaleDate[] | SummarySales) => {
+  const sortByStatus = (unsortedSale: SaleDate[] | SummarySales[]) => {
     if (isSaleDate(unsortedSale)) {
       if (saleStatus === SaleStatus.UPCOMING) {
         return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.startDate - a.startDate)
@@ -96,17 +96,19 @@ export function SalesView() {
     }
 
     if (saleStatus === SaleStatus.UPCOMING) {
-      return unsortedSale.sort((a: any, b: any) => b.sale.startDate - a.sale.startDate)
+      return unsortedSale.sort((a: SummarySales, b: SummarySales) => b.sale.startDate - a.sale.startDate)
     } else if (saleStatus === SaleStatus.LIVE) {
-      return unsortedSale.sort((a: any, b: any) => a.sale.endDate - b.sale.endDate)
+      return unsortedSale.sort((a: SummarySales, b: SummarySales) => a.sale.endDate - b.sale.endDate)
     } else {
-      return unsortedSale.sort((a: any, b: any) => b.sale.endDate - a.sale.endDate)
+      return unsortedSale.sort((a: SummarySales, b: SummarySales) => b.sale.endDate - a.sale.endDate)
     }
   }
 
   useEffect(() => {
     if (sales && userSales) {
-      setFilteredUserSales(sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale))) as SummarySales)
+      setFilteredUserSales(
+        sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale))) as SummarySales[]
+      )
       setFilteredSales(
         sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]
       )
@@ -126,9 +128,9 @@ export function SalesView() {
         {filteredUserSales.length > 0 && (
           <>
             {saleStatus === SaleStatus.LIVE ? (
-              <DividerWithText color="#7B7F93">Active Bids</DividerWithText>
+              <DividerWithText color="#7B7F93">{t('texts.activeBids')}</DividerWithText>
             ) : saleStatus === SaleStatus.CLOSED ? (
-              <DividerWithText color="#7B7F93">Bids Won</DividerWithText>
+              <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
             ) : null}
             <GridListSection>
               {filteredUserSales?.map(sale => (
@@ -141,7 +143,7 @@ export function SalesView() {
         )}
 
         {filteredUserSales.length > 0 && filteredSales.length > 0 && (
-          <DividerWithText color="#7B7F93">Other Sales</DividerWithText>
+          <DividerWithText color="#7B7F93">{t('texts.otherSales')}</DividerWithText>
         )}
         <GridListSection>
           {error ? (

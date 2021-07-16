@@ -19,10 +19,10 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 export type SummarySales = Omit<
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
   '__typename' | 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
->[]
+>
 
 interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
-  sales: SummarySales
+  sales: SummarySales[]
   saleIds: string[]
 }
 
@@ -43,7 +43,7 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
   }, [buyerId])
 
   let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
-  let sales: SummarySales = []
+  let sales: SummarySales[] = []
   let saleIds: string[] = []
 
   if (data) {
