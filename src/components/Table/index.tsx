@@ -87,11 +87,12 @@ const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, is
             </>
           ) : (
             <>
-              <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />, !isMobile && (
-              <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
-                Unclaimed
-              </TokenPriceLabel>
-              )
+              <IconImg src={WarningSVG} margin={'4px 4px 4px 8px'} />
+              {!isMobile && (
+                <TokenPriceLabel color="#000629" padding="4px 8px 4px 0">
+                  Unclaimed
+                </TokenPriceLabel>
+              )}
             </>
           )}
         </Flex>
