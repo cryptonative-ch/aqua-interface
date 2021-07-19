@@ -17,13 +17,17 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
+      - name: checkout
       - uses: actions/checkout@v2
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Remove dependencies
         run: rm -rf package-lock.json node_modules
+
       - name: Install dependencies
         run: npm install
 
@@ -31,7 +35,9 @@ jobs:
         run: npm test -- --coverage --passWithNoTests
 
       - name: Deploy to GH Pages
-        run: |
-          git config --global user.email "cryptonative-ch@crypto.com"
-          git config --global user.name "cryptonative-ch"       
-          npm run deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          BRANCH: gh-pages 
+          FOLDER: build 
+          CLEAN: true 
