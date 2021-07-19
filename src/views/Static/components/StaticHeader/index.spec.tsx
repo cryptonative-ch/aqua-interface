@@ -12,6 +12,6 @@ import { StaticHeader } from 'src/views/Static/components/StaticHeader/index'
 describe('StaticHeader', () => {
   test('it should render the correct static header', async () => {
     const { getByText } = render(<StaticHeader />)
-    expect(getByText('About Mesa')).toBeInTheDocument()
+    expect(getByText('About Aqua')).toBeInTheDocument()
   })
 })

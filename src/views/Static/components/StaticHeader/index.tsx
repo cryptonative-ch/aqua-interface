@@ -60,7 +60,7 @@ export const StaticHeader: React.FC = () => {
       <HeaderContainer isMobile={isMobile}>
         <MobileIconContainer src={MesaSVG} />
         <Flex flexDirection="row" flexWrap="wrap" marginLeft="16px">
-          <MobileHeaderText>About Mesa</MobileHeaderText>
+          <MobileHeaderText>About Aqua</MobileHeaderText>
         </Flex>
       </HeaderContainer>
     )
@@ -69,7 +69,7 @@ export const StaticHeader: React.FC = () => {
   return (
     <HeaderContainer isMobile={isMobile}>
       <IconContainer src={MesaSVG} />
-      <HeaderText>About Mesa</HeaderText>
+      <HeaderText>About Aqua</HeaderText>
     </HeaderContainer>
   )
 }
