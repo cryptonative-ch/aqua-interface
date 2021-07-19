@@ -54,12 +54,10 @@ export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
             <CardText>Fixed Price Sale</CardText>
           </Flex>
           {isSaleClosed(sale) ? (
-            <>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <CardText color="grey">{t('texts.amountSold')}</CardText>
-                <SaleAmount closed sale={sale} />
-              </Flex>
-            </>
+            <Flex flexDirection="row" justifyContent="space-between">
+              <CardText color="grey">{t('texts.amountSold')}</CardText>
+              <SaleAmount closed sale={sale} />
+            </Flex>
           ) : (
             <div>
               <Flex flexDirection="row" justifyContent="space-between">

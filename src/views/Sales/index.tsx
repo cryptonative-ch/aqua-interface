@@ -115,11 +115,6 @@ export function SalesView() {
     }
   }, [saleStatus, loading])
 
-  useEffect(() => {
-    const placeholder = 0
-    placeholder
-  }, [filteredUserSales])
-
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Container>

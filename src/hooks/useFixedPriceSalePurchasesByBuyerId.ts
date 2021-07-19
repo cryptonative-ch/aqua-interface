@@ -1,6 +1,5 @@
 // External
 import { QueryResult, useQuery } from '@apollo/client'
-import { useEffect } from 'react'
 
 // Query
 import { GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER } from 'src/subgraph/queries'
@@ -35,12 +34,6 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
       },
     }
   )
-
-  useEffect(() => {
-    if (!buyerId) {
-      return
-    }
-  }, [buyerId])
 
   let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
   let sales: SummarySales[] = []

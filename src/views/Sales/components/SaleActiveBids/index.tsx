@@ -18,10 +18,8 @@ interface SaleActiveBidsProps {
 
 export function SaleActiveBids({ sale, amount }: SaleActiveBidsProps) {
   return (
-    <>
-      <Flex>
-        <Badge variant="in">{`${numeral(amount).format('0.[0000]')} ${sale.tokenOut.symbol}`}</Badge>
-      </Flex>
-    </>
+    <Flex>
+      <Badge variant="in">{`${numeral(amount).format('0.[0000]')} ${sale.tokenOut.symbol}`}</Badge>
+    </Flex>
   )
 }
