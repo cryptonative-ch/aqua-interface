@@ -34,6 +34,9 @@ jobs:
       - name: Run the tests and generate coverage report
         run: npm test -- --coverage --passWithNoTests
 
+      - name: build
+        run: npm run build-xdai 
+
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
