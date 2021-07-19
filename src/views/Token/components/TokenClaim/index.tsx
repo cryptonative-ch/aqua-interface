@@ -31,7 +31,10 @@ import noToken from 'src/assets/svg/no-token-image.svg'
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { useTokenClaim } from 'src/hooks/useTokenClaim'
-import { useBids, aggregatePurchases } from 'src/hooks/useBids'
+import { useBids } from 'src/hooks/useBids'
+
+//helpers
+import { aggregatePurchases } from 'src/utils/Defaults'
 
 // Theme
 import { theme } from 'src/styles/theme'

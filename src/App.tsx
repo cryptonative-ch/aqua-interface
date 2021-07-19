@@ -10,7 +10,7 @@ import { CookiesProvider } from 'react-cookie'
 import Axios from 'axios'
 
 // Providers
-import { Web3ConnectionProvider } from "src/providers/web3";
+import { Web3ConnectionProvider } from 'src/providers/web3'
 
 // Styles
 import { GlobalStyle } from 'src/styles/Global'

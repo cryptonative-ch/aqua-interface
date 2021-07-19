@@ -1,50 +1,54 @@
 // External
 import styled from 'styled-components'
-import { LayoutProps, ColorProps, layout, color } from 'styled-system'
+import { LayoutProps, background, ColorProps, layout, color, variant } from 'styled-system'
 
 type BadgeProps = LayoutProps &
   ColorProps & {
-    width?: string
+    variant?: string
   }
 
 export const Badge = styled.div<BadgeProps>(
-  props => ({
-    height: '27px',
-    width: props.width === 'presale' ? '80px' : '70px',
+  () => ({
     borderRadius: '0px',
-    background: '#000629',
     justifyContent: 'center',
     margin: '4px 4px',
-  }),
-  props =>
-    `
-@media (max-width: ${props.theme.breakpoints[2]}) {
-  height: 25px;
-  width: ${props.width === 'presale' ? '73px' : '63px'},;
-  padding: 4px, 8px, 4px, 8px
-}
-`,
-  layout,
-  color
-)
-
-export const Content = styled.h3(
-  {
     fontFamily: 'Inter',
     fontSize: '16px',
+    verticalAlign: 'middle',
     fontStyle: 'normal',
     fontWeight: 500,
     letterSpacing: '0',
     textAlign: 'center',
     color: 'white',
-    justifyContent: 'center',
-    margin: '0px',
-    padding: '2px 4px',
-  },
+    padding: '4px 8px',
+  }),
   props =>
     `
 @media (max-width: ${props.theme.breakpoints[2]}) {
-  font-size: 14px;
+  padding: 4px, 8px, 4px, 8px
 }
-`
+`,
+  layout,
+  color,
+  background,
+  variant({
+    variants: {
+      public: {
+        background: '#000629',
+        color: 'white',
+      },
+      in: {
+        background: 'rgba(75, 158, 152, 0.35)',
+        color: '#000629',
+      },
+      out: {
+        background: 'rgba(225, 95, 95, 0.35)',
+        color: '#000629',
+      },
+    },
+  })
 )
+
+Badge.defaultProps = {
+  variant: 'public',
+}
