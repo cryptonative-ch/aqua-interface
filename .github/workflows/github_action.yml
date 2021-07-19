@@ -6,6 +6,7 @@ on:
       - main
       - dev
       - gh-pages
+      - feature/gh-pages
   pull_request:
     branches:
       - main
