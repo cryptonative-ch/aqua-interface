@@ -24,10 +24,12 @@ import { Sale } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // hooks
-import { aggregatePurchases, useBids } from 'src/hooks/useBids'
+import { useBids } from 'src/hooks/useBids'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'react-i18next'
 
+//helpers
+import { aggregatePurchases } from 'src/utils/Defaults'
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
 type BarBallMarker = BarActiveProps & MarginProps

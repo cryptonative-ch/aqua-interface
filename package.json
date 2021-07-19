@@ -84,7 +84,7 @@
     "eject": "react-scripts eject",
     "lint:fix": "eslint src/** --ext .js,.ts,.tsx --fix",
     "typechain": "typechain --target ethers-v5 --outDir src/contracts abis/*.json",
-    "apollo-codegen": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
+    "apollo-codegen": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=src/subgraph/__generated__/globalTypes.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

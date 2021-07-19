@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSaleStatus } from './globalTypes'
+import { FixedPriceSalePurchaseStatus, FixedPriceSaleStatus } from './globalTypes'
 
 // ====================================================
-// GraphQL fragment: fixedPriceSaleResults
+// GraphQL fragment: fixedPriceSalePurchaseResultsAll
 // ====================================================
 
-export interface fixedPriceSaleResults_tokenIn {
+export interface fixedPriceSalePurchaseResultsAll_sale_tokenIn {
   __typename: 'Token'
   /**
    * Token address
@@ -29,7 +29,7 @@ export interface fixedPriceSaleResults_tokenIn {
   decimals: any
 }
 
-export interface fixedPriceSaleResults_tokenOut {
+export interface fixedPriceSalePurchaseResultsAll_sale_tokenOut {
   __typename: 'Token'
   /**
    * Token address
@@ -49,7 +49,7 @@ export interface fixedPriceSaleResults_tokenOut {
   decimals: any
 }
 
-export interface fixedPriceSaleResults {
+export interface fixedPriceSalePurchaseResultsAll_sale {
   __typename: 'FixedPriceSale'
   id: string
   /**
@@ -95,9 +95,33 @@ export interface fixedPriceSaleResults {
   /**
    * Token investors can use to bid
    */
-  tokenIn: fixedPriceSaleResults_tokenIn
+  tokenIn: fixedPriceSalePurchaseResultsAll_sale_tokenIn
   /**
    * Token investor get
    */
-  tokenOut: fixedPriceSaleResults_tokenOut
+  tokenOut: fixedPriceSalePurchaseResultsAll_sale_tokenOut
+}
+
+export interface fixedPriceSalePurchaseResultsAll {
+  __typename: 'FixedPriceSalePurchase'
+  /**
+   * The purchase ID
+   */
+  id: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
+  /**
+   * Address of buyer
+   */
+  buyer: any
+  /**
+   * Amount of tokens
+   */
+  amount: any
+  status: FixedPriceSalePurchaseStatus
+  /**
+   * FixedPriceSale this purchase is associated with
+   */
+  sale: fixedPriceSalePurchaseResultsAll_sale
 }

@@ -105,7 +105,7 @@ export const Header: React.FC = () => {
         <MobileMenu expanded={menuOpen}>
           <Wrapper padding="0 0 0 24px" backgroundColor="#F2F2F2">
             <Flex flexDirection="column" flex={1}>
-              <Title>Mesa</Title>
+              <Title>Aqua</Title>
               <Description marginLeft="0">from DXdao</Description>
             </Flex>
             <MenuIcon src={CloseImg} onClick={() => setMenuOpen(false)} />
@@ -155,7 +155,7 @@ export const Header: React.FC = () => {
             <a href="https://dxdao.eth.link">
               <MenuOption>DXdao</MenuOption>
             </a>
-            <a href="https://twitter.com/mesa_eth">
+            <a href="https://twitter.com/aqua_eth">
               <MenuOption>Twitter</MenuOption>
             </a>
             <a href="https://discord.com/invite/4QXEJQkvHH">
@@ -175,7 +175,7 @@ export const Header: React.FC = () => {
           </Flex>
         </MobileMenu>
         <Flex flexDirection="column" flex={1}>
-          <Title>Mesa</Title>
+          <Title>Aqua</Title>
           <Description marginLeft="0">from DXdao</Description>
         </Flex>
         {!account && !isConnecting && (
@@ -216,7 +216,7 @@ export const Header: React.FC = () => {
       )}
       <Wrapper padding="0 32px">
         <Row>
-          <Title>Mesa</Title>
+          <Title>Aqua</Title>
           <Description>from DXdao</Description>
         </Row>
         <Button

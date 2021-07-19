@@ -1,6 +1,6 @@
-# Mesa Interface
+# Aqua Interface
 
-Mesa is an open market for Initial DEX Offerings (IDO). Mesa Interface is the portal to create, manage and participate in IDOs.
+Aqua is an open market for Initial DEX Offerings (IDO). Aqua Interface is the portal to create, manage and participate in IDOs.
 
 ## Build
 

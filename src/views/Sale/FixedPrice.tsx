@@ -47,8 +47,11 @@ import { useIpfsFile } from 'src/hooks/useIpfsFile'
 import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 // Hooks
-import { useBids, aggregatePurchases } from 'src/hooks/useBids'
+import { useBids } from 'src/hooks/useBids'
 import { useTranslation } from 'react-i18next'
+
+//helpers
+import { aggregatePurchases } from 'src/utils/Defaults'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',
