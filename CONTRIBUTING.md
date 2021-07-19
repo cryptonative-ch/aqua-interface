@@ -1,8 +1,8 @@
-# Mesa Contribution Guideline
+# Aqua Contribution Guideline
 
 # Abstract
 
-Mesa is an open-source project, including but not limited to the Front End interface and Solidity Smart Contracts. As such, a Contribution Guideline shall facilitate the foundation for a collaborative ground for every contributor working on Mesa codebase(s).
+Aqua is an open-source project, including but not limited to the Front End interface and Solidity Smart Contracts. As such, a Contribution Guideline shall facilitate the foundation for a collaborative ground for every contributor working on Aqua codebase(s).
 
 # Tickets
 
@@ -35,7 +35,7 @@ Some more toughts on branches see [Phil Hord's answer on Stack Overflow](https:/
 
 # Style Project Structure
 
-At Mesa, we are using React to build the frontend. Our current code structure looks like.
+At Aqua, we are using React to build the frontend. Our current code structure looks like.
 
 ## General Components
 
@@ -70,7 +70,7 @@ Layouts can be used to bootstrap a View while maintaining a unity among.
 
 ## React Hooks
 
-Mesa uses React 17.
+Aqua uses React 17.
 
 1. Directory `src/hooks`
 2. Layout `src/hooks/use<HookName>.tsx`

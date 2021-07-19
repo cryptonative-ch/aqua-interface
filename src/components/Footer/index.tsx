@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({}) => {
         <a href="https://dxdao.eth.link">
           <Title isFooter>DXdao</Title>
         </a>
-        <a href="https://twitter.com/mesa_eth">
+        <a href="https://twitter.com/aqua_eth">
           <Title isFooter>Twitter</Title>
         </a>
         <a href="https://discord.com/invite/4QXEJQkvHH">
