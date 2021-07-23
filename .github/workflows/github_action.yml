@@ -3,13 +3,11 @@ name: Develop CI/CD
 on:
   push:
     branches:
-      - main
       - dev
       - gh-pages
       - feature/gh-pages
   pull_request:
     branches:
-      - main
       - dev
 jobs:
   develop-ci:
