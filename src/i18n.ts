@@ -10,10 +10,7 @@ i18n
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath:
-        process.env.NODE_ENV == 'production'
-          ? '/locales/{{lng}}/{{ns}}.json'
-          : 'mesa-interface/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/mesa-interface/locales/{{lng}}/{{ns}}.json',
     },
     fallbackLng: 'en',
     interpolation: {
