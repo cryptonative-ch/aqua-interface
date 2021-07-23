@@ -10,7 +10,7 @@ import { CookiesProvider } from 'react-cookie'
 import Axios from 'axios'
 
 // Providers
-import { Web3ConnectionProvider } from "src/providers/web3";
+import { Web3ConnectionProvider } from 'src/providers/web3'
 
 // Styles
 import { GlobalStyle } from 'src/styles/Global'
@@ -96,7 +96,7 @@ export const App = () => {
               <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <Suspense fallback={<Center minHeight="100vh">LOADING</Center>}>
-                  <BrowserRouter>
+                  <BrowserRouter basename="/mesa-interface">
                     <Container>
                       <Header />
                       <AppRouter />
