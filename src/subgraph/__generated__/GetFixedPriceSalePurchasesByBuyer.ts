@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSaleStatus } from './globalTypes'
+import { FixedPriceSalePurchaseStatus, FixedPriceSaleStatus } from './globalTypes'
 
 // ====================================================
-// GraphQL fragment: fixedPriceSaleResults
+// GraphQL query operation: GetFixedPriceSalePurchasesByBuyer
 // ====================================================
 
-export interface fixedPriceSaleResults_tokenIn {
+export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenIn {
   __typename: 'Token'
   /**
    * Token address
@@ -29,7 +29,7 @@ export interface fixedPriceSaleResults_tokenIn {
   decimals: any
 }
 
-export interface fixedPriceSaleResults_tokenOut {
+export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenOut {
   __typename: 'Token'
   /**
    * Token address
@@ -49,7 +49,7 @@ export interface fixedPriceSaleResults_tokenOut {
   decimals: any
 }
 
-export interface fixedPriceSaleResults {
+export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale {
   __typename: 'FixedPriceSale'
   id: string
   /**
@@ -95,9 +95,41 @@ export interface fixedPriceSaleResults {
   /**
    * Token investors can use to bid
    */
-  tokenIn: fixedPriceSaleResults_tokenIn
+  tokenIn: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenIn
   /**
    * Token investor get
    */
-  tokenOut: fixedPriceSaleResults_tokenOut
+  tokenOut: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenOut
+}
+
+export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases {
+  __typename: 'FixedPriceSalePurchase'
+  /**
+   * The purchase ID
+   */
+  id: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
+  /**
+   * Address of buyer
+   */
+  buyer: any
+  /**
+   * Amount of tokens
+   */
+  amount: any
+  status: FixedPriceSalePurchaseStatus
+  /**
+   * FixedPriceSale this purchase is associated with
+   */
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+}
+
+export interface GetFixedPriceSalePurchasesByBuyer {
+  fixedPriceSalePurchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[]
+}
+
+export interface GetFixedPriceSalePurchasesByBuyerVariables {
+  buyerId: any
 }

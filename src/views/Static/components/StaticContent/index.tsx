@@ -111,7 +111,7 @@ export const StaticContent: React.FC = () => {
 
   return (
     <Wrapper {...mobileWrapper}>
-      <ContentTitle>What is Mesa?</ContentTitle>
+      <ContentTitle>What is Aqua?</ContentTitle>
       <ContentDescription marginY="16px" maxWidth={isMobile ? windowWidth - 48 : '578px'}>
         This can be a description for the project. Diam purus diam, nam sagittis risus. Nunc consequat felis tincidunt
         volutpat et. Malesuada tortor, auctor quis id nisl mattis platea.
@@ -127,7 +127,7 @@ export const StaticContent: React.FC = () => {
             <Flex flexDirection="row" alignItems="center">
               <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
               <IconImg src={TelegramSVG} height="24px" width="24px" margin="0 24px 0 0" />
-              <a href="https://twitter.com/mesa_eth">
+              <a href="https://twitter.com/aqua_eth">
                 <IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" />
               </a>
             </Flex>
@@ -160,7 +160,7 @@ export const StaticContent: React.FC = () => {
               <a href="https://discord.com/invite/4QXEJQkvHH" target="_blank" rel="noreferrer">
                 <IconImg src={DiscordSVG} height="24px" width="24px" margin="0 24px 0 0" />
               </a>
-              <a href="https://twitter.com/mesa_eth" target="_blank" rel="noreferrer">
+              <a href="https://twitter.com/aqua_eth" target="_blank" rel="noreferrer">
                 <IconImg src={TwitterSVG} height="24px" width="24px" margin="0 24px 0 0" />
               </a>
               <a href="https://t.me/dxDAO" target="_blank" rel="noreferrer">

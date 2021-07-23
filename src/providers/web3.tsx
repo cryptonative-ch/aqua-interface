@@ -22,14 +22,17 @@ const connectors: { [connectorName in ConnectorNames]: AbstractConnector } = {
 
 export const Web3ConnectionProvider: React.FC = ({ children }) => {
   const { connector, activate, deactivate } = useWeb3React<Web3Provider>()
+  const [activatedConnector, setActivatedConnector] = useState<ConnectorNames>()
   const [activatingConnector, setActivatingConnector] = useState<ConnectorNames>()
 
   useEffect(() => {
     injected.isAuthorized().then(isAuthorized => {
       if (isAuthorized) {
-        activate(injected, undefined, true).catch(error => {
-          console.error(getErrorMessage(error))
-        })
+        activate(injected, undefined, true)
+          .then(() => setActivatedConnector(ConnectorNames.Injected))
+          .catch(error => {
+            console.error(getErrorMessage(error))
+          })
       }
     })
   }, [])
@@ -55,10 +58,12 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
       resetWalletConnect(connectors[connectorName])
     }
 
-    activate(connectors[connectorName]).catch(error => {
-      toast.error('Failed to connect wallet')
-      console.error(getErrorMessage(error))
-    })
+    activate(connectors[connectorName])
+      .then(() => setActivatedConnector(connectorName))
+      .catch(error => {
+        toast.error('Failed to connect wallet')
+        console.error(getErrorMessage(error))
+      })
   }
 
   const disconnect = () => {
@@ -67,12 +72,14 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
       resetWalletConnect(connector)
     }
     deactivate()
+    setActivatedConnector(undefined)
   }
   return (
     <Web3ConnectionContext.Provider
       value={{
         connect,
         disconnect,
+        activatedConnector,
         activatingConnector,
         isConnecting: !!activatingConnector,
       }}

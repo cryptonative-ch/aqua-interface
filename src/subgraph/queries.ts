@@ -5,6 +5,7 @@ import {
   FAIR_PRICE_SALE_FIELDS,
   FIXED_PRICE_SALE_FIELDS,
   FIXED_PRICE_SALE_PURCHASE_FIELDS,
+  FIXED_PRICE_SALE_PURCHASE_ALL,
 } from 'src/subgraph/attributes'
 
 export const GET_ALL_SALES = gql`
@@ -56,4 +57,13 @@ export const GET_MESA_FACTORY = gql`
       feeNumerator
     }
   }
+`
+
+export const GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER = gql`
+  query GetFixedPriceSalePurchasesByBuyer($buyerId: Bytes!) {
+    fixedPriceSalePurchases(where: { buyer: $buyerId }) {
+      ...fixedPriceSalePurchaseResultsAll
+    }
+  }
+  ${FIXED_PRICE_SALE_PURCHASE_ALL}
 `

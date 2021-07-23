@@ -17,15 +17,18 @@ import { Card } from 'src/components/CardSale'
 import { GridListSection } from 'src/components/Grid'
 
 // interface
+import { SaleDate, Sale } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
 
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useSalesQuery } from 'src/hooks/useSalesQuery'
+import { useFixedPriceSalePurchasesByBuyerQuery, SummarySales } from 'src/hooks/useFixedPriceSalePurchasesByBuyerId'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
-import { Sale } from 'src/interfaces/Sale'
+import { DividerWithText } from 'src/components/Divider'
+import { useWeb3React } from '@web3-react/core'
 
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
@@ -61,9 +64,11 @@ export function SalesView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
-  const [filteredSales, setFilteredSales] = useState<Sale[]>()
+  const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
+  const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
-
+  const { account } = useWeb3React()
+  const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account)
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }
@@ -72,20 +77,41 @@ export function SalesView() {
     dispatch(setPageTitle(t('pagesTitles.home')))
   })
 
-  const sortByStatus = (unsortedSale: Sale[]) => {
+  const isSaleDate = (array: SummarySales[] | SaleDate[]): array is SaleDate[] => {
+    if (array.length == 0) {
+      return false
+    }
+    return typeof (array[0] as SaleDate).startDate !== 'undefined'
+  }
+
+  const sortByStatus = (unsortedSale: SaleDate[] | SummarySales[]) => {
+    if (isSaleDate(unsortedSale)) {
+      if (saleStatus === SaleStatus.UPCOMING) {
+        return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.startDate - a.startDate)
+      } else if (saleStatus === SaleStatus.LIVE) {
+        return unsortedSale.sort((a: SaleDate, b: SaleDate) => a.endDate - b.endDate)
+      } else {
+        return unsortedSale.sort((a: SaleDate, b: SaleDate) => b.endDate - a.endDate)
+      }
+    }
+
     if (saleStatus === SaleStatus.UPCOMING) {
-      return unsortedSale.sort((a: Sale, b: Sale) => b.startDate - a.startDate)
+      return unsortedSale.sort((a: SummarySales, b: SummarySales) => b.sale.startDate - a.sale.startDate)
     } else if (saleStatus === SaleStatus.LIVE) {
-      return unsortedSale.sort((a: Sale, b: Sale) => a.endDate - b.endDate)
+      return unsortedSale.sort((a: SummarySales, b: SummarySales) => a.sale.endDate - b.sale.endDate)
     } else {
-      return unsortedSale.sort((a: Sale, b: Sale) => b.endDate - a.endDate)
+      return unsortedSale.sort((a: SummarySales, b: SummarySales) => b.sale.endDate - a.sale.endDate)
     }
   }
 
   useEffect(() => {
-    if (sales) {
-      const tempSales = [...sales].filter(saleFilterMap[saleStatus])
-      setFilteredSales(sortByStatus(tempSales))
+    if (sales && userSales) {
+      setFilteredUserSales(
+        sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale))) as SummarySales[]
+      )
+      setFilteredSales(
+        sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]
+      )
     }
   }, [saleStatus, loading])
 
@@ -94,6 +120,26 @@ export function SalesView() {
       <Container>
         <Title>Token Sales</Title>
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
+        {filteredUserSales.length > 0 && (
+          <>
+            {saleStatus === SaleStatus.LIVE ? (
+              <DividerWithText color="#7B7F93">{t('texts.activeBids')}</DividerWithText>
+            ) : saleStatus === SaleStatus.CLOSED ? (
+              <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
+            ) : null}
+            <GridListSection>
+              {filteredUserSales?.map(sale => (
+                <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
+                  <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
+                </SaleSummaryWrapper>
+              ))}
+            </GridListSection>
+          </>
+        )}
+
+        {filteredUserSales.length > 0 && filteredSales.length > 0 && (
+          <DividerWithText color="#7B7F93">{t('texts.otherSales')}</DividerWithText>
+        )}
         <GridListSection>
           {error ? (
             <Center>
@@ -104,7 +150,7 @@ export function SalesView() {
           ) : (
             filteredSales?.map(sale => (
               <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                <SaleSummaryCard sale={sale} />
+                <SaleSummaryCard sale={sale as Sale} />
               </SaleSummaryWrapper>
             ))
           )}

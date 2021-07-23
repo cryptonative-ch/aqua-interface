@@ -24,7 +24,10 @@ import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
-import { aggregatePurchases, useBids } from 'src/hooks/useBids'
+import { useBids } from 'src/hooks/useBids'
+
+//helpers
+import { aggregatePurchases } from 'src/utils/Defaults'
 
 // Layouts
 import { Center } from 'src/layouts/Center'

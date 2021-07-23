@@ -7,6 +7,11 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum FixedPriceSalePurchaseStatus {
+  CLAIMED = 'CLAIMED',
+  SUBMITTED = 'SUBMITTED',
+}
+
 export enum FixedPriceSaleStatus {
   ENDED = 'ENDED',
   OPEN = 'OPEN',

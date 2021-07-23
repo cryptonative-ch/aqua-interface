@@ -36,7 +36,7 @@ afterEach(cleanup)
 
 // tests
 
-describe('testing Sale Summary Card', () => {
+describe.skip('testing Sale Summary Card', () => {
   test('should display the correct styling', () => {
     i18n.init({
       fallbackLng: 'en',
