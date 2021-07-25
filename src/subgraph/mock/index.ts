@@ -10,11 +10,11 @@ export const schemaString = `
 interface EntityMetadata {
   # Contract address
   id: ID!
-  # The UTC timestamp at which the sale was placed
+  # The UTC timestamp at which the auction was placed
   createdAt: Int!
-  # The UTC timestamp at which the sale was updated
+  # The UTC timestamp at which the auction was updated
   updatedAt: Int!
-  # The UTC timestamp at which the sale was deleted
+  # The UTC timestamp at which the auction was deleted
   deletedAt: Int
 }
 
@@ -23,158 +23,199 @@ interface EntityMetadata {
 # MesaFactory
 # Stores critical information the MesaFactory.
 # Allows subgraph function to access the MesaFactory without knowing its address
-type MesaFactory  {
-  # ID: should be a unique easy-to-reference
+type MesaFactory {
+  # ID: should be a unique easy-to-reference from the subgraph
   id: ID!
-  # Sale
+  # Number of sales created via the factory
   saleCount: Int!
-  # Factory address
+  # MesaFactory contract address
   address: String!
-  # Fee manager: CFO
+  # Fee manager; CFO
   feeManager: String!
-  # Fee Collector: Treasury
+  # Fee Collector address: DAO/EOA/multisig
   feeTo: String!
-  # Template manager:
+  # Template manager address
   templateManager: String!
-  # Address of TemplateLauncher contract
+  # TemplateLauncher contract address
   templateLauncher: String!
-  # Fees
+  # Fee for launching a new sale
   saleFee: Int!
   feeNumerator: Int!
+  # Fee for luanching a new Template fee
   templateFee: Int!
 }
 
 #################################################
 
 # FairSale entity
-type FairSale implements EntityMetadata  {
+type FairSale implements EntityMetadata {
+  # The sale contract address
   id: ID!
   createdAt: Int!
   updatedAt: Int!
   deletedAt: Int
-  # Specific to the EasySale
+  # Specific to the EasyAuction
   # The sale name
   name: String
-  # open/ended/settled/upcoming
+  # Sale status: open/ended/settled/upcoming
   status: String!
   # Date of the sale start
   startDate: Int!
   # Date of the sale end
   endDate: Int!
   # Total amount of tokens available for sale
-  tokenAmount: String!
+  tokensForSale: String!
   # Minimum amount per bid
   minimumBidAmount: String!
-  # Bidding token (ie: DAI, USDC)
+  # Accepted bidding token (ie: DAI, USDC)
   tokenIn: Token!
-  # Saleing token
+  # Auctioning token
   tokenOut: Token!
-  # List of bids
   # The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
   minFundingThreshold: Int
+  # List of bids
   bids: [FairSaleBid!]
 }
 
-# SaleBid
-type FairSaleBid implements EntityMetadata  {
+# FairSaleUser
+type FairSaleUser implements EntityMetadata {
+  # Time at which the User was registered is the ID
   id: ID!
-  # Address of sale this bid is associated with
+  # The FairSale this user is associated with
+  sale: FairSale!
+  createdAt: Int!
+  updatedAt: Int!
+  deletedAt: Int
+  address: String!
+  # The ownerId in the FairSale contract
+  ownerId: Int!
+}
+
+# FairSaleBid
+type FairSaleBid implements EntityMetadata {
+  id: ID!
+  # The FairSale the bid is associated with
   sale: FairSale!
   # submitted/settled/cancelled/claimed
   status: String!
-  # The UTC timestamp at which the bid was placed
+  # The UTC timestamp at which the Bid was placed
   createdAt: Int!
-  # The UTC timestamp at which the bid was updated
+  # The UTC timestamp at which the Bid was updated
   updatedAt: Int!
-  # The UTC timestamp at which the bid was deleted
+  # The UTC timestamp at which the Bid was deleted
   deletedAt: Int
-  # Int of tokens the investor wants to buy
+  # Number of tokens the investor wants to invest
   tokenInAmount: String!
-  # Int of tokens the investor wants to buy
+  # Number of tokens the investor wants to buy
   tokenOutAmount: String!
-  # The bidder's Ethereum address
+  # The owner of the Bid"
+  owner: FairSaleUser!
+}
+
+#################################################
+
+enum FixedPriceSaleStatus {
+  UPCOMING
+  SETTLED
+  ENDED
+  OPEN
+}
+
+# FixedPriceSale
+type FixedPriceSale implements EntityMetadata {
+  id: ID!
+  createdAt: Int!
+  updatedAt: Int!
+  deletedAt: Int
+  # The name of the same, default is the tokenIn's name
+  name: String!
+  # Sale status: open/ended/settled/upcoming/cancelled/failed
+  status: FixedPriceSaleStatus!
+  # The UTC timestamp at which the sale starts
+  startDate: Int! # Open timestamp
+  # The UTC timestamp at which the sale closes
+  endDate: Int! # Close timestamp
+  # Token price
+  tokenPrice: String!
+  # Amount of tokens to sell
+  sellAmount: String!
+  # Amount of tokens sold so far
+  soldAmount: String!
+  # Minimum amount per bid
+  minimumRaise: String!
+  # Minimum token amount per purchase
+  allocationMin: String!
+  # Maximum token amount per purchase
+  allocationMax: String!
+  # Token investors can use to bid
+  tokenIn: Token!
+  # Token investor get
+  tokenOut: Token!
+  # List of sale purchases
+  purchases: [FixedPriceSalePurchase!]
+}
+
+enum FixedPriceSalePurchaseStatus {
+  SUBMITTED
+  CLAIMED
+}
+
+type FixedPriceSalePurchase implements EntityMetadata {
+  # The purchase ID
+  id: ID!
+  createdAt: Int!
+  updatedAt: Int!
+  deletedAt: Int
+  # FixedPriceSale this purchase is associated with
+  sale: FixedPriceSale!
+  # Address of buyer
+  buyer: String!
+  # Amount of tokens
+  amount: String!
+  status: FixedPriceSalePurchaseStatus!
+}
+
+type FixedPriceSaleUser implements EntityMetadata {
+  # The user's ID <saleAddress>/users/<saleUserAddress>
+  id: ID!
+  createdAt: Int!
+  updatedAt: Int!
+  deletedAt: Int
+  # Total purchases submitted in the sale
+  totalPurchase: String!
+  # Total volume for this user
+  totalVolume: String!
+  # FixedPriceSale reference
+  sale: FixedPriceSale!
+  # Address of buyer
   address: String!
 }
 
 #################################################
 
-# FixedPriceSale
-type FixedPriceSale implements EntityMetadata  {
-  id: ID!
-  createdAt: Int!
-  updatedAt: Int!
-  deletedAt: Int
-  # The sale name
-  name: String!
-  # open/ended/settled/upcoming/cancelled/failed
-  status: String!
-  # Specific to the FixedPriceSale
-  startDate: Int! # Open timestamp
-  endDate: Int! # Close timestamp
-  # Amount to sell
-  sellAmount: String!
-  tokenPrice: String!
-  soldAmount: String!
-  # Minimum amount per bid
-  minimumRaise: String!
-  # Minimum and maxmimum token per order
-  allocationMin: String!
-  allocationMax: String!
-  # bidding and sale tokens
-  tokenIn: Token!
-  tokenOut: Token!
-  purchases: [FixedPriceSalePurchase!]
-}
-
-type FixedPriceSalePurchase implements EntityMetadata  {
-  # Meta
-  id: ID!
-  createdAt: Int!
-  updatedAt: Int!
-  deletedAt: Int
-  # Address of sale this bid is associated with
-  sale: FixedPriceSale!
-  # Address of buyer
-  buyer: String!
-  # Amount this purchase took
-  amount: String!
-}
-
-#################################################
-
 # Token
-type Token  {
+type Token {
   # Token address
   id: ID!
   # Token name, from the smart contract ERC20.name()
   name: String
-  # Symbol, from ERC20.symbol()
+  # The token symbol from ERC20.symbol()
   symbol: String
-  # Decimal, from ERC.decimals()
+  # The token decimals, from ERC.decimals()
   decimals: Int!
-  icon: String
-}
-
-#################################################
-
-type SaleUser  {
-  # User id
-  id: ID!
-  # The bidder's Ethereum address
-  address: String
 }
 
 #################################################
 
 # Sale Templates
 # Each Sale contract implements a template
-type SaleTemplate  {
+type SaleTemplate {
   # TemplatesId from the event
   id: ID!
   createdAt: Int!
   updatedAt: Int!
   deletedAt: Int
-  # Address of the SaleTemplate contract: either EasySale or FixedPriceSale
+  # Address of the SaleTemplate contract: either EasyAuction or FixedPriceSale
   address: String!
   # Address of the MesaFactory
   factory: String!
@@ -189,7 +230,7 @@ enum SaleTemplateNames {
 }
 
 # MesaLog beacuses The Graph internal logging does not work
-type MesaLog  {
+type MesaLog {
   id: ID!
   content: String!
 }
@@ -221,7 +262,7 @@ export const mocks = {
     deletedAt: () => casual.unix_time,
     startDate: () => casual.random_element([1621366543]),
     endDate: () => casual.random_element([1621373743]),
-    tokenAmount: () => casual.numerify(bigDecimal),
+    tokensForSale: () => casual.numerify(bigDecimal),
     minimumBidAmount: () => casual.numerify(bigDecimal),
     tokenIn: () => ({
       decimals: () => 18,
@@ -229,10 +270,11 @@ export const mocks = {
     tokenOut: () => ({
       decimals: () => 18,
     }),
+    minFundingThreshold: () => casual.numerify(bigDecimal),
+    bids: () => new MockList(5),
   }),
   FixedPriceSale: () => ({
     id: () => '0x257D5402b01056764d985aA44e154c07eF23EE6c',
-    status: () => casual.random_element(['live', 'upcoming', 'closed']),
     name: () => casual.company_name,
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
@@ -251,11 +293,21 @@ export const mocks = {
     tokenOut: () => ({
       decimals: () => 18,
     }),
+    purchases: () => new MockList(5),
+  }),
+  FairSaleUser: () => ({
+    id: casual.unix_time,
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    address: casual.numerify(address),
+    ownerId: () => casual.integer(1, 1000),
   }),
   FairSaleBid: () => ({
     createdAt: () => casual.unix_time,
     updatedAt: () => casual.unix_time,
     deletedAt: () => casual.unix_time,
+    status: () => casual.random_element(['submitted', 'cancelled', 'settled', 'claimed']),
     address: () => casual.numerify(address),
     tokenInAmount: () => casual.numerify(bigDecimal),
     tokenOutAmount: () => casual.numerify(bigDecimal),
@@ -268,7 +320,7 @@ export const mocks = {
     amount: () => casual.numerify(bigDecimal),
   }),
   Token: () => ({
-    address: () => casual.numerify(address),
+    id: () => casual.numerify(address),
     name: () => casual.company_name,
     symbol: () => casual.state_abbr,
     decimals: () => casual.integer(1, 18),
