@@ -7,6 +7,7 @@ import { addMocksToSchema } from 'graphql-tools'
 import cors from 'cors'
 
 // mocks
+// eslint-disable-next-line no-restricted-imports
 import { schemaString, mocks } from './index'
 
 const app = express()
@@ -28,4 +29,5 @@ app.use(
   })
 )
 
+// eslint-disable-next-line no-console
 app.listen(4000, () => console.log('Mock Graphql server is listening on port 4000!'))
