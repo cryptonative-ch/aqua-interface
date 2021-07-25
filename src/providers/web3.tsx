@@ -22,12 +22,17 @@ const connectors: { [connectorName in ConnectorNames]: AbstractConnector } = {
 
 export const Web3ConnectionProvider: React.FC = ({ children }) => {
   const { connector, activate, deactivate } = useWeb3React<Web3Provider>()
+  const [activatedConnector, setActivatedConnector] = useState<ConnectorNames>()
   const [activatingConnector, setActivatingConnector] = useState<ConnectorNames>()
 
   useEffect(() => {
     injected.isAuthorized().then(isAuthorized => {
       if (isAuthorized) {
         activate(injected, undefined, true)
+          .then(() => setActivatedConnector(ConnectorNames.Injected))
+          .catch(error => {
+            console.error(getErrorMessage(error))
+          })
       }
     })
   }, [])
@@ -41,11 +46,7 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
   // Workaround for WalletConnect not showing QR Code after the first open
   // https://github.com/NoahZinsmeister/web3-react/issues/124
   const resetWalletConnect = (connector: AbstractConnector) => {
-    if (
-      connector &&
-      connector instanceof WalletConnectConnector &&
-      connector.walletConnectProvider?.wc?.uri
-    ) {
+    if (connector && connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
       connector.walletConnectProvider = undefined
     }
   }
@@ -54,27 +55,31 @@ export const Web3ConnectionProvider: React.FC = ({ children }) => {
     setActivatingConnector(connectorName)
 
     if (connectorName == ConnectorNames.WalletConnect) {
-      resetWalletConnect(connectors[connectorName]);
+      resetWalletConnect(connectors[connectorName])
     }
 
-    activate(connectors[connectorName]).catch(error => {
-      toast.error('Failed to connect wallet')
-      console.error(getErrorMessage(error))
-    })
+    activate(connectors[connectorName])
+      .then(() => setActivatedConnector(connectorName))
+      .catch(error => {
+        toast.error('Failed to connect wallet')
+        console.error(getErrorMessage(error))
+      })
   }
 
   const disconnect = () => {
     if (connector instanceof WalletConnectConnector) {
-      connector.close();
-      resetWalletConnect(connector);
+      connector.close()
+      resetWalletConnect(connector)
     }
     deactivate()
+    setActivatedConnector(undefined)
   }
   return (
     <Web3ConnectionContext.Provider
       value={{
         connect,
         disconnect,
+        activatedConnector,
         activatingConnector,
         isConnecting: !!activatingConnector,
       }}

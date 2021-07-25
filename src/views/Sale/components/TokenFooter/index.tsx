@@ -2,6 +2,7 @@
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
 import styled from 'styled-components'
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 
 // Hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
@@ -15,7 +16,7 @@ import { socialIcons } from 'src/assets'
 
 // Interfaces
 import { Sale, SaleDetails } from 'src/interfaces/Sale'
-import { XDAI_CHAIN_PARAMETER } from 'src/constants'
+import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
 
 type WrapperProps = SpaceProps & BorderProps & LayoutProps
 
@@ -120,12 +121,15 @@ interface TokenFooterProps {
 }
 
 export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: TokenFooterProps) => {
+  const { chainId } = useWeb3React()
   const {
     isMobile,
     windowSize: { width: windowWidth },
   } = useWindowSize()
 
   const walletAddress = sale?.tokenOut.id ? `${sale.tokenOut.id.substr(0, 6)}...${sale.tokenOut.id.substr(-4)}` : ''
+
+  const currentChainParams = chainId ? SUPPORTED_CHAINS[chainId as CHAIN_ID].parameters : null
 
   const mobileWrapper: WrapperProps = {}
   if (isMobile) {
@@ -187,11 +191,11 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: T
             </a>
           </Flex>
         )}
-        {walletAddress && (
+        {walletAddress && currentChainParams?.blockExplorerUrls?.length && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Token Address</Title>
             <Link
-              href={`${XDAI_CHAIN_PARAMETER.blockExplorerUrls[0]}/address/${sale.tokenOut.id}`}
+              href={`${currentChainParams.blockExplorerUrls[0]}/address/${sale.tokenOut.id}`}
               target="_blank"
               color="#000629"
               margin="0 8px 0 0"

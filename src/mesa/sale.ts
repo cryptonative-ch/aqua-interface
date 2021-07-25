@@ -2,7 +2,7 @@
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 // Interfaces
-import { FairSaleBid, FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
+import { SaleDate, FairSaleBid, FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
 
 // Mesa
 import { calculateClearingPrice } from 'src/mesa/price'
@@ -10,7 +10,7 @@ import { calculateClearingPrice } from 'src/mesa/price'
 /**
  * Determines if the sale is active
  */
-export const isSaleOpen = ({ startDate, endDate }: Sale) => {
+export const isSaleOpen = ({ startDate, endDate }: SaleDate) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const endDateLocal = convertUtcTimestampToLocal(endDate)
   const startDateLocal = convertUtcTimestampToLocal(startDate)
@@ -20,7 +20,7 @@ export const isSaleOpen = ({ startDate, endDate }: Sale) => {
 /**
  * Determines if the sale is upcoming
  */
-export const isSaleUpcoming = ({ startDate }: Sale) => {
+export const isSaleUpcoming = ({ startDate }: SaleDate) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const startDateLocal = convertUtcTimestampToLocal(startDate)
 
@@ -30,7 +30,7 @@ export const isSaleUpcoming = ({ startDate }: Sale) => {
 /**
  * Determines if the sale is closed
  */
-export const isSaleClosed = ({ endDate }: Sale) => {
+export const isSaleClosed = ({ endDate }: SaleDate) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const endDateLocal = convertUtcTimestampToLocal(endDate)
 

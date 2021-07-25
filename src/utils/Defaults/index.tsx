@@ -10,6 +10,20 @@ import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumberish, BigNumber } from 'ethers'
 
+/** sums up all the purchases of a single user from a single sale and returns the status, total amount and account string*/
+export const aggregatePurchases = (bids: any[], account: string | null | undefined, sale?: any) => {
+  const reduceTotalAmount = bids.reduce((accumulator: BigNumber, purchases: any) => {
+    return BigNumber.from(accumulator).add(purchases.amount)
+  }, BigNumber.from(0))
+
+  return {
+    buyer: account!,
+    amount: reduceTotalAmount,
+    status: bids.length > 0 ? bids[0].status : undefined,
+    sale: sale,
+  }
+}
+
 // helpers
 export const getZeros = (decimals: number) => {
   let zeros = '0'

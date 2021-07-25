@@ -35,13 +35,15 @@ import { Link } from 'src/components/Link'
 import { Banner } from 'src/components/Banner'
 import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
 import { Web3ProvidersModal } from 'src/components/Web3ProvidersModal'
+import { AccountSwitch } from 'src/components/AccountSwitch'
 
 // Constants
-import { FE_VERSION, SC_VERSION, SUPPORTED_CHAIN_IDS, XDAI_CHAIN_PARAMETER } from 'src/constants'
+import { CHAIN_ID, FE_VERSION, SC_VERSION, SUPPORTED_CHAINS, SUPPORTED_CHAIN_IDS } from 'src/constants'
 
 export const Header: React.FC = () => {
   const [t] = useTranslation()
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
+  const [switcherOpen, setSwitcherOpen] = useState<boolean>(false)
   const { account } = useWeb3React()
   const { disconnect: disconnectWallet, isConnecting } = useContext(Web3ConnectionContext)
   const { isMobile } = useWindowSize()
@@ -93,7 +95,7 @@ export const Header: React.FC = () => {
   const changeNetwork = () => {
     w.ethereum.request({
       method: 'wallet_addEthereumChain',
-      params: [XDAI_CHAIN_PARAMETER],
+      params: [SUPPORTED_CHAINS[CHAIN_ID.XDAI].parameters],
     })
   }
 
@@ -103,7 +105,7 @@ export const Header: React.FC = () => {
         <MobileMenu expanded={menuOpen}>
           <Wrapper padding="0 0 0 24px" backgroundColor="#F2F2F2">
             <Flex flexDirection="column" flex={1}>
-              <Title>Mesa</Title>
+              <Title>Aqua</Title>
               <Description marginLeft="0">from DXdao</Description>
             </Flex>
             <MenuIcon src={CloseImg} onClick={() => setMenuOpen(false)} />
@@ -153,7 +155,7 @@ export const Header: React.FC = () => {
             <a href="https://dxdao.eth.link">
               <MenuOption>DXdao</MenuOption>
             </a>
-            <a href="https://twitter.com/mesa_eth">
+            <a href="https://twitter.com/aqua_eth">
               <MenuOption>Twitter</MenuOption>
             </a>
             <a href="https://discord.com/invite/4QXEJQkvHH">
@@ -173,7 +175,7 @@ export const Header: React.FC = () => {
           </Flex>
         </MobileMenu>
         <Flex flexDirection="column" flex={1}>
-          <Title>Mesa</Title>
+          <Title>Aqua</Title>
           <Description marginLeft="0">from DXdao</Description>
         </Flex>
         {!account && !isConnecting && (
@@ -214,11 +216,11 @@ export const Header: React.FC = () => {
       )}
       <Wrapper padding="0 32px">
         <Row>
-          <Title>Mesa</Title>
+          <Title>Aqua</Title>
           <Description>from DXdao</Description>
         </Row>
         <Button
-          onClick={() => (account ? disconnectWallet() : setIsModalShown(true))}
+          onClick={() => (account ? setSwitcherOpen(!switcherOpen) : setIsModalShown(true))}
           backgroundColor={!account ? '#304FFE' : '#DDDDE3'}
           textColor={!account ? 'white' : '#000629'}
         >
@@ -227,6 +229,7 @@ export const Header: React.FC = () => {
         </Button>
       </Wrapper>
       <Web3ProvidersModal isShown={isModalShown} hide={() => setIsModalShown(false)} />
+      <AccountSwitch isActive={switcherOpen} setActive={setSwitcherOpen} />
     </ColumnWrapper>
   )
 }

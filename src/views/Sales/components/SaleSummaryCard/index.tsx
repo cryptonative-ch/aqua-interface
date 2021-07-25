@@ -1,6 +1,7 @@
 // External
 import { useTranslation } from 'react-i18next'
 import React from 'react'
+import { BigNumber, utils } from 'ethers'
 
 // Components
 import { SaleFinalPrice } from 'src/views/Sales/components/SaleFinalPrice'
@@ -15,6 +16,7 @@ import { SaleClock } from 'src/views/Sales/components/SaleClock'
 import { Icon } from 'src/components/Icon'
 import { BadgeFlex } from 'src/layouts/BadgeFlex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
+import { SaleActiveBids } from 'src/views/Sales/components/SaleActiveBids'
 
 // Interface
 import { Sale } from 'src/interfaces/Sale'
@@ -25,10 +27,12 @@ import { isSaleClosed } from 'src/mesa/sale'
 
 interface SaleSummaryProps {
   sale: Sale
+  purchaseAmount?: BigNumber
 }
 
-export function SaleSummaryCard({ sale }: SaleSummaryProps) {
+export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
   const [t] = useTranslation()
+  const amount = purchaseAmount ? utils.formatUnits(purchaseAmount, sale.tokenOut.decimals) : undefined
   return (
     <Card>
       <CardBody>
@@ -47,7 +51,7 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.salesType')}</CardText>
-            {sale.type == 'FixedPriceSale' ? <CardText>Fixed Price Sale</CardText> : <CardText>Fair Sale</CardText>}
+            <CardText>Fixed Price Sale</CardText>
           </Flex>
           {isSaleClosed(sale) ? (
             <Flex flexDirection="row" justifyContent="space-between">
@@ -65,6 +69,12 @@ export function SaleSummaryCard({ sale }: SaleSummaryProps) {
                 <CardText color="grey">{t('texts.amountForSale')}</CardText>
                 <SaleAmount sale={sale} />
               </Flex>
+              {amount && (
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <CardText color="grey">{t('texts.yourPurchase')}</CardText>
+                  <SaleActiveBids sale={sale} amount={amount} />
+                </Flex>
+              )}
             </div>
           )}
 

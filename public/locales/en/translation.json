@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Mesa"
+    "name": "Aqua"
   },
   "pagesTitles": {
     "home": "Home",
@@ -25,6 +25,10 @@
     "upcoming": "Upcoming",
     "notFound": "Not Found",
     "yourBids": "Your Bids",
+    "yourPurchase": "Your Purchase",
+    "bidsWon": "Bids Won",
+    "activeBids": "Active Bids",
+    "otherSales": "Other Sales",
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
     "currentPrice": "Current Price",
