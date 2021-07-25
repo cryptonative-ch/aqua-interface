@@ -306,7 +306,7 @@ export const mocks = {
     tokenOut: () => ({
       decimals: () => 18,
     }),
-    minFundingThreshold: () => casual.numerify(bigDecimal),
+    minFundingThreshold: () => casual.integer(1, 1000),
     bids: () => new MockList(1),
   }),
   FixedPriceSale: () => ({
