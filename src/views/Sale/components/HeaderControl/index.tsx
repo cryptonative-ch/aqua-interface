@@ -20,7 +20,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
 
-// Mesa Utils
+// Aqua Utils
 import { formatBigInt } from 'src/utils/Defaults'
 
 // hooks

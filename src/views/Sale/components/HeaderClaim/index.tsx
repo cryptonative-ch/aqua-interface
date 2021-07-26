@@ -13,8 +13,8 @@ import { Flex } from 'src/components/Flex'
 import { Spinner } from 'src/components/Spinner'
 import { FormButton, ButtonProps } from 'src/components/FormButton'
 
-// Mesa Utils
-import { isSaleClosed } from 'src/mesa/sale'
+// Aqua Utils
+import { isSaleClosed } from 'src/aqua/sale'
 
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'

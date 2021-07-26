@@ -11,7 +11,7 @@ import { Flex } from 'src/components/Flex'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
 
-// Mesa Utils
+// Aqua Utils
 import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleFinalPriceProps {
