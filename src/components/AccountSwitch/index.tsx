@@ -57,10 +57,7 @@ export const AccountSwitch: React.FC<AccountSwitchProps> = ({ isActive, setActiv
 
   const changeNetwork = (chainId: CHAIN_ID) => {
     if ([CHAIN_ID.RINKEBY].includes(chainId)) {
-      library?.send('wallet_switchEthereumChain', [
-        { chainId: SUPPORTED_CHAINS[chainId].parameters.chainId },
-        account,
-      ])
+      library?.send('wallet_switchEthereumChain', [{ chainId: SUPPORTED_CHAINS[chainId].parameters.chainId }, account])
     } else {
       library?.send('wallet_addEthereumChain', [SUPPORTED_CHAINS[chainId].parameters, account])
     }
