@@ -37,6 +37,7 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 
 // sales summary
 import { SaleClock } from 'src/views/Sales/components/SaleClock'
+import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
 
 const Icon = styled.img<SpaceProps>(
   {
@@ -62,7 +63,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
-  if (!bids || bids.length == 0) {
+  if (!bids || bids.length == 0 || aggregatePurchases(bids, account).status === FixedPriceSalePurchaseStatus.CLAIMED) {
     return null
   }
 
