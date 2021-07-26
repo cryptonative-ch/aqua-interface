@@ -8,7 +8,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
 import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
-import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
+import { formatBigInt } from 'src/utils/Defaults'
 
 // Table
 import { Table } from 'src/components/Table'
@@ -39,16 +39,16 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
           title: 'Withdraw',
           purchases: {
             value:
-              numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
-                '0.[0000]'
-              ) +
-              ' ' +
-              sale.tokenOut.symbol,
-            amount:
               numeral(
                 formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
                   formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
               ).format('0.[0000]') +
+              ' ' +
+              sale.tokenOut.symbol,
+            amount:
+              numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
+                '0.[0000]'
+              ) +
               ' ' +
               sale.tokenIn.symbol,
             status: (bids as FixedPriceSalePurchase).status,
@@ -115,7 +115,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
       ]
 
   if (isFixed && isSaleClosed(sale)) {
-    return <Table headData={isFixedHeadData} bodyData={isFixedBodyDataOpen} isClosed={true} />
+    return <Table headData={isFixedHeadData} bodyData={isFixedBodyData} isClosed={true} />
   }
 
   if (isFixed && isSaleOpen(sale)) {

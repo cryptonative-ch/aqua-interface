@@ -6,8 +6,8 @@ export const INFURA_PROJECT_ID = process.env.REACT_APP_INFURA_PROJECT_ID || '766
 export const SANCTION_LIST = ['BY', 'CU', 'IR', 'IQ', 'CI', 'LR', 'KP', 'SD', 'SY', 'ZW']
 export const FIXED_PRICE_SALE_CONTRACT_ADDRESS = '0x60536376d81d7f3db47231b70b127817ef249027'
 export const SUBGRAPH_ENDPOINT = process.env.REACT_APP_SUBGRAPH_ENDPOINT as string
-export const FE_VERSION = '0.0.1'
-export const SC_VERSION = '0.0.1'
+export const FE_VERSION = '0.1.1'
+export const SC_VERSION = '0.1.1'
 export const NETWORK_CONTEXT_NAME = 'Network'
 export enum CHAIN_ID {
   RINKEBY = 4,

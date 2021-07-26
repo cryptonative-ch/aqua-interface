@@ -35,7 +35,7 @@ import { Center } from 'src/layouts/Center'
 // Mesa Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
-import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
@@ -157,7 +157,12 @@ export function FixedPriceSaleView() {
                     {isSaleClosed(sale as FIX_LATER) ? (
                       <HeaderItem
                         title={sale.soldAmount < sale.minimumRaise ? 'Soft Cap not reached' : 'Amount Sold'}
-                        description={`${formatBigInt(sale.soldAmount)} ${sale.tokenIn?.symbol}`}
+                        description={`${
+                          // Due to quirk of subgraph this is set to 0 then the remaining number of tokens after first commitment
+                          formatBigInt(sale.soldAmount) == 0
+                            ? 0
+                            : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
+                        } ${sale.tokenOut?.symbol}`}
                         error={sale.soldAmount < sale.minimumRaise}
                       />
                     ) : (
