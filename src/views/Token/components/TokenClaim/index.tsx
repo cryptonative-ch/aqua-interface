@@ -15,7 +15,6 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { Button } from 'src/components/Button'
-import { CardTitle } from 'src/components/CardTitle'
 
 // claims
 import { FailedClaim } from 'src/views/Token/components/FailedClaim'
@@ -36,8 +35,8 @@ import { useBids } from 'src/hooks/useBids'
 //helpers
 import { aggregatePurchases } from 'src/utils/Defaults'
 
-// Theme
-import { theme } from 'src/styles/theme'
+// sales summary
+import { SaleClock } from 'src/views/Sales/components/SaleClock'
 
 const Icon = styled.img<SpaceProps>(
   {
@@ -81,16 +80,16 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
 
   return (
     <Card>
-      <CardBody padding={theme.space[3]}>
-        <Flex margin="0 0 16px 0">
+      <CardBody>
+        <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <TokenIconFigure>
             <Icon src={sale?.tokenOut.icon || noToken} />
           </TokenIconFigure>
-          <CardTitle fontWeight={500}>Claim {sale?.tokenOut.symbol}</CardTitle>
+          <CardText fontSize="title">Claim {sale?.tokenOut.symbol}</CardText>
         </Flex>
         <Divider />
-        <Flex flexDirection="column" justifyContent="space-evenly">
-          <Flex justifyContent="space-between" margin="24px 0px 12px 0px">
+        <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
+          <Flex justifyContent="space-between" margin="4px 0">
             <CardText color="grey">{t('texts.unclaimed')}</CardText>
             <Flex>
               <CardText>{preDecimalAmount}</CardText>
@@ -98,12 +97,13 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
               <CardText>&nbsp;{sale?.tokenOut.symbol}</CardText>
             </Flex>
           </Flex>
-          <Flex justifyContent="space-between" margin="12px 0px 24px 0px">
+          <Flex justifyContent="space-between" margin="4px 0">
             <CardText color="grey">{t('texts.currentPrice')}</CardText>
             <CardText>{`${numeral(ethers.utils.formatUnits(sale ? sale.tokenPrice : 0, sale?.tokenOut.decimals)).format(
-              '0.0'
+              '0.[0000]'
             )} ${sale?.tokenIn.symbol}`}</CardText>
           </Flex>
+          <SaleClock sale={sale} margin="4px 0 16px 0" />
           <Button onClick={() => claimTokens(sale!.id)} width="90%">
             {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
           </Button>

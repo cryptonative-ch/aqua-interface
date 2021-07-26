@@ -30,6 +30,9 @@ import { Center } from 'src/layouts/Center'
 import { DividerWithText } from 'src/components/Divider'
 import { useWeb3React } from '@web3-react/core'
 
+// sales page
+import { TokenView } from 'src/views/Token'
+
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
 })
@@ -127,13 +130,18 @@ export function SalesView() {
             ) : saleStatus === SaleStatus.CLOSED ? (
               <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
             ) : null}
-            <GridListSection>
-              {filteredUserSales?.map(sale => (
-                <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
-                  <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
-                </SaleSummaryWrapper>
-              ))}
-            </GridListSection>
+
+            {saleStatus === SaleStatus.CLOSED ? (
+              <TokenView />
+            ) : (
+              <GridListSection>
+                {filteredUserSales?.map(sale => (
+                  <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
+                    <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
+                  </SaleSummaryWrapper>
+                ))}
+              </GridListSection>
+            )}
           </>
         )}
 

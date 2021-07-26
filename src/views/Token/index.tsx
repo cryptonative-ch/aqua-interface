@@ -9,10 +9,6 @@ import { useDispatch } from 'react-redux'
 // Redux
 import { setPageTitle } from 'src/redux/page'
 
-// Components
-import { Container } from 'src/components/Container'
-import { Title } from 'src/components/Title'
-
 // Hooks
 import { useSalesQuery } from 'src/hooks/useSalesQuery'
 
@@ -50,42 +46,27 @@ export function TokenView() {
 
   if (loading) {
     return (
-      <Container minHeight="100vh" inner={false} noPadding={true}>
-        <Container>
-          <Title>{t('texts.claimTokens')}</Title>
-          <GridListSection>
-            <h1>Loading!</h1>
-          </GridListSection>
-        </Container>
-      </Container>
+      <GridListSection>
+        <h1>Loading!</h1>
+      </GridListSection>
     )
   }
 
   if (error) {
     return (
-      <Container minHeight="100vh" inner={false} noPadding={true}>
-        <Container>
-          <Title>{t('texts.claimTokens')}</Title>
-          <GridListSection>
-            <ErrorMessage error={error} />
-          </GridListSection>
-        </Container>
-      </Container>
+      <GridListSection>
+        <ErrorMessage error={error} />
+      </GridListSection>
     )
   }
 
   return (
-    <Container minHeight="100vh" inner={false} noPadding={true}>
-      <Container>
-        <Title>{t('texts.claimTokens')}</Title>
-        <GridListSection>
-          {filteredData?.length ? (
-            filteredData?.map(tokens => <TokenClaim key={tokens.id} sale={tokens} />)
-          ) : (
-            <h1>No Tokens Available to Claim</h1>
-          )}
-        </GridListSection>
-      </Container>
-    </Container>
+    <GridListSection>
+      {filteredData?.length ? (
+        filteredData?.map(tokens => <TokenClaim key={tokens.id} sale={tokens} />)
+      ) : (
+        <h1>No Tokens Available to Claim</h1>
+      )}
+    </GridListSection>
   )
 }

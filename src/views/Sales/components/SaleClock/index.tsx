@@ -16,6 +16,7 @@ import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 interface SaleClockProps {
   sale: Sale
+  margin?: string
 }
 
 export const timerPercentage = (sale: Sale) => {
@@ -27,7 +28,7 @@ export const timerPercentage = (sale: Sale) => {
   return percentage
 }
 
-export const SaleClock: React.FC<SaleClockProps> = ({ sale }) => {
+export const SaleClock: React.FC<SaleClockProps> = ({ sale, margin }) => {
   const [time, setTime] = useState(0)
   const [isMobile, setMobile] = useState(window.innerWidth < 770)
 
@@ -48,7 +49,7 @@ export const SaleClock: React.FC<SaleClockProps> = ({ sale }) => {
 
   if (isSaleClosed(sale)) {
     return (
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex margin={margin} flexDirection="row" justifyContent="space-between">
         <CardText color="grey">Closed</CardText>
         <Flex>
           <Timer sale={sale} />
