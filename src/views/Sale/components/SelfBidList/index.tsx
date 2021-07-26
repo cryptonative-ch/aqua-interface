@@ -33,85 +33,18 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   ]
 
   const isFixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
-<<<<<<< HEAD
-
-  // const isFixedBodyData = [
-  //   {
-  //     title: 'Withdraw',
-  //     purchases: {
-  //       amount:
-  //         numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format('0.[0000]') +
-  //         ' ' +
-  //         sale.tokenOut.symbol,
-  //       value:
-  //         numeral(
-  //           convertToBuyerPrice(formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)) *
-  //             formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
-  //         ).format('0.[0000]') +
-  //         ' ' +
-  //         sale.tokenIn.symbol,
-  //       status: (bids as FixedPriceSalePurchase).status,
-  //     },
-  //   },
-  // ]
-
-  const isFixedBodyDataOpen =
-    bids.length > 0
-      ? [
-          {
-            title: 'Buy Order',
-            color: '#4B9E98',
-            purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
-              amount:
-                numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') +
-                ' ' +
-                sale.tokenOut.symbol,
-              value:
-                numeral(
-                  formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
-                    formatBigInt(bid.amount, sale.tokenOut.decimals)
-                ).format('0.[0000]') +
-                ' ' +
-                sale.tokenIn.symbol,
-              status: bid.status,
-            })),
-          },
-        ]
-      : [
-          {
-            title: 'Withdraw',
-            purchases: {
-              amount:
-                numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
-                  '0.[0000]'
-                ) +
-                ' ' +
-                sale.tokenOut.symbol,
-              value:
-                numeral(
-                  convertToBuyerPrice(formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)) *
-                    formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
-                ).format('0.[0000]') +
-                ' ' +
-                sale.tokenIn.symbol,
-              status: (bids as FixedPriceSalePurchase).status,
-            },
-          },
-        ]
-  console.log({ isFixedBodyDataOpen })
-=======
   const isFixedBodyData = isSaleClosed(sale)
     ? [
         {
           title: 'Withdraw',
           purchases: {
-            amount:
+            value:
               numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
                 '0.[0000]'
               ) +
               ' ' +
               sale.tokenOut.symbol,
-            value:
+            amount:
               numeral(
                 formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
                   formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
@@ -131,19 +64,18 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
           color: '#4B9E98',
           purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
             amount:
-              numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenOut.symbol,
-            value:
               numeral(
                 formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
               ).format('0.[0000]') +
               ' ' +
-              sale.tokenIn.symbol,
+              sale.tokenOut.symbol,
             status: bid.status,
+            value:
+              numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenIn.symbol,
           })),
         },
       ]
     : []
->>>>>>> d78d32d5df13edebf08854153e1d468927452a35
 
   const isFairSaleHeadData = [
     { title: 'Token Price' },
