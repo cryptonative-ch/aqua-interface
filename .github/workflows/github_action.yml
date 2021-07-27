@@ -1,5 +1,4 @@
 name: Deploy Github Pages
-
 on:
   push:
     branches:
@@ -23,10 +22,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install Dependencies
-        run: yarn
+        run: npm install
 
       - name: Build Dapp
-        run: yarn build:xdai
+        run: npm run build:xdai
 
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
