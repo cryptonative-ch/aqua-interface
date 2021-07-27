@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/mesa-interface/static/css/main.b8013155.chunk.css",
-    "main.js": "/mesa-interface/static/js/main.7cde58d2.chunk.js",
-    "main.js.map": "/mesa-interface/static/js/main.7cde58d2.chunk.js.map",
-    "runtime-main.js": "/mesa-interface/static/js/runtime-main.ef5a63d5.js",
-    "runtime-main.js.map": "/mesa-interface/static/js/runtime-main.ef5a63d5.js.map",
+    "main.js": "/mesa-interface/static/js/main.dd2b67e8.chunk.js",
+    "main.js.map": "/mesa-interface/static/js/main.dd2b67e8.chunk.js.map",
+    "runtime-main.js": "/mesa-interface/static/js/runtime-main.5482a53b.js",
+    "runtime-main.js.map": "/mesa-interface/static/js/runtime-main.5482a53b.js.map",
     "static/css/2.68b64559.chunk.css": "/mesa-interface/static/css/2.68b64559.chunk.css",
-    "static/js/2.0d75c880.chunk.js": "/mesa-interface/static/js/2.0d75c880.chunk.js",
-    "static/js/2.0d75c880.chunk.js.map": "/mesa-interface/static/js/2.0d75c880.chunk.js.map",
-    "static/js/3.1de5f3b3.chunk.js": "/mesa-interface/static/js/3.1de5f3b3.chunk.js",
-    "static/js/3.1de5f3b3.chunk.js.map": "/mesa-interface/static/js/3.1de5f3b3.chunk.js.map",
-    "static/js/4.6f647dbd.chunk.js": "/mesa-interface/static/js/4.6f647dbd.chunk.js",
-    "static/js/4.6f647dbd.chunk.js.map": "/mesa-interface/static/js/4.6f647dbd.chunk.js.map",
+    "static/js/2.16c210c8.chunk.js": "/mesa-interface/static/js/2.16c210c8.chunk.js",
+    "static/js/2.16c210c8.chunk.js.map": "/mesa-interface/static/js/2.16c210c8.chunk.js.map",
+    "static/js/3.1f1eef03.chunk.js": "/mesa-interface/static/js/3.1f1eef03.chunk.js",
+    "static/js/3.1f1eef03.chunk.js.map": "/mesa-interface/static/js/3.1f1eef03.chunk.js.map",
+    "static/js/4.1476d678.chunk.js": "/mesa-interface/static/js/4.1476d678.chunk.js",
+    "static/js/4.1476d678.chunk.js.map": "/mesa-interface/static/js/4.1476d678.chunk.js.map",
     "index.html": "/mesa-interface/index.html",
     "static/css/2.68b64559.chunk.css.map": "/mesa-interface/static/css/2.68b64559.chunk.css.map",
     "static/css/main.b8013155.chunk.css.map": "/mesa-interface/static/css/main.b8013155.chunk.css.map",
-    "static/js/2.0d75c880.chunk.js.LICENSE.txt": "/mesa-interface/static/js/2.0d75c880.chunk.js.LICENSE.txt",
-    "static/js/3.1de5f3b3.chunk.js.LICENSE.txt": "/mesa-interface/static/js/3.1de5f3b3.chunk.js.LICENSE.txt",
+    "static/js/2.16c210c8.chunk.js.LICENSE.txt": "/mesa-interface/static/js/2.16c210c8.chunk.js.LICENSE.txt",
+    "static/js/3.1f1eef03.chunk.js.LICENSE.txt": "/mesa-interface/static/js/3.1f1eef03.chunk.js.LICENSE.txt",
     "static/media/Check-Icon.b937dbe4.svg": "/mesa-interface/static/media/Check-Icon.b937dbe4.svg",
     "static/media/Close-white.3b86cd63.svg": "/mesa-interface/static/media/Close-white.3b86cd63.svg",
     "static/media/Close.a67af5ea.svg": "/mesa-interface/static/media/Close.a67af5ea.svg",
@@ -44,10 +44,10 @@
     "static/media/xdai.a80b6cc4.svg": "/mesa-interface/static/media/xdai.a80b6cc4.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.ef5a63d5.js",
+    "static/js/runtime-main.5482a53b.js",
     "static/css/2.68b64559.chunk.css",
-    "static/js/2.0d75c880.chunk.js",
+    "static/js/2.16c210c8.chunk.js",
     "static/css/main.b8013155.chunk.css",
-    "static/js/main.7cde58d2.chunk.js"
+    "static/js/main.dd2b67e8.chunk.js"
   ]
 }
