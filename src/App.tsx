@@ -37,8 +37,8 @@ import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
 import { Center } from 'src/layouts/Center'
 
 // Contexts
-import { SanctionContext } from 'src/contexts'
 import { MesaContext } from 'src/mesa'
+import { SanctionContext } from 'src/contexts'
 
 export const Container = styled.div`
   position: relative;
@@ -48,6 +48,7 @@ export const Container = styled.div`
 export const App = () => {
   const { isMobile } = useWindowSize()
   const { isShown, toggle } = useCookieModal('termsofsale')
+
   const [sanction, setSanction] = useState<boolean>(false)
   const { library, chainId } = useWeb3React()
   // Default: XDAI

@@ -331,7 +331,7 @@ export const mocks = {
     }),
     commitments: () => new MockList(1),
     users: () => new MockList(1),
-    withdrawals: () => new MockList(1)
+    withdrawals: () => new MockList(1),
   }),
   FairSaleUser: () => ({
     createdAt: casual.unix_time,

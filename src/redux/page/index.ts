@@ -20,6 +20,7 @@ interface PageActionSetTitle extends Action<ActionTypes.PAGE_SET_TITLE> {
 interface PageActionSetPath extends Action<ActionTypes.PAGE_SET_PATH> {
   payload: string
 }
+
 interface PageActionSetSelectedSaleStatus extends Action<ActionTypes.PAGE_SET_SELECTED_SALE_STATUS> {
   payload: SaleStatus
 }

@@ -10,7 +10,7 @@ import { FixedPriceSale__factory } from 'src/contracts'
 // interface
 import { MetaMaskError } from 'src/interfaces/Error'
 
-enum ClaimState {
+export enum ClaimState {
   UNCLAIMED = 'unclaimed',
   VERIFY = 'verify',
   FAILED = 'failed',

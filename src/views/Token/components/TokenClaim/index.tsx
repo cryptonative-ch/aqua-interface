@@ -1,5 +1,5 @@
 // Externals
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
@@ -23,13 +23,14 @@ import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 
 // interface
 import { Sale } from 'src/interfaces/Sale'
+import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
 
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
-import { useTokenClaim } from 'src/hooks/useTokenClaim'
+import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useBids } from 'src/hooks/useBids'
 
 //helpers
@@ -37,7 +38,9 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 
 // sales summary
 import { SaleClock } from 'src/views/Sales/components/SaleClock'
-import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
+
+// context
+import { ClaimContext } from 'src/contexts'
 
 const Icon = styled.img<SpaceProps>(
   {
@@ -57,25 +60,49 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const { account } = useWeb3React()
   // TODO: replace fixedpricesale with dynamic types
   const { bids } = useBids(sale!.id, 'FixedPriceSale')
+  const { claimShow, setClaimShow } = useContext(ClaimContext)
 
   const { claimTokens, claim, transaction, error } = useTokenClaim()
+
   const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
+
+  const findClaim = claimShow.find(x => x.saleId === sale.id)
+  const filterClaim = claimShow.filter(x => x.saleId === sale.id)[0]
+  console.log(findClaim, 'findclaim')
+  console.log(filterClaim, 'filterClaim')
+  console.log(claimShow)
+
+  useEffect(() => {
+    if (findClaim) {
+      claimShow.map(element => {
+        if (element.saleId === sale.id) {
+          return {
+            ...element,
+            claimContext: claim,
+          }
+        }
+        return element
+      })
+    }
+
+    setClaimShow([...claimShow, { saleId: sale.id, claimContext: claim }])
+  }, [claim])
 
   if (!bids || bids.length == 0 || aggregatePurchases(bids, account).status === FixedPriceSalePurchaseStatus.CLAIMED) {
     return null
   }
 
-  if (claim === 'verify') {
+  if (findClaim?.claimContext === ClaimState.VERIFY) {
     return <VerifyState />
   }
 
-  if (claim === 'failed' && error) {
+  if (findClaim?.claimContext === ClaimState.FAILED && error) {
     return <FailedClaim error={JSON.stringify(error)} />
   }
 
-  if (claim === 'claimed') {
+  if (findClaim?.claimContext === ClaimState.CLAIMED) {
     return <SuccessfulClaim purchase={{ ...sale, amount: amount }} tx={transaction!.hash} />
   }
 
