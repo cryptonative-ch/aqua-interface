@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { space, SpaceProps, LayoutProps, ColorProps, BorderProps, MarginProps } from 'styled-system'
 import React from 'react'
 import numeral from 'numeral'
-import { ethers } from 'ethers'
-import { useWeb3React } from '@web3-react/core'
 
 // Components
 import { Flex } from 'src/components/Flex'
@@ -24,12 +22,9 @@ import { Sale } from 'src/interfaces/Sale'
 import { formatBigInt } from 'src/utils/Defaults'
 
 // hooks
-import { useBids } from 'src/hooks/useBids'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'react-i18next'
 
-//helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
 type BarActiveProps = LayoutProps & ColorProps & BorderProps
 
 type BarBallMarker = BarActiveProps & MarginProps
@@ -129,9 +124,7 @@ interface HeaderControlProps {
 
 export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }: HeaderControlProps) {
   const [t] = useTranslation()
-  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
-  const { totalBids } = useBids(sale.id, sale.type)
 
   if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
