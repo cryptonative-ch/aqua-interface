@@ -2,7 +2,12 @@ name: Deploy Github Pages
 on:
   push:
     branches:
-      - feature/gh-pages
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
 jobs:
   deploy:
     runs-on: ubuntu-latest
