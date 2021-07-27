@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // Hooks
-import { useMesa } from 'src/hooks/useMesa'
+import { useAqua } from 'src/hooks/useAqua'
 
 // Redux actions
 import { fetchSalesComplete, fetchSalesError, fetchSalesRequest, fetchSalesSuccess } from 'src/redux/sales'
@@ -87,7 +87,7 @@ export function useSale(saleId: string): UseSaleReturn {
   const [t] = useTranslation()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
-  const mesa = useMesa()
+  const { subgraph } = useAqua()
   const sales = useSelector(({ sales }) => sales.sales)
   const sale = sales.find(sale => sale.id === saleId)
 
@@ -100,7 +100,7 @@ export function useSale(saleId: string): UseSaleReturn {
     // or the browser directly requested the path /sales/<saleId>
     dispatch(fetchSalesRequest())
     // Submit the query to the subgraph
-    mesa.subgraph
+    subgraph
       .query(salesQuery(saleId))
       .then(({ data }) => {
         const { fixedPriceSale, fairSale } = data

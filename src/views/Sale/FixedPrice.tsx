@@ -32,8 +32,8 @@ import { HeaderClaim } from 'src/views/Sale/components/HeaderClaim'
 // Layouts
 import { Center } from 'src/layouts/Center'
 
-// Mesa Utils
-import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
+// Aqua Utils
+import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
 import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
 

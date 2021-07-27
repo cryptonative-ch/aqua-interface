@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 // Hooks
-import { useMesa } from 'src/hooks/useMesa'
+import { useAqua } from 'src/hooks/useAqua'
 
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
@@ -28,7 +28,7 @@ interface UseBidsReturn {
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const mesa = useMesa()
+  const aqua = useAqua()
   const {
     isLoading,
     error,
@@ -48,7 +48,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
     //pull past bids from subgraph
     dispatch(initialBidRequest(true))
-    mesa.subgraph
+    aqua.subgraph
       .query(saleBidsQuery(saleId))
       .then(({ data }) => {
         const { fixedPriceSale, fairSales } = data

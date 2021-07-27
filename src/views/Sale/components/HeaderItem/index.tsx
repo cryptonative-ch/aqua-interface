@@ -10,7 +10,7 @@ import { Sale } from 'src/interfaces/Sale'
 import { secondsTohms } from 'src/views/Sale/components/Timer'
 import { InfoTooltip } from 'src/components/InfoTooltip'
 
-// Mesa Utils
+// Aqua Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 type HeaderTitleProps = TypographyProps & {

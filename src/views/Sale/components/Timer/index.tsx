@@ -9,7 +9,7 @@ import { Flex } from 'src/components/Flex'
 
 //Interfaces
 import { Sale } from 'src/interfaces/Sale'
-import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
+import { isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'

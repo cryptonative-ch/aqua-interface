@@ -17,7 +17,7 @@ import { CardTitle } from 'src/components/CardTitle'
 import check from 'src/assets/svg/Check-Icon.svg'
 import link from 'src/assets/svg/External-Link.svg'
 
-// Mesa Utils
+// Aqua Utils
 import { formatBigInt } from 'src/utils/Defaults'
 import { Sale } from 'src/interfaces/Sale'
 import { BigNumber } from '@ethersproject/bignumber'

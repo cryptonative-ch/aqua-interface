@@ -3,7 +3,7 @@ import React from 'react'
 import numeral from 'numeral'
 
 // Utility
-import { isSaleOpen, isSaleClosed } from 'src/mesa/sale'
+import { isSaleOpen, isSaleClosed } from 'src/aqua/sale'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces

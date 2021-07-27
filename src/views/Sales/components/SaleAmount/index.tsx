@@ -9,7 +9,7 @@ import { Flex } from 'src/components/Flex'
 // Interface
 import { Sale } from 'src/interfaces/Sale'
 
-// Mesa utils
+// Aqua utils
 import { fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleAmountProps {
