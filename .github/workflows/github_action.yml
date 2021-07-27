@@ -3,12 +3,7 @@ name: Deploy CI
 on:
   push:
     branches:
-      - dev
-      - gh-pages
       - feature/gh-pages
-  pull_request:
-    branches:
-      - dev
 jobs:
   develop-ci:
     runs-on: ubuntu-latest
