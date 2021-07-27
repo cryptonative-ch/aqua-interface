@@ -12,7 +12,7 @@ import { secondsTohms } from 'src/views/Sale/components/Timer'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
-import { isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
+import { isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { Flex } from 'src/components/Flex'
 

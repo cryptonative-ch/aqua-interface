@@ -23,7 +23,7 @@ import { Sale } from 'src/interfaces/Sale'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
-import { isSaleClosed } from 'src/mesa/sale'
+import { isSaleClosed } from 'src/aqua/sale'
 
 interface SaleSummaryProps {
   sale: Sale

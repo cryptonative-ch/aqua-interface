@@ -17,7 +17,7 @@ import { Modal } from 'src/components/Modal'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Utils
-import { fixRounding } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding } from 'src/utils/Defaults'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -160,23 +160,23 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     // Converting BigNumbers to normal numbers due to lack of decimal support
     const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
     const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
-    const tokenPrice = parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice)))
+    const tokenPrice = convertToBuyerPrice(parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice))))
 
     const quantity = fixRounding(value / tokenPrice, 8)
 
     // purchaseValue is less than minimum allocation
-    if (purchaseMinimumAllocation > quantity) {
+    if (purchaseMinimumAllocation > value) {
       newValidationError = new Error(
         `Minimum is ${fixRounding(purchaseMinimumAllocation * tokenPrice, 8)} ${
-          sale?.tokenIn.symbol
-        } / ${utils.formatUnits(sale?.allocationMin)} ${sale?.tokenOut.symbol}`
+          sale?.tokenOut.symbol
+        } / ${utils.formatUnits(sale?.allocationMin)} ${sale?.tokenIn.symbol}`
       )
     }
-    if (purchaseMaximumAllocation < quantity) {
+    if (purchaseMaximumAllocation < value) {
       newValidationError = new Error(
         `Maximum is ${fixRounding(purchaseMaximumAllocation * tokenPrice, 8)} ${
-          sale?.tokenIn.symbol
-        } / ${utils.formatUnits(sale?.allocationMax)} ${sale?.tokenOut.symbol}`
+          sale?.tokenOut.symbol
+        } / ${utils.formatUnits(sale?.allocationMax)} ${sale?.tokenIn.symbol}`
       )
     }
     // // Purchase value is greater than user's tokeIn balance
@@ -218,18 +218,18 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       return console.error('no connected signer')
     }
 
-    if (!tokenQuantity) {
-      return console.error('token amount == null')
+    if (!purchaseValue || !tokenQuantity) {
+      return console.error('purchase amount == null')
     }
 
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
 
     // Update state
     setTxPending(true)
-    // Convert tokenQuantity (number) to 18-decimal BigNumber
+    // Convert purchaseValue (number) to 18-decimal BigNumber
     // Sign and send transaction
     fixedPriceSaleContract
-      .buyTokens(utils.parseEther(tokenQuantity.toString()))
+      .commitTokens(utils.parseEther(purchaseValue.toString()))
       .then(tx => tx.wait(1)) // wait one network confirmation
       .then(() => {
         toast.success(t('success.purchase'))
@@ -241,7 +241,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       .then(() => {
         setTxPending(false)
       })
-  }, [account, library, sale, tokenQuantity, t])
+  }, [account, library, sale, tokenQuantity, purchaseValue, t])
 
   /**
    * Handles the form submission

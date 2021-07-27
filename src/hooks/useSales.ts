@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { fetchSalesComplete, fetchSalesError, fetchSalesRequest, fetchSalesSuccess } from 'src/redux/sales'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
-import { useMesa } from 'src/hooks/useMesa'
+import { useAqua } from 'src/hooks/useAqua'
 
 interface UseSalesReturn {
   loading: boolean
@@ -88,7 +88,7 @@ function isCacheExpired(delta: number) {
  */
 export function useSales(): UseSalesReturn {
   const [t] = useTranslation()
-  const mesa = useMesa()
+  const { subgraph } = useAqua()
   const dispatch = useDispatch()
   const { isLoading, error, sales, updatedAt } = useSelector(({ sales }) => sales)
 
@@ -102,7 +102,7 @@ export function useSales(): UseSalesReturn {
     // Dispatch request start
     dispatch(fetchSalesRequest())
     // Submit the query to the subgraph
-    mesa.subgraph
+    subgraph
       .query(salesQuery)
       .then(({ data }) => {
         const { fixedPriceSales, fairSales } = data

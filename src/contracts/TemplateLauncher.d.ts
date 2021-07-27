@@ -14,553 +14,848 @@ import {
   Overrides,
   PayableOverrides,
   CallOverrides,
-} from 'ethers'
-import { BytesLike } from '@ethersproject/bytes'
-import { Listener, Provider } from '@ethersproject/providers'
-import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
-import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
+} from "ethers";
+import { BytesLike } from "@ethersproject/bytes";
+import { Listener, Provider } from "@ethersproject/providers";
+import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
+import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface TemplateLauncherInterface extends ethers.utils.Interface {
   functions: {
-    'addTemplate(address)': FunctionFragment
-    'factory()': FunctionFragment
-    'getTemplate(uint256)': FunctionFragment
-    'getTemplateId(address)': FunctionFragment
-    'launchTemplate(uint256,bytes)': FunctionFragment
-    'removeTemplate(uint256)': FunctionFragment
-    'restrictedTemplates()': FunctionFragment
-    'templateId()': FunctionFragment
-    'templateInfo(address)': FunctionFragment
-    'updateTemplateRestriction(bool)': FunctionFragment
-    'verifyTemplate(uint256)': FunctionFragment
-  }
+    "addTemplate(address)": FunctionFragment;
+    "allowPublicTemplates()": FunctionFragment;
+    "factory()": FunctionFragment;
+    "getTemplate(uint256)": FunctionFragment;
+    "getTemplateId(address)": FunctionFragment;
+    "launchTemplate(uint256,bytes,string,address)": FunctionFragment;
+    "launchedTemplate(address)": FunctionFragment;
+    "participantListLaucher()": FunctionFragment;
+    "removeTemplate(uint256)": FunctionFragment;
+    "templateVerified(address)": FunctionFragment;
+    "toggleAllowPublicTemplates()": FunctionFragment;
+    "updateTemplateMetadataContentHash(address,string)": FunctionFragment;
+    "verifyTemplate(uint256)": FunctionFragment;
+  };
 
-  encodeFunctionData(functionFragment: 'addTemplate', values: [string]): string
-  encodeFunctionData(functionFragment: 'factory', values?: undefined): string
-  encodeFunctionData(functionFragment: 'getTemplate', values: [BigNumberish]): string
-  encodeFunctionData(functionFragment: 'getTemplateId', values: [string]): string
-  encodeFunctionData(functionFragment: 'launchTemplate', values: [BigNumberish, BytesLike]): string
-  encodeFunctionData(functionFragment: 'removeTemplate', values: [BigNumberish]): string
-  encodeFunctionData(functionFragment: 'restrictedTemplates', values?: undefined): string
-  encodeFunctionData(functionFragment: 'templateId', values?: undefined): string
-  encodeFunctionData(functionFragment: 'templateInfo', values: [string]): string
-  encodeFunctionData(functionFragment: 'updateTemplateRestriction', values: [boolean]): string
-  encodeFunctionData(functionFragment: 'verifyTemplate', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: "addTemplate", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "allowPublicTemplates",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "factory", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getTemplate",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTemplateId",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "launchTemplate",
+    values: [BigNumberish, BytesLike, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "launchedTemplate",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "participantListLaucher",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeTemplate",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "templateVerified",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "toggleAllowPublicTemplates",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTemplateMetadataContentHash",
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "verifyTemplate",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'addTemplate', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'factory', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'getTemplate', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'getTemplateId', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'launchTemplate', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'removeTemplate', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'restrictedTemplates', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'templateId', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'templateInfo', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'updateTemplateRestriction', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'verifyTemplate', data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: "addTemplate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "allowPublicTemplates",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTemplate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTemplateId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "launchTemplate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "launchedTemplate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "participantListLaucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeTemplate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "templateVerified",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "toggleAllowPublicTemplates",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTemplateMetadataContentHash",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "verifyTemplate",
+    data: BytesLike
+  ): Result;
 
   events: {
-    'TemplateAdded(address,uint256)': EventFragment
-    'TemplateLaunched(address,uint256)': EventFragment
-    'TemplateRemoved(address,uint256)': EventFragment
-    'TemplateVerified(address,uint256)': EventFragment
-    'UpdatedTemplateRestriction(bool)': EventFragment
-  }
+    "AllowPublicTemplatesUpdated(bool)": EventFragment;
+    "TemplateAdded(address,uint256)": EventFragment;
+    "TemplateLaunched(address,uint256,address,string)": EventFragment;
+    "TemplateMetadataContentHashUpdated(address,string)": EventFragment;
+    "TemplateRemoved(address,uint256)": EventFragment;
+    "TemplateVerified(address,uint256)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: 'TemplateAdded'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'TemplateLaunched'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'TemplateRemoved'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'TemplateVerified'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'UpdatedTemplateRestriction'): EventFragment
+  getEvent(
+    nameOrSignatureOrTopic: "AllowPublicTemplatesUpdated"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TemplateAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TemplateLaunched"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "TemplateMetadataContentHashUpdated"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TemplateRemoved"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TemplateVerified"): EventFragment;
 }
 
 export class TemplateLauncher extends Contract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
   listeners<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): Array<TypedListener<EventArgsArray, EventArgsObject>>
+  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
   off<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this
+  ): this;
   on<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this
+  ): this;
   once<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this
+  ): this;
   removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this
+  ): this;
   removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): this
+  ): this;
 
-  listeners(eventName?: string): Array<Listener>
-  off(eventName: string, listener: Listener): this
-  on(eventName: string, listener: Listener): this
-  once(eventName: string, listener: Listener): this
-  removeListener(eventName: string, listener: Listener): this
-  removeAllListeners(eventName?: string): this
+  listeners(eventName?: string): Array<Listener>;
+  off(eventName: string, listener: Listener): this;
+  on(eventName: string, listener: Listener): this;
+  once(eventName: string, listener: Listener): this;
+  removeListener(eventName: string, listener: Listener): this;
+  removeAllListeners(eventName?: string): this;
 
   queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
     event: TypedEventFilter<EventArgsArray, EventArgsObject>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
+  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: TemplateLauncherInterface
+  interface: TemplateLauncherInterface;
 
   functions: {
     addTemplate(
       _template: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    'addTemplate(address)'(
+    "addTemplate(address)"(
       _template: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    factory(overrides?: CallOverrides): Promise<[string]>
+    allowPublicTemplates(overrides?: CallOverrides): Promise<[boolean]>;
 
-    'factory()'(overrides?: CallOverrides): Promise<[string]>
+    "allowPublicTemplates()"(overrides?: CallOverrides): Promise<[boolean]>;
 
-    getTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<[string] & { template: string }>
+    factory(overrides?: CallOverrides): Promise<[string]>;
 
-    'getTemplate(uint256)'(
+    "factory()"(overrides?: CallOverrides): Promise<[string]>;
+
+    getTemplate(
       _templateId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string] & { template: string }>
+    ): Promise<[string]>;
 
-    getTemplateId(_template: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    "getTemplate(uint256)"(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    'getTemplateId(address)'(_template: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    getTemplateId(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "getTemplateId(address)"(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    'launchTemplate(uint256,bytes)'(
+    "launchTemplate(uint256,bytes,string,address)"(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
+
+    launchedTemplate(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string] & { deployer: string; metadataContentHash: string }
+    >;
+
+    "launchedTemplate(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string] & { deployer: string; metadataContentHash: string }
+    >;
+
+    participantListLaucher(overrides?: CallOverrides): Promise<[string]>;
+
+    "participantListLaucher()"(overrides?: CallOverrides): Promise<[string]>;
 
     removeTemplate(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    'removeTemplate(uint256)'(
+    "removeTemplate(uint256)"(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    restrictedTemplates(overrides?: CallOverrides): Promise<[boolean]>
-
-    'restrictedTemplates()'(overrides?: CallOverrides): Promise<[boolean]>
-
-    templateId(overrides?: CallOverrides): Promise<[BigNumber]>
-
-    'templateId()'(overrides?: CallOverrides): Promise<[BigNumber]>
-
-    templateInfo(
+    templateVerified(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber, boolean] & {
-        exists: boolean
-        templateId: BigNumber
-        index: BigNumber
-        verified: boolean
-      }
-    >
+    ): Promise<[boolean]>;
 
-    'templateInfo(address)'(
+    "templateVerified(address)"(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber, boolean] & {
-        exists: boolean
-        templateId: BigNumber
-        index: BigNumber
-        verified: boolean
-      }
-    >
+    ): Promise<[boolean]>;
 
-    updateTemplateRestriction(
-      _restrictedTemplates: boolean,
+    toggleAllowPublicTemplates(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    'updateTemplateRestriction(bool)'(
-      _restrictedTemplates: boolean,
+    "toggleAllowPublicTemplates()"(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
+
+    updateTemplateMetadataContentHash(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "updateTemplateMetadataContentHash(address,string)"(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     verifyTemplate(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
-    'verifyTemplate(uint256)'(
+    "verifyTemplate(uint256)"(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   addTemplate(
     _template: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  'addTemplate(address)'(
+  "addTemplate(address)"(
     _template: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  factory(overrides?: CallOverrides): Promise<string>
+  allowPublicTemplates(overrides?: CallOverrides): Promise<boolean>;
 
-  'factory()'(overrides?: CallOverrides): Promise<string>
+  "allowPublicTemplates()"(overrides?: CallOverrides): Promise<boolean>;
 
-  getTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<string>
+  factory(overrides?: CallOverrides): Promise<string>;
 
-  'getTemplate(uint256)'(_templateId: BigNumberish, overrides?: CallOverrides): Promise<string>
+  "factory()"(overrides?: CallOverrides): Promise<string>;
 
-  getTemplateId(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+  getTemplate(
+    _templateId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
-  'getTemplateId(address)'(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+  "getTemplate(uint256)"(
+    _templateId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  getTemplateId(
+    _template: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "getTemplateId(address)"(
+    _template: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   launchTemplate(
     _templateId: BigNumberish,
     _data: BytesLike,
+    _metadataContentHash: string,
+    _templateDeployer: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  'launchTemplate(uint256,bytes)'(
+  "launchTemplate(uint256,bytes,string,address)"(
     _templateId: BigNumberish,
     _data: BytesLike,
+    _metadataContentHash: string,
+    _templateDeployer: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
+
+  launchedTemplate(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string] & { deployer: string; metadataContentHash: string }
+  >;
+
+  "launchedTemplate(address)"(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string] & { deployer: string; metadataContentHash: string }
+  >;
+
+  participantListLaucher(overrides?: CallOverrides): Promise<string>;
+
+  "participantListLaucher()"(overrides?: CallOverrides): Promise<string>;
 
   removeTemplate(
     _templateId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  'removeTemplate(uint256)'(
+  "removeTemplate(uint256)"(
     _templateId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  restrictedTemplates(overrides?: CallOverrides): Promise<boolean>
+  templateVerified(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-  'restrictedTemplates()'(overrides?: CallOverrides): Promise<boolean>
-
-  templateId(overrides?: CallOverrides): Promise<BigNumber>
-
-  'templateId()'(overrides?: CallOverrides): Promise<BigNumber>
-
-  templateInfo(
+  "templateVerified(address)"(
     arg0: string,
     overrides?: CallOverrides
-  ): Promise<
-    [boolean, BigNumber, BigNumber, boolean] & {
-      exists: boolean
-      templateId: BigNumber
-      index: BigNumber
-      verified: boolean
-    }
-  >
+  ): Promise<boolean>;
 
-  'templateInfo(address)'(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [boolean, BigNumber, BigNumber, boolean] & {
-      exists: boolean
-      templateId: BigNumber
-      index: BigNumber
-      verified: boolean
-    }
-  >
-
-  updateTemplateRestriction(
-    _restrictedTemplates: boolean,
+  toggleAllowPublicTemplates(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  'updateTemplateRestriction(bool)'(
-    _restrictedTemplates: boolean,
+  "toggleAllowPublicTemplates()"(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
+
+  updateTemplateMetadataContentHash(
+    _template: string,
+    _newMetadataContentHash: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "updateTemplateMetadataContentHash(address,string)"(
+    _template: string,
+    _newMetadataContentHash: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   verifyTemplate(
     _templateId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
-  'verifyTemplate(uint256)'(
+  "verifyTemplate(uint256)"(
     _templateId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    addTemplate(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+    addTemplate(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    'addTemplate(address)'(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+    "addTemplate(address)"(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    factory(overrides?: CallOverrides): Promise<string>
+    allowPublicTemplates(overrides?: CallOverrides): Promise<boolean>;
 
-    'factory()'(overrides?: CallOverrides): Promise<string>
+    "allowPublicTemplates()"(overrides?: CallOverrides): Promise<boolean>;
 
-    getTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<string>
+    factory(overrides?: CallOverrides): Promise<string>;
 
-    'getTemplate(uint256)'(_templateId: BigNumberish, overrides?: CallOverrides): Promise<string>
+    "factory()"(overrides?: CallOverrides): Promise<string>;
 
-    getTemplateId(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+    getTemplate(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    'getTemplateId(address)'(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+    "getTemplate(uint256)"(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    launchTemplate(_templateId: BigNumberish, _data: BytesLike, overrides?: CallOverrides): Promise<string>
+    getTemplateId(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    'launchTemplate(uint256,bytes)'(
+    "getTemplateId(address)"(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<string>;
 
-    removeTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<void>
+    "launchTemplate(uint256,bytes,string,address)"(
+      _templateId: BigNumberish,
+      _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    'removeTemplate(uint256)'(_templateId: BigNumberish, overrides?: CallOverrides): Promise<void>
-
-    restrictedTemplates(overrides?: CallOverrides): Promise<boolean>
-
-    'restrictedTemplates()'(overrides?: CallOverrides): Promise<boolean>
-
-    templateId(overrides?: CallOverrides): Promise<BigNumber>
-
-    'templateId()'(overrides?: CallOverrides): Promise<BigNumber>
-
-    templateInfo(
+    launchedTemplate(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, BigNumber, boolean] & {
-        exists: boolean
-        templateId: BigNumber
-        index: BigNumber
-        verified: boolean
-      }
-    >
+      [string, string] & { deployer: string; metadataContentHash: string }
+    >;
 
-    'templateInfo(address)'(
+    "launchedTemplate(address)"(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, BigNumber, boolean] & {
-        exists: boolean
-        templateId: BigNumber
-        index: BigNumber
-        verified: boolean
-      }
-    >
+      [string, string] & { deployer: string; metadataContentHash: string }
+    >;
 
-    updateTemplateRestriction(_restrictedTemplates: boolean, overrides?: CallOverrides): Promise<void>
+    participantListLaucher(overrides?: CallOverrides): Promise<string>;
 
-    'updateTemplateRestriction(bool)'(_restrictedTemplates: boolean, overrides?: CallOverrides): Promise<void>
+    "participantListLaucher()"(overrides?: CallOverrides): Promise<string>;
 
-    verifyTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<void>
+    removeTemplate(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    'verifyTemplate(uint256)'(_templateId: BigNumberish, overrides?: CallOverrides): Promise<void>
-  }
+    "removeTemplate(uint256)"(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    templateVerified(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+    "templateVerified(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    toggleAllowPublicTemplates(overrides?: CallOverrides): Promise<void>;
+
+    "toggleAllowPublicTemplates()"(overrides?: CallOverrides): Promise<void>;
+
+    updateTemplateMetadataContentHash(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "updateTemplateMetadataContentHash(address,string)"(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    verifyTemplate(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "verifyTemplate(uint256)"(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+  };
 
   filters: {
+    AllowPublicTemplatesUpdated(
+      allowPublicTemplates: null
+    ): TypedEventFilter<[boolean], { allowPublicTemplates: boolean }>;
+
     TemplateAdded(
       template: string | null,
       templateId: null
-    ): TypedEventFilter<[string, BigNumber], { template: string; templateId: BigNumber }>
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { template: string; templateId: BigNumber }
+    >;
 
     TemplateLaunched(
-      sale: string | null,
-      templateId: null
-    ): TypedEventFilter<[string, BigNumber], { sale: string; templateId: BigNumber }>
+      template: string | null,
+      templateId: null,
+      templateDeployer: null,
+      metadataContentHash: null
+    ): TypedEventFilter<
+      [string, BigNumber, string, string],
+      {
+        template: string;
+        templateId: BigNumber;
+        templateDeployer: string;
+        metadataContentHash: string;
+      }
+    >;
+
+    TemplateMetadataContentHashUpdated(
+      template: null,
+      newdetaDataContentHash: null
+    ): TypedEventFilter<
+      [string, string],
+      { template: string; newdetaDataContentHash: string }
+    >;
 
     TemplateRemoved(
       template: string | null,
       templateId: null
-    ): TypedEventFilter<[string, BigNumber], { template: string; templateId: BigNumber }>
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { template: string; templateId: BigNumber }
+    >;
 
     TemplateVerified(
       template: string | null,
       templateId: null
-    ): TypedEventFilter<[string, BigNumber], { template: string; templateId: BigNumber }>
-
-    UpdatedTemplateRestriction(restrictedTemplates: null): TypedEventFilter<[boolean], { restrictedTemplates: boolean }>
-  }
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { template: string; templateId: BigNumber }
+    >;
+  };
 
   estimateGas: {
     addTemplate(
       _template: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    'addTemplate(address)'(
+    "addTemplate(address)"(
       _template: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    factory(overrides?: CallOverrides): Promise<BigNumber>
+    allowPublicTemplates(overrides?: CallOverrides): Promise<BigNumber>;
 
-    'factory()'(overrides?: CallOverrides): Promise<BigNumber>
+    "allowPublicTemplates()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    factory(overrides?: CallOverrides): Promise<BigNumber>;
 
-    'getTemplate(uint256)'(_templateId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    "factory()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getTemplateId(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+    getTemplate(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    'getTemplateId(address)'(_template: string, overrides?: CallOverrides): Promise<BigNumber>
+    "getTemplate(uint256)"(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTemplateId(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getTemplateId(address)"(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    'launchTemplate(uint256,bytes)'(
+    "launchTemplate(uint256,bytes,string,address)"(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
+
+    launchedTemplate(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "launchedTemplate(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    participantListLaucher(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "participantListLaucher()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     removeTemplate(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    'removeTemplate(uint256)'(
+    "removeTemplate(uint256)"(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    restrictedTemplates(overrides?: CallOverrides): Promise<BigNumber>
+    templateVerified(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    'restrictedTemplates()'(overrides?: CallOverrides): Promise<BigNumber>
+    "templateVerified(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    templateId(overrides?: CallOverrides): Promise<BigNumber>
-
-    'templateId()'(overrides?: CallOverrides): Promise<BigNumber>
-
-    templateInfo(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
-
-    'templateInfo(address)'(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
-
-    updateTemplateRestriction(
-      _restrictedTemplates: boolean,
+    toggleAllowPublicTemplates(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    'updateTemplateRestriction(bool)'(
-      _restrictedTemplates: boolean,
+    "toggleAllowPublicTemplates()"(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
+
+    updateTemplateMetadataContentHash(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "updateTemplateMetadataContentHash(address,string)"(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     verifyTemplate(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    'verifyTemplate(uint256)'(
+    "verifyTemplate(uint256)"(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     addTemplate(
       _template: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    'addTemplate(address)'(
+    "addTemplate(address)"(
       _template: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    factory(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    allowPublicTemplates(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    'factory()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    "allowPublicTemplates()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    getTemplate(_templateId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    'getTemplate(uint256)'(_templateId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    "factory()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getTemplateId(_template: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    getTemplate(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    'getTemplateId(address)'(_template: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    "getTemplate(uint256)"(
+      _templateId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTemplateId(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getTemplateId(address)"(
+      _template: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    'launchTemplate(uint256,bytes)'(
+    "launchTemplate(uint256,bytes,string,address)"(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metadataContentHash: string,
+      _templateDeployer: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
+
+    launchedTemplate(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "launchedTemplate(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    participantListLaucher(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "participantListLaucher()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     removeTemplate(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    'removeTemplate(uint256)'(
+    "removeTemplate(uint256)"(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    restrictedTemplates(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    templateVerified(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    'restrictedTemplates()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    "templateVerified(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    templateId(overrides?: CallOverrides): Promise<PopulatedTransaction>
-
-    'templateId()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
-
-    templateInfo(arg0: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
-
-    'templateInfo(address)'(arg0: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
-
-    updateTemplateRestriction(
-      _restrictedTemplates: boolean,
+    toggleAllowPublicTemplates(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    'updateTemplateRestriction(bool)'(
-      _restrictedTemplates: boolean,
+    "toggleAllowPublicTemplates()"(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
+
+    updateTemplateMetadataContentHash(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "updateTemplateMetadataContentHash(address,string)"(
+      _template: string,
+      _newMetadataContentHash: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     verifyTemplate(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    'verifyTemplate(uint256)'(
+    "verifyTemplate(uint256)"(
       _templateId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }
