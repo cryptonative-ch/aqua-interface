@@ -1,33 +1,33 @@
-name: Develop CI/CD
-
+name: Deploy Github Pages 
 on:
   push:
     branches:
-      - main
-      - dev
-  pull_request:
-    branches:
-      - main
       - dev
 jobs:
-  develop-ci:
+  deploy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [14.x]
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2.3.1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Remove dependencies
-        run: rm -rf package-lock.json node_modules
-      - name: Install dependencies
+
+      - name: Install Dependencies
         run: npm install
 
-      - name: Run the tests and generate coverage report
-        run: npm test -- --coverage --passWithNoTests
+      - name: Build Dapp
+        run: npm run build:xdai
 
-      - name: Build
-        run: npm run build-xdai
+      - name: Deploy to GH Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          ssh-key: ${{ secrets.GITHUB_PAGES }}
+          branch: gh-pages 
+          folder: build 
+          clean: true 

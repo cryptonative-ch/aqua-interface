@@ -96,7 +96,7 @@ export const App = () => {
               <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <Suspense fallback={<Center minHeight="100vh">LOADING</Center>}>
-                  <BrowserRouter>
+                  <BrowserRouter basename="/mesa-interface">
                     <Container>
                       <Header />
                       <AppRouter />
