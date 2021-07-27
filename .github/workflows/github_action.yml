@@ -39,7 +39,7 @@ jobs:
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          SSH-KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          SSH: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           BRANCH: gh-pages 
           FOLDER: build 
           CLEAN: true 
