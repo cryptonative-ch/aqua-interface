@@ -34,7 +34,7 @@ jobs:
         run: npm test -- --coverage --passWithNoTests
 
       - name: Build Dapp
-        run: npm run build:xdai
+        run: REACT_APP_SUBGRAPH_ENDPOINT=https://api.thegraph.com/subgraphs/name/adamazad/aqua-xdai-dev npm run build:xdai
 
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
