@@ -1,4 +1,4 @@
-name: Develop CI/CD
+name: Deploy Github Pages
 
 on:
   push:
@@ -24,17 +24,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Remove dependencies
-        run: rm -rf package-lock.json node_modules
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run the tests and generate coverage report
-        run: npm test -- --coverage --passWithNoTests
+      - name: Install Dependencies
+        run: yarn
 
       - name: Build Dapp
-        run: npm run build:xdai
+        run: yarn build:xdai
 
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
