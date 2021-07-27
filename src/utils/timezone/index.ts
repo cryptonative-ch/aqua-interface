@@ -1,4 +1,4 @@
-// Mesa utils
+// Aqua utils
 import Abbreviations from 'src/utils/timezone/abbreviations.json'
 
 export const timezoneAbbreviation = (timezoneString: string): string => {

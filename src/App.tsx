@@ -1,5 +1,5 @@
 // External
-import { Mesa, MesaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/mesa'
+import { Aqua, AquaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/aqua'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
@@ -38,7 +38,7 @@ import { Center } from 'src/layouts/Center'
 
 // Contexts
 import { SanctionContext } from 'src/contexts'
-import { MesaContext } from 'src/mesa'
+import { AquaContext } from 'src/aqua'
 
 export const Container = styled.div`
   position: relative;
@@ -51,28 +51,28 @@ export const App = () => {
   const [sanction, setSanction] = useState<boolean>(false)
   const { library, chainId } = useWeb3React()
   // Default: XDAI
-  let mesaConfig: MesaConfigMap = XDAI_CONFIG
+  let aquaConfig: AquaConfigMap = XDAI_CONFIG
 
   if (process.env.NODE_ENV === 'development') {
-    mesaConfig = {
+    aquaConfig = {
       ...RINKEBY_CONFIG,
       subgraph: SUBGRAPH_ENDPOINT,
     }
   }
   // Use Rinkeby
   if (chainId && chainId === CHAIN_ID.RINKEBY) {
-    mesaConfig = RINKEBY_CONFIG
+    aquaConfig = RINKEBY_CONFIG
   }
   // Development
 
   // Start new Apollo Client
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
-    uri: mesaConfig.subgraph,
+    uri: aquaConfig.subgraph,
   })
 
   // Construct the Mesa SDK
-  const mesa = new Mesa(mesaConfig, library)
+  const aqua = new Aqua(aquaConfig, library)
   const getGeoInfo = useCallback(() => {
     Axios.get('https://ipapi.co/json/').then(({ data }) => setSanction(SANCTION_LIST.includes(data.country_code)))
   }, [])
@@ -91,7 +91,7 @@ export const App = () => {
     <Web3ConnectionProvider>
       <CookiesProvider>
         <ApolloProvider client={apolloClient}>
-          <MesaContext.Provider value={mesa}>
+          <AquaContext.Provider value={aqua}>
             <SanctionContext.Provider value={sanction}>
               <ThemeProvider theme={theme}>
                 <GlobalStyle />
@@ -125,7 +125,7 @@ export const App = () => {
                 </Suspense>
               </ThemeProvider>
             </SanctionContext.Provider>
-          </MesaContext.Provider>
+          </AquaContext.Provider>
         </ApolloProvider>
       </CookiesProvider>
     </Web3ConnectionProvider>

@@ -5,8 +5,8 @@ import styled, { useTheme } from 'styled-components'
 // Components
 import { FormGroup } from 'src/components/FormGroup'
 
-// Mesa Utils
-import { isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
+// Aqua Utils
+import { isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 
 // Contexts
 import { BidModalContext } from 'src/contexts'

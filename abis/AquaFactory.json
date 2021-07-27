@@ -1,6 +1,37 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_feeManager",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_feeTo",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_templateManager",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_templateFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_feeNumerator",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_saleFee",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -23,12 +54,6 @@
         "indexed": false,
         "internalType": "address",
         "name": "templateManager",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "templateLauncher",
         "type": "address"
       },
       {
@@ -63,7 +88,7 @@
         "type": "address"
       }
     ],
-    "name": "SetFeeManager",
+    "name": "FeeManagerUpdated",
     "type": "event"
   },
   {
@@ -76,7 +101,7 @@
         "type": "uint256"
       }
     ],
-    "name": "SetFeeNumerator",
+    "name": "FeeNumeratorUpdated",
     "type": "event"
   },
   {
@@ -89,7 +114,7 @@
         "type": "address"
       }
     ],
-    "name": "SetFeeTo",
+    "name": "FeeToUpdated",
     "type": "event"
   },
   {
@@ -102,7 +127,7 @@
         "type": "uint256"
       }
     ],
-    "name": "SetSaleFee",
+    "name": "SaleFeeUpdated",
     "type": "event"
   },
   {
@@ -115,33 +140,7 @@
         "type": "uint256"
       }
     ],
-    "name": "SetTemplateFee",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "templateLauncher",
-        "type": "address"
-      }
-    ],
-    "name": "SetTemplateLauncher",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "templateManager",
-        "type": "address"
-      }
-    ],
-    "name": "SetTemplateManager",
+    "name": "TemplateFeeUpdated",
     "type": "event"
   },
   {
@@ -164,6 +163,32 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "templateLauncher",
+        "type": "address"
+      }
+    ],
+    "name": "TemplateLauncherUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "templateManager",
+        "type": "address"
+      }
+    ],
+    "name": "TemplateManagerUpdated",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -171,7 +196,7 @@
         "type": "uint256"
       }
     ],
-    "name": "allSales",
+    "name": "allTemplates",
     "outputs": [
       {
         "internalType": "address",
@@ -235,46 +260,16 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "initialized",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "_feeManager",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_feeTo",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_templateManager",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_templateLauncher",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_templateFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_feeNumerator",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_saleFee",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -288,13 +283,18 @@
         "internalType": "bytes",
         "name": "_data",
         "type": "bytes"
+      },
+      {
+        "internalType": "string",
+        "name": "_metaData",
+        "type": "string"
       }
     ],
     "name": "launchTemplate",
     "outputs": [
       {
         "internalType": "address",
-        "name": "newSale",
+        "name": "newTemplate",
         "type": "address"
       }
     ],
@@ -303,7 +303,7 @@
   },
   {
     "inputs": [],
-    "name": "numberOfSales",
+    "name": "numberOfTemplates",
     "outputs": [
       {
         "internalType": "uint256",

@@ -22,7 +22,6 @@ interface useTokenClaimReturns {
   transaction: ContractTransaction | undefined
   error: MetaMaskError | undefined
   claimTokens: (saleId: string) => void
-  withdrawTokens: (saleId: string) => void
 }
 
 export function useTokenClaim(): useTokenClaimReturns {
@@ -41,57 +40,40 @@ export function useTokenClaim(): useTokenClaimReturns {
 
   const claimTokens = (saleId: string) => {
     //take this out before production
-    FixedPriceSale__factory.connect(saleId, signer)
-      .closeSale()
-      .then((tx: ContractTransaction) => {
-        return tx.wait(1)
-      })
-      .catch((error: MetaMaskError) => {
-        console.error(error)
-        return setError(error)
-      })
-    FixedPriceSale__factory.connect(saleId, signer)
-      .claimTokens()
-      .then((tx: ContractTransaction) => {
-        setClaim(ClaimState.VERIFY)
-        setTransaction(tx)
-        return tx.wait(1)
-      })
-      .then(() => {
-        toast.success(t('success.claim'))
-        return setClaim(ClaimState.CLAIMED)
-      })
-      .catch((error: MetaMaskError) => {
-        setError(error)
-        console.error(error)
-        toast.error(t('errors.claim'))
-        return setClaim(ClaimState.FAILED)
-      })
-  }
-  const withdrawTokens = (saleId: string) => {
-    FixedPriceSale__factory.connect(saleId, signer)
-      .releaseTokens()
-      .then((tx: ContractTransaction) => {
-        setClaim(ClaimState.VERIFY)
-        setTransaction(tx)
-        return tx.wait(1)
-      })
-      .then(() => {
-        toast.success(t('success.withdraw'))
-        return setClaim(ClaimState.CLAIMED)
-      })
-      .catch((error: MetaMaskError) => {
-        setError(error)
-        console.error(error)
-        toast.error(t('errors.withdraw'))
-        return setClaim(ClaimState.FAILED)
-      })
+    if (account) {
+      FixedPriceSale__factory.connect(saleId, signer)
+        .closeSale()
+        .then((tx: ContractTransaction) => {
+          return tx.wait(1)
+        })
+        .catch((error: MetaMaskError) => {
+          console.error(error)
+          return setError(error)
+        })
+      // Withdraw tokens - withdraws investment or purchase depending on if successful
+      FixedPriceSale__factory.connect(saleId, signer)
+        .withdrawTokens(account)
+        .then((tx: ContractTransaction) => {
+          setClaim(ClaimState.VERIFY)
+          setTransaction(tx)
+          return tx.wait(1)
+        })
+        .then(() => {
+          toast.success(t('success.claim'))
+          return setClaim(ClaimState.CLAIMED)
+        })
+        .catch((error: MetaMaskError) => {
+          setError(error)
+          console.error(error)
+          toast.error(t('errors.claim'))
+          return setClaim(ClaimState.FAILED)
+        })
+    }
   }
   return {
     claim,
     transaction,
     error,
     claimTokens,
-    withdrawTokens,
   }
 }

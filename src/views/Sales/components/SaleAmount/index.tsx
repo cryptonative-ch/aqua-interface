@@ -9,8 +9,8 @@ import { Flex } from 'src/components/Flex'
 // Interface
 import { Sale } from 'src/interfaces/Sale'
 
-// Mesa utils
-import { formatBigInt } from 'src/utils/Defaults'
+// Aqua utils
+import { fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleAmountProps {
   sale: Sale
@@ -32,7 +32,9 @@ export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
         {numeral(
           sale.type == 'FairSale'
             ? formatBigInt(sale.tokensForSale, sale.tokenOut.decimals)
-            : formatBigInt(closed ? sale.soldAmount : sale.sellAmount, sale.tokenOut.decimals)
+            : formatBigInt(sale.soldAmount) == 0
+            ? 0
+            : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
         ).format('0,0')}
       </SaleCardText>
       <SaleCardText isFailed={isFailed} fontWeight="light">

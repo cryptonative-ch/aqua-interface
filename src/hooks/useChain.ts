@@ -62,7 +62,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
 
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(contractAddress, library)
 
-    fixedPriceSaleContract.on('NewPurchase', async (buyer, amount, event) => {
+    fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
       const bids: SaleBid = {
         id: String(await (await library.getBlock(event.blockNumber)).timestamp),
         buyer: buyer,
