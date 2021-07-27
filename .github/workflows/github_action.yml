@@ -34,7 +34,7 @@ jobs:
         run: npm test -- --coverage --passWithNoTests
 
       - name: Build Dapp
-        run: CI=false npm run build:xdai
+        run: npm run build:xdai
 
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
