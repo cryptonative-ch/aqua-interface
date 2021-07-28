@@ -1,107 +1,45 @@
 // Interface
 import { Action } from 'redux'
 
-//Action
+// interface
+import { ClaimState } from 'src/hooks/useTokenClaim'
 
 export enum ActionTypes {
-  UNCLAIMED = 'UNCLAIMED',
-  VERIFY = 'VERIFY',
-  FAILED = 'FAILED',
-  CLAIMED = 'CLAIMED',
+  SET_CLAIM_STATUS = 'SET_CLAIM_STATUS',
 }
 
-export interface ClaimState {
+export interface ClaimStatePerSale {
   saleId: string
-  ClaimToken: ActionTypes
+  ClaimToken: ClaimState
 }
 
-interface UnclaimedAction extends Action<ActionTypes.UNCLAIMED> {
-  payload: ClaimState
+interface ClaimAction extends Action<ActionTypes.SET_CLAIM_STATUS> {
+  payload: ClaimStatePerSale
 }
 
-interface VerifyAction extends Action<ActionTypes.VERIFY> {
-  payload: ClaimState
-}
-
-interface FailedAction extends Action<ActionTypes.FAILED> {
-  payload: ClaimState
-}
-
-interface ClaimedAction extends Action<ActionTypes.CLAIMED> {
-  payload: ClaimState
-}
-
-export type ClaimActionTypes = UnclaimedAction | VerifyAction | FailedAction | ClaimedAction
-
-export const unclaimed = (payload: ClaimState) => ({
-  payload,
-  type: ActionTypes.UNCLAIMED,
-})
-
-export const verify = (payload: ClaimState) => ({
-  payload,
-  type: ActionTypes.VERIFY,
-})
-
-export const failed = (payload: ClaimState) => ({
-  payload,
-  type: ActionTypes.FAILED,
-})
-
-export const claimed = (payload: string) => ({
-  payload,
-  type: ActionTypes.CLAIMED,
-})
+export type ClaimActionTypes = ClaimAction
 
 export interface ClaimTokensState {
-  claims: ClaimState[]
+  claims: ClaimStatePerSale[]
 }
+
+export const setClaimStatus = (payload: ClaimStatePerSale): ClaimAction => ({
+  type: ActionTypes.SET_CLAIM_STATUS,
+  payload,
+})
 
 export const defaultState: ClaimTokensState = { claims: [] }
 
-const eventExists = (events: ClaimState[], event: ClaimState) => {
+const eventExists = (events: ClaimStatePerSale[], event: ClaimStatePerSale) => {
   return events.some(e => e.saleId === event.saleId)
 }
 
 export function reducer(state: ClaimTokensState = defaultState, action: ClaimActionTypes): ClaimTokensState {
   switch (action.type) {
-    case ActionTypes.UNCLAIMED:
-      return {
-        claims: [...state.claims, action.payload],
-      }
-
-    case ActionTypes.VERIFY:
+    case ActionTypes.SET_CLAIM_STATUS:
       return {
         claims: eventExists(state.claims, action.payload)
-          ? state.claims.map(element => {
-              if (element.saleId === action.payload.saleId) {
-                return {
-                  ...element,
-                  claimToken: action.payload.ClaimToken,
-                }
-              }
-              return element
-            })
-          : [...state.claims, action.payload],
-      }
-    case ActionTypes.FAILED:
-      return {
-        claims: eventExists(state.claims, action.payload)
-          ? state.claims.map(element => {
-              if (element.saleId === action.payload.saleId) {
-                return {
-                  ...element,
-                  claimToken: action.payload.ClaimToken,
-                }
-              }
-              return element
-            })
-          : [...state.claims, action.payload],
-      }
-    case ActionTypes.CLAIMED:
-      return {
-        claims: eventExists(state.claims, action.payload)
-          ? state.claims.map(element => {
+          ? state.claims.map((element: ClaimStatePerSale) => {
               if (element.saleId === action.payload.saleId) {
                 return {
                   ...element,
