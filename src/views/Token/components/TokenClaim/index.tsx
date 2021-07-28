@@ -58,7 +58,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   // TODO: replace fixedpricesale with dynamic types
   const { bids } = useBids(sale!.id, 'FixedPriceSale')
 
-  const { claimTokens, claim, transaction, error } = useTokenClaim()
+  const { claimTokens, claim, error, transaction } = useTokenClaim(sale.id)
 
   const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
@@ -72,8 +72,8 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
     return <VerifyState />
   }
 
-  if (claim === ClaimState.FAILED && error) {
-    return <FailedClaim error={JSON.stringify(error)} />
+  if (claim === ClaimState.FAILED) {
+    return <FailedClaim />
   }
 
   if (claim === ClaimState.CLAIMED) {

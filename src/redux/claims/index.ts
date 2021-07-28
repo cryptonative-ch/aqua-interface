@@ -1,3 +1,6 @@
+// External
+import { ContractTransaction } from 'ethers'
+
 // Interface
 import { Action } from 'redux'
 
@@ -11,6 +14,8 @@ export enum ActionTypes {
 export interface ClaimStatePerSale {
   saleId: string
   ClaimToken: ClaimState
+  transaction: ContractTransaction | null
+  error: Error | null
 }
 
 interface ClaimAction extends Action<ActionTypes.SET_CLAIM_STATUS> {

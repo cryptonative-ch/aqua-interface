@@ -42,7 +42,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const { isMobile } = useWindowSize()
   const theme = useTheme()
   const [t] = useTranslation()
-  const { error: claimError, claim, claimTokens } = useTokenClaim()
+  const { error: claimError, claim, claimTokens } = useTokenClaim(sale.id)
   const threshold = BigNumber.from(sale.minimumRaise)
   const tokensSold = BigNumber.from(sale.soldAmount)
   return (
