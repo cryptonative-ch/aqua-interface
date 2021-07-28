@@ -21,7 +21,7 @@ import { Sale } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 
 // Hooks
-import { useTokenClaim } from 'src/hooks/useTokenClaim'
+import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
@@ -60,11 +60,11 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
       {isSaleClosed(sale as FIX_LATER) && !isMobile && (
         <>
           {tokensSold.gte(threshold) ? (
-            claim == 'verify' ? (
+            claim === ClaimState.VERIFY ? (
               <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
                 <Spinner />
               </ClaimButtons>
-            ) : claim === 'failed' ? (
+            ) : claim === ClaimState.FAILED ? (
               <ClaimButtons mr="16px" disabled={false} type="button">
                 {claimError?.message}
               </ClaimButtons>
@@ -73,13 +73,13 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
                 Claim Tokens
               </ClaimButtons>
             )
-          ) : claim === 'verify' ? (
+          ) : claim === ClaimState.VERIFY ? (
             <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
               <Spinner />
             </ClaimButtons>
           ) : (
             <ClaimButtons
-              disabled={claim === 'claimed' ? true : false}
+              disabled={claim === ClaimState.CLAIMED ? true : false}
               type="button"
               onClick={() => claimTokens(sale.id)}
               background="#7B7F93"

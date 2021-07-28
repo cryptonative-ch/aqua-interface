@@ -39,9 +39,6 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 // sales summary
 import { SaleClock } from 'src/views/Sales/components/SaleClock'
 
-// context
-import { ClaimContext } from 'src/contexts'
-
 const Icon = styled.img<SpaceProps>(
   {
     height: '32px',
@@ -60,7 +57,6 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const { account } = useWeb3React()
   // TODO: replace fixedpricesale with dynamic types
   const { bids } = useBids(sale!.id, 'FixedPriceSale')
-  const { claimShow, setClaimShow } = useContext(ClaimContext)
 
   const { claimTokens, claim, transaction, error } = useTokenClaim()
 
@@ -68,41 +64,19 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
-  const findClaim = claimShow.find(x => x.saleId === sale.id)
-  const filterClaim = claimShow.filter(x => x.saleId === sale.id)[0]
-  console.log(findClaim, 'findclaim')
-  console.log(filterClaim, 'filterClaim')
-  console.log(claimShow)
-
-  useEffect(() => {
-    if (findClaim) {
-      claimShow.map(element => {
-        if (element.saleId === sale.id) {
-          return {
-            ...element,
-            claimContext: claim,
-          }
-        }
-        return element
-      })
-    }
-
-    setClaimShow([...claimShow, { saleId: sale.id, claimContext: claim }])
-  }, [claim])
-
   if (!bids || bids.length == 0 || aggregatePurchases(bids, account).status === FixedPriceSalePurchaseStatus.CLAIMED) {
     return null
   }
 
-  if (findClaim?.claimContext === ClaimState.VERIFY) {
+  if (claim === ClaimState.VERIFY) {
     return <VerifyState />
   }
 
-  if (findClaim?.claimContext === ClaimState.FAILED && error) {
+  if (claim === ClaimState.FAILED && error) {
     return <FailedClaim error={JSON.stringify(error)} />
   }
 
-  if (findClaim?.claimContext === ClaimState.CLAIMED) {
+  if (claim === ClaimState.CLAIMED) {
     return <SuccessfulClaim purchase={{ ...sale, amount: amount }} tx={transaction!.hash} />
   }
 

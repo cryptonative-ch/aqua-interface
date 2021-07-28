@@ -33,9 +33,6 @@ import { useWeb3React } from '@web3-react/core'
 // sales page
 import { TokenView } from 'src/views/Token'
 
-// Context
-import { ClaimContextProps, ClaimContext } from 'src/contexts'
-
 const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
 })
@@ -69,7 +66,6 @@ const saleFilterMap = {
 export function SalesView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const [claimShow, setClaimShow] = useState<ClaimContextProps[]>([])
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
   const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
@@ -123,53 +119,51 @@ export function SalesView() {
   }, [saleStatus, loading])
 
   return (
-    <ClaimContext.Provider value={{ claimShow, setClaimShow }}>
-      <Container minHeight="100%" inner={false} noPadding={true}>
-        <Container>
-          <Title>Token Sales</Title>
-          <SaleNavBar state={saleStatus} setStatus={setStatus} />
-          {filteredUserSales.length > 0 && (
-            <>
-              {saleStatus === SaleStatus.LIVE ? (
-                <DividerWithText color="#7B7F93">{t('texts.activeBids')}</DividerWithText>
-              ) : saleStatus === SaleStatus.CLOSED ? (
-                <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
-              ) : null}
+    <Container minHeight="100%" inner={false} noPadding={true}>
+      <Container>
+        <Title>Token Sales</Title>
+        <SaleNavBar state={saleStatus} setStatus={setStatus} />
+        {filteredUserSales.length > 0 && (
+          <>
+            {saleStatus === SaleStatus.LIVE ? (
+              <DividerWithText color="#7B7F93">{t('texts.activeBids')}</DividerWithText>
+            ) : saleStatus === SaleStatus.CLOSED ? (
+              <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
+            ) : null}
 
-              {saleStatus === SaleStatus.CLOSED ? (
-                <TokenView />
-              ) : (
-                <GridListSection>
-                  {filteredUserSales?.map(sale => (
-                    <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
-                      <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
-                    </SaleSummaryWrapper>
-                  ))}
-                </GridListSection>
-              )}
-            </>
-          )}
-
-          {filteredUserSales.length > 0 && filteredSales.length > 0 && (
-            <DividerWithText color="#7B7F93">{t('texts.otherSales')}</DividerWithText>
-          )}
-          <GridListSection>
-            {error ? (
-              <Center>
-                <ErrorMessage error={error} />
-              </Center>
-            ) : loading ? (
-              t('texts.loading')
+            {saleStatus === SaleStatus.CLOSED ? (
+              <TokenView />
             ) : (
-              filteredSales?.map(sale => (
-                <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                  <SaleSummaryCard sale={sale as Sale} />
-                </SaleSummaryWrapper>
-              ))
+              <GridListSection>
+                {filteredUserSales?.map(sale => (
+                  <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
+                    <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
+                  </SaleSummaryWrapper>
+                ))}
+              </GridListSection>
             )}
-          </GridListSection>
-        </Container>
+          </>
+        )}
+
+        {filteredUserSales.length > 0 && filteredSales.length > 0 && (
+          <DividerWithText color="#7B7F93">{t('texts.otherSales')}</DividerWithText>
+        )}
+        <GridListSection>
+          {error ? (
+            <Center>
+              <ErrorMessage error={error} />
+            </Center>
+          ) : loading ? (
+            t('texts.loading')
+          ) : (
+            filteredSales?.map(sale => (
+              <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
+                <SaleSummaryCard sale={sale as Sale} />
+              </SaleSummaryWrapper>
+            ))
+          )}
+        </GridListSection>
       </Container>
-    </ClaimContext.Provider>
+    </Container>
   )
 }

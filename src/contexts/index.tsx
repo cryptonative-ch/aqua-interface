@@ -5,8 +5,6 @@ import { ConnectorNames } from 'src/providers/web3'
 
 export const SanctionContext = React.createContext<boolean>(false)
 
-export const ClaimContext = React.createContext<ClaimContextType>({} as ClaimContextType)
-
 export const BidModalContext = React.createContext({
   isShown: false,
   result: false,

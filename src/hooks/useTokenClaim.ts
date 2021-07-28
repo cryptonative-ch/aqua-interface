@@ -11,10 +11,10 @@ import { FixedPriceSale__factory } from 'src/contracts'
 import { MetaMaskError } from 'src/interfaces/Error'
 
 export enum ClaimState {
-  UNCLAIMED = 'unclaimed',
-  VERIFY = 'verify',
-  FAILED = 'failed',
-  CLAIMED = 'claimed',
+  UNCLAIMED = 'UNCLAIMED',
+  VERIFY = 'VERIFY',
+  FAILED = 'FAILED',
+  CLAIMED = 'CLAIMED',
 }
 
 interface useTokenClaimReturns {
