@@ -32,10 +32,10 @@ import { HeaderClaim } from 'src/views/Sale/components/HeaderClaim'
 // Layouts
 import { Center } from 'src/layouts/Center'
 
-// Mesa Utils
-import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
+// Aqua Utils
+import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
-import { formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
@@ -116,17 +116,17 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${
-                        sale.tokenIn?.symbol
-                      }/${sale.tokenOut?.symbol}`}
+                      description={`${convertToBuyerPrice(
+                        formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)
+                      ).toFixed(2)} ${sale.tokenIn?.symbol}/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       isMobile
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                      description={`${formatBigInt(sale.allocationMin, sale.tokenIn.decimals)} - ${formatBigInt(
                         sale.allocationMax,
-                        sale.tokenOut.decimals
-                      )} ${sale.tokenOut?.symbol}`}
+                        sale.tokenIn.decimals
+                      )} ${sale.tokenIn?.symbol}`}
                       tooltip={t('texts.minMaxAllocationInfo')}
                     />
                     {isSaleClosed(sale as FIX_LATER) && (
@@ -150,23 +150,28 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title="Price"
-                      description={`${formatBigInt(sale.tokenPrice, sale.tokenOut.decimals).toFixed(2)} ${
-                        sale.tokenIn?.symbol
-                      }/${sale.tokenOut?.symbol}`}
+                      description={`${convertToBuyerPrice(
+                        formatBigInt(sale.tokenPrice, sale.tokenOut.decimals)
+                      ).toFixed(2)} ${sale.tokenIn?.symbol}/${sale.tokenOut?.symbol}`}
                     />
                     {isSaleClosed(sale as FIX_LATER) ? (
                       <HeaderItem
                         title={sale.soldAmount < sale.minimumRaise ? 'Soft Cap not reached' : 'Amount Sold'}
-                        description={`${formatBigInt(sale.soldAmount)} ${sale.tokenOut?.symbol}`}
+                        description={`${
+                          // Due to quirk of subgraph this is set to 0 then the remaining number of tokens after first commitment
+                          formatBigInt(sale.soldAmount) == 0
+                            ? 0
+                            : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
+                        } ${sale.tokenOut?.symbol}`}
                         error={sale.soldAmount < sale.minimumRaise}
                       />
                     ) : (
                       <HeaderItem
                         title={'Min. - Max. Allocation'}
-                        description={`${formatBigInt(sale.allocationMin, sale.tokenOut.decimals)} - ${formatBigInt(
+                        description={`${formatBigInt(sale.allocationMin, sale.tokenIn.decimals)} - ${formatBigInt(
                           sale.allocationMax,
-                          sale.tokenOut.decimals
-                        )} ${sale.tokenOut?.symbol}`}
+                          sale.tokenIn.decimals
+                        )} ${sale.tokenIn?.symbol}`}
                         tooltip={t('texts.minMaxAllocationInfo')}
                       />
                     )}
@@ -231,7 +236,7 @@ export function FixedPriceSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
                     <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
-                      sale.tokenOut?.symbol
+                      sale.tokenIn?.symbol
                     }`}</FixedFormMax>
                   </Flex>
                 </CardBody>

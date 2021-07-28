@@ -18,7 +18,7 @@ import { GridListSection } from 'src/components/Grid'
 
 // interface
 import { SaleDate, Sale } from 'src/interfaces/Sale'
-import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/mesa/sale'
+import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'

@@ -35,9 +35,9 @@ import { HeaderItem } from 'src/views/Sale/components/HeaderItem'
 import { SaleHeader } from 'src/views/Sale/components/SaleHeader'
 import { BarChart } from 'src/views/Sale/components/BarChart'
 
-// Mesa Utils
-import { calculateClearingPrice } from 'src/mesa/price'
-import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/mesa/sale'
+// Aqua Utils
+import { calculateClearingPrice } from 'src/aqua/price'
+import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils/Defaults'
 

@@ -1,16 +1,10 @@
-name: Develop CI/CD
-
+name: Deploy Github Pages 
 on:
   push:
     branches:
       - dev
-      - gh-pages
-      - feature/gh-pages
-  pull_request:
-    branches:
-      - dev
 jobs:
-  develop-ci:
+  deploy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,16 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run the tests and generate coverage report
-        run: npm test -- --coverage --passWithNoTests
-
       - name: Build Dapp
-        run: npm run build:xdai 
+        run: npm run build:xdai
 
       - name: Deploy to GH Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          SSH-KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          BRANCH: gh-pages 
-          FOLDER: build 
-          CLEAN: true 
+          ssh-key: ${{ secrets.GITHUB_PAGES }}
+          branch: gh-pages 
+          folder: build 
+          clean: true 

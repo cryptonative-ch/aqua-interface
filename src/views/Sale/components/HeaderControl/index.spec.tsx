@@ -23,7 +23,7 @@ dayjs.extend(durationTime)
 // Component
 import { HeaderControl } from 'src/views/Sale/components/HeaderControl/index'
 
-// Mesa Utils
+// Aqua Utils
 import { getFixedPriceSales } from 'src/utils/Defaults'
 
 // redux

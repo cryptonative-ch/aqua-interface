@@ -20,16 +20,16 @@ import { Listener, Provider } from '@ethersproject/providers'
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
 import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
 
-interface MesaFactoryInterface extends ethers.utils.Interface {
+interface AquaFactoryInterface extends ethers.utils.Interface {
   functions: {
-    'allSales(uint256)': FunctionFragment
+    'allTemplates(uint256)': FunctionFragment
     'feeDenominator()': FunctionFragment
     'feeManager()': FunctionFragment
     'feeNumerator()': FunctionFragment
     'feeTo()': FunctionFragment
-    'initialize(address,address,address,address,uint256,uint256,uint256)': FunctionFragment
-    'launchTemplate(uint256,bytes)': FunctionFragment
-    'numberOfSales()': FunctionFragment
+    'initialized()': FunctionFragment
+    'launchTemplate(uint256,bytes,string)': FunctionFragment
+    'numberOfTemplates()': FunctionFragment
     'saleFee()': FunctionFragment
     'setFeeManager(address)': FunctionFragment
     'setFeeNumerator(uint256)': FunctionFragment
@@ -44,17 +44,14 @@ interface MesaFactoryInterface extends ethers.utils.Interface {
     'templateManager()': FunctionFragment
   }
 
-  encodeFunctionData(functionFragment: 'allSales', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'allTemplates', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'feeDenominator', values?: undefined): string
   encodeFunctionData(functionFragment: 'feeManager', values?: undefined): string
   encodeFunctionData(functionFragment: 'feeNumerator', values?: undefined): string
   encodeFunctionData(functionFragment: 'feeTo', values?: undefined): string
-  encodeFunctionData(
-    functionFragment: 'initialize',
-    values: [string, string, string, string, BigNumberish, BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(functionFragment: 'launchTemplate', values: [BigNumberish, BytesLike]): string
-  encodeFunctionData(functionFragment: 'numberOfSales', values?: undefined): string
+  encodeFunctionData(functionFragment: 'initialized', values?: undefined): string
+  encodeFunctionData(functionFragment: 'launchTemplate', values: [BigNumberish, BytesLike, string]): string
+  encodeFunctionData(functionFragment: 'numberOfTemplates', values?: undefined): string
   encodeFunctionData(functionFragment: 'saleFee', values?: undefined): string
   encodeFunctionData(functionFragment: 'setFeeManager', values: [string]): string
   encodeFunctionData(functionFragment: 'setFeeNumerator', values: [BigNumberish]): string
@@ -68,14 +65,14 @@ interface MesaFactoryInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'templateLauncher', values?: undefined): string
   encodeFunctionData(functionFragment: 'templateManager', values?: undefined): string
 
-  decodeFunctionResult(functionFragment: 'allSales', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'allTemplates', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feeDenominator', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feeManager', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feeNumerator', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feeTo', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'initialized', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'launchTemplate', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'numberOfSales', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'numberOfTemplates', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'saleFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setFeeManager', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setFeeNumerator', data: BytesLike): Result
@@ -90,29 +87,29 @@ interface MesaFactoryInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'templateManager', data: BytesLike): Result
 
   events: {
-    'FactoryInitialized(address,address,address,address,uint256,uint256,uint256)': EventFragment
-    'SetFeeManager(address)': EventFragment
-    'SetFeeNumerator(uint256)': EventFragment
-    'SetFeeTo(address)': EventFragment
-    'SetSaleFee(uint256)': EventFragment
-    'SetTemplateFee(uint256)': EventFragment
-    'SetTemplateLauncher(address)': EventFragment
-    'SetTemplateManager(address)': EventFragment
+    'FactoryInitialized(address,address,address,uint256,uint256,uint256)': EventFragment
+    'FeeManagerUpdated(address)': EventFragment
+    'FeeNumeratorUpdated(uint256)': EventFragment
+    'FeeToUpdated(address)': EventFragment
+    'SaleFeeUpdated(uint256)': EventFragment
+    'TemplateFeeUpdated(uint256)': EventFragment
     'TemplateLaunched(address,uint256)': EventFragment
+    'TemplateLauncherUpdated(address)': EventFragment
+    'TemplateManagerUpdated(address)': EventFragment
   }
 
   getEvent(nameOrSignatureOrTopic: 'FactoryInitialized'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetFeeManager'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetFeeNumerator'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetFeeTo'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetSaleFee'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetTemplateFee'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetTemplateLauncher'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SetTemplateManager'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'FeeManagerUpdated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'FeeNumeratorUpdated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'FeeToUpdated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'SaleFeeUpdated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'TemplateFeeUpdated'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'TemplateLaunched'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'TemplateLauncherUpdated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'TemplateManagerUpdated'): EventFragment
 }
 
-export class MesaFactory extends Contract {
+export class AquaFactory extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
@@ -153,12 +150,12 @@ export class MesaFactory extends Contract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
 
-  interface: MesaFactoryInterface
+  interface: AquaFactoryInterface
 
   functions: {
-    allSales(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>
+    allTemplates(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>
 
-    'allSales(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>
+    'allTemplates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>
 
     feeDenominator(overrides?: CallOverrides): Promise<[BigNumber]>
 
@@ -176,43 +173,27 @@ export class MesaFactory extends Contract {
 
     'feeTo()'(overrides?: CallOverrides): Promise<[string]>
 
-    initialize(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    initialized(overrides?: CallOverrides): Promise<[boolean]>
 
-    'initialize(address,address,address,address,uint256,uint256,uint256)'(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>
+    'initialized()'(overrides?: CallOverrides): Promise<[boolean]>
 
     launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>
 
-    'launchTemplate(uint256,bytes)'(
+    'launchTemplate(uint256,bytes,string)'(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>
 
-    numberOfSales(overrides?: CallOverrides): Promise<[BigNumber]>
+    numberOfTemplates(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    'numberOfSales()'(overrides?: CallOverrides): Promise<[BigNumber]>
+    'numberOfTemplates()'(overrides?: CallOverrides): Promise<[BigNumber]>
 
     saleFee(overrides?: CallOverrides): Promise<[BigNumber]>
 
@@ -302,9 +283,9 @@ export class MesaFactory extends Contract {
     'templateManager()'(overrides?: CallOverrides): Promise<[string]>
   }
 
-  allSales(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
+  allTemplates(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  'allSales(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
+  'allTemplates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
   feeDenominator(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -322,43 +303,27 @@ export class MesaFactory extends Contract {
 
   'feeTo()'(overrides?: CallOverrides): Promise<string>
 
-  initialize(
-    _feeManager: string,
-    _feeTo: string,
-    _templateManager: string,
-    _templateLauncher: string,
-    _templateFee: BigNumberish,
-    _feeNumerator: BigNumberish,
-    _saleFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  initialized(overrides?: CallOverrides): Promise<boolean>
 
-  'initialize(address,address,address,address,uint256,uint256,uint256)'(
-    _feeManager: string,
-    _feeTo: string,
-    _templateManager: string,
-    _templateLauncher: string,
-    _templateFee: BigNumberish,
-    _feeNumerator: BigNumberish,
-    _saleFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>
+  'initialized()'(overrides?: CallOverrides): Promise<boolean>
 
   launchTemplate(
     _templateId: BigNumberish,
     _data: BytesLike,
+    _metaData: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>
 
-  'launchTemplate(uint256,bytes)'(
+  'launchTemplate(uint256,bytes,string)'(
     _templateId: BigNumberish,
     _data: BytesLike,
+    _metaData: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>
 
-  numberOfSales(overrides?: CallOverrides): Promise<BigNumber>
+  numberOfTemplates(overrides?: CallOverrides): Promise<BigNumber>
 
-  'numberOfSales()'(overrides?: CallOverrides): Promise<BigNumber>
+  'numberOfTemplates()'(overrides?: CallOverrides): Promise<BigNumber>
 
   saleFee(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -448,9 +413,9 @@ export class MesaFactory extends Contract {
   'templateManager()'(overrides?: CallOverrides): Promise<string>
 
   callStatic: {
-    allSales(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
+    allTemplates(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    'allSales(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
+    'allTemplates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
     feeDenominator(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -468,39 +433,27 @@ export class MesaFactory extends Contract {
 
     'feeTo()'(overrides?: CallOverrides): Promise<string>
 
-    initialize(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>
+    initialized(overrides?: CallOverrides): Promise<boolean>
 
-    'initialize(address,address,address,address,uint256,uint256,uint256)'(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>
+    'initialized()'(overrides?: CallOverrides): Promise<boolean>
 
-    launchTemplate(_templateId: BigNumberish, _data: BytesLike, overrides?: CallOverrides): Promise<string>
-
-    'launchTemplate(uint256,bytes)'(
+    launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: CallOverrides
     ): Promise<string>
 
-    numberOfSales(overrides?: CallOverrides): Promise<BigNumber>
+    'launchTemplate(uint256,bytes,string)'(
+      _templateId: BigNumberish,
+      _data: BytesLike,
+      _metaData: string,
+      overrides?: CallOverrides
+    ): Promise<string>
 
-    'numberOfSales()'(overrides?: CallOverrides): Promise<BigNumber>
+    numberOfTemplates(overrides?: CallOverrides): Promise<BigNumber>
+
+    'numberOfTemplates()'(overrides?: CallOverrides): Promise<BigNumber>
 
     saleFee(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -556,47 +509,45 @@ export class MesaFactory extends Contract {
       feeManager: null,
       feeTo: null,
       templateManager: null,
-      templateLauncher: null,
       templateFee: null,
       feeNumerator: null,
       saleFee: null
     ): TypedEventFilter<
-      [string, string, string, string, BigNumber, BigNumber, BigNumber],
+      [string, string, string, BigNumber, BigNumber, BigNumber],
       {
         feeManager: string
         feeTo: string
         templateManager: string
-        templateLauncher: string
         templateFee: BigNumber
         feeNumerator: BigNumber
         saleFee: BigNumber
       }
     >
 
-    SetFeeManager(feeManager: string | null): TypedEventFilter<[string], { feeManager: string }>
+    FeeManagerUpdated(feeManager: string | null): TypedEventFilter<[string], { feeManager: string }>
 
-    SetFeeNumerator(feeNumerator: BigNumberish | null): TypedEventFilter<[BigNumber], { feeNumerator: BigNumber }>
+    FeeNumeratorUpdated(feeNumerator: BigNumberish | null): TypedEventFilter<[BigNumber], { feeNumerator: BigNumber }>
 
-    SetFeeTo(feeTo: string | null): TypedEventFilter<[string], { feeTo: string }>
+    FeeToUpdated(feeTo: string | null): TypedEventFilter<[string], { feeTo: string }>
 
-    SetSaleFee(saleFee: BigNumberish | null): TypedEventFilter<[BigNumber], { saleFee: BigNumber }>
+    SaleFeeUpdated(saleFee: BigNumberish | null): TypedEventFilter<[BigNumber], { saleFee: BigNumber }>
 
-    SetTemplateFee(templateFee: BigNumberish | null): TypedEventFilter<[BigNumber], { templateFee: BigNumber }>
-
-    SetTemplateLauncher(templateLauncher: string | null): TypedEventFilter<[string], { templateLauncher: string }>
-
-    SetTemplateManager(templateManager: string | null): TypedEventFilter<[string], { templateManager: string }>
+    TemplateFeeUpdated(templateFee: BigNumberish | null): TypedEventFilter<[BigNumber], { templateFee: BigNumber }>
 
     TemplateLaunched(
       template: string | null,
       templateId: null
     ): TypedEventFilter<[string, BigNumber], { template: string; templateId: BigNumber }>
+
+    TemplateLauncherUpdated(templateLauncher: string | null): TypedEventFilter<[string], { templateLauncher: string }>
+
+    TemplateManagerUpdated(templateManager: string | null): TypedEventFilter<[string], { templateManager: string }>
   }
 
   estimateGas: {
-    allSales(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    allTemplates(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    'allSales(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    'allTemplates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     feeDenominator(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -614,43 +565,27 @@ export class MesaFactory extends Contract {
 
     'feeTo()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    initialize(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    initialized(overrides?: CallOverrides): Promise<BigNumber>
 
-    'initialize(address,address,address,address,uint256,uint256,uint256)'(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>
+    'initialized()'(overrides?: CallOverrides): Promise<BigNumber>
 
     launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>
 
-    'launchTemplate(uint256,bytes)'(
+    'launchTemplate(uint256,bytes,string)'(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>
 
-    numberOfSales(overrides?: CallOverrides): Promise<BigNumber>
+    numberOfTemplates(overrides?: CallOverrides): Promise<BigNumber>
 
-    'numberOfSales()'(overrides?: CallOverrides): Promise<BigNumber>
+    'numberOfTemplates()'(overrides?: CallOverrides): Promise<BigNumber>
 
     saleFee(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -732,9 +667,9 @@ export class MesaFactory extends Contract {
   }
 
   populateTransaction: {
-    allSales(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    allTemplates(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    'allSales(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    'allTemplates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     feeDenominator(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
@@ -752,43 +687,27 @@ export class MesaFactory extends Contract {
 
     'feeTo()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    initialize(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    'initialize(address,address,address,address,uint256,uint256,uint256)'(
-      _feeManager: string,
-      _feeTo: string,
-      _templateManager: string,
-      _templateLauncher: string,
-      _templateFee: BigNumberish,
-      _feeNumerator: BigNumberish,
-      _saleFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>
+    'initialized()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     launchTemplate(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>
 
-    'launchTemplate(uint256,bytes)'(
+    'launchTemplate(uint256,bytes,string)'(
       _templateId: BigNumberish,
       _data: BytesLike,
+      _metaData: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>
 
-    numberOfSales(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    numberOfTemplates(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    'numberOfSales()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    'numberOfTemplates()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     saleFee(overrides?: CallOverrides): Promise<PopulatedTransaction>
 

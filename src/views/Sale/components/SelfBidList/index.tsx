@@ -3,7 +3,7 @@ import React from 'react'
 import numeral from 'numeral'
 
 // Utility
-import { isSaleOpen, isSaleClosed } from 'src/mesa/sale'
+import { isSaleOpen, isSaleClosed } from 'src/aqua/sale'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
@@ -38,17 +38,17 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
         {
           title: 'Withdraw',
           purchases: {
-            amount:
-              numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
-                '0.[0000]'
-              ) +
-              ' ' +
-              sale.tokenOut.symbol,
             value:
               numeral(
                 formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
                   formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
               ).format('0.[0000]') +
+              ' ' +
+              sale.tokenOut.symbol,
+            amount:
+              numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
+                '0.[0000]'
+              ) +
               ' ' +
               sale.tokenIn.symbol,
             status: (bids as FixedPriceSalePurchase).status,
@@ -64,14 +64,14 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
           color: '#4B9E98',
           purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
             amount:
-              numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenOut.symbol,
-            value:
               numeral(
                 formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) * formatBigInt(bid.amount, sale.tokenOut.decimals)
               ).format('0.[0000]') +
               ' ' +
-              sale.tokenIn.symbol,
+              sale.tokenOut.symbol,
             status: bid.status,
+            value:
+              numeral(formatBigInt(bid.amount, sale.tokenOut.decimals)).format('0.[0000]') + ' ' + sale.tokenIn.symbol,
           })),
         },
       ]

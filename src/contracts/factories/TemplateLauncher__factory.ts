@@ -21,9 +21,27 @@ const _abi = [
         name: '_factory',
         type: 'address',
       },
+      {
+        internalType: 'address',
+        name: '_participantListLaucher',
+        type: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'allowPublicTemplates',
+        type: 'bool',
+      },
+    ],
+    name: 'AllowPublicTemplatesUpdated',
+    type: 'event',
   },
   {
     anonymous: false,
@@ -50,7 +68,7 @@ const _abi = [
       {
         indexed: true,
         internalType: 'address',
-        name: 'sale',
+        name: 'template',
         type: 'address',
       },
       {
@@ -59,8 +77,39 @@ const _abi = [
         name: 'templateId',
         type: 'uint256',
       },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'templateDeployer',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'metadataContentHash',
+        type: 'string',
+      },
     ],
     name: 'TemplateLaunched',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'template',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'newdetaDataContentHash',
+        type: 'string',
+      },
+    ],
+    name: 'TemplateMetadataContentHashUpdated',
     type: 'event',
   },
   {
@@ -102,19 +151,6 @@ const _abi = [
     type: 'event',
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: 'restrictedTemplates',
-        type: 'bool',
-      },
-    ],
-    name: 'UpdatedTemplateRestriction',
-    type: 'event',
-  },
-  {
     inputs: [
       {
         internalType: 'address',
@@ -131,6 +167,19 @@ const _abi = [
       },
     ],
     stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'allowPublicTemplates',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -158,7 +207,7 @@ const _abi = [
     outputs: [
       {
         internalType: 'address',
-        name: 'template',
+        name: '',
         type: 'address',
       },
     ],
@@ -196,16 +245,63 @@ const _abi = [
         name: '_data',
         type: 'bytes',
       },
+      {
+        internalType: 'string',
+        name: '_metadataContentHash',
+        type: 'string',
+      },
+      {
+        internalType: 'address',
+        name: '_templateDeployer',
+        type: 'address',
+      },
     ],
     name: 'launchTemplate',
     outputs: [
       {
         internalType: 'address',
-        name: 'newSale',
+        name: 'newTemplate',
         type: 'address',
       },
     ],
     stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'launchedTemplate',
+    outputs: [
+      {
+        internalType: 'address',
+        name: 'deployer',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: 'metadataContentHash',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'participantListLaucher',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -222,32 +318,6 @@ const _abi = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'restrictedTemplates',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'templateId',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'address',
@@ -255,26 +325,11 @@ const _abi = [
         type: 'address',
       },
     ],
-    name: 'templateInfo',
+    name: 'templateVerified',
     outputs: [
       {
         internalType: 'bool',
-        name: 'exists',
-        type: 'bool',
-      },
-      {
-        internalType: 'uint64',
-        name: 'templateId',
-        type: 'uint64',
-      },
-      {
-        internalType: 'uint128',
-        name: 'index',
-        type: 'uint128',
-      },
-      {
-        internalType: 'bool',
-        name: 'verified',
+        name: '',
         type: 'bool',
       },
     ],
@@ -282,14 +337,26 @@ const _abi = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'toggleAllowPublicTemplates',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
       {
-        internalType: 'bool',
-        name: '_restrictedTemplates',
-        type: 'bool',
+        internalType: 'address',
+        name: '_template',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: '_newMetadataContentHash',
+        type: 'string',
       },
     ],
-    name: 'updateTemplateRestriction',
+    name: 'updateTemplateMetadataContentHash',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
