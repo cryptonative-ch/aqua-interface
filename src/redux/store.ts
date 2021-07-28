@@ -7,6 +7,7 @@ import { reducer as sales } from 'src/redux/sales'
 import { reducer as bids } from 'src/redux/bids'
 import { reducer as page } from 'src/redux/page'
 import { reducer as network } from 'src/redux/network'
+import { reducer as claims } from 'src/redux/claims'
 
 // Extend the RootState for useSelector
 declare module 'react-redux' {
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   bids,
   sales,
   network,
+  claims,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

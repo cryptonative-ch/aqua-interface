@@ -162,8 +162,7 @@ const eventExists = (events: SaleBid[], event: SaleBid[]) => {
 /**
  * Reducer
  * @param state
- * @param action
- * @returns
+ * @param action @returns
  */
 export function reducer(state: BidsState = defaultState, action: BidActionTypes): BidsState {
   switch (action.type) {
