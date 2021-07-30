@@ -101,7 +101,7 @@ export const TableRow = styled(Flex)({
 export const TableColumn = styled(HeaderColumn)({})
 
 export const TableContainer = styled(Flex)({
-  maxHeight: '200px',
+  maxHeight: '250px',
   flexDirection: 'column',
   position: 'relative',
 })
