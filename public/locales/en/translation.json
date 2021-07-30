@@ -59,7 +59,8 @@
     "softCapNotReachedResult": "If the minimal fund-raising goals are not reached, you will be able to claim {{purchaseValue}} {{tokenInSymbol}} after the sale is closed.",
     "confirmation": "Confirmation",
     "continuePurchase": "Continue Purchase",
-    "haveFeedback": "Have feedback about Aqua?"
+    "haveFeedback": "Have feedback about Aqua?",
+    "noTokens": "No Tokens Available to Claim"
   },
   "buttons": {
     "back": "Back",

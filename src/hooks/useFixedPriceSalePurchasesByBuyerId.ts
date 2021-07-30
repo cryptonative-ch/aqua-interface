@@ -1,5 +1,8 @@
 // External
 import { QueryResult, useQuery } from '@apollo/client'
+import { useDispatch } from 'react-redux'
+import dayjs from 'dayjs'
+import { BigNumber } from 'ethers'
 
 // Query
 import { GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER } from 'src/subgraph/queries'
@@ -11,9 +14,13 @@ import {
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
 } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 import { FixedPriceSaleStatus } from 'src/subgraph/__generated__/globalTypes'
+import { ClaimState } from 'src/hooks/useTokenClaim'
 
 //helpers
 import { aggregatePurchases } from 'src/utils/Defaults'
+
+//redux
+import { setClaimStatus } from 'src/redux/claims'
 
 export type SummarySales = Omit<
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
@@ -26,6 +33,7 @@ interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
 }
 
 export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefined | null): UseSalesQueryResult {
+  const dispatch = useDispatch()
   const { data, ...rest } = useQuery<GetFixedPriceSalePurchasesByBuyer, GetFixedPriceSalePurchasesByBuyerVariables>(
     GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER,
     {
@@ -56,6 +64,19 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
     sales = saleIds.map((purchases: string) => {
       return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
     })
+
+    const unixDateNow = dayjs(Date.now()).unix()
+    dispatch(
+      sales
+        .filter(
+          purchase =>
+            BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minimumRaise) &&
+            unixDateNow >= purchase.sale.endDate
+        )
+        .map(purchase =>
+          setClaimStatus({ saleId: purchase.sale.id, ClaimToken: ClaimState.UNCLAIMED, error: null, transaction: null })
+        )
+    )
   }
 
   return {
