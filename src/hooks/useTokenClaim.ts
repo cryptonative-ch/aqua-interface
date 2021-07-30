@@ -9,9 +9,6 @@ import { useTranslation } from 'react-i18next'
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
 
-// interface
-import { MetaMaskError } from 'src/interfaces/Error'
-
 //redux
 import { setClaimStatus } from 'src/redux/claims'
 
@@ -41,7 +38,6 @@ export function useTokenClaim(saleId: string): useTokenClaimReturns {
         transaction: null,
       }
   )
-  console.log(claim)
   const [t] = useTranslation()
   const signer = library?.getSigner()
 

@@ -1,5 +1,5 @@
 // Externals
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
@@ -58,7 +58,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   // TODO: replace fixedpricesale with dynamic types
   const { bids } = useBids(sale!.id, 'FixedPriceSale')
 
-  const { claimTokens, claim, error, transaction } = useTokenClaim(sale.id)
+  const { claimTokens, claim, transaction } = useTokenClaim(sale.id)
 
   const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
