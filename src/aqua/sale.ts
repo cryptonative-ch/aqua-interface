@@ -11,11 +11,15 @@ import { calculateClearingPrice } from 'src/aqua/price'
 /**
  * Determines if the sale is active
  */
-export const isSaleOpen = ({ startDate, endDate }: SaleDate) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endDateLocal = convertUtcTimestampToLocal(endDate)
-  const startDateLocal = convertUtcTimestampToLocal(startDate)
-  return startDateLocal <= currentTimestamp && currentTimestamp < endDateLocal
+export const isSaleOpen = ({ startDate, endDate, status }: Sale) => {
+  if (status === FixedPriceSaleStatus.ENDED) {
+    return false
+  } else {
+    const currentTimestamp = Math.floor(Date.now() / 1000)
+    const endDateLocal = convertUtcTimestampToLocal(endDate)
+    const startDateLocal = convertUtcTimestampToLocal(startDate)
+    return startDateLocal <= currentTimestamp && currentTimestamp < endDateLocal
+  }
 }
 
 /**
