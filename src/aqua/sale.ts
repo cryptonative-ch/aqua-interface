@@ -3,11 +3,10 @@ import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 // Interfaces
 import { SaleDate, FairSaleBid, FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
+import { FixedPriceSaleStatus } from 'src/subgraph/__generated__/globalTypes'
 
 // Aqua
 import { calculateClearingPrice } from 'src/aqua/price'
-import { salesQuery } from 'src/hooks/useSale'
-import { formatBigInt } from 'src/utils/Defaults'
 
 /**
  * Determines if the sale is active
@@ -29,10 +28,6 @@ export const isSaleUpcoming = ({ startDate }: SaleDate) => {
   return currentTimestamp < startDateLocal
 }
 
-export const isMinRaiseReached = (sale: Sale) => {
-  return formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount) == 0
-}
-
 export const isSaleDatePast = ({ endDate }: SaleDate) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const endDateLocal = convertUtcTimestampToLocal(endDate)
@@ -44,8 +39,7 @@ export const isSaleDatePast = ({ endDate }: SaleDate) => {
  * Determines if the sale is closed
  */
 export const isSaleClosed = (sale: Sale) => {
-  console.log({ sale })
-  if (sale.status === 'ENDED') {
+  if (sale.status === FixedPriceSaleStatus.ENDED) {
     return true
   } else {
     return isSaleDatePast(sale)

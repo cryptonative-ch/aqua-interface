@@ -34,10 +34,10 @@ export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
           sale.type == 'FairSale'
             ? formatBigInt(sale.tokensForSale, sale.tokenOut.decimals)
             : closed
-            ? formatBigInt(sale.soldAmount) == 0 && sale.bids?.length > 0
+            ? formatBigInt(sale.soldAmount) == 0
               ? 0
               : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
-            : formatBigInt(sale.soldAmount) == 0 && sale.bids?.length > 0
+            : formatBigInt(sale.soldAmount) == 0
             ? formatBigInt(sale.sellAmount)
             : formatBigInt(sale.soldAmount)
         ).format('0,0')}
