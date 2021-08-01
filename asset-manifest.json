@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/mesa-interface/static/css/main.b8013155.chunk.css",
-    "main.js": "/mesa-interface/static/js/main.2a69c6e0.chunk.js",
-    "main.js.map": "/mesa-interface/static/js/main.2a69c6e0.chunk.js.map",
+    "main.js": "/mesa-interface/static/js/main.778a53e1.chunk.js",
+    "main.js.map": "/mesa-interface/static/js/main.778a53e1.chunk.js.map",
     "runtime-main.js": "/mesa-interface/static/js/runtime-main.1951fa53.js",
     "runtime-main.js.map": "/mesa-interface/static/js/runtime-main.1951fa53.js.map",
     "static/css/2.68b64559.chunk.css": "/mesa-interface/static/css/2.68b64559.chunk.css",
@@ -48,6 +48,6 @@
     "static/css/2.68b64559.chunk.css",
     "static/js/2.d1db7634.chunk.js",
     "static/css/main.b8013155.chunk.css",
-    "static/js/main.2a69c6e0.chunk.js"
+    "static/js/main.778a53e1.chunk.js"
   ]
 }
