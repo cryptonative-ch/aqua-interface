@@ -24,6 +24,7 @@ import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 // interface
 import { Sale } from 'src/interfaces/Sale'
 import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
@@ -48,7 +49,7 @@ const Icon = styled.img<SpaceProps>(
 )
 
 interface TokenClaimProps {
-  sale: Sale
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
 }
 
 export const TokenClaim = ({ sale }: TokenClaimProps) => {
@@ -58,7 +59,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   // TODO: replace fixedpricesale with dynamic types
   const { bids } = useBids(sale!.id, 'FixedPriceSale')
 
-  const { claimTokens, claim, transaction } = useTokenClaim(sale.id)
+  const { claimTokens, claim, transaction } = useTokenClaim(sale)
 
   const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
@@ -77,7 +78,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   }
 
   if (claim === ClaimState.CLAIMED) {
-    return <SuccessfulClaim purchase={{ ...sale, amount: amount }} tx={transaction!.hash} />
+    return <SuccessfulClaim sale={sale} amount={amount} tx={transaction!.hash} />
   }
 
   return (
@@ -85,7 +86,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
       <CardBody>
         <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <TokenIconFigure>
-            <Icon src={sale?.tokenOut.icon || noToken} />
+            <Icon src={noToken} />
           </TokenIconFigure>
           <CardText fontSize="title">Claim {sale?.tokenOut.symbol}</CardText>
         </Flex>

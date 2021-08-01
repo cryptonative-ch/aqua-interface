@@ -19,6 +19,7 @@ import { isSaleClosed } from 'src/aqua/sale'
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 // Hooks
 import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
@@ -35,7 +36,7 @@ const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
 }))
 
 interface HeaderClaimProps {
-  sale: Sale
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
 }
 
 export function HeaderClaim({ sale }: HeaderClaimProps) {

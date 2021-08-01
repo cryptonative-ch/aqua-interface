@@ -19,7 +19,9 @@ import link from 'src/assets/svg/External-Link.svg'
 
 // Aqua Utils
 import { formatBigInt } from 'src/utils/Defaults'
-import { Sale } from 'src/interfaces/Sale'
+
+//interfaces
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 import { BigNumber } from '@ethersproject/bignumber'
 
 const Circle = styled.div({
@@ -51,13 +53,12 @@ const Icon = styled.img<SpaceProps>(
 )
 
 interface SuccessfulClaimProps {
-  purchase: Omit<Sale, 'bids'> & {
-    amount: BigNumber
-  }
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  amount: BigNumber
   tx: string
 }
 
-export const SuccessfulClaim = ({ purchase: { amount, ...sale }, tx }: SuccessfulClaimProps) => {
+export const SuccessfulClaim = ({ amount, sale, tx }: SuccessfulClaimProps) => {
   const [t] = useTranslation()
   const blockExplorerUrl = `https://blockscout.com/xdai/mainnet/tx/${tx}`
   return (
@@ -71,7 +72,7 @@ export const SuccessfulClaim = ({ purchase: { amount, ...sale }, tx }: Successfu
           </Flex>
           <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
           <CardText color="grey">
-            {`${formatBigInt(amount, sale?.tokenOut.decimals)} ${sale?.tokenOut.symbol} has been sent to your address.`}
+            {`${formatBigInt(amount, sale.tokenOut.decimals)} ${sale.tokenOut.symbol} has been sent to your address.`}
           </CardText>
           <Link marginTop="24px" href={blockExplorerUrl}>
             See this transaction on block explorer
