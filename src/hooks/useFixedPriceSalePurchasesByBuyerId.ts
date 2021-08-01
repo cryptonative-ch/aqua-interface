@@ -13,7 +13,6 @@ import {
   GetFixedPriceSalePurchasesByBuyerVariables,
   GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
 } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
-import { FixedPriceSaleStatus } from 'src/subgraph/__generated__/globalTypes'
 import { ClaimState } from 'src/hooks/useTokenClaim'
 
 //helpers
@@ -48,11 +47,8 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
   let saleIds: string[] = []
 
   if (data) {
-    purchases = data.fixedPriceSalePurchases.filter(
-      purchase =>
-        // included upcoming as subgraph does not update status from upcoming to open
-        purchase.sale.status === FixedPriceSaleStatus.OPEN || purchase.sale.status === FixedPriceSaleStatus.UPCOMING
-    )
+    purchases = data.fixedPriceSalePurchases
+
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)
@@ -66,6 +62,8 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
     })
 
     const unixDateNow = dayjs(Date.now()).unix()
+
+    // dispatch for claims redux
     dispatch(
       sales
         .filter(
@@ -74,7 +72,12 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
             unixDateNow >= purchase.sale.endDate
         )
         .map(purchase =>
-          setClaimStatus({ saleId: purchase.sale.id, ClaimToken: ClaimState.UNCLAIMED, error: null, transaction: null })
+          setClaimStatus({
+            sale: purchase.sale,
+            ClaimToken: ClaimState.UNCLAIMED,
+            error: null,
+            transaction: null,
+          })
         )
     )
   }

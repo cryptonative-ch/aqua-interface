@@ -5,14 +5,16 @@ import { ContractTransaction } from 'ethers'
 import { Action } from 'redux'
 
 // interface
+
 import { ClaimState } from 'src/hooks/useTokenClaim'
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 export enum ActionTypes {
   SET_CLAIM_STATUS = 'SET_CLAIM_STATUS',
 }
 
 export interface ClaimStatePerSale {
-  saleId: string
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
   ClaimToken: ClaimState
   transaction: ContractTransaction | null
   error: Error | null
@@ -36,7 +38,7 @@ export const setClaimStatus = (payload: ClaimStatePerSale): ClaimAction => ({
 export const defaultState: ClaimTokensState = { claims: [] }
 
 const eventExists = (events: ClaimStatePerSale[], event: ClaimStatePerSale) => {
-  return events.some(e => e.saleId === event.saleId)
+  return events.some(e => e.sale.id === event.sale.id)
 }
 
 export function reducer(state: ClaimTokensState = defaultState, action: ClaimActionTypes): ClaimTokensState {
@@ -45,7 +47,7 @@ export function reducer(state: ClaimTokensState = defaultState, action: ClaimAct
       return {
         claims: eventExists(state.claims, action.payload)
           ? state.claims.map((element: ClaimStatePerSale) => {
-              if (element.saleId === action.payload.saleId) {
+              if (element.sale.id === action.payload.sale.id) {
                 return {
                   ...element,
                   claimToken: action.payload.ClaimToken,

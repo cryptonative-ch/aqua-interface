@@ -12,6 +12,9 @@ import { FixedPriceSale__factory } from 'src/contracts'
 //redux
 import { setClaimStatus } from 'src/redux/claims'
 
+//interface
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
   VERIFY = 'VERIFY',
@@ -26,14 +29,16 @@ interface useTokenClaimReturns {
   error: Error | null
 }
 
-export function useTokenClaim(saleId: string): useTokenClaimReturns {
+export function useTokenClaim(
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const { ClaimToken: claim, error, transaction } = useSelector(
     ({ claims }) =>
-      claims.claims.find(claim => claim.saleId === saleId) || {
+      claims.claims.find(claim => claim.sale.id === sale.id) || {
         ClaimToken: ClaimState.UNCLAIMED,
-        saleId: saleId,
+        sale: sale,
         error: null,
         transaction: null,
       }
@@ -62,17 +67,17 @@ export function useTokenClaim(saleId: string): useTokenClaimReturns {
       FixedPriceSale__factory.connect(saleId, signer)
         .withdrawTokens(account)
         .then((tx: ContractTransaction) => {
-          dispatch(setClaimStatus({ saleId: saleId, ClaimToken: ClaimState.VERIFY, error: null, transaction: null }))
+          dispatch(setClaimStatus({ sale: sale, ClaimToken: ClaimState.VERIFY, error: null, transaction: null }))
           return tx.wait(1)
         })
         .then(() => {
           toast.success(t('success.claim'))
-          dispatch(setClaimStatus({ saleId: saleId, ClaimToken: ClaimState.CLAIMED, error: null, transaction: null }))
+          dispatch(setClaimStatus({ sale: sale, ClaimToken: ClaimState.CLAIMED, error: null, transaction: null }))
         })
         .catch((error: Error) => {
           console.error(error)
           toast.error(t('errors.claim'))
-          dispatch(setClaimStatus({ saleId: saleId, ClaimToken: ClaimState.FAILED, error: error, transaction: null }))
+          dispatch(setClaimStatus({ sale: sale, ClaimToken: ClaimState.FAILED, error: error, transaction: null }))
         })
     }
   }
