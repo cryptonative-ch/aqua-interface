@@ -8,14 +8,14 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 
 //Interfaces
-import { Sale } from 'src/interfaces/Sale'
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 import { isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 interface TimerComponentProps {
-  sale: Sale
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
 }
 
 export const secondsTohms = (seconds: number) => {

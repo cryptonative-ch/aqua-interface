@@ -7,19 +7,19 @@ import { Flex } from 'src/components/Flex'
 import { Timer, timeEnd } from 'src/views/Sale/components/Timer'
 
 // Interface
-import { Sale } from 'src/interfaces/Sale'
 import { CardText } from 'src/components/CardText'
 import { isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 interface SaleClockProps {
-  sale: Sale
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
   margin?: string
 }
 
-export const timerPercentage = (sale: Sale) => {
+export const timerPercentage = (sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale) => {
   const localTimeStamp = dayjs(Date.now()).unix()
   const startTime = convertUtcTimestampToLocal(sale.startDate)
   const endTime = convertUtcTimestampToLocal(sale.endDate)

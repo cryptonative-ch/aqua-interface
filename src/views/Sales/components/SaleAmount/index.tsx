@@ -6,14 +6,15 @@ import styled from 'styled-components'
 // Components
 import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
-// Interface
-import { Sale } from 'src/interfaces/Sale'
+
+//interface
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 // Aqua utils
 import { fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleAmountProps {
-  sale: Sale
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
   closed?: boolean
 }
 interface TextProps {
@@ -30,7 +31,7 @@ export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
     <Flex>
       <SaleCardText isFailed={isFailed}>
         {numeral(
-          sale.type == 'FairSale'
+          sale.__typename != 'FixedPriceSale'
             ? formatBigInt(sale.tokensForSale, sale.tokenOut.decimals)
             : formatBigInt(sale.soldAmount) == 0
             ? 0

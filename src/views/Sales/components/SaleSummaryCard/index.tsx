@@ -18,15 +18,15 @@ import { BadgeFlex } from 'src/layouts/BadgeFlex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { SaleActiveBids } from 'src/views/Sales/components/SaleActiveBids'
 
-// Interface
-import { Sale } from 'src/interfaces/Sale'
+//interface
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
 import { isSaleClosed } from 'src/aqua/sale'
 
 interface SaleSummaryProps {
-  sale: Sale
+  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
   purchaseAmount?: BigNumber
 }
 
@@ -39,7 +39,7 @@ export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
         <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
           <Flex width="70%" alignItems="center">
             <TokenIconFigure>
-              <Icon src={sale.tokenOut?.icon || noToken} alt={sale.tokenOut?.name} />
+              <Icon src={noToken} />
             </TokenIconFigure>
             <CardText fontSize="title">{sale.name}</CardText>
           </Flex>
