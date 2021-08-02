@@ -20,6 +20,9 @@ import { GridListSection } from 'src/components/Grid'
 import { SaleDate, Sale } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 
+//interface
+import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useSalesQuery } from 'src/hooks/useSalesQuery'
@@ -69,9 +72,12 @@ export function SalesView() {
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
   const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
+  const { claims } = useSelector(({ claims }) => claims)
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account)
+
+  console.log(userSales)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -159,7 +165,7 @@ export function SalesView() {
           ) : (
             filteredSales?.map(sale => (
               <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                <SaleSummaryCard sale={sale as Sale} />
+                <SaleSummaryCard sale={sale as GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale} />
               </SaleSummaryWrapper>
             ))
           )}

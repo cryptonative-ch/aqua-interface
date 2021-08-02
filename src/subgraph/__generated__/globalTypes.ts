@@ -7,8 +7,9 @@
 // START Enums and Input Objects
 //==============================================================
 
-export enum FixedPriceSalePurchaseStatus {
+export enum FixedPriceSaleCommitmentStatus {
   CLAIMED = 'CLAIMED',
+  RELEASED = 'RELEASED',
   SUBMITTED = 'SUBMITTED',
 }
 

@@ -4,8 +4,7 @@ import { gql } from '@apollo/client'
 import {
   FAIR_PRICE_SALE_FIELDS,
   FIXED_PRICE_SALE_FIELDS,
-  FIXED_PRICE_SALE_PURCHASE_FIELDS,
-  FIXED_PRICE_SALE_PURCHASE_ALL,
+  FIXED_PRICE_SALE_COMMITMENT_ALL,
 } from 'src/subgraph/attributes'
 
 export const GET_ALL_SALES = gql`
@@ -34,18 +33,9 @@ export const GET_SINGLE_SALE = gql`
   ${FAIR_PRICE_SALE_FIELDS}
 `
 
-export const GET_FIXED_PRICE_SALE_PURCHASES_BY_SALE_ID = gql`
-  query GetFixedPriceSalePurchasesBySaleId($saleId: String!) {
-    fixedPriceSalePurchases(where: { sale: $saleId }) {
-      ...fixedPriceSalePurchaseResults
-    }
-  }
-  ${FIXED_PRICE_SALE_PURCHASE_FIELDS}
-`
-
-export const GET_MESA_FACTORY = gql`
-  query GetMesaFactory {
-    mesaFactory(id: "MesaFactory") {
+export const GET_AQUA_FACTORY = gql`
+  query GetAquaFactory {
+    aquaFactory(id: "aquaFactory") {
       id
       saleFee
       saleCount
@@ -59,11 +49,11 @@ export const GET_MESA_FACTORY = gql`
   }
 `
 
-export const GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER = gql`
-  query GetFixedPriceSalePurchasesByBuyer($buyerId: Bytes!) {
-    fixedPriceSalePurchases(where: { buyer: $buyerId }) {
-      ...fixedPriceSalePurchaseResultsAll
+export const GET_FIXED_PRICE_SALE_COMMITMENTS_ALL = gql`
+  query GetFixedPriceSaleCommitmentsByUser {
+    fixedPriceSaleCommitments {
+      ...fixedPriceSaleCommitments
     }
   }
-  ${FIXED_PRICE_SALE_PURCHASE_ALL}
+  ${FIXED_PRICE_SALE_COMMITMENT_ALL}
 `

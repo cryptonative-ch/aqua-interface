@@ -53,7 +53,7 @@ export interface GetSingleSale_fixedPriceSale {
   __typename: 'FixedPriceSale'
   id: string
   /**
-   * The name of the same, default is the tokenIn's name
+   * The name of the sale, default is the tokenIn's name
    */
   name: string
   createdAt: number
@@ -81,11 +81,11 @@ export interface GetSingleSale_fixedPriceSale {
   sellAmount: any
   minimumRaise: any
   /**
-   * Minimum token amount per purchase
+   * Minimum token amount per commitment
    */
   allocationMin: any
   /**
-   * Maximum token amount per purchase
+   * Maximum token amount per commitment
    */
   allocationMax: any
   /**
@@ -176,7 +176,8 @@ export interface GetSingleSale_fairSale {
    */
   minimumBidAmount: any
   /**
-   * The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
+   * The minimal funding threshold for executing the settlement. If funding is not
+   * reached, everyone will get back their investment
    */
   minFundingThreshold: number | null
   /**

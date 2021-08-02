@@ -53,7 +53,7 @@ export interface fixedPriceSaleResults {
   __typename: 'FixedPriceSale'
   id: string
   /**
-   * The name of the same, default is the tokenIn's name
+   * The name of the sale, default is the tokenIn's name
    */
   name: string
   createdAt: number
@@ -81,11 +81,11 @@ export interface fixedPriceSaleResults {
   sellAmount: any
   minimumRaise: any
   /**
-   * Minimum token amount per purchase
+   * Minimum token amount per commitment
    */
   allocationMin: any
   /**
-   * Maximum token amount per purchase
+   * Maximum token amount per commitment
    */
   allocationMax: any
   /**

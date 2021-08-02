@@ -6,10 +6,10 @@
 import { FixedPriceSaleStatus } from './globalTypes'
 
 // ====================================================
-// GraphQL query operation: GetAllSales
+// GraphQL fragment: fixedPriceSaleUsers
 // ====================================================
 
-export interface GetAllSales_fixedPriceSales_tokenIn {
+export interface fixedPriceSaleUsers_sale_tokenIn {
   __typename: 'Token'
   /**
    * Token address
@@ -29,7 +29,7 @@ export interface GetAllSales_fixedPriceSales_tokenIn {
   decimals: any
 }
 
-export interface GetAllSales_fixedPriceSales_tokenOut {
+export interface fixedPriceSaleUsers_sale_tokenOut {
   __typename: 'Token'
   /**
    * Token address
@@ -49,7 +49,7 @@ export interface GetAllSales_fixedPriceSales_tokenOut {
   decimals: any
 }
 
-export interface GetAllSales_fixedPriceSales {
+export interface fixedPriceSaleUsers_sale {
   __typename: 'FixedPriceSale'
   id: string
   /**
@@ -95,102 +95,36 @@ export interface GetAllSales_fixedPriceSales {
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetAllSales_fixedPriceSales_tokenIn
+  tokenIn: fixedPriceSaleUsers_sale_tokenIn
   /**
    * Token investor get
    */
-  tokenOut: GetAllSales_fixedPriceSales_tokenOut
+  tokenOut: fixedPriceSaleUsers_sale_tokenOut
 }
 
-export interface GetAllSales_fairSales_tokenIn {
-  __typename: 'Token'
+export interface fixedPriceSaleUsers {
+  __typename: 'FixedPriceSaleUser'
   /**
-   * Token address
+   * The user's ID <saleAddress>/users/<saleUserAddress>
    */
   id: string
-  /**
-   * Token name, from the smart contract ERC20.name()
-   */
-  name: string | null
-  /**
-   * The token symbol from ERC20.symbol()
-   */
-  symbol: string | null
-  /**
-   * The token decimals, from ERC.decimals()
-   */
-  decimals: any
-}
-
-export interface GetAllSales_fairSales_tokenOut {
-  __typename: 'Token'
-  /**
-   * Token address
-   */
-  id: string
-  /**
-   * Token name, from the smart contract ERC20.name()
-   */
-  name: string | null
-  /**
-   * The token symbol from ERC20.symbol()
-   */
-  symbol: string | null
-  /**
-   * The token decimals, from ERC.decimals()
-   */
-  decimals: any
-}
-
-export interface GetAllSales_fairSales {
-  __typename: 'FairSale'
-  /**
-   * The sale contract address
-   */
-  id: string
-  /**
-   * The sale name
-   */
-  name: string | null
   createdAt: number
   updatedAt: number
   deletedAt: number | null
   /**
-   * Sale status: open/ended/settled/upcoming
+   * Total commitments submitted in the sale
    */
-  status: string
+  totalCommitment: number
   /**
-   * Date of the sale start
+   * Total volume for this user
    */
-  startDate: number
+  totalVolume: any
   /**
-   * Date of the sale end
+   * FixedPriceSale reference
    */
-  endDate: number
+  sale: fixedPriceSaleUsers_sale
   /**
-   * Total amount of tokens available for sale
+   * Address of buyer
    */
-  tokensForSale: any
-  /**
-   * Minimum amount per bid
-   */
-  minimumBidAmount: any
-  /**
-   * The minimal funding threshold for executing the settlement. If funding is not
-   * reached, everyone will get back their investment
-   */
-  minFundingThreshold: number | null
-  /**
-   * Accepted bidding token (ie: DAI, USDC)
-   */
-  tokenIn: GetAllSales_fairSales_tokenIn
-  /**
-   * Auctioning token
-   */
-  tokenOut: GetAllSales_fairSales_tokenOut
-}
-
-export interface GetAllSales {
-  fixedPriceSales: GetAllSales_fixedPriceSales[]
-  fairSales: GetAllSales_fairSales[]
+  address: any
 }

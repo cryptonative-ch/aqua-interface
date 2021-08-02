@@ -22,10 +22,8 @@ import { VerifyState } from 'src/views/Token/components/VerifyClaim'
 import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 
 // interface
-import { Sale } from 'src/interfaces/Sale'
 import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
 import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
-
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
 

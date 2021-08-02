@@ -63,7 +63,6 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
 
     const unixDateNow = dayjs(Date.now()).unix()
 
-    // dispatch for claims redux
     dispatch(
       sales
         .filter(
