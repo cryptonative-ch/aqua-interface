@@ -5,14 +5,13 @@ import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
 
 // Query
-import { GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER } from 'src/subgraph/queries'
+import { GET_FIXED_PRICE_SALE_COMMITMENTS_ALL } from 'src/subgraph/queries'
 
 // Interfaces
 import {
-  GetFixedPriceSalePurchasesByBuyer,
-  GetFixedPriceSalePurchasesByBuyerVariables,
-  GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
-} from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+  GetFixedPriceSaleCommitmentsByUser,
+  GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments,
+} from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ClaimState } from 'src/hooks/useTokenClaim'
 
 //helpers
@@ -22,7 +21,7 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 import { setClaimStatus } from 'src/redux/claims'
 
 export type SummarySales = Omit<
-  GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases,
+  GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments,
   '__typename' | 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >
 
@@ -33,23 +32,18 @@ interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
 
 export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefined | null): UseSalesQueryResult {
   const dispatch = useDispatch()
-  const { data, ...rest } = useQuery<GetFixedPriceSalePurchasesByBuyer, GetFixedPriceSalePurchasesByBuyerVariables>(
-    GET_FIXED_PRICE_SALE_PURCHASES_ALL_BY_BUYER,
-    {
-      variables: {
-        buyerId,
-      },
-    }
-  )
+  const { data, ...rest } = useQuery<GetFixedPriceSaleCommitmentsByUser>(GET_FIXED_PRICE_SALE_COMMITMENTS_ALL)
 
-  let purchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[] = []
+  let purchases: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[] = []
   let sales: SummarySales[] = []
   let saleIds: string[] = []
 
   if (data) {
-    purchases = data.fixedPriceSalePurchases
+    purchases = data.fixedPriceSaleCommitments.filter(
+      commitment => commitment.user.address.toLowerCase() === buyerId?.toLowerCase()
+    )
 
-    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases) => {
+    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)
       return a
