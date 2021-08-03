@@ -68,16 +68,18 @@ export function useTokenClaim(
         .withdrawTokens(account)
         .then((tx: ContractTransaction) => {
           dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.VERIFY, error: null, transaction: null }))
-          return tx.wait(1)
+          tx.wait(1)
+          return dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.CLAIMED, error: null, transaction: tx }))
         })
         .then(() => {
-          toast.success(t('success.claim'))
-          dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.CLAIMED, error: null, transaction: null }))
+          return toast.success(t('success.claim'))
         })
         .catch((error: Error) => {
           console.error(error)
           toast.error(t('errors.claim'))
-          dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.FAILED, error: error, transaction: null }))
+          return dispatch(
+            setClaimStatus({ sale: sale, claimToken: ClaimState.FAILED, error: error, transaction: null })
+          )
         })
     }
   }
