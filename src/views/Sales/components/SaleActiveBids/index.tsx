@@ -9,10 +9,10 @@ import { Flex } from 'src/components/Flex'
 import { Badge } from 'src/components/Badge'
 
 //interface
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 interface SaleActiveBidsProps {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   amount: string
 }
 

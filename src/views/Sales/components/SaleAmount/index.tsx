@@ -8,13 +8,13 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 
 //interface
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Aqua utils
 import { fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleAmountProps {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   closed?: boolean
 }
 interface TextProps {

@@ -21,7 +21,7 @@ import { SaleDate, Sale } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 
 //interface
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
@@ -165,7 +165,7 @@ export function SalesView() {
           ) : (
             filteredSales?.map(sale => (
               <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                <SaleSummaryCard sale={sale as GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale} />
+                <SaleSummaryCard sale={sale as GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale} />
               </SaleSummaryWrapper>
             ))
           )}

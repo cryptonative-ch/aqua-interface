@@ -19,14 +19,14 @@ import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { SaleActiveBids } from 'src/views/Sales/components/SaleActiveBids'
 
 //interface
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
 import { isSaleClosed } from 'src/aqua/sale'
 
 interface SaleSummaryProps {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   purchaseAmount?: BigNumber
 }
 

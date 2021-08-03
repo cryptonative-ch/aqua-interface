@@ -43,6 +43,11 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
       commitment => commitment.user.address.toLowerCase() === buyerId?.toLowerCase()
     )
 
+    // totalCommitment
+    // sale id
+    // user address
+    // status
+
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
       a[c.sale.id] = a[c.sale.id] || []
       a[c.sale.id].push(c)

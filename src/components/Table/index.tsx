@@ -10,7 +10,7 @@ import WarningSVG from 'src/assets/svg/Warning-Icon.svg'
 import Tick from 'src/assets/svg/Check-Icon.svg'
 
 //interfaces
-import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
+import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 // Components
 import {
@@ -63,7 +63,7 @@ const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, is
       </TableColumn>
       {Object.values(purchases)
         .filter(
-          skip => skip !== FixedPriceSalePurchaseStatus.SUBMITTED && skip !== FixedPriceSalePurchaseStatus.CLAIMED
+          skip => skip !== FixedPriceSaleCommitmentStatus.SUBMITTED && skip !== FixedPriceSaleCommitmentStatus.CLAIMED
         )
         .map((purchase, index) => {
           return (
@@ -74,7 +74,7 @@ const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, is
         })}
       {isClosed ? (
         <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-          {purchases.status === FixedPriceSalePurchaseStatus.CLAIMED ? (
+          {purchases.status === FixedPriceSaleCommitmentStatus.CLAIMED ? (
             <>
               <IconImg src={Tick} color="#4B9E98" margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'} />
               {!isMobile && (

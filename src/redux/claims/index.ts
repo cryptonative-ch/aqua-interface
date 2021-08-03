@@ -7,14 +7,14 @@ import { Action } from 'redux'
 // interface
 
 import { ClaimState } from 'src/hooks/useTokenClaim'
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 export enum ActionTypes {
   SET_CLAIM_STATUS = 'SET_CLAIM_STATUS',
 }
 
 export interface ClaimStatePerSale {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   ClaimToken: ClaimState
   transaction: ContractTransaction | null
   error: Error | null

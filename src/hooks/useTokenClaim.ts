@@ -13,7 +13,7 @@ import { FixedPriceSale__factory } from 'src/contracts'
 import { setClaimStatus } from 'src/redux/claims'
 
 //interface
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -30,7 +30,7 @@ interface useTokenClaimReturns {
 }
 
 export function useTokenClaim(
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()

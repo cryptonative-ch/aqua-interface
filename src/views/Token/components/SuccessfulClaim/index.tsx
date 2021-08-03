@@ -21,7 +21,7 @@ import link from 'src/assets/svg/External-Link.svg'
 import { formatBigInt } from 'src/utils/Defaults'
 
 //interfaces
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { BigNumber } from '@ethersproject/bignumber'
 
 const Circle = styled.div({
@@ -53,7 +53,7 @@ const Icon = styled.img<SpaceProps>(
 )
 
 interface SuccessfulClaimProps {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   amount: BigNumber
   tx: string
 }

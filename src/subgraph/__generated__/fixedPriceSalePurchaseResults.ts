@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSalePurchaseStatus } from './globalTypes'
+import { FixedPriceSaleCommitmentStatus } from './globalTypes'
 
 // ====================================================
 // GraphQL fragment: fixedPriceSalePurchaseResults
@@ -31,7 +31,7 @@ export interface fixedPriceSalePurchaseResults {
    * Amount of tokens
    */
   amount: any
-  status: FixedPriceSalePurchaseStatus
+  status: FixedPriceSaleCommitmentStatus
   /**
    * FixedPriceSale this purchase is associated with
    */

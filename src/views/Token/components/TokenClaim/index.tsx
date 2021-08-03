@@ -22,8 +22,9 @@ import { VerifyState } from 'src/views/Token/components/VerifyClaim'
 import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 
 // interface
-import { FixedPriceSalePurchaseStatus } from 'src/subgraph/__generated__/globalTypes'
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
+
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
 
@@ -47,7 +48,7 @@ const Icon = styled.img<SpaceProps>(
 )
 
 interface TokenClaimProps {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
 }
 
 export const TokenClaim = ({ sale }: TokenClaimProps) => {
@@ -63,7 +64,11 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
-  if (!bids || bids.length == 0 || aggregatePurchases(bids, account).status === FixedPriceSalePurchaseStatus.CLAIMED) {
+  if (
+    !bids ||
+    bids.length == 0 ||
+    aggregatePurchases(bids, account).status === FixedPriceSaleCommitmentStatus.CLAIMED
+  ) {
     return null
   }
 

@@ -9,13 +9,13 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 
 //interface
-import { GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale } from 'src/subgraph/__generated__/GetFixedPriceSalePurchasesByBuyer'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Aqua Utils
 import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleFinalPriceProps {
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
 }
 
 export function SaleFinalPrice({ sale }: SaleFinalPriceProps) {
