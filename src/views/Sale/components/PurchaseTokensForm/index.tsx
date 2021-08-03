@@ -17,7 +17,7 @@ import { Modal } from 'src/components/Modal'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Utils
-import { convertToBuyerPrice, fixRounding } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -34,7 +34,6 @@ import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
-import { formatBigInt } from 'src/utils/Defaults'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -149,6 +148,22 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
 
+  const getMaxPurchase = () => {
+    const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
+    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
+    // Todo - remove convoluted calculation when subgraph soldAmount changed
+    const remainingTokens =
+      formatBigInt(sale?.soldAmount) == 0 ? formatBigInt(sale?.sellAmount) : formatBigInt(sale?.soldAmount)
+    const costOfRemainingTokens = remainingTokens * convertToBuyerPrice(formatBigInt(sale?.tokenPrice))
+    const maxPurchase =
+      parsedTokenBalance < purchaseMaximumAllocation
+        ? parsedTokenBalance
+        : costOfRemainingTokens < purchaseMaximumAllocation
+        ? costOfRemainingTokens
+        : purchaseMaximumAllocation
+    return maxPurchase
+  }
+
   // A form is valid when
   // 1. purchaseValue >= minimum Allocation
   // 2. purchaseValue <= max allocation (including previous purchases)
@@ -159,7 +174,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     // Convert min max allocations
     // Converting BigNumbers to normal numbers due to lack of decimal support
     const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
-    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
+    const purchaseMaximumAllocation = getMaxPurchase()
     const tokenPrice = convertToBuyerPrice(parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice))))
 
     const quantity = fixRounding(value / tokenPrice, 8)
@@ -174,9 +189,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     }
     if (purchaseMaximumAllocation < value) {
       newValidationError = new Error(
-        `Maximum is ${fixRounding(purchaseMaximumAllocation * tokenPrice, 8)} ${
-          sale?.tokenOut.symbol
-        } / ${utils.formatUnits(sale?.allocationMax)} ${sale?.tokenIn.symbol}`
+        `${parsedTokenBalance < value ? '\nInsufficient funds to process purchase: ' : ''} Maximum is ${fixRounding(
+          purchaseMaximumAllocation / tokenPrice,
+          8
+        )} ${sale?.tokenOut.symbol} / ${purchaseMaximumAllocation} ${sale?.tokenIn.symbol} `
       )
     }
     // // Purchase value is greater than user's tokeIn balance
@@ -200,9 +216,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   }
 
   const onMaxButtonClick = () => {
-    const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
-    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
-    const maxPurchase = parsedTokenBalance < purchaseMaximumAllocation ? parsedTokenBalance : purchaseMaximumAllocation
+    const maxPurchase = getMaxPurchase()
     const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
     if (maxPurchase < purchaseMinimumAllocation) return
 
