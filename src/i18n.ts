@@ -9,9 +9,6 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    backend: {
-      loadPath: '/mesa-interface/locales/{{lng}}/{{ns}}.json',
-    },
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
