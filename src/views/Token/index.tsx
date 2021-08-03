@@ -13,6 +13,7 @@ import { TokenClaim } from 'src/views/Token/components/TokenClaim'
 export function TokenView() {
   const { account, library, chainId } = useWeb3React()
   const { claims } = useSelector(({ claims }) => claims)
+  console.log(claims)
 
   const [t] = useTranslation()
 

@@ -34,10 +34,10 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const { ClaimToken: claim, error, transaction } = useSelector(
+  const { claimToken: claim, error, transaction } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
-        ClaimToken: ClaimState.UNCLAIMED,
+        claimToken: ClaimState.UNCLAIMED,
         sale: sale,
         error: null,
         transaction: null,
@@ -67,17 +67,17 @@ export function useTokenClaim(
       FixedPriceSale__factory.connect(saleId, signer)
         .withdrawTokens(account)
         .then((tx: ContractTransaction) => {
-          dispatch(setClaimStatus({ sale: sale, ClaimToken: ClaimState.VERIFY, error: null, transaction: null }))
+          dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.VERIFY, error: null, transaction: null }))
           return tx.wait(1)
         })
         .then(() => {
           toast.success(t('success.claim'))
-          dispatch(setClaimStatus({ sale: sale, ClaimToken: ClaimState.CLAIMED, error: null, transaction: null }))
+          dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.CLAIMED, error: null, transaction: null }))
         })
         .catch((error: Error) => {
           console.error(error)
           toast.error(t('errors.claim'))
-          dispatch(setClaimStatus({ sale: sale, ClaimToken: ClaimState.FAILED, error: error, transaction: null }))
+          dispatch(setClaimStatus({ sale: sale, claimToken: ClaimState.FAILED, error: error, transaction: null }))
         })
     }
   }

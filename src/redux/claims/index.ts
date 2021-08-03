@@ -15,7 +15,7 @@ export enum ActionTypes {
 
 export interface ClaimStatePerSale {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
-  ClaimToken: ClaimState
+  claimToken: ClaimState
   transaction: ContractTransaction | null
   error: Error | null
 }
@@ -50,7 +50,7 @@ export function reducer(state: ClaimTokensState = defaultState, action: ClaimAct
               if (element.sale.id === action.payload.sale.id) {
                 return {
                   ...element,
-                  claimToken: action.payload.ClaimToken,
+                  claimToken: action.payload.claimToken,
                 }
               }
               return element

@@ -11,7 +11,10 @@ import { GET_FIXED_PRICE_SALE_COMMITMENTS_ALL } from 'src/subgraph/queries'
 import {
   GetFixedPriceSaleCommitmentsByUser,
   GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments,
+  GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale,
+  GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user,
 } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
+
 import { ClaimState } from 'src/hooks/useTokenClaim'
 
 //helpers
@@ -19,11 +22,14 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'
+import { useEffect } from 'react'
 
-export type SummarySales = Omit<
-  GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments,
-  '__typename' | 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
->
+export interface SummarySales {
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
+  status: Pick<GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments, 'status'>
+  amount: BigNumber
+  user: Pick<GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user, 'address'>
+}
 
 interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
   sales: SummarySales[]
@@ -61,23 +67,22 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
     })
 
     const unixDateNow = dayjs(Date.now()).unix()
-
-    dispatch(
-      sales
-        .filter(
-          purchase =>
-            BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minimumRaise) &&
-            unixDateNow >= purchase.sale.endDate
-        )
-        .map(purchase =>
+    sales
+      .filter(
+        purchase =>
+          BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minimumRaise) &&
+          unixDateNow >= purchase.sale.endDate
+      )
+      .map(purchase =>
+        dispatch(
           setClaimStatus({
             sale: purchase.sale,
-            ClaimToken: ClaimState.UNCLAIMED,
+            claimToken: ClaimState.UNCLAIMED,
             error: null,
             transaction: null,
           })
         )
-    )
+      )
   }
 
   return {

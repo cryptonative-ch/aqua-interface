@@ -64,14 +64,6 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
-  if (
-    !bids ||
-    bids.length == 0 ||
-    aggregatePurchases(bids, account).status === FixedPriceSaleCommitmentStatus.CLAIMED
-  ) {
-    return null
-  }
-
   if (claim === ClaimState.VERIFY) {
     return <VerifyState />
   }
