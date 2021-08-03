@@ -41,8 +41,8 @@ import { SaleClock } from 'src/views/Sales/components/SaleClock'
 
 const Icon = styled.img<SpaceProps>(
   {
-    height: '32px',
-    width: '32px',
+    height: '45px',
+    width: '45px',
   },
   space
 )
@@ -78,8 +78,8 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
 
   return (
     <Card>
-      <CardBody>
-        <Flex justifyContent="space-between" alignItems="center" margin="0 0 16px 0">
+      <CardBody padding="24px 24px 16px 24px">
+        <Flex justifyContent="flex-start" alignItems="center" margin="0 0 16px 0">
           <TokenIconFigure>
             <Icon src={noToken} />
           </TokenIconFigure>
