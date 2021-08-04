@@ -3,6 +3,7 @@ import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 // Interfaces
 import { SaleDate, FairSaleBid, FixedPriceSalePurchase, Sale } from 'src/interfaces/Sale'
+import { FixedPriceSaleStatus } from 'src/subgraph/__generated__/globalTypes'
 
 // Aqua
 import { calculateClearingPrice } from 'src/aqua/price'
@@ -10,11 +11,15 @@ import { calculateClearingPrice } from 'src/aqua/price'
 /**
  * Determines if the sale is active
  */
-export const isSaleOpen = ({ startDate, endDate }: SaleDate) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000)
-  const endDateLocal = convertUtcTimestampToLocal(endDate)
-  const startDateLocal = convertUtcTimestampToLocal(startDate)
-  return startDateLocal <= currentTimestamp && currentTimestamp < endDateLocal
+export const isSaleOpen = ({ startDate, endDate, status }: Sale) => {
+  if (status === FixedPriceSaleStatus.ENDED) {
+    return false
+  } else {
+    const currentTimestamp = Math.floor(Date.now() / 1000)
+    const endDateLocal = convertUtcTimestampToLocal(endDate)
+    const startDateLocal = convertUtcTimestampToLocal(startDate)
+    return startDateLocal <= currentTimestamp && currentTimestamp < endDateLocal
+  }
 }
 
 /**
@@ -27,14 +32,22 @@ export const isSaleUpcoming = ({ startDate }: SaleDate) => {
   return currentTimestamp < startDateLocal
 }
 
-/**
- * Determines if the sale is closed
- */
-export const isSaleClosed = ({ endDate }: SaleDate) => {
+export const isSaleDatePast = ({ endDate }: SaleDate) => {
   const currentTimestamp = Math.floor(Date.now() / 1000)
   const endDateLocal = convertUtcTimestampToLocal(endDate)
 
   return currentTimestamp >= endDateLocal
+}
+
+/**
+ * Determines if the sale is closed
+ */
+export const isSaleClosed = (sale: Sale) => {
+  if (sale.status === FixedPriceSaleStatus.ENDED) {
+    return true
+  } else {
+    return isSaleDatePast(sale)
+  }
 }
 
 /**

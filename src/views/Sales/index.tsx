@@ -19,6 +19,7 @@ import { GridListSection } from 'src/components/Grid'
 // interface
 import { SaleDate, Sale } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
+import { FIX_LATER } from 'src/interfaces'
 
 //interface
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
@@ -114,7 +115,7 @@ export function SalesView() {
   useEffect(() => {
     if (sales && userSales) {
       setFilteredUserSales(
-        sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale))) as SummarySales[]
+        sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale as FIX_LATER))) as SummarySales[]
       )
       setFilteredSales(
         sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]

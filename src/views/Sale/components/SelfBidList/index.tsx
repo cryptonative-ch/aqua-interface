@@ -57,7 +57,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
       ]
     : []
 
-  const isFixedBodyDataOpen = isSaleOpen(sale)
+  const isFixedBodyDataOpen = !isSaleClosed(sale)
     ? [
         {
           title: 'Buy Order',

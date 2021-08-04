@@ -1,10 +1,10 @@
-name: Deploy Github Pages 
+name: Develop CI/CD
 on:
   push:
     branches:
       - dev
 jobs:
-  deploy:
+  develop-ci:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,11 +26,3 @@ jobs:
 
       - name: Build Dapp
         run: npm run build:xdai
-
-      - name: Deploy to GH Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          ssh-key: ${{ secrets.GITHUB_PAGES }}
-          branch: gh-pages 
-          folder: build 
-          clean: true 
