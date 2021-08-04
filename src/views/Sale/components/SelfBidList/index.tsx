@@ -7,14 +7,20 @@ import { isSaleOpen, isSaleClosed } from 'src/aqua/sale'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Interfaces
-import { Sale, FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces/Sale'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
+
+//helpers
 import { formatBigInt } from 'src/utils/Defaults'
 
 // Table
 import { Table } from 'src/components/Table'
 
+// hooks
+import { useTokenClaim } from 'src/hooks/useTokenClaim'
+
 interface SelfBidListProps {
-  sale: Sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   bids: any
   clearingPrice?: FairBidPick
   status: string
@@ -23,6 +29,7 @@ interface SelfBidListProps {
 }
 
 export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
+  const { claim } = useTokenClaim(sale)
   const { isMobile } = useWindowSize()
 
   const isFixedHeadData = [
@@ -32,6 +39,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
     { title: 'Status', flex: isMobile ? 2 : 3 },
   ]
 
+  // purely from subgraph
   const isFixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
   const isFixedBodyData = isSaleClosed(sale)
     ? [
@@ -51,7 +59,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
               ) +
               ' ' +
               sale.tokenIn.symbol,
-            status: (bids as FixedPriceSalePurchase).status,
+            status: claim,
           },
         },
       ]

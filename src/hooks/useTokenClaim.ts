@@ -1,5 +1,5 @@
 // Externals
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
@@ -34,6 +34,7 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
+  const [txState, setTxState] = useState<ContractTransaction | null>(null)
   const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
@@ -77,13 +78,22 @@ export function useTokenClaim(
               amount: amount,
             })
           )
-          tx.wait(1)
-          return dispatch(
-            setClaimStatus({ sale: sale, claimToken: ClaimState.CLAIMED, error: null, transaction: tx, amount: amount })
-          )
+          setTxState(tx)
+          console.log(txState)
+          return tx.wait(1)
+          console.log(tx)
         })
         .then(() => {
-          return toast.success(t('success.claim'))
+          toast.success(t('success.claim'))
+          return dispatch(
+            setClaimStatus({
+              sale: sale,
+              claimToken: ClaimState.CLAIMED,
+              error: null,
+              transaction: txState,
+              amount: amount,
+            })
+          )
         })
         .catch((error: Error) => {
           console.error(error)

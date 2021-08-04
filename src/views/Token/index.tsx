@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 
 // Layouts
 import { GridListSection } from 'src/components/Grid'
+import { SaleSummaryWrapper } from 'src/views/Sales'
 
 // claims
 import { TokenClaim } from 'src/views/Token/components/TokenClaim'
@@ -25,9 +26,13 @@ export function TokenView() {
   return (
     <GridListSection>
       {claims.length ? (
-        claims.map((tokens, index) => (
-          <TokenClaim key={index} amount={tokens.amount === null ? 0 : tokens.amount} sale={tokens.sale} />
-        ))
+        claims.map((tokens, index) =>
+          tokens.amount === null ? null : (
+            <SaleSummaryWrapper to={`/sales/${tokens.sale.id}`} key={index}>
+              <TokenClaim key={index} amount={tokens.amount} sale={tokens.sale} />
+            </SaleSummaryWrapper>
+          )
+        )
       ) : (
         <h1>{t('texts.noTokens')}</h1>
       )}

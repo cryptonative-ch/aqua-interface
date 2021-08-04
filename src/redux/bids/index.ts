@@ -90,7 +90,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: SaleBid) => ({
+export const updateBidSuccess = (payload: any) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })

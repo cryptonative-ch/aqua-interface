@@ -37,7 +37,7 @@ import { useWeb3React } from '@web3-react/core'
 // sales page
 import { TokenView } from 'src/views/Token'
 
-const SaleSummaryWrapper = styled(NavLink)(Card, {
+export const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
 })
 

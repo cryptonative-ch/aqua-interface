@@ -49,7 +49,10 @@ export function reducer(state: ClaimTokensState = defaultState, action: ClaimAct
         claims: eventExists(state.claims, action.payload)
           ? state.claims.map((element: ClaimStatePerSale) => {
               if (element.sale.id === action.payload.sale.id) {
-                if (element.claimToken === ClaimState.CLAIMED || element.claimToken === ClaimState.FAILED) {
+                if (
+                  (element.claimToken === ClaimState.CLAIMED && action.payload.claimToken === ClaimState.UNCLAIMED) ||
+                  (element.claimToken === ClaimState.FAILED && action.payload.claimToken === ClaimState.UNCLAIMED)
+                ) {
                   return element
                 }
                 return {
