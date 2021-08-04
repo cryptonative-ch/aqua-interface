@@ -1,6 +1,7 @@
 // Externals
 import React from 'react'
 import SVG from 'react-inlinesvg'
+import { BigNumberish } from '@ethersproject/bignumber'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
@@ -22,7 +23,6 @@ import { formatBigInt } from 'src/utils/Defaults'
 
 //interfaces
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
-import { BigNumber } from '@ethersproject/bignumber'
 
 const Circle = styled.div({
   height: '45px',
@@ -54,13 +54,14 @@ const Icon = styled.img<SpaceProps>(
 
 interface SuccessfulClaimProps {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
-  amount: BigNumber
+  amount: BigNumberish
   tx: string
 }
 
 export const SuccessfulClaim = ({ amount, sale, tx }: SuccessfulClaimProps) => {
   const [t] = useTranslation()
   const blockExplorerUrl = `https://blockscout.com/xdai/mainnet/tx/${tx}`
+
   return (
     <Card>
       <CardBody height="100%" textAlign="center">

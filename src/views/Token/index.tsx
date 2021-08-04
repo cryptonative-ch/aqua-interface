@@ -13,7 +13,6 @@ import { TokenClaim } from 'src/views/Token/components/TokenClaim'
 export function TokenView() {
   const { account, library, chainId } = useWeb3React()
   const { claims } = useSelector(({ claims }) => claims)
-  console.log(claims)
 
   const [t] = useTranslation()
 
@@ -26,7 +25,9 @@ export function TokenView() {
   return (
     <GridListSection>
       {claims.length ? (
-        claims.map((tokens, index) => <TokenClaim key={index} sale={tokens.sale} />)
+        claims.map((tokens, index) => (
+          <TokenClaim key={index} amount={tokens.amount === null ? 0 : tokens.amount} sale={tokens.sale} />
+        ))
       ) : (
         <h1>{t('texts.noTokens')}</h1>
       )}

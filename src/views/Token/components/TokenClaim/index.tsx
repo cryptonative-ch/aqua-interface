@@ -1,8 +1,7 @@
 // Externals
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useWeb3React } from '@web3-react/core'
-import { ethers } from 'ethers'
+import { BigNumber, BigNumberish, ethers } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 import numeral from 'numeral'
@@ -21,9 +20,6 @@ import { FailedClaim } from 'src/views/Token/components/FailedClaim'
 import { VerifyState } from 'src/views/Token/components/VerifyClaim'
 import { SuccessfulClaim } from 'src/views/Token/components/SuccessfulClaim'
 
-// interface
-import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
-
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 // Svg
 import noToken from 'src/assets/svg/no-token-image.svg'
@@ -31,10 +27,6 @@ import noToken from 'src/assets/svg/no-token-image.svg'
 // hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
 import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
-import { useBids } from 'src/hooks/useBids'
-
-//helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
 
 // sales summary
 import { SaleClock } from 'src/views/Sales/components/SaleClock'
@@ -49,18 +41,15 @@ const Icon = styled.img<SpaceProps>(
 
 interface TokenClaimProps {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
+  amount: BigNumberish
 }
 
-export const TokenClaim = ({ sale }: TokenClaimProps) => {
+export const TokenClaim = ({ sale, amount }: TokenClaimProps) => {
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
-  const { account } = useWeb3React()
-  // TODO: replace fixedpricesale with dynamic types
-  const { bids } = useBids(sale!.id, 'FixedPriceSale')
 
   const { claimTokens, claim, transaction } = useTokenClaim(sale)
 
-  const amount = aggregatePurchases(bids, account).amount
   const preDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[0]
   const postDecimalAmount = ethers.utils.formatUnits(amount, sale?.tokenOut.decimals).toString().split('.')[1]
 
@@ -78,7 +67,7 @@ export const TokenClaim = ({ sale }: TokenClaimProps) => {
 
   return (
     <Card>
-      <CardBody padding="24px 24px 16px 24px">
+      <CardBody padding="32px 24px 16px 24px">
         <Flex justifyContent="flex-start" alignItems="center" margin="0 0 16px 0">
           <TokenIconFigure>
             <Icon src={noToken} />

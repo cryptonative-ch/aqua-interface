@@ -22,7 +22,6 @@ import { aggregatePurchases } from 'src/utils/Defaults'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'
-import { useEffect } from 'react'
 
 export interface SummarySales {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
@@ -48,11 +47,6 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
     purchases = data.fixedPriceSaleCommitments.filter(
       commitment => commitment.user.address.toLowerCase() === buyerId?.toLowerCase()
     )
-
-    // totalCommitment
-    // sale id
-    // user address
-    // status
 
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
       a[c.sale.id] = a[c.sale.id] || []
@@ -80,6 +74,7 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
             claimToken: ClaimState.UNCLAIMED,
             error: null,
             transaction: null,
+            amount: purchase.amount,
           })
         )
       )

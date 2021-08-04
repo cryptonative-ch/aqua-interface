@@ -1,5 +1,5 @@
 // External
-import { ContractTransaction } from 'ethers'
+import { BigNumberish, ContractTransaction } from 'ethers'
 
 // Interface
 import { Action } from 'redux'
@@ -18,6 +18,7 @@ export interface ClaimStatePerSale {
   claimToken: ClaimState
   transaction: ContractTransaction | null
   error: Error | null
+  amount: BigNumberish | null
 }
 
 interface ClaimAction extends Action<ActionTypes.SET_CLAIM_STATUS> {
@@ -56,6 +57,7 @@ export function reducer(state: ClaimTokensState = defaultState, action: ClaimAct
                   claimToken: action.payload.claimToken,
                   transaction: action.payload.transaction,
                   error: action.payload.error,
+                  amount: action.payload.amount,
                 }
               }
               return element
