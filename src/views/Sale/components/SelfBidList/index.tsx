@@ -119,7 +119,6 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   }
 
   if (isFixed && isSaleOpen(sale)) {
-    console.log(isFixedBodyDataOpen)
     return <Table headData={isFixedHeadDataOpen} bodyData={isFixedBodyDataOpen} />
   }
 

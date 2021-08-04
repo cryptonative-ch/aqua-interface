@@ -11,7 +11,7 @@ import { calculateClearingPrice } from 'src/aqua/price'
 /**
  * Determines if the sale is active
  */
-export const isSaleOpen = ({ startDate, endDate, status }: Sale) => {
+export const isSaleOpen = ({ startDate, endDate, status }: SaleDate) => {
   if (status === FixedPriceSaleStatus.ENDED) {
     return false
   } else {
@@ -42,7 +42,7 @@ export const isSaleDatePast = ({ endDate }: SaleDate) => {
 /**
  * Determines if the sale is closed
  */
-export const isSaleClosed = (sale: Sale) => {
+export const isSaleClosed = (sale: SaleDate) => {
   if (sale.status === FixedPriceSaleStatus.ENDED) {
     return true
   } else {

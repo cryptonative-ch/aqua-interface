@@ -1,7 +1,7 @@
 // Externals
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
 import numeral from 'numeral'

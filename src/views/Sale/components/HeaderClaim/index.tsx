@@ -17,7 +17,6 @@ import { FormButton, ButtonProps } from 'src/components/FormButton'
 import { isSaleClosed } from 'src/aqua/sale'
 
 // Interfaces
-import { Sale } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 

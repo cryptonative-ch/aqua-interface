@@ -17,7 +17,7 @@ import { Card } from 'src/components/CardSale'
 import { GridListSection } from 'src/components/Grid'
 
 // interface
-import { SaleDate, Sale } from 'src/interfaces/Sale'
+import { SaleDate } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 import { FIX_LATER } from 'src/interfaces'
 
