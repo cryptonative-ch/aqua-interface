@@ -62,7 +62,7 @@ export const TokenClaim = ({ sale, amount }: TokenClaimProps) => {
   }
 
   if (claim === ClaimState.CLAIMED) {
-    return <SuccessfulClaim sale={sale} amount={amount} tx={transaction!.hash} />
+    return <SuccessfulClaim sale={sale} amount={amount} tx={transaction!.transactionHash} />
   }
 
   return (

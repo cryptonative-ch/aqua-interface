@@ -75,7 +75,7 @@ export const SuccessfulClaim = ({ amount, sale, tx }: SuccessfulClaimProps) => {
           <CardText color="grey">
             {`${formatBigInt(amount, sale.tokenOut.decimals)} ${sale.tokenOut.symbol} has been sent to your address.`}
           </CardText>
-          <Link marginTop="24px" href={blockExplorerUrl}>
+          <Link margin="24px 0 16px 0" href={blockExplorerUrl}>
             See this transaction on block explorer
             <StyledSVG src={link} color="#304FFE" />
           </Link>

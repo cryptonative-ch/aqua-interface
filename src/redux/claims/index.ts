@@ -1,5 +1,5 @@
 // External
-import { BigNumberish, ContractTransaction } from 'ethers'
+import { BigNumberish, ContractReceipt } from 'ethers'
 
 // Interface
 import { Action } from 'redux'
@@ -16,7 +16,7 @@ export enum ActionTypes {
 export interface ClaimStatePerSale {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   claimToken: ClaimState
-  transaction: ContractTransaction | null
+  transaction: ContractReceipt | null
   error: Error | null
   amount: BigNumberish | null
 }
