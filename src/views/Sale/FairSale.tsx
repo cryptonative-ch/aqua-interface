@@ -59,6 +59,7 @@ import { subgraphCall } from 'src/subgraph'
 // Hooks
 import { useSale } from 'src/hooks/useSale'
 import { SUBGRAPH_ENDPOINT } from 'src/constants'
+import { FIX_LATER } from 'src/interfaces'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -284,7 +285,7 @@ export function FairSaleView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList sale={sale} clearingPrice={clearingPrice} bids={bids as any} />
+                <SelfBidList sale={sale as FIX_LATER} clearingPrice={clearingPrice} bids={bids as any} />
               </Card>
             )}
             <TokenFooter sale={sale} />

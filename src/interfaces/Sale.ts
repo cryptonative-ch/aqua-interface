@@ -26,7 +26,7 @@ export interface FairSaleBid extends Bid {
   address: string // The bidder's Ethereum address
   status?: string
 }
-export type SaleDate = Pick<Sale, 'startDate' | 'endDate' | 'id'>
+export type SaleDate = Pick<Sale, 'startDate' | 'endDate' | 'id' | 'status'>
 
 export type FairBidPick = Pick<FairSaleBid, 'address' | 'tokenOut' | 'tokenIn'>
 

@@ -8,21 +8,22 @@ import React from 'react'
 import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 
-// Interfaces
-import { Sale } from 'src/interfaces/Sale'
+//interface
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Aqua Utils
 import { convertToBuyerPrice, formatBigInt } from 'src/utils/Defaults'
 
 interface SaleFinalPriceProps {
-  sale: Sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
 }
 
 export function SaleFinalPrice({ sale }: SaleFinalPriceProps) {
   const pricePerToken = numeral(
-    sale.type == 'FixedPriceSale'
+    sale.__typename == 'FixedPriceSale'
       ? convertToBuyerPrice(formatBigInt(sale.tokenPrice || '0', sale.tokenOut.decimals))
-      : formatBigInt(sale.minimumBidAmount || '0', sale.tokenOut.decimals)
+      : // placeholder until fairsale subgraph is complete
+        formatBigInt((sale as any).minimumBidAmount || '0', sale.tokenOut.decimals)
   ).format('0.00')
 
   return (

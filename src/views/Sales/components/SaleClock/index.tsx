@@ -7,18 +7,19 @@ import { Flex } from 'src/components/Flex'
 import { Timer, timeEnd } from 'src/views/Sale/components/Timer'
 
 // Interface
-import { Sale } from 'src/interfaces/Sale'
 import { CardText } from 'src/components/CardText'
 import { isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 
 interface SaleClockProps {
-  sale: Sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
+  margin?: string
 }
 
-export const timerPercentage = (sale: Sale) => {
+export const timerPercentage = (sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale) => {
   const localTimeStamp = dayjs(Date.now()).unix()
   const startTime = convertUtcTimestampToLocal(sale.startDate)
   const endTime = convertUtcTimestampToLocal(sale.endDate)
@@ -27,7 +28,7 @@ export const timerPercentage = (sale: Sale) => {
   return percentage
 }
 
-export const SaleClock: React.FC<SaleClockProps> = ({ sale }) => {
+export const SaleClock: React.FC<SaleClockProps> = ({ sale, margin }) => {
   const [time, setTime] = useState(0)
   const [isMobile, setMobile] = useState(window.innerWidth < 770)
 
@@ -48,7 +49,7 @@ export const SaleClock: React.FC<SaleClockProps> = ({ sale }) => {
 
   if (isSaleClosed(sale)) {
     return (
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex margin={margin} flexDirection="row" justifyContent="space-between">
         <CardText color="grey">Closed</CardText>
         <Flex>
           <Timer sale={sale} />

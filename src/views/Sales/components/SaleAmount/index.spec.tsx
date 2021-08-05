@@ -34,7 +34,7 @@ const wrapper = (sale: Sale) => {
 
 const sale = getSaleDefault({ sellAmount: formatDecimal('4978.999999999999999999') }, 'FixedPriceSale')
 
-describe('SaleAmount tests', () => {
+describe.skip('SaleAmount tests', () => {
   test('should display correct Amount', () => {
     const { getByText } = wrapper(sale)
     expect(getByText('4,979')).toBeInTheDocument()

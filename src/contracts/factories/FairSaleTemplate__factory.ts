@@ -2,254 +2,251 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import { Contract, Signer } from 'ethers'
+import { Provider } from '@ethersproject/providers'
 
-import type { FairSaleTemplate } from "../FairSaleTemplate";
+import type { FairSaleTemplate } from '../FairSaleTemplate'
 
 export class FairSaleTemplate__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): FairSaleTemplate {
-    return new Contract(address, _abi, signerOrProvider) as FairSaleTemplate;
+  static connect(address: string, signerOrProvider: Signer | Provider): FairSaleTemplate {
+    return new Contract(address, _abi, signerOrProvider) as FairSaleTemplate
   }
 }
 
 const _abi = [
   {
     inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "tokenIn",
-        type: "address",
+        internalType: 'address',
+        name: 'tokenIn',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "address",
-        name: "tokenOut",
-        type: "address",
+        internalType: 'address',
+        name: 'tokenOut',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "duration",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'duration',
+        type: 'uint256',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "tokensForSale",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'tokensForSale',
+        type: 'uint256',
       },
       {
         indexed: false,
-        internalType: "uint96",
-        name: "minPrice",
-        type: "uint96",
+        internalType: 'uint96',
+        name: 'minPrice',
+        type: 'uint96',
       },
       {
         indexed: false,
-        internalType: "uint96",
-        name: "minBuyAmount",
-        type: "uint96",
+        internalType: 'uint96',
+        name: 'minBuyAmount',
+        type: 'uint96',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "minRaise",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'minRaise',
+        type: 'uint256',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "orderCancelationPeriodDuration",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'orderCancelationPeriodDuration',
+        type: 'uint256',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "minimumBiddingAmountPerOrder",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'minimumBiddingAmountPerOrder',
+        type: 'uint256',
       },
     ],
-    name: "TemplateInitialized",
-    type: "event",
+    name: 'TemplateInitialized',
+    type: 'event',
   },
   {
     inputs: [],
-    name: "aquaFactory",
+    name: 'aquaFactory',
     outputs: [
       {
-        internalType: "contract IAquaFactory",
-        name: "",
-        type: "address",
+        internalType: 'contract IAquaFactory',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "createSale",
+    name: 'createSale',
     outputs: [
       {
-        internalType: "address",
-        name: "newSale",
-        type: "address",
+        internalType: 'address',
+        name: 'newSale',
+        type: 'address',
       },
     ],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "encodedInitData",
+    name: 'encodedInitData',
     outputs: [
       {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
+        internalType: 'bytes',
+        name: '',
+        type: 'bytes',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "bytes",
-        name: "_data",
-        type: "bytes",
+        internalType: 'bytes',
+        name: '_data',
+        type: 'bytes',
       },
     ],
-    name: "init",
+    name: 'init',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "isInitialized",
+    name: 'isInitialized',
     outputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "isSaleCreated",
+    name: 'isSaleCreated',
     outputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "metaDataContentHash",
+    name: 'metaDataContentHash',
     outputs: [
       {
-        internalType: "string",
-        name: "",
-        type: "string",
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "saleLauncher",
+    name: 'saleLauncher',
     outputs: [
       {
-        internalType: "contract ISaleLauncher",
-        name: "",
-        type: "address",
+        internalType: 'contract ISaleLauncher',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "saleTemplateId",
+    name: 'saleTemplateId',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "templateName",
+    name: 'templateName',
     outputs: [
       {
-        internalType: "string",
-        name: "",
-        type: "string",
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "tokenOut",
+    name: 'tokenOut',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "tokenSupplier",
+    name: 'tokenSupplier',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "tokensForSale",
+    name: 'tokensForSale',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
-];
+]

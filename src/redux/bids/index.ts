@@ -90,7 +90,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: SaleBid) => ({
+export const updateBidSuccess = (payload: any) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
@@ -162,8 +162,7 @@ const eventExists = (events: SaleBid[], event: SaleBid[]) => {
 /**
  * Reducer
  * @param state
- * @param action
- * @returns
+ * @param action @returns
  */
 export function reducer(state: BidsState = defaultState, action: BidActionTypes): BidsState {
   switch (action.type) {

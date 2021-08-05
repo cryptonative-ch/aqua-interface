@@ -36,7 +36,6 @@ import { FeedbackOverlay } from 'src/components/FeedbackOverlay'
 // Layouts
 import { Center } from 'src/layouts/Center'
 
-// Contexts
 import { SanctionContext } from 'src/contexts'
 import { AquaContext } from 'src/aqua'
 
@@ -48,6 +47,7 @@ export const Container = styled.div`
 export const App = () => {
   const { isMobile } = useWindowSize()
   const { isShown, toggle } = useCookieModal('termsofsale')
+
   const [sanction, setSanction] = useState<boolean>(false)
   const { library, chainId } = useWeb3React()
   // Default: XDAI

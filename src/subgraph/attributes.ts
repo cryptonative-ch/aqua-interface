@@ -60,28 +60,30 @@ export const FAIR_PRICE_SALE_FIELDS = gql`
   ${TOKEN_FIELDS}
 `
 
-export const FIXED_PRICE_SALE_PURCHASE_FIELDS = gql`
-  fragment fixedPriceSalePurchaseResults on FixedPriceSalePurchase {
+export const FIXED_PRICE_SALE_USERS = gql`
+  fragment fixedPriceSaleUsers on FixedPriceSaleUser {
     id
     createdAt
     updatedAt
     deletedAt
-    buyer
-    amount
-    status
+    totalCommitment
+    totalVolume
     sale {
-      id
+      ...fixedPriceSaleResults
     }
+    address
   }
+  ${FIXED_PRICE_SALE_FIELDS}
 `
-
-export const FIXED_PRICE_SALE_PURCHASE_ALL = gql`
-  fragment fixedPriceSalePurchaseResultsAll on FixedPriceSalePurchase {
+export const FIXED_PRICE_SALE_COMMITMENT_ALL = gql`
+  fragment fixedPriceSaleCommitments on FixedPriceSaleCommitment {
     id
     createdAt
     updatedAt
     deletedAt
-    buyer
+    user {
+      ...fixedPriceSaleUsers
+    }
     amount
     status
     sale {
@@ -89,4 +91,5 @@ export const FIXED_PRICE_SALE_PURCHASE_ALL = gql`
     }
   }
   ${FIXED_PRICE_SALE_FIELDS}
+  ${FIXED_PRICE_SALE_USERS}
 `

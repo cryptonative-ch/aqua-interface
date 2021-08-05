@@ -2,17 +2,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import { Contract, Signer } from 'ethers'
+import { Provider } from '@ethersproject/providers'
 
-import type { TemplateLauncher } from "../TemplateLauncher";
+import type { TemplateLauncher } from '../TemplateLauncher'
 
 export class TemplateLauncher__factory {
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): TemplateLauncher {
-    return new Contract(address, _abi, signerOrProvider) as TemplateLauncher;
+  static connect(address: string, signerOrProvider: Signer | Provider): TemplateLauncher {
+    return new Contract(address, _abi, signerOrProvider) as TemplateLauncher
   }
 }
 
@@ -20,361 +17,361 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_factory",
-        type: "address",
+        internalType: 'address',
+        name: '_factory',
+        type: 'address',
       },
       {
-        internalType: "address",
-        name: "_participantListLaucher",
-        type: "address",
+        internalType: 'address',
+        name: '_participantListLaucher',
+        type: 'address',
       },
     ],
-    stateMutability: "nonpayable",
-    type: "constructor",
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "bool",
-        name: "allowPublicTemplates",
-        type: "bool",
+        internalType: 'bool',
+        name: 'allowPublicTemplates',
+        type: 'bool',
       },
     ],
-    name: "AllowPublicTemplatesUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "template",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "templateId",
-        type: "uint256",
-      },
-    ],
-    name: "TemplateAdded",
-    type: "event",
+    name: 'AllowPublicTemplatesUpdated',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "template",
-        type: "address",
+        internalType: 'address',
+        name: 'template',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "templateId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "templateDeployer",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "metadataContentHash",
-        type: "string",
+        internalType: 'uint256',
+        name: 'templateId',
+        type: 'uint256',
       },
     ],
-    name: "TemplateLaunched",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "template",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "newdetaDataContentHash",
-        type: "string",
-      },
-    ],
-    name: "TemplateMetadataContentHashUpdated",
-    type: "event",
+    name: 'TemplateAdded',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "template",
-        type: "address",
+        internalType: 'address',
+        name: 'template',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "templateId",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'templateId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'templateDeployer',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'metadataContentHash',
+        type: 'string',
       },
     ],
-    name: "TemplateRemoved",
-    type: "event",
+    name: 'TemplateLaunched',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'template',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'newdetaDataContentHash',
+        type: 'string',
+      },
+    ],
+    name: 'TemplateMetadataContentHashUpdated',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "template",
-        type: "address",
+        internalType: 'address',
+        name: 'template',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "templateId",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'templateId',
+        type: 'uint256',
       },
     ],
-    name: "TemplateVerified",
-    type: "event",
+    name: 'TemplateRemoved',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'template',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'templateId',
+        type: 'uint256',
+      },
+    ],
+    name: 'TemplateVerified',
+    type: 'event',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_template",
-        type: "address",
+        internalType: 'address',
+        name: '_template',
+        type: 'address',
       },
     ],
-    name: "addTemplate",
+    name: 'addTemplate',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "allowPublicTemplates",
+    name: 'allowPublicTemplates',
     outputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "factory",
+    name: 'factory',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_templateId",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_templateId',
+        type: 'uint256',
       },
     ],
-    name: "getTemplate",
+    name: 'getTemplate',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_template",
-        type: "address",
+        internalType: 'address',
+        name: '_template',
+        type: 'address',
       },
     ],
-    name: "getTemplateId",
+    name: 'getTemplateId',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_templateId",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_templateId',
+        type: 'uint256',
       },
       {
-        internalType: "bytes",
-        name: "_data",
-        type: "bytes",
+        internalType: 'bytes',
+        name: '_data',
+        type: 'bytes',
       },
       {
-        internalType: "string",
-        name: "_metadataContentHash",
-        type: "string",
+        internalType: 'string',
+        name: '_metadataContentHash',
+        type: 'string',
       },
       {
-        internalType: "address",
-        name: "_templateDeployer",
-        type: "address",
+        internalType: 'address',
+        name: '_templateDeployer',
+        type: 'address',
       },
     ],
-    name: "launchTemplate",
+    name: 'launchTemplate',
     outputs: [
       {
-        internalType: "address",
-        name: "newTemplate",
-        type: "address",
+        internalType: 'address',
+        name: 'newTemplate',
+        type: 'address',
       },
     ],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    name: "launchedTemplate",
+    name: 'launchedTemplate',
     outputs: [
       {
-        internalType: "address",
-        name: "deployer",
-        type: "address",
+        internalType: 'address',
+        name: 'deployer',
+        type: 'address',
       },
       {
-        internalType: "string",
-        name: "metadataContentHash",
-        type: "string",
+        internalType: 'string',
+        name: 'metadataContentHash',
+        type: 'string',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "participantListLaucher",
+    name: 'participantListLaucher',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_templateId",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_templateId',
+        type: 'uint256',
       },
     ],
-    name: "removeTemplate",
+    name: 'removeTemplate',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    name: "templateVerified",
+    name: 'templateVerified',
     outputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "toggleAllowPublicTemplates",
+    name: 'toggleAllowPublicTemplates',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_template",
-        type: "address",
+        internalType: 'address',
+        name: '_template',
+        type: 'address',
       },
       {
-        internalType: "string",
-        name: "_newMetadataContentHash",
-        type: "string",
+        internalType: 'string',
+        name: '_newMetadataContentHash',
+        type: 'string',
       },
     ],
-    name: "updateTemplateMetadataContentHash",
+    name: 'updateTemplateMetadataContentHash',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_templateId",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '_templateId',
+        type: 'uint256',
       },
     ],
-    name: "verifyTemplate",
+    name: 'verifyTemplate',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
-];
+]

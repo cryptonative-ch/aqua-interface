@@ -36,7 +36,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   } = useSelector(({ bids }) => bids)
 
   const { bids: totalBids } = useChain(saleId, saleType)
-  const bids = totalBids.filter((bid: any) => bid.user?.address.toLowerCase() === account?.toLowerCase())
+  const bids = totalBids.filter((bid: any) => bid.user.address.toLowerCase() === account!.toLowerCase())
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -68,7 +68,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
         console.error({ bidsError })
         dispatch(initialBidFailure(bidsError))
       })
-  }, [account, dispatch, library, chainId])
+  }, [account, library, chainId])
 
   return {
     totalBids,

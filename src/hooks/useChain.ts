@@ -14,7 +14,7 @@ import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/
 
 interface UseChainReturns {
   loading: boolean
-  bids: SaleBid[]
+  bids: any[]
   error: Error | null
 }
 
@@ -63,16 +63,17 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(contractAddress, library)
 
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
-      const bids: SaleBid = {
+      const bids: any = {
         id: String(await (await library.getBlock(event.blockNumber)).timestamp),
-        buyer: buyer,
-        amount: amount,
+        user: { address: buyer },
+        amount: amount.toString(),
         baseSale: {
           id: contractAddress,
         },
         createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
         updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
         deletedAt: null,
+        status: 'SUBMITTED',
       }
       dispatch(updateBidRequest(true))
       try {
@@ -83,7 +84,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
         dispatch(updateBidFailure(error))
       }
     })
-  }, [dispatch, account, library, chainId])
+  }, [account, library, chainId])
   return {
     bids,
     loading: isLoading,

@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSaleStatus } from './globalTypes'
+import { FixedPriceSaleStatus, FixedPriceSaleCommitmentStatus } from './globalTypes'
 
 // ====================================================
-// GraphQL query operation: GetAllSales
+// GraphQL fragment: fixedPriceSaleCommitments
 // ====================================================
 
-export interface GetAllSales_fixedPriceSales_tokenIn {
+export interface fixedPriceSaleCommitments_user_sale_tokenIn {
   __typename: 'Token'
   /**
    * Token address
@@ -29,7 +29,7 @@ export interface GetAllSales_fixedPriceSales_tokenIn {
   decimals: any
 }
 
-export interface GetAllSales_fixedPriceSales_tokenOut {
+export interface fixedPriceSaleCommitments_user_sale_tokenOut {
   __typename: 'Token'
   /**
    * Token address
@@ -49,7 +49,7 @@ export interface GetAllSales_fixedPriceSales_tokenOut {
   decimals: any
 }
 
-export interface GetAllSales_fixedPriceSales {
+export interface fixedPriceSaleCommitments_user_sale {
   __typename: 'FixedPriceSale'
   id: string
   /**
@@ -95,102 +95,153 @@ export interface GetAllSales_fixedPriceSales {
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetAllSales_fixedPriceSales_tokenIn
+  tokenIn: fixedPriceSaleCommitments_user_sale_tokenIn
   /**
    * Token investor get
    */
-  tokenOut: GetAllSales_fixedPriceSales_tokenOut
+  tokenOut: fixedPriceSaleCommitments_user_sale_tokenOut
 }
 
-export interface GetAllSales_fairSales_tokenIn {
-  __typename: 'Token'
+export interface fixedPriceSaleCommitments_user {
+  __typename: 'FixedPriceSaleUser'
   /**
-   * Token address
+   * The user's ID <saleAddress>/users/<saleUserAddress>
    */
   id: string
-  /**
-   * Token name, from the smart contract ERC20.name()
-   */
-  name: string | null
-  /**
-   * The token symbol from ERC20.symbol()
-   */
-  symbol: string | null
-  /**
-   * The token decimals, from ERC.decimals()
-   */
-  decimals: any
-}
-
-export interface GetAllSales_fairSales_tokenOut {
-  __typename: 'Token'
-  /**
-   * Token address
-   */
-  id: string
-  /**
-   * Token name, from the smart contract ERC20.name()
-   */
-  name: string | null
-  /**
-   * The token symbol from ERC20.symbol()
-   */
-  symbol: string | null
-  /**
-   * The token decimals, from ERC.decimals()
-   */
-  decimals: any
-}
-
-export interface GetAllSales_fairSales {
-  __typename: 'FairSale'
-  /**
-   * The sale contract address
-   */
-  id: string
-  /**
-   * The sale name
-   */
-  name: string | null
   createdAt: number
   updatedAt: number
   deletedAt: number | null
   /**
-   * Sale status: open/ended/settled/upcoming
+   * Total commitments submitted in the sale
    */
-  status: string
+  totalCommitment: number
   /**
-   * Date of the sale start
+   * Total volume for this user
+   */
+  totalVolume: any
+  /**
+   * FixedPriceSale reference
+   */
+  sale: fixedPriceSaleCommitments_user_sale
+  /**
+   * Address of buyer
+   */
+  address: any
+}
+
+export interface fixedPriceSaleCommitments_sale_tokenIn {
+  __typename: 'Token'
+  /**
+   * Token address
+   */
+  id: string
+  /**
+   * Token name, from the smart contract ERC20.name()
+   */
+  name: string | null
+  /**
+   * The token symbol from ERC20.symbol()
+   */
+  symbol: string | null
+  /**
+   * The token decimals, from ERC.decimals()
+   */
+  decimals: any
+}
+
+export interface fixedPriceSaleCommitments_sale_tokenOut {
+  __typename: 'Token'
+  /**
+   * Token address
+   */
+  id: string
+  /**
+   * Token name, from the smart contract ERC20.name()
+   */
+  name: string | null
+  /**
+   * The token symbol from ERC20.symbol()
+   */
+  symbol: string | null
+  /**
+   * The token decimals, from ERC.decimals()
+   */
+  decimals: any
+}
+
+export interface fixedPriceSaleCommitments_sale {
+  __typename: 'FixedPriceSale'
+  id: string
+  /**
+   * The name of the sale, default is the tokenIn's name
+   */
+  name: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
+  /**
+   * Sale status: open/ended/settled/upcoming/cancelled/failed
+   */
+  status: FixedPriceSaleStatus
+  /**
+   * The UTC timestamp at which the sale starts
    */
   startDate: number
   /**
-   * Date of the sale end
+   * The UTC timestamp at which the sale closes
    */
   endDate: number
   /**
-   * Total amount of tokens available for sale
+   * Amount of tokens sold so far
    */
-  tokensForSale: any
+  soldAmount: any
   /**
-   * Minimum amount per bid
+   * Amount of tokens to sell
    */
-  minimumBidAmount: any
+  sellAmount: any
+  minimumRaise: any
   /**
-   * The minimal funding threshold for executing the settlement. If funding is not
-   * reached, everyone will get back their investment
+   * Minimum token amount per commitment
    */
-  minFundingThreshold: number | null
+  allocationMin: any
   /**
-   * Accepted bidding token (ie: DAI, USDC)
+   * Maximum token amount per commitment
    */
-  tokenIn: GetAllSales_fairSales_tokenIn
+  allocationMax: any
   /**
-   * Auctioning token
+   * Token price
    */
-  tokenOut: GetAllSales_fairSales_tokenOut
+  tokenPrice: any
+  /**
+   * Token investors can use to bid
+   */
+  tokenIn: fixedPriceSaleCommitments_sale_tokenIn
+  /**
+   * Token investor get
+   */
+  tokenOut: fixedPriceSaleCommitments_sale_tokenOut
 }
 
-export interface GetAllSales {
-  fixedPriceSales: GetAllSales_fixedPriceSales[]
-  fairSales: GetAllSales_fairSales[]
+export interface fixedPriceSaleCommitments {
+  __typename: 'FixedPriceSaleCommitment'
+  /**
+   * The commitment ID
+   */
+  id: string
+  createdAt: number
+  updatedAt: number
+  deletedAt: number | null
+  /**
+   * Address of buyer
+   */
+  user: fixedPriceSaleCommitments_user
+  /**
+   * Amount of tokens
+   */
+  amount: any
+  status: FixedPriceSaleCommitmentStatus
+  /**
+   * FixedPriceSale this commitment is associated with
+   */
+  sale: fixedPriceSaleCommitments_sale
 }

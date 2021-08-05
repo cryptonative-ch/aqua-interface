@@ -8,11 +8,11 @@ import numeral from 'numeral'
 import { Flex } from 'src/components/Flex'
 import { Badge } from 'src/components/Badge'
 
-// Interfaces
-import { Sale } from 'src/interfaces/Sale'
+//interface
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 interface SaleActiveBidsProps {
-  sale: Sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   amount: string
 }
 

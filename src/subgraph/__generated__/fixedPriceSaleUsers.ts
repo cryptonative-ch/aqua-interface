@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSalePurchaseStatus, FixedPriceSaleStatus } from './globalTypes'
+import { FixedPriceSaleStatus } from './globalTypes'
 
 // ====================================================
-// GraphQL query operation: GetFixedPriceSalePurchasesByBuyer
+// GraphQL fragment: fixedPriceSaleUsers
 // ====================================================
 
-export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenIn {
+export interface fixedPriceSaleUsers_sale_tokenIn {
   __typename: 'Token'
   /**
    * Token address
@@ -29,7 +29,7 @@ export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_
   decimals: any
 }
 
-export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenOut {
+export interface fixedPriceSaleUsers_sale_tokenOut {
   __typename: 'Token'
   /**
    * Token address
@@ -49,11 +49,11 @@ export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_
   decimals: any
 }
 
-export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale {
+export interface fixedPriceSaleUsers_sale {
   __typename: 'FixedPriceSale'
   id: string
   /**
-   * The name of the same, default is the tokenIn's name
+   * The name of the sale, default is the tokenIn's name
    */
   name: string
   createdAt: number
@@ -81,11 +81,11 @@ export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale 
   sellAmount: any
   minimumRaise: any
   /**
-   * Minimum token amount per purchase
+   * Minimum token amount per commitment
    */
   allocationMin: any
   /**
-   * Maximum token amount per purchase
+   * Maximum token amount per commitment
    */
   allocationMax: any
   /**
@@ -95,41 +95,36 @@ export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale 
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenIn
+  tokenIn: fixedPriceSaleUsers_sale_tokenIn
   /**
    * Token investor get
    */
-  tokenOut: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale_tokenOut
+  tokenOut: fixedPriceSaleUsers_sale_tokenOut
 }
 
-export interface GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases {
-  __typename: 'FixedPriceSalePurchase'
+export interface fixedPriceSaleUsers {
+  __typename: 'FixedPriceSaleUser'
   /**
-   * The purchase ID
+   * The user's ID <saleAddress>/users/<saleUserAddress>
    */
   id: string
   createdAt: number
   updatedAt: number
   deletedAt: number | null
   /**
+   * Total commitments submitted in the sale
+   */
+  totalCommitment: number
+  /**
+   * Total volume for this user
+   */
+  totalVolume: any
+  /**
+   * FixedPriceSale reference
+   */
+  sale: fixedPriceSaleUsers_sale
+  /**
    * Address of buyer
    */
-  buyer: any
-  /**
-   * Amount of tokens
-   */
-  amount: any
-  status: FixedPriceSalePurchaseStatus
-  /**
-   * FixedPriceSale this purchase is associated with
-   */
-  sale: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases_sale
-}
-
-export interface GetFixedPriceSalePurchasesByBuyer {
-  fixedPriceSalePurchases: GetFixedPriceSalePurchasesByBuyer_fixedPriceSalePurchases[]
-}
-
-export interface GetFixedPriceSalePurchasesByBuyerVariables {
-  buyerId: any
+  address: any
 }

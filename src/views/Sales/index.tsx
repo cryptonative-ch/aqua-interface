@@ -17,9 +17,12 @@ import { Card } from 'src/components/CardSale'
 import { GridListSection } from 'src/components/Grid'
 
 // interface
-import { SaleDate, Sale } from 'src/interfaces/Sale'
+import { SaleDate } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 import { FIX_LATER } from 'src/interfaces'
+
+//interface
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
@@ -31,7 +34,10 @@ import { Center } from 'src/layouts/Center'
 import { DividerWithText } from 'src/components/Divider'
 import { useWeb3React } from '@web3-react/core'
 
-const SaleSummaryWrapper = styled(NavLink)(Card, {
+// sales page
+import { TokenView } from 'src/views/Token'
+
+export const SaleSummaryWrapper = styled(NavLink)(Card, {
   display: 'block',
 })
 
@@ -70,6 +76,7 @@ export function SalesView() {
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account)
+
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }
@@ -128,13 +135,18 @@ export function SalesView() {
             ) : saleStatus === SaleStatus.CLOSED ? (
               <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
             ) : null}
-            <GridListSection>
-              {filteredUserSales?.map(sale => (
-                <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
-                  <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
-                </SaleSummaryWrapper>
-              ))}
-            </GridListSection>
+
+            {saleStatus === SaleStatus.CLOSED ? (
+              <TokenView />
+            ) : (
+              <GridListSection>
+                {filteredUserSales?.map(sale => (
+                  <SaleSummaryWrapper to={`/sales/${sale.sale.id}`} key={sale.sale.id}>
+                    <SaleSummaryCard sale={sale.sale as any} purchaseAmount={sale.amount} />
+                  </SaleSummaryWrapper>
+                ))}
+              </GridListSection>
+            )}
           </>
         )}
 
@@ -151,7 +163,7 @@ export function SalesView() {
           ) : (
             filteredSales?.map(sale => (
               <SaleSummaryWrapper to={`/sales/${sale.id}`} key={sale.id}>
-                <SaleSummaryCard sale={sale as Sale} />
+                <SaleSummaryCard sale={sale as GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale} />
               </SaleSummaryWrapper>
             ))
           )}

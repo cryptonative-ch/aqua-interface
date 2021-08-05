@@ -4,11 +4,11 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetMesaFactory
+// GraphQL query operation: GetAquaFactory
 // ====================================================
 
-export interface GetMesaFactory_mesaFactory {
-  __typename: 'MesaFactory'
+export interface GetAquaFactory_aquaFactory {
+  __typename: 'AquaFactory'
   /**
    * ID: should be a unique easy-to-reference from the subgraph
    */
@@ -26,7 +26,7 @@ export interface GetMesaFactory_mesaFactory {
    */
   feeManager: any
   /**
-   * MesaFactory contract address
+   * AquaFactory contract address
    */
   address: any
   /**
@@ -40,10 +40,10 @@ export interface GetMesaFactory_mesaFactory {
   /**
    * TemplateLauncher contract address
    */
-  templateLauncher: any
+  templateLauncher: any | null
   feeNumerator: any
 }
 
-export interface GetMesaFactory {
-  mesaFactory: GetMesaFactory_mesaFactory | null
+export interface GetAquaFactory {
+  aquaFactory: GetAquaFactory_aquaFactory | null
 }

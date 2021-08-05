@@ -17,7 +17,9 @@ export const aggregatePurchases = (bids: any[], account: string | null | undefin
   }, BigNumber.from(0))
 
   return {
-    buyer: account!,
+    user: {
+      address: account!,
+    },
     amount: reduceTotalAmount,
     status: bids.length > 0 ? bids[0].status : undefined,
     sale: sale,

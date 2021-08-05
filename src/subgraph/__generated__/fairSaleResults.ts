@@ -81,7 +81,8 @@ export interface fairSaleResults {
    */
   minimumBidAmount: any
   /**
-   * The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
+   * The minimal funding threshold for executing the settlement. If funding is not
+   * reached, everyone will get back their investment
    */
   minFundingThreshold: number | null
   /**

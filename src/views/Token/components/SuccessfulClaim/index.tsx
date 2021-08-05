@@ -1,6 +1,7 @@
 // Externals
 import React from 'react'
 import SVG from 'react-inlinesvg'
+import { BigNumberish } from '@ethersproject/bignumber'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { space, SpaceProps } from 'styled-system'
@@ -19,8 +20,9 @@ import link from 'src/assets/svg/External-Link.svg'
 
 // Aqua Utils
 import { formatBigInt } from 'src/utils/Defaults'
-import { Sale } from 'src/interfaces/Sale'
-import { BigNumber } from '@ethersproject/bignumber'
+
+//interfaces
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 const Circle = styled.div({
   height: '45px',
@@ -51,15 +53,15 @@ const Icon = styled.img<SpaceProps>(
 )
 
 interface SuccessfulClaimProps {
-  purchase: Omit<Sale, 'bids'> & {
-    amount: BigNumber
-  }
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
+  amount: BigNumberish
   tx: string
 }
 
-export const SuccessfulClaim = ({ purchase: { amount, ...sale }, tx }: SuccessfulClaimProps) => {
+export const SuccessfulClaim = ({ amount, sale, tx }: SuccessfulClaimProps) => {
   const [t] = useTranslation()
   const blockExplorerUrl = `https://blockscout.com/xdai/mainnet/tx/${tx}`
+
   return (
     <Card>
       <CardBody height="100%" textAlign="center">
@@ -71,7 +73,7 @@ export const SuccessfulClaim = ({ purchase: { amount, ...sale }, tx }: Successfu
           </Flex>
           <CardTitle fontWeight={500}>{t('texts.claimSuccessful')}</CardTitle>
           <CardText color="grey">
-            {`${formatBigInt(amount, sale?.tokenOut.decimals)} ${sale?.tokenOut.name} has been sent to your address.`}
+            {`${formatBigInt(amount, sale.tokenOut.decimals)} ${sale.tokenOut.symbol} has been sent to your address.`}
           </CardText>
           <Link marginTop="24px" href={blockExplorerUrl}>
             See this transaction on block explorer
