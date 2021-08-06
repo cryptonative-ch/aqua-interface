@@ -1,7 +1,7 @@
 // Externals
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ContractTransaction } from 'ethers'
+import { ContractReceipt, ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
@@ -25,7 +25,7 @@ export enum ClaimState {
 interface useTokenClaimReturns {
   claim: ClaimState | null
   claimTokens: (saleId: string) => void
-  transaction: ContractTransaction | null
+  transaction: ContractReceipt | null
   error: Error | null
 }
 
@@ -34,7 +34,6 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const [txState, setTxState] = useState<ContractTransaction | null>(null)
   const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
@@ -78,19 +77,17 @@ export function useTokenClaim(
               amount: amount,
             })
           )
-          setTxState(tx)
-          console.log(txState)
           return tx.wait(1)
-          console.log(tx)
         })
-        .then(() => {
+        .then((tx: ContractReceipt) => {
           toast.success(t('success.claim'))
+          console.log(tx)
           return dispatch(
             setClaimStatus({
               sale: sale,
               claimToken: ClaimState.CLAIMED,
               error: null,
-              transaction: txState,
+              transaction: tx,
               amount: amount,
             })
           )
