@@ -62,10 +62,11 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
           }),
           {}
         )
+
         dispatch(initialBidSuccess(sales))
       })
-      .catch(bidsError => {
-        console.error({ bidsError })
+      .catch((bidsError: Error) => {
+        console.error(bidsError)
         dispatch(initialBidFailure(bidsError))
       })
   }, [account, library, chainId])

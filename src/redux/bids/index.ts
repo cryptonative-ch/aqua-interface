@@ -4,18 +4,8 @@
 import { Action } from 'redux'
 import dayjs from 'dayjs'
 
-// redux
-
-import { AppThunk } from 'src/redux/store'
-
 // interface
 import { SaleBid } from 'src/interfaces/Sale'
-
-// subgraph
-import { generateInitialSaleData } from 'src/subgraph'
-
-// interface
-import { SaleType } from 'src/interfaces/Sale'
 
 // ACTION
 export enum ActionTypes {
@@ -90,7 +80,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: any) => ({
+export const updateBidSuccess = (payload: SaleBid) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
@@ -113,49 +103,12 @@ const defaultState: BidsState = {
   bidsBySaleId: {},
 }
 
-// fetch Data
-
-export const fetchSaleBids = (saleId: string, saleType: SaleType, saleBidsRequest: Promise<any>): AppThunk => {
-  return async (dispatch, getState) => {
-    // Current time
-    const timeNow = dayjs.utc().unix()
-    // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
-    const { updatedAt } = getState().bids.bidsBySaleId[saleId] || timeNow
-    const delta = Math.abs(updatedAt - timeNow)
-    // exit
-    // should only be called once
-    if (delta <= 3000000) {
-      return
-    }
-    // fetch new (fresh) data
-
-    dispatch(initialBidRequest(true))
-    try {
-      dispatch(initialBidSuccess(await generateInitialSaleData(saleBidsRequest, saleType)))
-    } catch (error) {
-      console.error(error)
-      dispatch(initialBidFailure(error))
-    }
-  }
-}
-
-export const fetchBidsFromChain = (bids: SaleBid): any => {
-  return async (dispatch: any) => {
-    dispatch(updateBidRequest(true))
-    try {
-      dispatch(updateBidSuccess(bids))
-    } catch (error) {
-      console.error(error)
-      dispatch(updateBidFailure(error))
-    }
-  }
-}
-
 const keyFinder = (object: BidsBySaleId) => {
   return String(Object.getOwnPropertyNames(object)[0])
 }
 
 const eventExists = (events: SaleBid[], event: SaleBid[]) => {
+  // check for empty state
   return events.some(e => e.id === event[0].id)
 }
 
@@ -174,6 +127,8 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
     case ActionTypes.INITIAL_BID_SUCCESS: {
       // Extract the saleid
 
+      // get bidsBySaleId from previous state
+      const { bidsBySaleId } = state
       const id = keyFinder(action.payload)
 
       // create a cache timestamp
@@ -181,23 +136,26 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       return {
         ...state,
         isLoading: false,
-        bidsBySaleId: {
-          ...state.bidsBySaleId,
-          [id]: state.bidsBySaleId[id]
-            ? eventExists(state.bidsBySaleId[id].bids, action.payload[id].bids)
-              ? {
-                  updatedAt: state.bidsBySaleId[id].updatedAt,
-                  bids: state.bidsBySaleId[id].bids,
-                }
-              : {
-                  updatedAt: updatedAt,
-                  bids: [...state.bidsBySaleId[id].bids, ...action.payload[id].bids],
-                }
+        bidsBySaleId:
+          id === 'undefined'
+            ? action.payload
             : {
-                updatedAt: updatedAt,
-                bids: action.payload[id].bids,
+                ...bidsBySaleId,
+                [id]: bidsBySaleId[id].bids
+                  ? eventExists(bidsBySaleId[id].bids, action.payload[id].bids)
+                    ? {
+                        updatedAt: bidsBySaleId[id].updatedAt,
+                        bids: bidsBySaleId[id].bids,
+                      }
+                    : {
+                        updatedAt: updatedAt,
+                        bids: [...bidsBySaleId[id].bids, ...action.payload[id].bids],
+                      }
+                  : {
+                      updatedAt: updatedAt,
+                      bids: action.payload[id].bids,
+                    },
               },
-        },
       }
     }
 
@@ -225,14 +183,19 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
         ...state,
         bidsBySaleId: {
           ...bidsBySaleId,
-          [id]: eventExists(bidsBySaleId[id]?.bids, [action.payload])
-            ? {
-                updatedAt: bidsBySaleId[id].updatedAt,
-                bids: [...bidsBySaleId[id].bids],
-              }
+          [id]: bidsBySaleId.bids
+            ? eventExists(bidsBySaleId[id]?.bids, [action.payload])
+              ? {
+                  updatedAt: bidsBySaleId[id].updatedAt,
+                  bids: [...bidsBySaleId[id].bids],
+                }
+              : {
+                  updatedAt: updatedAt,
+                  bids: [...bidsBySaleId[id].bids, action.payload],
+                }
             : {
                 updatedAt: updatedAt,
-                bids: [...bidsBySaleId[id].bids, action.payload],
+                bids: [action.payload],
               },
         },
       }

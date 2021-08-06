@@ -51,7 +51,6 @@ import { NotFoundView } from 'src/views/NotFound'
 import { FairBidPick, FairSaleBid } from 'src/interfaces/Sale'
 
 //redux
-import { fetchSaleBids } from 'src/redux/bids'
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
 import { subgraphCall } from 'src/subgraph'
 
@@ -106,8 +105,6 @@ export function FairSaleView() {
 
     if (sale) {
       const FairSaleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId))
-      const fetchBids = () => dispatch(fetchSaleBids(params.saleId, sale.type, FairSaleBidsRequest))
-      fetchBids()
       setClearingPrice(calculateClearingPrice(bids))
     }
   }, [t, sale])
