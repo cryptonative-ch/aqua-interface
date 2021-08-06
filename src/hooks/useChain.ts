@@ -65,7 +65,9 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
       const bids: any = {
         id: String(await (await library.getBlock(event.blockNumber)).timestamp),
-        user: { address: buyer },
+        user: {
+          address: buyer,
+        },
         amount: amount.toString(),
         baseSale: {
           id: contractAddress,
