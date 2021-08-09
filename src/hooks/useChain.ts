@@ -28,6 +28,8 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
     bidsBySaleId: { [contractAddress]: { bids } = { bids: [] } },
   } = useSelector(({ bids }) => bids)
 
+  const totalPurchasesUser = bids.filter((bid: any) => bid.user.address.toLowerCase() === account?.toLowerCase()).length
+
   useEffect(() => {
     if (!account || !library || !chainId) {
       return
@@ -64,7 +66,7 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
 
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
       const bids: any = {
-        id: String(await (await library.getBlock(event.blockNumber)).timestamp),
+        id: contractAddress + '/purchases/' + buyer + '/' + totalPurchasesUser,
         user: {
           address: buyer,
         },
