@@ -28,7 +28,7 @@ import { theme } from 'src/styles/theme'
 import { ThemeProvider } from 'styled-components'
 
 // defaults
-import { getSaleDefault } from 'src/utils/Defaults'
+import { getSaleDefault } from 'src/utils/helpers'
 
 //clean up
 

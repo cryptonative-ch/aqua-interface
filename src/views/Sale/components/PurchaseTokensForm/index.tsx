@@ -17,7 +17,7 @@ import { Modal } from 'src/components/Modal'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Utils
-import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/helpers'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -27,7 +27,7 @@ import { useModal } from 'src/hooks/useModal'
 import { useBids } from 'src/hooks/useBids'
 
 //helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
+import { aggregatePurchases } from 'src/utils/helpers'
 
 // Layouts
 import { Center } from 'src/layouts/Center'

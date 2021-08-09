@@ -11,7 +11,7 @@ import { FairBidPick, FairSaleBid, FixedPriceSalePurchase } from 'src/interfaces
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 //helpers
-import { formatBigInt } from 'src/utils/Defaults'
+import { formatBigInt } from 'src/utils/helpers'
 
 // Table
 import { Table } from 'src/components/Table'
