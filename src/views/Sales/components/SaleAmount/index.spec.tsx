@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { SaleAmount } from 'src/views/Sales/components/SaleAmount/index'
 
 // defaults
-import { formatDecimal, getSaleDefault } from 'src/utils/Defaults'
+import { formatDecimal, getSaleDefault } from 'src/utils/helpers'
 
 // theme
 

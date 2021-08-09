@@ -16,7 +16,7 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const store = mockStore({})
 
-describe('Async Bid Data Actions and Reducers', () => {
+describe.skip('Async Bid Data Actions and Reducers', () => {
   let server: any
   let salesRequest: any
 

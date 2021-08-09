@@ -18,7 +18,7 @@ import {
 import { ClaimState } from 'src/hooks/useTokenClaim'
 
 //helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
+import { aggregatePurchases } from 'src/utils/helpers'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'

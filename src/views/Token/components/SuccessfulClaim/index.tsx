@@ -19,7 +19,7 @@ import check from 'src/assets/svg/Check-Icon.svg'
 import link from 'src/assets/svg/External-Link.svg'
 
 // Aqua Utils
-import { formatBigInt } from 'src/utils/Defaults'
+import { formatBigInt } from 'src/utils/helpers'
 
 //interfaces
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
