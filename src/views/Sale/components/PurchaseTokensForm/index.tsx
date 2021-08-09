@@ -150,15 +150,15 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
   const getMaxPurchase = () => {
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
-    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.maxCommitment)))
+    const purchaseMaximumCommitment = parseFloat(utils.formatUnits(BigNumber.from(sale?.maxCommitment)))
     const remainingTokens = formatBigInt(sale?.sellAmount) - formatBigInt(sale?.soldAmount)
     const costOfRemainingTokens = remainingTokens * convertToBuyerPrice(formatBigInt(sale?.tokenPrice))
     const maxPurchase =
-      parsedTokenBalance < purchaseMaximumAllocation
+      parsedTokenBalance < purchaseMaximumCommitment
         ? parsedTokenBalance
-        : costOfRemainingTokens < purchaseMaximumAllocation
+        : costOfRemainingTokens < purchaseMaximumCommitment
         ? costOfRemainingTokens
-        : purchaseMaximumAllocation
+        : purchaseMaximumCommitment
     return maxPurchase
   }
 
