@@ -17,7 +17,7 @@ export const saleBidsQuery = (saleid: string) => {
           }
         }
       }
-      fairSales (where: {id: "${saleid}"}) {
+      fairSale (id: "${saleid}"){
         id
         bids {
           id

@@ -57,3 +57,35 @@ export const GET_FIXED_PRICE_SALE_COMMITMENTS_ALL = gql`
   }
   ${FIXED_PRICE_SALE_COMMITMENT_ALL}
 `
+
+export const GET_ALL_BIDS_BY_SALES = gql`
+  query GetAllBidsBySales($saleId: ID!) {
+    fixedPriceSale(id: $saleId) {
+      id
+      soldAmount
+      commitments {
+        id
+        amount
+        status
+        user {
+          address
+        }
+        sale {
+          id
+          tokenPrice
+        }
+      }
+    }
+    fairSale(id: $saleId) {
+      id
+      bids {
+        id
+        tokenInAmount
+        tokenOutAmount
+        sale {
+          id
+        }
+      }
+    }
+  }
+`

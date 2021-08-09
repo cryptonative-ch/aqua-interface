@@ -10,14 +10,13 @@ import { useAqua } from 'src/hooks/useAqua'
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
 // Interfaces
-import { SaleBid, SaleType } from 'src/interfaces/Sale'
+import { SaleBid } from 'src/interfaces/Sale'
 
 // Blockchain websocket
 import { useChain } from 'src/hooks/useChain'
 
 // Query
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
-import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 interface UseBidsReturn {
   loading: boolean
