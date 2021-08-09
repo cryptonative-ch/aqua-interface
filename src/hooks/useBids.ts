@@ -17,6 +17,7 @@ import { useChain } from 'src/hooks/useChain'
 
 // Query
 import { saleBidsQuery } from 'src/subgraph/SaleBids'
+import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 interface UseBidsReturn {
   loading: boolean
@@ -25,7 +26,7 @@ interface UseBidsReturn {
   totalBids: SaleBid[]
 }
 
-export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
+export function useBids(sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale): UseBidsReturn {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const aqua = useAqua()
@@ -35,7 +36,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
-  const { bids: totalBids } = useChain(saleId, saleType)
+  const { bids: totalBids } = useChain(saleId)
   const bids = totalBids.filter((bid: any) => bid.user.address.toLowerCase() === account!.toLowerCase())
 
   useEffect(() => {
