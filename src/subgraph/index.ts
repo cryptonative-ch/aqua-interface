@@ -21,7 +21,7 @@ export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> 
       ? fairSales.map((item: any) => ({
           ...item,
           tokenAmount: formatDecimal(item.tokenAmount, item.tokenOut.decimal),
-          minimumBidAmount: formatDecimal(item.minimumBidAmount, item.tokenOut.decimal),
+          minBidAmount: formatDecimal(item.minBidAmount, item.tokenOut.decimal),
           type: fairSale,
         }))
       : []
@@ -31,12 +31,12 @@ export const getSalesData = async (salesRequest: Promise<any>): Promise<Sale[]> 
     fixedPriceSales.length != 0
       ? fixedPriceSales.map((item: any) => ({
           ...item,
-          allocationMin: formatDecimal(item.allocationMin, item.tokenOut.decimal),
-          allocationMax: formatDecimal(item.allocationMax, item.tokenOut.decimal),
+          minCommitment: formatDecimal(item.minCommitment, item.tokenOut.decimal),
+          maxCommitment: formatDecimal(item.maxCommitment, item.tokenOut.decimal),
           sellAmount: formatDecimal(item.sellAmount, item.tokenOut.decimal),
           tokenPrice: formatDecimal(item.tokenPrice, item.tokenOut.decimal),
           soldAmount: formatDecimal(item.soldAmount, item.tokenOut.decimal),
-          minimumRaise: formatDecimal(item.minimumRaise, item.tokenOut.decimal),
+          minRaise: formatDecimal(item.minRaise, item.tokenOut.decimal),
           type: fixedPriceSale,
         }))
       : []

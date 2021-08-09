@@ -23,7 +23,7 @@ export function SaleFinalPrice({ sale }: SaleFinalPriceProps) {
     sale.__typename == 'FixedPriceSale'
       ? convertToBuyerPrice(formatBigInt(sale.tokenPrice || '0', sale.tokenOut.decimals))
       : // placeholder until fairsale subgraph is complete
-        formatBigInt((sale as any).minimumBidAmount || '0', sale.tokenOut.decimals)
+        formatBigInt((sale as any).minBidAmount || '0', sale.tokenOut.decimals)
   ).format('0.00')
 
   return (

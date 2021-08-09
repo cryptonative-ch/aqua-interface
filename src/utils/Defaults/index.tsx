@@ -97,7 +97,7 @@ const getFairSale = (): FairSale => ({
     decimals: 18,
     symbol: 'DXD',
   },
-  minimumBidAmount: formatDecimal('10.000000000000000000'),
+  minBidAmount: formatDecimal('10.000000000000000000'),
   bids: [],
   type: 'FairSale',
   minFundingThreshold: 100,
@@ -116,7 +116,7 @@ export const getFixedPriceSales = (): FixedPriceSale => ({
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
   soldAmount: BigNumber.from(5000),
-  minimumRaise: BigNumber.from(200),
+  minRaise: BigNumber.from(200),
   tokenIn: {
     id: '0x141',
     name: 'DAI',
@@ -133,8 +133,8 @@ export const getFixedPriceSales = (): FixedPriceSale => ({
     decimals: 18,
     symbol: 'DXD',
   },
-  allocationMin: 2,
-  allocationMax: 20,
+  minCommitment: 2,
+  maxCommitment: 20,
   bids: [],
 })
 

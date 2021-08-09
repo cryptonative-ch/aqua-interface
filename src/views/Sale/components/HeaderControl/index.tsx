@@ -126,9 +126,9 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
   const [t] = useTranslation()
   const { isMobile } = useWindowSize()
 
-  if ((isFixed && sale.minimumRaise > BigNumber.from(0)) || status != 'closed') {
+  if ((isFixed && sale.minRaise > BigNumber.from(0)) || status != 'closed') {
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
-    const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
+    const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
     const totalAmountPurchased = formatBigInt(sale.soldAmount, sale.tokenOut.decimals)
     // Due to subgraph issue amount starts at 0 then is set to remaining supply
     const amountDisplayed = totalAmountPurchased == 0 ? 0 : totalSupply - totalAmountPurchased

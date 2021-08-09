@@ -43,7 +43,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const theme = useTheme()
   const [t] = useTranslation()
   const { error: claimError, claim, claimTokens } = useTokenClaim(sale)
-  const threshold = BigNumber.from(sale.minimumRaise)
+  const threshold = BigNumber.from(sale.minRaise)
   const tokensSold = BigNumber.from(sale.soldAmount)
   return (
     <CardBody

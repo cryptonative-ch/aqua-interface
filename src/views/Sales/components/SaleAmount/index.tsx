@@ -26,7 +26,7 @@ const SaleCardText = styled(CardText)<TextProps>`
 `
 
 export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
-  const isFailed = sale.soldAmount < sale.minimumRaise && closed
+  const isFailed = sale.soldAmount < sale.minRaise && closed
   return (
     <Flex>
       <SaleCardText isFailed={isFailed}>
