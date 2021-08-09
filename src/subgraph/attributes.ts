@@ -23,9 +23,9 @@ export const FIXED_PRICE_SALE_FIELDS = gql`
     endDate
     soldAmount
     sellAmount
-    minimumRaise
-    allocationMin
-    allocationMax
+    minRaise
+    minCommitment
+    maxCommitment
     tokenPrice
     tokenIn {
       ...tokenResults
@@ -48,7 +48,7 @@ export const FAIR_PRICE_SALE_FIELDS = gql`
     startDate
     endDate
     tokensForSale
-    minimumBidAmount
+    minBidAmount
     minFundingThreshold
     tokenIn {
       ...tokenResults

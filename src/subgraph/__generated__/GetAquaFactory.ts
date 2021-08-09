@@ -8,42 +8,42 @@
 // ====================================================
 
 export interface GetAquaFactory_aquaFactory {
-  __typename: 'AquaFactory'
+  __typename: "AquaFactory";
   /**
    * ID: should be a unique easy-to-reference from the subgraph
    */
-  id: string
+  id: string;
   /**
    * Fee for launching a new sale
    */
-  saleFee: any
+  saleFee: any;
   /**
    * Number of sales created via the factory
    */
-  saleCount: number
+  saleCount: number;
   /**
    * Fee manager; CFO
    */
-  feeManager: any
+  feeManager: any;
   /**
    * AquaFactory contract address
    */
-  address: any
+  address: any;
   /**
    * Fee Collector address: DAO/EOA/multisig
    */
-  feeTo: any
+  feeTo: any;
   /**
    * Template manager address
    */
-  templateManager: any
+  templateManager: any;
   /**
    * TemplateLauncher contract address
    */
-  templateLauncher: any | null
-  feeNumerator: any
+  templateLauncher: any | null;
+  feeNumerator: any;
 }
 
 export interface GetAquaFactory {
-  aquaFactory: GetAquaFactory_aquaFactory | null
+  aquaFactory: GetAquaFactory_aquaFactory | null;
 }

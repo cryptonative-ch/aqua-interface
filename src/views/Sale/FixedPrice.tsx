@@ -123,11 +123,11 @@ export function FixedPriceSaleView() {
                     <HeaderItem
                       isMobile
                       title={isSaleClosed(sale as FIX_LATER) ? 'Amount Sold' : 'Min. - Max. Allocation'}
-                      description={`${formatBigInt(sale.allocationMin, sale.tokenIn.decimals)} - ${formatBigInt(
-                        sale.allocationMax,
+                      description={`${formatBigInt(sale.minCommitment, sale.tokenIn.decimals)} - ${formatBigInt(
+                        sale.maxCommitment,
                         sale.tokenIn.decimals
                       )} ${sale.tokenIn?.symbol}`}
-                      tooltip={t('texts.minMaxAllocationInfo')}
+                      tooltip={t('texts.minMaxCommitmentInfo')}
                     />
                     {isSaleClosed(sale as FIX_LATER) && (
                       <HeaderItem isMobile title="Closed On" description={timeEnd(sale.endDate)} textAlign="right" />
@@ -156,23 +156,23 @@ export function FixedPriceSaleView() {
                     />
                     {isSaleClosed(sale as FIX_LATER) ? (
                       <HeaderItem
-                        title={sale.soldAmount < sale.minimumRaise ? 'Soft Cap not reached' : 'Amount Sold'}
+                        title={sale.soldAmount < sale.minRaise ? 'Soft Cap not reached' : 'Amount Sold'}
                         description={`${
                           // Due to quirk of subgraph this is set to 0 then the remaining number of tokens after first commitment
                           formatBigInt(sale.soldAmount) == 0
                             ? 0
                             : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
                         } ${sale.tokenOut?.symbol}`}
-                        error={sale.soldAmount < sale.minimumRaise}
+                        error={sale.soldAmount < sale.minRaise}
                       />
                     ) : (
                       <HeaderItem
                         title={'Min. - Max. Allocation'}
-                        description={`${formatBigInt(sale.allocationMin, sale.tokenIn.decimals)} - ${formatBigInt(
-                          sale.allocationMax,
+                        description={`${formatBigInt(sale.minCommitment, sale.tokenIn.decimals)} - ${formatBigInt(
+                          sale.maxCommitment,
                           sale.tokenIn.decimals
                         )} ${sale.tokenIn?.symbol}`}
-                        tooltip={t('texts.minMaxAllocationInfo')}
+                        tooltip={t('texts.minMaxCommitmentInfo')}
                       />
                     )}
                     {(isSaleClosed(sale as FIX_LATER) || isSaleUpcoming(sale as FIX_LATER)) && <Flex flex={0.2} />}
@@ -235,7 +235,7 @@ export function FixedPriceSaleView() {
                 <CardBody display="flex" borderBottom="1px dashed #DDDDE3" padding={theme.space[4]}>
                   <Flex flexDirection="row" alignItems="center" flex={1} justifyContent="space-between">
                     <HeaderItem title={`Buy ${sale.tokenOut?.symbol}`} description="" color="#000629" />
-                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.allocationMax)} ${
+                    <FixedFormMax>{`Max. ${utils.formatUnits(sale?.maxCommitment)} ${
                       sale.tokenIn?.symbol
                     }`}</FixedFormMax>
                   </Flex>
