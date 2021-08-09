@@ -32,11 +32,10 @@ export const SaleAmount: React.FC<SaleAmountProps> = ({ sale, closed }) => {
       <SaleCardText isFailed={isFailed}>
         {numeral(
           sale.__typename != 'FixedPriceSale'
-            ? // placeholder until fairsale subgraph schema is complete
-              formatBigInt((sale as any).tokensForSale, sale.tokenOut.decimals)
-            : formatBigInt(sale.soldAmount) == 0
-            ? 0
-            : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
+            ? formatBigInt((sale as any).tokensForSale, sale.tokenOut.decimals)
+            : closed
+            ? fixRounding(formatBigInt(sale.soldAmount), 8)
+            : fixRounding(formatBigInt(sale.sellAmount), 8)
         ).format('0,0')}
       </SaleCardText>
       <SaleCardText isFailed={isFailed} fontWeight="light">

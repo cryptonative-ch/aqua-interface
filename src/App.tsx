@@ -1,5 +1,5 @@
 // External
-import { Aqua, AquaConfigMap, RINKEBY_CONFIG, XDAI_CONFIG } from '@dxdao/aqua'
+import { Aqua } from '@dxdao/aqua'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
@@ -20,12 +20,13 @@ import 'react-toastify/dist/ReactToastify.css'
 // Hooks
 import { useCookieModal } from 'src/hooks/useCookieModal'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { useAquaConfig } from 'src/hooks/useAquaConfig'
 
 // App Router
 import { AppRouter } from 'src/router'
 
-// Constantsx
-import { CHAIN_ID, SANCTION_LIST, SHOW_TERMS_AND_CONDITIONS, SUBGRAPH_ENDPOINT } from 'src/constants'
+// Constants
+import { SANCTION_LIST, SHOW_TERMS_AND_CONDITIONS } from 'src/constants'
 
 // Components
 import { Modal } from 'src/components/Modal'
@@ -49,21 +50,8 @@ export const App = () => {
   const { isShown, toggle } = useCookieModal('termsofsale')
 
   const [sanction, setSanction] = useState<boolean>(false)
-  const { library, chainId } = useWeb3React()
-  // Default: XDAI
-  let aquaConfig: AquaConfigMap = XDAI_CONFIG
-
-  if (process.env.NODE_ENV === 'development') {
-    aquaConfig = {
-      ...RINKEBY_CONFIG,
-      subgraph: SUBGRAPH_ENDPOINT,
-    }
-  }
-  // Use Rinkeby
-  if (chainId && chainId === CHAIN_ID.RINKEBY) {
-    aquaConfig = RINKEBY_CONFIG
-  }
-  // Development
+  const { library } = useWeb3React()
+  const aquaConfig = useAquaConfig()
 
   // Start new Apollo Client
   const apolloClient = new ApolloClient({

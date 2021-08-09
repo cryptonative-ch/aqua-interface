@@ -130,16 +130,14 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
     const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
     const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
     const totalAmountPurchased = formatBigInt(sale.soldAmount, sale.tokenOut.decimals)
-    // Due to subgraph issue amount starts at 0 then is set to remaining supply
-    const amountDisplayed = totalAmountPurchased == 0 ? 0 : totalSupply - totalAmountPurchased
-    const percentageSold = (amountDisplayed / totalSupply) * 100
+    const percentageSold = (totalAmountPurchased / totalSupply) * 100
 
     return (
       <Flex flexDirection="column" flex={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>{status === 'closed' ? 'Tokens Sold' : 'Sale Progress'}</FixedTitle>
           <FixedDescription>
-            {numeral(amountDisplayed).format('0.[00]')}
+            {numeral(totalAmountPurchased).format('0.[00]')}
             <FixedDescription2>{`(${numeral(percentageSold).format('0.[00]')}%)`}</FixedDescription2>
             <FixedDescription3>
               / {numeral(totalSupply).format('0')} {sale.tokenOut.symbol}
