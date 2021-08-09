@@ -38,7 +38,7 @@ export const SUPPORTED_CHAINS = {
     contracts: {
       factory: '0x0f1997E82cd484a54551b54009DdcE39deaE973f',
       saleLauncher: '0xC28c613f0f0b85C745AC58BA78071816Cb52B43A',
-      templateLauncher: '0x2ce600a4f5F191029C32a240C504B041cc68f267',
+      templateLauncher: '0x58c67b46c47f69d63aa09d5f822ede377c479d5f',
     },
     parameters: {
       chainId: '0x64',
