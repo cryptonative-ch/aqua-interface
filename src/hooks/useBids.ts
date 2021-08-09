@@ -3,40 +3,44 @@ import { useDispatch, useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-
-// Hooks
-import { useAqua } from 'src/hooks/useAqua'
+import { useQuery } from '@apollo/client'
 
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
+
 // Interfaces
-import { SaleBid } from 'src/interfaces/Sale'
+import {
+  GetAllBidsBySales,
+  GetAllBidsBySalesVariables,
+  GetAllBidsBySales_fixedPriceSale_commitments_sale,
+  GetAllBidsBySales_fixedPriceSale_commitments,
+} from 'src/subgraph/__generated__/GetAllBidsBySales'
+import { GET_ALL_BIDS_BY_SALES } from 'src/subgraph/queries'
 
 // Blockchain websocket
 import { useChain } from 'src/hooks/useChain'
 
-// Query
-import { saleBidsQuery } from 'src/subgraph/SaleBids'
-
 interface UseBidsReturn {
   loading: boolean
   error: Error | null
-  bids: SaleBid[]
-  totalBids: SaleBid[]
+  bids: GetAllBidsBySales_fixedPriceSale_commitments[]
+  totalBids: GetAllBidsBySales_fixedPriceSale_commitments[]
 }
 
-export function useBids(sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale): UseBidsReturn {
+export function useBids(saleId: string, saleType: string): UseBidsReturn {
   const dispatch = useDispatch()
+  const { data } = useQuery<GetAllBidsBySales, GetAllBidsBySalesVariables>(GET_ALL_BIDS_BY_SALES, {
+    variables: { saleId },
+  })
   const { account, library, chainId } = useWeb3React()
-  const aqua = useAqua()
   const {
     isLoading,
     error,
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
-  const { bids: totalBids } = useChain(saleId)
-  const bids = totalBids.filter((bid: any) => bid.user.address.toLowerCase() === account!.toLowerCase())
+  const { bids: totalBids } = useChain(saleId, saleType)
+  const bids = totalBids.filter(bid => bid.user.address.toLowerCase() === account!.toLowerCase())
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -47,28 +51,27 @@ export function useBids(sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleC
     }
 
     //pull past bids from subgraph
-    dispatch(initialBidRequest(true))
-    aqua.subgraph
-      .query(saleBidsQuery(saleId))
-      .then(({ data }) => {
-        const { fixedPriceSale, fairSales } = data
-        const saleBids = fixedPriceSale ? fixedPriceSale.commitments : fairSales[0]?.bids
-        const sales = saleBids.reduce(
-          (_: BidsBySaleId, x: any) => ({
-            [x.sale.id]: {
+
+    if (data) {
+      dispatch(initialBidRequest(true))
+      try {
+        const { fixedPriceSale, fairSale } = data
+        const saleBids = fixedPriceSale ? fixedPriceSale.commitments : fairSale?.bids
+        const sales = (saleBids as any)?.reduce(
+          (_: BidsBySaleId, x: GetAllBidsBySales_fixedPriceSale_commitments_sale) => ({
+            [x.id]: {
               lastUpdated: Date.now(),
               bids: saleBids,
             },
           }),
           {}
         )
-
         dispatch(initialBidSuccess(sales))
-      })
-      .catch((bidsError: Error) => {
-        console.error(bidsError)
-        dispatch(initialBidFailure(bidsError))
-      })
+      } catch (error) {
+        console.error(error)
+        dispatch(initialBidFailure(error))
+      }
+    }
   }, [account, library, chainId])
 
   return {

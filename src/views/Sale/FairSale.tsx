@@ -48,16 +48,10 @@ import { getRandomWallet } from 'src/utils/wallets'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { FairBidPick, FairSaleBid } from 'src/interfaces/Sale'
+import { FairBidPick } from 'src/interfaces/Sale'
 
-//redux
-import { saleBidsQuery } from 'src/subgraph/SaleBids'
-import { subgraphCall } from 'src/subgraph'
-
-//subgraph
 // Hooks
 import { useSale } from 'src/hooks/useSale'
-import { SUBGRAPH_ENDPOINT } from 'src/constants'
 import { FIX_LATER } from 'src/interfaces'
 
 const ChartDescription = styled.div({
@@ -78,7 +72,7 @@ export function FairSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const [userAddress, setUserAddress] = useState<string>('')
-  const [clearingPrice, setClearingPrice] = useState<FairBidPick>()
+  const [clearingPrice] = useState<FairBidPick>()
   const ref = useRef<HTMLElement>()
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
@@ -88,7 +82,7 @@ export function FairSaleView() {
   const theme = useTheme()
 
   const { sale } = useSale(params.saleId)
-  const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as FairSaleBid[]
+  const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -102,12 +96,7 @@ export function FairSaleView() {
     }
 
     dispatch(setPageTitle(t(sale?.name as string)))
-
-    if (sale) {
-      const FairSaleBidsRequest = subgraphCall(SUBGRAPH_ENDPOINT, saleBidsQuery(params.saleId))
-      setClearingPrice(calculateClearingPrice(bids))
-    }
-  }, [t, sale])
+  })
 
   if (!sale) {
     return <NotFoundView />

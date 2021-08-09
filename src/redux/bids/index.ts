@@ -5,7 +5,7 @@ import { Action } from 'redux'
 import dayjs from 'dayjs'
 
 // interface
-import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
+import { GetAllBidsBySales_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySales'
 
 // ACTION
 export enum ActionTypes {
@@ -22,7 +22,7 @@ export interface BidsBySaleId {
   // "ox223123nlda": {"lastupdated", "bids: []"}
   [saleId: string]: {
     updatedAt: number // UTC timestamp
-    bids: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[] // bids
+    bids: GetAllBidsBySales_fixedPriceSale_commitments[] // bids
   }
 }
 
@@ -43,7 +43,7 @@ interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
 }
 
 interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
-  payload: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments
+  payload: GetAllBidsBySales_fixedPriceSale_commitments
 }
 
 interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
@@ -80,7 +80,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => ({
+export const updateBidSuccess = (payload: GetAllBidsBySales_fixedPriceSale_commitments) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
@@ -108,8 +108,8 @@ const keyFinder = (object: BidsBySaleId) => {
 }
 
 const eventExists = (
-  events: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[],
-  event: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[]
+  events: GetAllBidsBySales_fixedPriceSale_commitments[],
+  event: GetAllBidsBySales_fixedPriceSale_commitments[]
 ) => {
   // check for empty state
   return events.some(e => e.id === event[0].id)
@@ -180,7 +180,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       const { bidsBySaleId } = state
       // get saleId from payload
       const {
-        baseSale: { id },
+        sale: { id },
       } = action.payload
       return {
         ...state,
