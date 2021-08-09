@@ -3,249 +3,249 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSaleStatus, FixedPriceSaleCommitmentStatus } from './globalTypes'
+import { FixedPriceSaleStatus, FixedPriceSaleCommitmentStatus } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: GetFixedPriceSaleCommitmentsByUser
 // ====================================================
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale_tokenIn {
-  __typename: 'Token'
+  __typename: "Token";
   /**
    * Token address
    */
-  id: string
+  id: string;
   /**
    * Token name, from the smart contract ERC20.name()
    */
-  name: string | null
+  name: string | null;
   /**
    * The token symbol from ERC20.symbol()
    */
-  symbol: string | null
+  symbol: string | null;
   /**
    * The token decimals, from ERC.decimals()
    */
-  decimals: any
+  decimals: any;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale_tokenOut {
-  __typename: 'Token'
+  __typename: "Token";
   /**
    * Token address
    */
-  id: string
+  id: string;
   /**
    * Token name, from the smart contract ERC20.name()
    */
-  name: string | null
+  name: string | null;
   /**
    * The token symbol from ERC20.symbol()
    */
-  symbol: string | null
+  symbol: string | null;
   /**
    * The token decimals, from ERC.decimals()
    */
-  decimals: any
+  decimals: any;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale {
-  __typename: 'FixedPriceSale'
-  id: string
+  __typename: "FixedPriceSale";
+  id: string;
   /**
    * The name of the sale, default is the tokenIn's name
    */
-  name: string
-  createdAt: number
-  updatedAt: number
-  deletedAt: number | null
+  name: string;
+  createdAt: number;
+  updatedAt: number;
+  deletedAt: number | null;
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: FixedPriceSaleStatus
+  status: FixedPriceSaleStatus;
   /**
    * The UTC timestamp at which the sale starts
    */
-  startDate: number
+  startDate: number;
   /**
    * The UTC timestamp at which the sale closes
    */
-  endDate: number
+  endDate: number;
   /**
    * Amount of tokens sold so far
    */
-  soldAmount: any
+  soldAmount: any;
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any
-  minimumRaise: any
+  sellAmount: any;
+  minRaise: any;
   /**
    * Minimum token amount per commitment
    */
-  allocationMin: any
+  minCommitment: any;
   /**
    * Maximum token amount per commitment
    */
-  allocationMax: any
+  maxCommitment: any;
   /**
    * Token price
    */
-  tokenPrice: any
+  tokenPrice: any;
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale_tokenIn
+  tokenIn: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale_tokenIn;
   /**
    * Token investor get
    */
-  tokenOut: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale_tokenOut
+  tokenOut: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale_tokenOut;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user {
-  __typename: 'FixedPriceSaleUser'
+  __typename: "FixedPriceSaleUser";
   /**
    * The user's ID <saleAddress>/users/<saleUserAddress>
    */
-  id: string
-  createdAt: number
-  updatedAt: number
-  deletedAt: number | null
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  deletedAt: number | null;
   /**
    * Total commitments submitted in the sale
    */
-  totalCommitment: number
+  totalCommitment: number;
   /**
    * Total volume for this user
    */
-  totalVolume: any
+  totalVolume: any;
   /**
    * FixedPriceSale reference
    */
-  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user_sale;
   /**
    * Address of buyer
    */
-  address: any
+  address: any;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale_tokenIn {
-  __typename: 'Token'
+  __typename: "Token";
   /**
    * Token address
    */
-  id: string
+  id: string;
   /**
    * Token name, from the smart contract ERC20.name()
    */
-  name: string | null
+  name: string | null;
   /**
    * The token symbol from ERC20.symbol()
    */
-  symbol: string | null
+  symbol: string | null;
   /**
    * The token decimals, from ERC.decimals()
    */
-  decimals: any
+  decimals: any;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale_tokenOut {
-  __typename: 'Token'
+  __typename: "Token";
   /**
    * Token address
    */
-  id: string
+  id: string;
   /**
    * Token name, from the smart contract ERC20.name()
    */
-  name: string | null
+  name: string | null;
   /**
    * The token symbol from ERC20.symbol()
    */
-  symbol: string | null
+  symbol: string | null;
   /**
    * The token decimals, from ERC.decimals()
    */
-  decimals: any
+  decimals: any;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale {
-  __typename: 'FixedPriceSale'
-  id: string
+  __typename: "FixedPriceSale";
+  id: string;
   /**
    * The name of the sale, default is the tokenIn's name
    */
-  name: string
-  createdAt: number
-  updatedAt: number
-  deletedAt: number | null
+  name: string;
+  createdAt: number;
+  updatedAt: number;
+  deletedAt: number | null;
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: FixedPriceSaleStatus
+  status: FixedPriceSaleStatus;
   /**
    * The UTC timestamp at which the sale starts
    */
-  startDate: number
+  startDate: number;
   /**
    * The UTC timestamp at which the sale closes
    */
-  endDate: number
+  endDate: number;
   /**
    * Amount of tokens sold so far
    */
-  soldAmount: any
+  soldAmount: any;
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any
-  minimumRaise: any
+  sellAmount: any;
+  minRaise: any;
   /**
    * Minimum token amount per commitment
    */
-  allocationMin: any
+  minCommitment: any;
   /**
    * Maximum token amount per commitment
    */
-  allocationMax: any
+  maxCommitment: any;
   /**
    * Token price
    */
-  tokenPrice: any
+  tokenPrice: any;
   /**
    * Token investors can use to bid
    */
-  tokenIn: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale_tokenIn
+  tokenIn: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale_tokenIn;
   /**
    * Token investor get
    */
-  tokenOut: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale_tokenOut
+  tokenOut: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale_tokenOut;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments {
-  __typename: 'FixedPriceSaleCommitment'
+  __typename: "FixedPriceSaleCommitment";
   /**
    * The commitment ID
    */
-  id: string
-  createdAt: number
-  updatedAt: number
-  deletedAt: number | null
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  deletedAt: number | null;
   /**
    * Address of buyer
    */
-  user: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user
+  user: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user;
   /**
    * Amount of tokens
    */
-  amount: any
-  status: FixedPriceSaleCommitmentStatus
+  amount: any;
+  status: FixedPriceSaleCommitmentStatus;
   /**
    * FixedPriceSale this commitment is associated with
    */
-  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale;
 }
 
 export interface GetFixedPriceSaleCommitmentsByUser {
-  fixedPriceSaleCommitments: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[]
+  fixedPriceSaleCommitments: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[];
 }
