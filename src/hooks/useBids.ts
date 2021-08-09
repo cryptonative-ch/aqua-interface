@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useQuery } from '@apollo/client'
+import { QueryResult, useQuery } from '@apollo/client'
 
 // Redux actions
 import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId } from 'src/redux/bids'
@@ -20,22 +20,18 @@ import { GET_ALL_BIDS_BY_SALES } from 'src/subgraph/queries'
 // Blockchain websocket
 import { useChain } from 'src/hooks/useChain'
 
-interface UseBidsReturn {
-  loading: boolean
-  error: Error | null
+interface UseBidsReturn extends Omit<QueryResult, 'data'> {
   bids: GetAllBidsBySales_fixedPriceSale_commitments[]
   totalBids: GetAllBidsBySales_fixedPriceSale_commitments[]
 }
 
 export function useBids(saleId: string, saleType: string): UseBidsReturn {
   const dispatch = useDispatch()
-  const { data } = useQuery<GetAllBidsBySales, GetAllBidsBySalesVariables>(GET_ALL_BIDS_BY_SALES, {
+  const { data, ...rest } = useQuery<GetAllBidsBySales, GetAllBidsBySalesVariables>(GET_ALL_BIDS_BY_SALES, {
     variables: { saleId },
   })
   const { account, library, chainId } = useWeb3React()
   const {
-    isLoading,
-    error,
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
@@ -77,7 +73,6 @@ export function useBids(saleId: string, saleType: string): UseBidsReturn {
   return {
     totalBids,
     bids,
-    loading: isLoading,
-    error,
+    ...rest,
   }
 }
