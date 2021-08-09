@@ -44,9 +44,9 @@ export const salesQuery = (saleId: string) => `
       }
       sellAmount
       soldAmount
-      minimumRaise
-      allocationMin
-      allocationMax
+      minRaise
+      minCommitment
+      maxCommitment
       tokenPrice
     }
     fairSale ("${saleId}") {
@@ -59,7 +59,7 @@ export const salesQuery = (saleId: string) => `
       startDate
       endDate
       tokenAmount
-      minimumBidAmount
+      minBidAmount
       minFundingThreshold
       tokenIn {
         id

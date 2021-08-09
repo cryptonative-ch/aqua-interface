@@ -2936,7 +2936,7 @@
             "deprecationReason": null
           },
           {
-            "name": "minimumBidAmount",
+            "name": "minBidAmount",
             "description": "Minimum amount per bid",
             "args": [],
             "type": {
@@ -4727,7 +4727,7 @@
             "deprecationReason": null
           },
           {
-            "name": "minimumBidAmount",
+            "name": "minBidAmount",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -5750,7 +5750,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount",
+            "name": "minBidAmount",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5760,7 +5760,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_not",
+            "name": "minBidAmount_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5770,7 +5770,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_gt",
+            "name": "minBidAmount_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5780,7 +5780,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_lt",
+            "name": "minBidAmount_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5790,7 +5790,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_gte",
+            "name": "minBidAmount_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5800,7 +5800,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_lte",
+            "name": "minBidAmount_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5810,7 +5810,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_in",
+            "name": "minBidAmount_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -5828,7 +5828,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumBidAmount_not_in",
+            "name": "minBidAmount_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -7212,7 +7212,7 @@
             "deprecationReason": null
           },
           {
-            "name": "minimumRaise",
+            "name": "minRaise",
             "description": null,
             "args": [],
             "type": {
@@ -7228,7 +7228,7 @@
             "deprecationReason": null
           },
           {
-            "name": "allocationMin",
+            "name": "minCommitment",
             "description": "Minimum token amount per commitment",
             "args": [],
             "type": {
@@ -7244,7 +7244,7 @@
             "deprecationReason": null
           },
           {
-            "name": "allocationMax",
+            "name": "maxCommitment",
             "description": "Maximum token amount per commitment",
             "args": [],
             "type": {
@@ -10720,19 +10720,19 @@
             "deprecationReason": null
           },
           {
-            "name": "minimumRaise",
+            "name": "minRaise",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "allocationMin",
+            "name": "minCommitment",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "allocationMax",
+            "name": "maxCommitment",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11817,7 +11817,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise",
+            "name": "minRaise",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11827,7 +11827,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_not",
+            "name": "minRaise_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11837,7 +11837,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_gt",
+            "name": "minRaise_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11847,7 +11847,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_lt",
+            "name": "minRaise_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11857,7 +11857,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_gte",
+            "name": "minRaise_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11867,7 +11867,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_lte",
+            "name": "minRaise_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11877,7 +11877,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_in",
+            "name": "minRaise_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -11895,7 +11895,7 @@
             "defaultValue": null
           },
           {
-            "name": "minimumRaise_not_in",
+            "name": "minRaise_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -11913,7 +11913,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin",
+            "name": "minCommitment",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11923,7 +11923,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_not",
+            "name": "minCommitment_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11933,7 +11933,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_gt",
+            "name": "minCommitment_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11943,7 +11943,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_lt",
+            "name": "minCommitment_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11953,7 +11953,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_gte",
+            "name": "minCommitment_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11963,7 +11963,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_lte",
+            "name": "minCommitment_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11973,7 +11973,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_in",
+            "name": "minCommitment_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -11991,7 +11991,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMin_not_in",
+            "name": "minCommitment_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -12009,7 +12009,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax",
+            "name": "maxCommitment",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12019,7 +12019,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_not",
+            "name": "maxCommitment_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12029,7 +12029,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_gt",
+            "name": "maxCommitment_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12039,7 +12039,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_lt",
+            "name": "maxCommitment_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12049,7 +12049,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_gte",
+            "name": "maxCommitment_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12059,7 +12059,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_lte",
+            "name": "maxCommitment_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -12069,7 +12069,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_in",
+            "name": "maxCommitment_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -12087,7 +12087,7 @@
             "defaultValue": null
           },
           {
-            "name": "allocationMax_not_in",
+            "name": "maxCommitment_not_in",
             "description": null,
             "type": {
               "kind": "LIST",

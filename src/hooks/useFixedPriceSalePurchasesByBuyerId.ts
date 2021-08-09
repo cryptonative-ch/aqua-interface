@@ -64,7 +64,7 @@ export function useFixedPriceSalePurchasesByBuyerQuery(buyerId: string | undefin
     sales
       .filter(
         purchase =>
-          BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minimumRaise) &&
+          BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minRaise) &&
           unixDateNow >= purchase.sale.endDate
       )
       .map(purchase =>

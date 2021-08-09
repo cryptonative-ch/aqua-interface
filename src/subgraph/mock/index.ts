@@ -66,7 +66,7 @@ type FairSale implements EntityMetadata {
   "Total amount of tokens available for sale"
   tokensForSale: String!
   "Minimum amount per bid"
-  minimumBidAmount: String!
+  minBidAmount: String!
   "Accepted bidding token (ie: DAI, USDC)"
   tokenIn: Token!
   "Auctioning token"
@@ -142,11 +142,11 @@ type FixedPriceSale implements EntityMetadata {
   "Amount of tokens sold so far"
   soldAmount: String!
   # Minimum amount per bid
-  minimumRaise: String!
+  minRaise: String!
   "Minimum token amount per commitment"
-  allocationMin: String!
+  minCommitment: String!
   "Maximum token amount per commitment"
-  allocationMax: String!
+  maxCommitment: String!
   "Token investors can use to bid"
   tokenIn: Token!
   "Token investor get"
@@ -299,7 +299,7 @@ export const mocks = {
     startDate: () => casual.random_element([1621366543]),
     endDate: () => casual.random_element([1621373743]),
     tokensForSale: () => casual.numerify(bigDecimal),
-    minimumBidAmount: () => casual.numerify(bigDecimal),
+    minBidAmount: () => casual.numerify(bigDecimal),
     tokenIn: () => ({
       decimals: () => 18,
     }),
@@ -318,9 +318,9 @@ export const mocks = {
     startDate: () => casual.random_element([1621366543]),
     endDate: () => casual.random_element([1623227147]),
     sellAmount: () => casual.numerify(bigDecimal),
-    minimumRaise: () => casual.numerify(bigDecimal),
-    allocationMin: () => casual.numerify(bigDecimal),
-    allocationMax: () => casual.numerify(bigDecimal),
+    minRaise: () => casual.numerify(bigDecimal),
+    minCommitment: () => casual.numerify(bigDecimal),
+    maxCommitment: () => casual.numerify(bigDecimal),
     tokenPrice: () => casual.numerify(bigDecimal),
     soldAmount: () => casual.numerify(bigDecimal),
     tokenIn: () => ({

@@ -150,49 +150,47 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
   const getMaxPurchase = () => {
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
-    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMax)))
-    // Todo - remove convoluted calculation when subgraph soldAmount changed
-    const remainingTokens =
-      formatBigInt(sale?.soldAmount) == 0 ? formatBigInt(sale?.sellAmount) : formatBigInt(sale?.soldAmount)
+    const purchaseMaximumCommitment = parseFloat(utils.formatUnits(BigNumber.from(sale?.maxCommitment)))
+    const remainingTokens = formatBigInt(sale?.sellAmount) - formatBigInt(sale?.soldAmount)
     const costOfRemainingTokens = remainingTokens * convertToBuyerPrice(formatBigInt(sale?.tokenPrice))
     const maxPurchase =
-      parsedTokenBalance < purchaseMaximumAllocation
+      parsedTokenBalance < purchaseMaximumCommitment
         ? parsedTokenBalance
-        : costOfRemainingTokens < purchaseMaximumAllocation
+        : costOfRemainingTokens < purchaseMaximumCommitment
         ? costOfRemainingTokens
-        : purchaseMaximumAllocation
+        : purchaseMaximumCommitment
     return maxPurchase
   }
 
   // A form is valid when
-  // 1. purchaseValue >= minimum Allocation
-  // 2. purchaseValue <= max allocation (including previous purchases)
+  // 1. purchaseValue >= min commitment
+  // 2. purchaseValue <= max commitment (including previous purchases)
   // 3. bidding token balance <= purchaseValue
   const setValidatedPurchaseValue = (value: number) => {
     let newValidationError = undefined
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
-    // Convert min max allocations
+    // Convert min max commitments
     // Converting BigNumbers to normal numbers due to lack of decimal support
-    const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
-    const purchaseMaximumAllocation = getMaxPurchase()
+    const purchaseMinimumCommitment = parseFloat(utils.formatUnits(BigNumber.from(sale?.minCommitment)))
+    const purchaseMaximumCommitment = getMaxPurchase()
     const tokenPrice = convertToBuyerPrice(parseFloat(utils.formatUnits(BigNumber.from(sale?.tokenPrice))))
 
     const quantity = fixRounding(value / tokenPrice, 8)
 
-    // purchaseValue is less than minimum allocation
-    if (purchaseMinimumAllocation > value) {
+    // purchaseValue is less than minimum commitment
+    if (purchaseMinimumCommitment > value) {
       newValidationError = new Error(
-        `Minimum is ${fixRounding(purchaseMinimumAllocation * tokenPrice, 8)} ${
+        `Minimum is ${fixRounding(purchaseMinimumCommitment * tokenPrice, 8)} ${
           sale?.tokenOut.symbol
-        } / ${utils.formatUnits(sale?.allocationMin)} ${sale?.tokenIn.symbol}`
+        } / ${utils.formatUnits(sale?.minCommitment)} ${sale?.tokenIn.symbol}`
       )
     }
-    if (purchaseMaximumAllocation < value) {
+    if (purchaseMaximumCommitment < value) {
       newValidationError = new Error(
         `${parsedTokenBalance < value ? '\nInsufficient funds to process purchase: ' : ''} Maximum is ${fixRounding(
-          purchaseMaximumAllocation / tokenPrice,
+          purchaseMaximumCommitment / tokenPrice,
           8
-        )} ${sale?.tokenOut.symbol} / ${purchaseMaximumAllocation} ${sale?.tokenIn.symbol} `
+        )} ${sale?.tokenOut.symbol} / ${purchaseMaximumCommitment} ${sale?.tokenIn.symbol} `
       )
     }
     // // Purchase value is greater than user's tokeIn balance
@@ -217,8 +215,8 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
   const onMaxButtonClick = () => {
     const maxPurchase = getMaxPurchase()
-    const purchaseMinimumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.allocationMin)))
-    if (maxPurchase < purchaseMinimumAllocation) return
+    const purchaseMinimumCommitment = parseFloat(utils.formatUnits(BigNumber.from(sale?.minCommitment)))
+    if (maxPurchase < purchaseMinimumCommitment) return
 
     setValidatedPurchaseValue(fixRounding(maxPurchase, 8))
   }
@@ -267,9 +265,9 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
       if (!sale || !purchaseValue || !(approvalState === ApprovalState.APPROVED)) return null
 
-      if (sale.minimumRaise > BigNumber.from(0)) {
+      if (sale.minRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
-        const threshold = (formatBigInt(sale.minimumRaise) * 100) / totalSupply
+        const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
         const totalAmountPurchased = aggregatePurchases(totalBids, account).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)

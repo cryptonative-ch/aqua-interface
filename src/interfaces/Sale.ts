@@ -65,7 +65,7 @@ export interface FairSale extends BaseSale {
   // Total amount of tokens available for BaseSaleing
   tokensForSale: BigNumber
   // Minimum amount per bid
-  minimumBidAmount: BigNumber
+  minBidAmount: BigNumber
   // Bidding token (ie: DAI, USDC)
   tokenIn: Token
   // BaseSaleing token
@@ -88,9 +88,9 @@ export interface FixedPriceSale extends BaseSale {
   tokenPrice: BigNumber
   soldAmount: BigNumber
   //Minimum and maxmimum token per order
-  allocationMin: number
-  allocationMax: number
-  minimumRaise: BigNumber
+  minCommitment: number
+  maxCommitment: number
+  minRaise: BigNumber
   bids: FixedPriceSalePurchase[]
 }
 
