@@ -157,12 +157,7 @@ export function FixedPriceSaleView() {
                     {isSaleClosed(sale as FIX_LATER) ? (
                       <HeaderItem
                         title={sale.soldAmount < sale.minRaise ? 'Soft Cap not reached' : 'Amount Sold'}
-                        description={`${
-                          // Due to quirk of subgraph this is set to 0 then the remaining number of tokens after first commitment
-                          formatBigInt(sale.soldAmount) == 0
-                            ? 0
-                            : fixRounding(formatBigInt(sale.sellAmount) - formatBigInt(sale.soldAmount), 8)
-                        } ${sale.tokenOut?.symbol}`}
+                        description={`${fixRounding(formatBigInt(sale.soldAmount), 8)} ${sale.tokenOut?.symbol}`}
                         error={sale.soldAmount < sale.minRaise}
                       />
                     ) : (

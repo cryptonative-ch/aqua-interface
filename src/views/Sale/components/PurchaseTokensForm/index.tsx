@@ -150,17 +150,15 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
   const getMaxPurchase = () => {
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
-    const purchaseMaximumCommitment = parseFloat(utils.formatUnits(BigNumber.from(sale?.maxCommitment)))
-    // Todo - remove convoluted calculation when subgraph soldAmount changed
-    const remainingTokens =
-      formatBigInt(sale?.soldAmount) == 0 ? formatBigInt(sale?.sellAmount) : formatBigInt(sale?.soldAmount)
+    const purchaseMaximumAllocation = parseFloat(utils.formatUnits(BigNumber.from(sale?.maxCommitment)))
+    const remainingTokens = formatBigInt(sale?.sellAmount) - formatBigInt(sale?.soldAmount)
     const costOfRemainingTokens = remainingTokens * convertToBuyerPrice(formatBigInt(sale?.tokenPrice))
     const maxPurchase =
-      parsedTokenBalance < purchaseMaximumCommitment
+      parsedTokenBalance < purchaseMaximumAllocation
         ? parsedTokenBalance
-        : costOfRemainingTokens < purchaseMaximumCommitment
+        : costOfRemainingTokens < purchaseMaximumAllocation
         ? costOfRemainingTokens
-        : purchaseMaximumCommitment
+        : purchaseMaximumAllocation
     return maxPurchase
   }
 
