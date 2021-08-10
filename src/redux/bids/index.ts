@@ -108,7 +108,7 @@ const keyFinder = (object: BidsBySaleId) => {
 }
 
 const eventExists = (events: SaleBid[], event: SaleBid[]) => {
-  // check for empty state
+  // checks for duplicate purchases
   return events.some(e => e.id === event[0].id)
 }
 
@@ -141,7 +141,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
             ? action.payload
             : {
                 ...bidsBySaleId,
-                [id]: bidsBySaleId[id].bids
+                [id]: bidsBySaleId[id]
                   ? eventExists(bidsBySaleId[id].bids, action.payload[id].bids)
                     ? {
                         updatedAt: bidsBySaleId[id].updatedAt,
@@ -183,11 +183,11 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
         ...state,
         bidsBySaleId: {
           ...bidsBySaleId,
-          [id]: bidsBySaleId.bids
+          [id]: bidsBySaleId[id]
             ? eventExists(bidsBySaleId[id]?.bids, [action.payload])
               ? {
                   updatedAt: bidsBySaleId[id].updatedAt,
-                  bids: [...bidsBySaleId[id].bids],
+                  bids: bidsBySaleId[id].bids,
                 }
               : {
                   updatedAt: updatedAt,
