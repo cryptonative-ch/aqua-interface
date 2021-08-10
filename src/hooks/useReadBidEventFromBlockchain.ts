@@ -7,14 +7,14 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // interfaces
-import { GetAllBidsBySales_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySales'
+import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 // Redux
 import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 interface UseReadBidEventFromBlockchainReturns {
   loading: boolean
-  bids: GetAllBidsBySales_fixedPriceSale_commitments[]
+  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
   error: Error | null
 }
 
@@ -65,7 +65,7 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(saleId, library)
 
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
-      const bids: GetAllBidsBySales_fixedPriceSale_commitments = {
+      const bids: GetAllBidsBySaleId_fixedPriceSale_commitments = {
         id: saleId + '/purchases/' + buyer + '/' + totalPurchasesUser,
         __typename: 'FixedPriceSaleCommitment',
         user: {

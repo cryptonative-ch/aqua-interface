@@ -81,7 +81,6 @@ export function useTokenClaim(
         })
         .then((tx: ContractReceipt) => {
           toast.success(t('success.claim'))
-          console.log(tx)
           return dispatch(
             setClaimStatus({
               sale: sale,

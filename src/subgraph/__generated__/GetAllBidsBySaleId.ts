@@ -6,10 +6,10 @@
 import { FixedPriceSaleCommitmentStatus } from './globalTypes'
 
 // ====================================================
-// GraphQL query operation: GetAllBidsBySales
+// GraphQL query operation: GetAllBidsBySaleId
 // ====================================================
 
-export interface GetAllBidsBySales_fixedPriceSale_commitments_user {
+export interface GetAllBidsBySaleId_fixedPriceSale_commitments_user {
   __typename: 'FixedPriceSaleUser'
   /**
    * Address of buyer
@@ -17,7 +17,7 @@ export interface GetAllBidsBySales_fixedPriceSale_commitments_user {
   address: any
 }
 
-export interface GetAllBidsBySales_fixedPriceSale_commitments_sale {
+export interface GetAllBidsBySaleId_fixedPriceSale_commitments_sale {
   __typename: 'FixedPriceSale'
   id: string
   /**
@@ -26,7 +26,7 @@ export interface GetAllBidsBySales_fixedPriceSale_commitments_sale {
   tokenPrice: any
 }
 
-export interface GetAllBidsBySales_fixedPriceSale_commitments {
+export interface GetAllBidsBySaleId_fixedPriceSale_commitments {
   __typename: 'FixedPriceSaleCommitment'
   /**
    * The commitment ID
@@ -40,14 +40,14 @@ export interface GetAllBidsBySales_fixedPriceSale_commitments {
   /**
    * Address of buyer
    */
-  user: GetAllBidsBySales_fixedPriceSale_commitments_user
+  user: GetAllBidsBySaleId_fixedPriceSale_commitments_user
   /**
    * FixedPriceSale this commitment is associated with
    */
-  sale: GetAllBidsBySales_fixedPriceSale_commitments_sale
+  sale: GetAllBidsBySaleId_fixedPriceSale_commitments_sale
 }
 
-export interface GetAllBidsBySales_fixedPriceSale {
+export interface GetAllBidsBySaleId_fixedPriceSale {
   __typename: 'FixedPriceSale'
   id: string
   /**
@@ -57,10 +57,10 @@ export interface GetAllBidsBySales_fixedPriceSale {
   /**
    * List of sale commitments
    */
-  commitments: GetAllBidsBySales_fixedPriceSale_commitments[] | null
+  commitments: GetAllBidsBySaleId_fixedPriceSale_commitments[] | null
 }
 
-export interface GetAllBidsBySales_fairSale_bids_sale {
+export interface GetAllBidsBySaleId_fairSale_bids_sale {
   __typename: 'FairSale'
   /**
    * The sale contract address
@@ -68,7 +68,7 @@ export interface GetAllBidsBySales_fairSale_bids_sale {
   id: string
 }
 
-export interface GetAllBidsBySales_fairSale_bids {
+export interface GetAllBidsBySaleId_fairSale_bids {
   __typename: 'FairSaleBid'
   id: string
   /**
@@ -82,10 +82,10 @@ export interface GetAllBidsBySales_fairSale_bids {
   /**
    * The FairSale the bid is associated with
    */
-  sale: GetAllBidsBySales_fairSale_bids_sale
+  sale: GetAllBidsBySaleId_fairSale_bids_sale
 }
 
-export interface GetAllBidsBySales_fairSale {
+export interface GetAllBidsBySaleId_fairSale {
   __typename: 'FairSale'
   /**
    * The sale contract address
@@ -94,14 +94,14 @@ export interface GetAllBidsBySales_fairSale {
   /**
    * List of bids
    */
-  bids: GetAllBidsBySales_fairSale_bids[] | null
+  bids: GetAllBidsBySaleId_fairSale_bids[] | null
 }
 
-export interface GetAllBidsBySales {
-  fixedPriceSale: GetAllBidsBySales_fixedPriceSale | null
-  fairSale: GetAllBidsBySales_fairSale | null
+export interface GetAllBidsBySaleId {
+  fixedPriceSale: GetAllBidsBySaleId_fixedPriceSale | null
+  fairSale: GetAllBidsBySaleId_fairSale | null
 }
 
-export interface GetAllBidsBySalesVariables {
+export interface GetAllBidsBySaleIdVariables {
   saleId: string
 }

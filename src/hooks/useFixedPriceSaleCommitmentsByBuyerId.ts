@@ -18,7 +18,7 @@ import {
 import { ClaimState } from 'src/hooks/useTokenClaim'
 
 //helpers
-import { aggregatePurchases } from 'src/utils/helpers'
+import { aggregatePurchases } from 'src/utils'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'
@@ -35,7 +35,7 @@ interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
   saleIds: string[]
 }
 
-export function useFixedPriceSaleCommitmentsByBuyerQuery(buyerId: string | undefined | null): UseSalesQueryResult {
+export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | undefined | null): UseSalesQueryResult {
   const dispatch = useDispatch()
   const { data, ...rest } = useQuery<GetFixedPriceSaleCommitmentsByUser>(GET_FIXED_PRICE_SALE_COMMITMENTS_ALL)
 

@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from 'react'
 
 // Interfaces
 import { Sale, FairSaleBid } from 'src/interfaces/Sale'
-import { formatBigInt } from 'src/utils/helpers'
+import { formatBigInt } from 'src/utils'
 
 interface BarChartComponentProps {
   width: number

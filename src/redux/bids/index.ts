@@ -3,7 +3,7 @@ import { Action } from 'redux'
 import dayjs from 'dayjs'
 
 // interface
-import { GetAllBidsBySales_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySales'
+import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 
 // ACTION
 export enum ActionTypes {
@@ -20,7 +20,7 @@ export interface BidsBySaleId {
   // "ox223123nlda": {"lastupdated", "bids: []"}
   [saleId: string]: {
     updatedAt: number // UTC timestamp
-    bids: GetAllBidsBySales_fixedPriceSale_commitments[] // bids
+    bids: GetAllBidsBySaleId_fixedPriceSale_commitments[] // bids
   }
 }
 
@@ -41,7 +41,7 @@ interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
 }
 
 interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
-  payload: GetAllBidsBySales_fixedPriceSale_commitments
+  payload: GetAllBidsBySaleId_fixedPriceSale_commitments
 }
 
 interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
@@ -78,7 +78,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: GetAllBidsBySales_fixedPriceSale_commitments) => ({
+export const updateBidSuccess = (payload: GetAllBidsBySaleId_fixedPriceSale_commitments) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
@@ -106,8 +106,8 @@ const keyFinder = (object: BidsBySaleId) => {
 }
 
 const eventExists = (
-  events: GetAllBidsBySales_fixedPriceSale_commitments[],
-  event: GetAllBidsBySales_fixedPriceSale_commitments[]
+  events: GetAllBidsBySaleId_fixedPriceSale_commitments[],
+  event: GetAllBidsBySaleId_fixedPriceSale_commitments[]
 ) => {
   // check for empty state
   return events.some(e => e.id === event[0].id)

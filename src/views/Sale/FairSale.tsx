@@ -39,7 +39,7 @@ import { BarChart } from 'src/views/Sale/components/BarChart'
 import { calculateClearingPrice } from 'src/aqua/price'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
-import { formatBigInt } from 'src/utils/helpers'
+import { formatBigInt } from 'src/utils'
 
 // Wallet Utils
 import { getRandomWallet } from 'src/utils/wallets'

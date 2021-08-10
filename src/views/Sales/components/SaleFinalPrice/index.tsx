@@ -12,7 +12,7 @@ import { Flex } from 'src/components/Flex'
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Aqua Utils
-import { convertToBuyerPrice, formatBigInt } from 'src/utils/helpers'
+import { convertToBuyerPrice, formatBigInt } from 'src/utils'
 
 interface SaleFinalPriceProps {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale

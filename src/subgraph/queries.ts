@@ -58,8 +58,8 @@ export const GET_FIXED_PRICE_SALE_COMMITMENTS_ALL = gql`
   ${FIXED_PRICE_SALE_COMMITMENT_ALL}
 `
 
-export const GET_ALL_BIDS_BY_SALES = gql`
-  query GetAllBidsBySales($saleId: ID!) {
+export const GET_ALL_BIDS_BY_SALE_ID = gql`
+  query GetAllBidsBySaleId($saleId: ID!) {
     fixedPriceSale(id: $saleId) {
       id
       soldAmount

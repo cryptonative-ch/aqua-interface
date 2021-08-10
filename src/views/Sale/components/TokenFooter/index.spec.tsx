@@ -7,7 +7,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { TokenFooter } from 'src/views/Sale/components/TokenFooter/index'
 
 // default
-import { getSaleDefault, getSaleDetailsDefault } from 'src/utils/helpers'
+import { getSaleDefault, getSaleDetailsDefault } from 'src/utils'
 
 describe('TokenFooter', () => {
   test('should display multiple texts on Footer component', () => {

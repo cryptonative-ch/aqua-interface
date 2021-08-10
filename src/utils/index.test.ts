@@ -1,5 +1,5 @@
 // Utils
-import { formatDecimal, fromBigDecimalToBigInt, formatBigInt } from 'src/utils/helpers/index'
+import { formatDecimal, fromBigDecimalToBigInt, formatBigInt } from 'src/utils/index'
 
 describe('tests the helper functions', () => {
   test('should convert bigdecimal string into BigInt string', () => {

@@ -10,24 +10,25 @@ import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId }
 
 // Interfaces
 import {
-  GetAllBidsBySales,
-  GetAllBidsBySalesVariables,
-  GetAllBidsBySales_fixedPriceSale_commitments_sale,
-  GetAllBidsBySales_fixedPriceSale_commitments,
-} from 'src/subgraph/__generated__/GetAllBidsBySales'
-import { GET_ALL_BIDS_BY_SALES } from 'src/subgraph/queries'
+  GetAllBidsBySaleId,
+  GetAllBidsBySaleIdVariables,
+  GetAllBidsBySaleId_fixedPriceSale_commitments_sale,
+  GetAllBidsBySaleId_fixedPriceSale_commitments,
+} from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import { GET_ALL_BIDS_BY_SALE_ID } from 'src/subgraph/queries'
+import { SaleType } from 'src/interfaces/Sale'
 
 // Blockchain websocket
 import { useReadBidEventFromBlockchain } from 'src/hooks/useReadBidEventFromBlockchain'
 
 interface UseBidsReturn extends Omit<QueryResult, 'data'> {
-  bids: GetAllBidsBySales_fixedPriceSale_commitments[]
-  totalBids: GetAllBidsBySales_fixedPriceSale_commitments[]
+  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
+  totalBids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
 }
 
-export function useBids(saleId: string, saleType: string): UseBidsReturn {
+export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const dispatch = useDispatch()
-  const { data, ...rest } = useQuery<GetAllBidsBySales, GetAllBidsBySalesVariables>(GET_ALL_BIDS_BY_SALES, {
+  const { data, ...rest } = useQuery<GetAllBidsBySaleId, GetAllBidsBySaleIdVariables>(GET_ALL_BIDS_BY_SALE_ID, {
     variables: { saleId },
   })
   const { account, library, chainId } = useWeb3React()
@@ -54,7 +55,7 @@ export function useBids(saleId: string, saleType: string): UseBidsReturn {
         const { fixedPriceSale, fairSale } = data
         const saleBids = fixedPriceSale ? fixedPriceSale.commitments : fairSale?.bids
         const sales = (saleBids as any)?.reduce(
-          (_: BidsBySaleId, x: GetAllBidsBySales_fixedPriceSale_commitments_sale) => ({
+          (_: BidsBySaleId, x: GetAllBidsBySaleId_fixedPriceSale_commitments_sale) => ({
             [x.id]: {
               lastUpdated: Date.now(),
               bids: saleBids,
