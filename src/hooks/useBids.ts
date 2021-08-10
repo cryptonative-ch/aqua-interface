@@ -18,7 +18,7 @@ import {
 import { GET_ALL_BIDS_BY_SALES } from 'src/subgraph/queries'
 
 // Blockchain websocket
-import { useChain } from 'src/hooks/useChain'
+import { useReadBidEventFromBlockchain } from 'src/hooks/useReadBidEventFromBlockchain'
 
 interface UseBidsReturn extends Omit<QueryResult, 'data'> {
   bids: GetAllBidsBySales_fixedPriceSale_commitments[]
@@ -35,7 +35,7 @@ export function useBids(saleId: string, saleType: string): UseBidsReturn {
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
-  const { bids: totalBids } = useChain(saleId, saleType)
+  const { bids: totalBids } = useReadBidEventFromBlockchain(saleId, saleType)
   const bids = totalBids.filter(bid => bid.user.address.toLowerCase() === account!.toLowerCase())
 
   useEffect(() => {
