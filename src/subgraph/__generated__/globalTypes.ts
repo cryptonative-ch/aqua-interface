@@ -8,16 +8,19 @@
 //==============================================================
 
 export enum FixedPriceSaleCommitmentStatus {
-  CLAIMED = 'CLAIMED',
-  RELEASED = 'RELEASED',
-  SUBMITTED = 'SUBMITTED',
+  CLAIMED = "CLAIMED",
+  PROCESSED = "PROCESSED",
+  RELEASED = "RELEASED",
+  SUBMITTED = "SUBMITTED",
+  WITHDRAWN = "WITHDRAWN",
 }
 
-export enum FixedPriceSaleStatus {
-  ENDED = 'ENDED',
-  OPEN = 'OPEN',
-  SETTLED = 'SETTLED',
-  UPCOMING = 'UPCOMING',
+export enum SaleStatus {
+  CLOSED = "CLOSED",
+  FAILED = "FAILED",
+  OPEN = "OPEN",
+  SETTLED = "SETTLED",
+  UPCOMING = "UPCOMING",
 }
 
 //==============================================================

@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { SaleStatus } from "./globalTypes";
+
 // ====================================================
 // GraphQL fragment: fairSaleResults
 // ====================================================
@@ -63,7 +65,7 @@ export interface fairSaleResults {
   /**
    * Sale status: open/ended/settled/upcoming
    */
-  status: string
+  status: SaleStatus;
   /**
    * Date of the sale start
    */
@@ -81,8 +83,7 @@ export interface fairSaleResults {
    */
   minBidAmount: any
   /**
-   * The minimal funding threshold for executing the settlement. If funding is not
-   * reached, everyone will get back their investment
+   * The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
    */
   minFundingThreshold: number | null
   /**
