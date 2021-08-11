@@ -44,7 +44,6 @@ import { NotFoundView } from 'src/views/NotFound'
 import { SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 import { useIpfsFile } from 'src/hooks/useIpfsFile'
-import { SALE_INFO_IPFS_HASH_MOCK } from 'src/constants'
 
 // Hooks
 import { useBids } from 'src/hooks/useBids'
@@ -73,7 +72,7 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const theme = useTheme()
   const { bids } = useBids(params.saleId, sale!.__typename)
-  const saleDetails = useIpfsFile(SALE_INFO_IPFS_HASH_MOCK, true) as SaleDetails
+  const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
   const [t] = useTranslation()
 
   const toggleGraph = () => {

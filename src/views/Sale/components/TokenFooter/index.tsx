@@ -201,7 +201,9 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: T
               margin="0 8px 0 0"
             >
               <Flex flexDirection="row" alignItems="center">
-                {walletAddress}
+                <Title color="#000629" margin="0 8px 0 0">
+                  {walletAddress}
+                </Title>
                 <IconImg src={ExternalLinkSVG} />
               </Flex>
             </Link>

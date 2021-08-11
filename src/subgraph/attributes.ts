@@ -11,6 +11,13 @@ export const TOKEN_FIELDS = gql`
   }
 `
 
+export const LAUNCHED_TEMPLATE_FIELDS = gql`
+  fragment launchedTemplateResults on LaunchedSaleTemplate {
+    id
+    metadataContentHash
+  }
+`
+
 export const FIXED_PRICE_SALE_FIELDS = gql`
   fragment fixedPriceSaleResults on FixedPriceSale {
     id
@@ -33,8 +40,12 @@ export const FIXED_PRICE_SALE_FIELDS = gql`
     tokenOut {
       ...tokenResults
     }
+    launchedTemplate {
+      ...launchedTemplateResults
+    }
   }
   ${TOKEN_FIELDS}
+  ${LAUNCHED_TEMPLATE_FIELDS}
 `
 
 export const FAIR_PRICE_SALE_FIELDS = gql`
@@ -56,8 +67,12 @@ export const FAIR_PRICE_SALE_FIELDS = gql`
     tokenOut {
       ...tokenResults
     }
+    launchedTemplate {
+      ...launchedTemplateResults
+    }
   }
   ${TOKEN_FIELDS}
+  ${LAUNCHED_TEMPLATE_FIELDS}
 `
 
 export const FIXED_PRICE_SALE_USERS = gql`
