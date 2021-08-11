@@ -23,7 +23,7 @@ import { useReadBidEventFromBlockchain } from 'src/hooks/useReadBidEventFromBloc
 
 interface UseBidsReturn extends Omit<QueryResult, 'data'> {
   bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
-  totalBids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
+  allBids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
 }
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
@@ -36,8 +36,8 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
   } = useSelector(({ bids }) => bids)
 
-  const { bids: totalBids } = useReadBidEventFromBlockchain(saleId, saleType)
-  const bids = totalBids.filter(bid => bid.user.address.toLowerCase() === account!.toLowerCase())
+  const { bids: allBids } = useReadBidEventFromBlockchain(saleId, saleType)
+  const bids = allBids.filter(bid => bid.user.address.toLowerCase() === account!.toLowerCase())
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -72,7 +72,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   }, [account, library, chainId])
 
   return {
-    totalBids,
+    allBids,
     bids,
     ...rest,
   }
