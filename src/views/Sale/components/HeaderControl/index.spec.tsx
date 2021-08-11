@@ -24,7 +24,7 @@ dayjs.extend(durationTime)
 import { HeaderControl } from 'src/views/Sale/components/HeaderControl/index'
 
 // Aqua Utils
-import { getFixedPriceSales } from 'src/utils/Defaults'
+import { getFixedPriceSales } from 'src/utils'
 
 // redux
 import { store } from 'src/redux/store'

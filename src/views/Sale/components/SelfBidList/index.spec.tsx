@@ -3,7 +3,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import { getSaleDefault, addHours, dateUTC } from 'src/utils/Defaults'
+import { getSaleDefault, addHours, dateUTC } from 'src/utils'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
