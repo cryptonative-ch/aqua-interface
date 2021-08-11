@@ -5,7 +5,7 @@ import { FIX_LATER } from 'src/interfaces'
 /**
  * Obtains and returns a file by its IPFS hash.
  */
-export function useIpfsFile(ipfsCID: string, isJson?: boolean) {
+export function useIpfsFile(ipfsCID?: string | null, isJson?: boolean) {
   const [file, setFile] = useState<FIX_LATER>(null)
 
   async function getFileByCID(cid: string) {

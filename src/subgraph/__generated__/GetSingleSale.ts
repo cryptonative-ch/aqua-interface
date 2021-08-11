@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FixedPriceSaleStatus } from './globalTypes'
+import { SaleStatus } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: GetSingleSale
@@ -49,6 +49,18 @@ export interface GetSingleSale_fixedPriceSale_tokenOut {
   decimals: any
 }
 
+export interface GetSingleSale_fixedPriceSale_launchedTemplate {
+  __typename: "LaunchedSaleTemplate";
+  /**
+   * Address of the template
+   */
+  id: string;
+  /**
+   * IPFS content hash
+   */
+  metadataContentHash: string | null;
+}
+
 export interface GetSingleSale_fixedPriceSale {
   __typename: 'FixedPriceSale'
   id: string
@@ -62,7 +74,7 @@ export interface GetSingleSale_fixedPriceSale {
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: FixedPriceSaleStatus
+  status: SaleStatus;
   /**
    * The UTC timestamp at which the sale starts
    */
@@ -78,8 +90,11 @@ export interface GetSingleSale_fixedPriceSale {
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any
-  minRaise: any
+  sellAmount: any;
+  /**
+   * Minimum raise threshold
+   */
+  minRaise: any;
   /**
    * Minimum token amount per commitment
    */
@@ -99,7 +114,8 @@ export interface GetSingleSale_fixedPriceSale {
   /**
    * Token investor get
    */
-  tokenOut: GetSingleSale_fixedPriceSale_tokenOut
+  tokenOut: GetSingleSale_fixedPriceSale_tokenOut;
+  launchedTemplate: GetSingleSale_fixedPriceSale_launchedTemplate | null;
 }
 
 export interface GetSingleSale_fairSale_tokenIn {
@@ -158,7 +174,7 @@ export interface GetSingleSale_fairSale {
   /**
    * Sale status: open/ended/settled/upcoming
    */
-  status: string
+  status: SaleStatus;
   /**
    * Date of the sale start
    */
@@ -176,8 +192,7 @@ export interface GetSingleSale_fairSale {
    */
   minBidAmount: any
   /**
-   * The minimal funding threshold for executing the settlement. If funding is not
-   * reached, everyone will get back their investment
+   * The minimal funding threshold for executing the settlement. If funding is not reached, everyone will get back their investment
    */
   minFundingThreshold: number | null
   /**
