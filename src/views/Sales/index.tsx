@@ -27,7 +27,10 @@ import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } fro
 // Hooks
 import { useMountEffect } from 'src/hooks/useMountEffect'
 import { useSalesQuery } from 'src/hooks/useSalesQuery'
-import { useFixedPriceSalePurchasesByBuyerQuery, SummarySales } from 'src/hooks/useFixedPriceSalePurchasesByBuyerId'
+import {
+  useFixedPriceSaleCommitmentsByBuyerIdQuery,
+  SummarySales,
+} from 'src/hooks/useFixedPriceSaleCommitmentsByBuyerId'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -75,7 +78,7 @@ export function SalesView() {
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
-  const { saleIds, sales: userSales } = useFixedPriceSalePurchasesByBuyerQuery(account)
+  const { saleIds, sales: userSales } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))

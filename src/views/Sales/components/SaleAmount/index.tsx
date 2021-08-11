@@ -11,7 +11,7 @@ import { Flex } from 'src/components/Flex'
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 // Aqua utils
-import { fixRounding, formatBigInt } from 'src/utils/Defaults'
+import { fixRounding, formatBigInt } from 'src/utils'
 
 interface SaleAmountProps {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale

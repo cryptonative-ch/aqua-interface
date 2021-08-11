@@ -26,7 +26,7 @@ import { secondsTohms } from 'src/views/Sale/components/Timer'
 // Utils
 import { convertUtcTimestampToLocal } from 'src/utils/date'
 import { isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
-import { getSaleDefault, addHours, dateUTC } from 'src/utils/Defaults'
+import { getSaleDefault, addHours, dateUTC } from 'src/utils'
 
 describe('SaleHeader', () => {
   test('it should render the correct sale header', async () => {

@@ -13,7 +13,7 @@ import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 import { SaleClock } from 'src/views/Sales/components/SaleClock/index'
 
 // defaults
-import { getSaleDefault, addHours, dateUTC, resizeWindow } from 'src/utils/Defaults'
+import { getSaleDefault, addHours, dateUTC, resizeWindow } from 'src/utils'
 
 // theme
 

@@ -18,7 +18,7 @@ interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
  * Fetches all sales from the subgraph
  * @returns A list of `Sale`
  */
-export function useFixedPriceSalePurchasesQuery(saleId: string): UseSalesQueryResult {
+export function useFixedPriceSaleCommitmentsQuery(saleId: string): UseSalesQueryResult {
   const { data, ...rest } = useQuery<GetFixedPriceSaleCommitmentsByUser>(GET_FIXED_PRICE_SALE_COMMITMENTS_ALL)
 
   // Default value

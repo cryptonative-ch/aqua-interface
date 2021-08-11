@@ -7,42 +7,44 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // interfaces
-import { SaleBid, SaleType } from 'src/interfaces/Sale'
-
+import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 // Redux
 import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
+import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
-interface UseChainReturns {
+interface UseReadBidEventFromBlockchainReturns {
   loading: boolean
-  bids: any[]
+  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
   error: Error | null
 }
 
-export function useChain(contractAddress: string, saleType: SaleType): UseChainReturns {
+export function useReadBidEventFromBlockchain(saleId: string, saleType: string): UseReadBidEventFromBlockchainReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
   const {
     isLoading,
     error,
-    bidsBySaleId: { [contractAddress]: { bids } = { bids: [] } },
+    bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
   } = useSelector(({ bids }) => bids)
+
+  const totalPurchasesUser = bids.filter(bid => bid.user.address.toLowerCase() === account?.toLowerCase()).length
 
   useEffect(() => {
     if (!account || !library || !chainId) {
       return
     }
-    if (saleType == 'FairSale') {
-      const fairSaleContract = FairSale__factory.connect(contractAddress, library)
+    if (saleType != 'FixedPriceSale') {
+      const fairSaleContract = FairSale__factory.connect(saleId, library)
 
       fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
-        const bids: SaleBid = {
+        const bids: any = {
           id: String(await (await library.getBlock(event.blockNumber)).timestamp),
           address: ownerId,
           tokenIn: orderTokenIn,
           tokenOut: orderTokenOut,
           baseSale: {
-            id: contractAddress,
+            id: saleId,
           },
 
           createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
@@ -60,22 +62,23 @@ export function useChain(contractAddress: string, saleType: SaleType): UseChainR
       })
     }
 
-    const fixedPriceSaleContract = FixedPriceSale__factory.connect(contractAddress, library)
+    const fixedPriceSaleContract = FixedPriceSale__factory.connect(saleId, library)
 
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
-      const bids: any = {
-        id: String(await (await library.getBlock(event.blockNumber)).timestamp),
+      const bids: GetAllBidsBySaleId_fixedPriceSale_commitments = {
+        id: saleId + '/purchases/' + buyer + '/' + totalPurchasesUser,
+        __typename: 'FixedPriceSaleCommitment',
         user: {
           address: buyer,
+          __typename: 'FixedPriceSaleUser',
         },
         amount: amount.toString(),
-        baseSale: {
-          id: contractAddress,
+        sale: {
+          id: saleId,
+          tokenPrice: saleId,
+          __typename: 'FixedPriceSale',
         },
-        createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
-        updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
-        deletedAt: null,
-        status: 'SUBMITTED',
+        status: FixedPriceSaleCommitmentStatus.SUBMITTED,
       }
       dispatch(updateBidRequest(true))
       try {

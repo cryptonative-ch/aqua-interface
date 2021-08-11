@@ -35,7 +35,7 @@ import { Center } from 'src/layouts/Center'
 // Aqua Utils
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
-import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
@@ -51,7 +51,7 @@ import { useBids } from 'src/hooks/useBids'
 import { useTranslation } from 'react-i18next'
 
 //helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
+import { aggregatePurchases } from 'src/utils'
 
 const FixedFormMax = styled.div({
   fontStyle: 'normal',

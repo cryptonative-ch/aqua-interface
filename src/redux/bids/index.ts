@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // Externals
 import { Action } from 'redux'
 import dayjs from 'dayjs'
 
 // interface
-import { SaleBid } from 'src/interfaces/Sale'
+import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 
 // ACTION
 export enum ActionTypes {
@@ -22,7 +20,7 @@ export interface BidsBySaleId {
   // "ox223123nlda": {"lastupdated", "bids: []"}
   [saleId: string]: {
     updatedAt: number // UTC timestamp
-    bids: SaleBid[] // bids
+    bids: GetAllBidsBySaleId_fixedPriceSale_commitments[] // bids
   }
 }
 
@@ -43,7 +41,7 @@ interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
 }
 
 interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
-  payload: SaleBid
+  payload: GetAllBidsBySaleId_fixedPriceSale_commitments
 }
 
 interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
@@ -80,7 +78,7 @@ export const updateBidRequest = (payload: boolean) => ({
   type: ActionTypes.UPDATE_BID_REQUEST,
 })
 
-export const updateBidSuccess = (payload: SaleBid) => ({
+export const updateBidSuccess = (payload: GetAllBidsBySaleId_fixedPriceSale_commitments) => ({
   payload,
   type: ActionTypes.UPDATE_BID_SUCCESS,
 })
@@ -107,7 +105,10 @@ const keyFinder = (object: BidsBySaleId) => {
   return String(Object.getOwnPropertyNames(object)[0])
 }
 
-const eventExists = (events: SaleBid[], event: SaleBid[]) => {
+const eventExists = (
+  events: GetAllBidsBySaleId_fixedPriceSale_commitments[],
+  event: GetAllBidsBySaleId_fixedPriceSale_commitments[]
+) => {
   // check for empty state
   return events.some(e => e.id === event[0].id)
 }
@@ -177,7 +178,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       const { bidsBySaleId } = state
       // get saleId from payload
       const {
-        baseSale: { id },
+        sale: { id },
       } = action.payload
       return {
         ...state,
@@ -187,7 +188,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
             ? eventExists(bidsBySaleId[id]?.bids, [action.payload])
               ? {
                   updatedAt: bidsBySaleId[id].updatedAt,
-                  bids: [...bidsBySaleId[id].bids],
+                  bids: bidsBySaleId[id].bids,
                 }
               : {
                   updatedAt: updatedAt,

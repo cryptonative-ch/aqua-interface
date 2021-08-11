@@ -19,7 +19,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { Sale } from 'src/interfaces/Sale'
 
 // Aqua Utils
-import { formatBigInt } from 'src/utils/Defaults'
+import { formatBigInt } from 'src/utils'
 
 // hooks
 import { BigNumber } from '@ethersproject/bignumber'

@@ -17,7 +17,7 @@ import { Modal } from 'src/components/Modal'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Utils
-import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils/Defaults'
+import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -27,7 +27,7 @@ import { useModal } from 'src/hooks/useModal'
 import { useBids } from 'src/hooks/useBids'
 
 //helpers
-import { aggregatePurchases } from 'src/utils/Defaults'
+import { aggregatePurchases } from 'src/utils'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -137,7 +137,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     owner: account ?? undefined,
   })
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
-  const { totalBids } = useBids(saleId, 'FixedPriceSale')
+  const { allBids } = useBids(saleId, 'FixedPriceSale')
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
@@ -268,7 +268,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       if (sale.minRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
-        const totalAmountPurchased = aggregatePurchases(totalBids, account).amount
+        const totalAmountPurchased = aggregatePurchases(allBids, account).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )
@@ -282,7 +282,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
 
       purchaseTokens()
     },
-    [toggleConfirmation, sale, totalBids, aggregatePurchases, purchaseTokens, purchaseValue]
+    [toggleConfirmation, sale, allBids, aggregatePurchases, purchaseTokens, purchaseValue]
   )
 
   const confirmationModalContent = (
