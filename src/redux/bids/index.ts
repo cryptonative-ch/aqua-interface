@@ -36,15 +36,15 @@ export interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_
   payload: Error
 }
 
-export interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
+export interface UpdateBidRequestAction extends Action<ActionTypes.UPDATE_BID_REQUEST> {
   payload: boolean
 }
 
-export interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
+export interface UpdateBidSuccessAction extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
   payload: GetAllBidsBySaleId_fixedPriceSale_commitments
 }
 
-export interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
+export interface UpdateBidFailureAction extends Action<ActionTypes.UPDATE_BID_FAILURE> {
   payload: Error
 }
 
@@ -52,9 +52,9 @@ export type BidActionTypes =
   | InitialBidRequestAction
   | InitialBidSuccessAction
   | InitialBidFailureAction
-  | UpdateBidRequest
-  | UpdateBidSuccess
-  | UpdateBidFailure
+  | UpdateBidRequestAction
+  | UpdateBidSuccessAction
+  | UpdateBidFailureAction
 
 // initial fetch data from subgraph
 export const initialBidRequest = (payload: boolean) => ({
