@@ -24,27 +24,27 @@ export interface BidsBySaleId {
   }
 }
 
-interface InitialBidRequestAction extends Action<ActionTypes.INITIAL_BID_REQUEST> {
+export interface InitialBidRequestAction extends Action<ActionTypes.INITIAL_BID_REQUEST> {
   payload: boolean
 }
 
-interface InitialBidSuccessAction extends Action<ActionTypes.INITIAL_BID_SUCCESS> {
+export interface InitialBidSuccessAction extends Action<ActionTypes.INITIAL_BID_SUCCESS> {
   payload: BidsBySaleId
 }
 
-interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE> {
+export interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE> {
   payload: Error
 }
 
-interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
+export interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
   payload: boolean
 }
 
-interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
+export interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
   payload: GetAllBidsBySaleId_fixedPriceSale_commitments
 }
 
-interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
+export interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
   payload: Error
 }
 
@@ -109,7 +109,6 @@ const eventExists = (
   events: GetAllBidsBySaleId_fixedPriceSale_commitments[],
   event: GetAllBidsBySaleId_fixedPriceSale_commitments[]
 ) => {
-  // check for empty state
   return events.some(e => e.id === event[0].id)
 }
 

@@ -63,6 +63,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
           }),
           {}
         )
+        console.log(sales)
         dispatch(initialBidSuccess(sales))
       } catch (error) {
         console.error(error)

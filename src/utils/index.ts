@@ -10,6 +10,11 @@ import { Sale, SaleType, FairSale, FixedPriceSale, SaleDetails } from 'src/inter
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumberish, BigNumber } from 'ethers'
+import {
+  GetAllBidsBySaleId_fixedPriceSale,
+  GetAllBidsBySaleId_fixedPriceSale_commitments_user,
+} from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 // account is not optional
 export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
@@ -147,6 +152,34 @@ export const getFixedPriceSales = (): FixedPriceSale => ({
   minCommitment: 2,
   maxCommitment: 20,
   bids: [],
+})
+
+const baseCommitments = (): GetAllBidsBySaleId_fixedPriceSale => ({
+  id: '0x141',
+  __typename: 'FixedPriceSale',
+  soldAmount: '15000000000000000000',
+  commitments: [
+    {
+      __typename: 'FixedPriceSaleCommitment',
+      id: '0x141',
+      status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+      amount: '150000000',
+      sale: {
+        __typename: 'FixedPriceSale',
+        id: '0x141',
+        tokenPrice: '14342343242',
+      },
+      user: {
+        __typename: 'FixedPriceSaleUser',
+        address: '362873668463264',
+      },
+    },
+  ],
+})
+
+export const getCommitments = (a?: Partial<GetAllBidsBySaleId_fixedPriceSale>) => ({
+  ...baseCommitments,
+  ...a,
 })
 
 export const getSaleDefault = (a?: Partial<Sale>, saletype: SaleType = 'FairSale') =>
