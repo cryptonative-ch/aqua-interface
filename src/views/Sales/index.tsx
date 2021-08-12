@@ -79,7 +79,6 @@ export function SalesView() {
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
   const { saleIds, sales: userSales } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
-  const { claims } = useSelector(({ claims }) => claims)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -136,13 +135,13 @@ export function SalesView() {
           <>
             {saleStatus === SaleStatus.LIVE ? (
               <DividerWithText color="#7B7F93">{t('texts.activeSales')}</DividerWithText>
-            ) : saleStatus === SaleStatus.CLOSED && claims.length > 0 ? (
+            ) : saleStatus === SaleStatus.CLOSED ? (
               <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
             ) : (
               <DividerWithText color="#7B7F93">{t('texts.participatedSales')}</DividerWithText>
             )}
 
-            {saleStatus === SaleStatus.CLOSED && claims.length > 0 ? (
+            {saleStatus === SaleStatus.CLOSED ? (
               <TokenView />
             ) : (
               <GridListSection>
