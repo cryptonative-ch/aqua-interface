@@ -81,6 +81,8 @@ export function SalesView() {
   const { saleIds, sales: userSales } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
   const { claims } = useSelector(({ claims }) => claims)
 
+  console.log(userSales)
+
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }
@@ -132,15 +134,17 @@ export function SalesView() {
       <Container>
         <Title>Token Sales</Title>
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
-        {claims.length > 0 && (
+        {filteredUserSales.length > 0 && (
           <>
             {saleStatus === SaleStatus.LIVE ? (
-              <DividerWithText color="#7B7F93">{t('texts.activeBids')}</DividerWithText>
-            ) : saleStatus === SaleStatus.CLOSED ? (
+              <DividerWithText color="#7B7F93">{t('texts.activeSales')}</DividerWithText>
+            ) : saleStatus === SaleStatus.CLOSED && claims.length > 0 ? (
               <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
-            ) : null}
+            ) : (
+              <DividerWithText color="#7B7F93">{t('texts.participatedSales')}</DividerWithText>
+            )}
 
-            {saleStatus === SaleStatus.CLOSED ? (
+            {saleStatus === SaleStatus.CLOSED && claims.length > 0 ? (
               <TokenView />
             ) : (
               <GridListSection>
