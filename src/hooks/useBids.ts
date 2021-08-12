@@ -12,7 +12,6 @@ import { initialBidSuccess, initialBidFailure, initialBidRequest, BidsBySaleId }
 import {
   GetAllBidsBySaleId,
   GetAllBidsBySaleIdVariables,
-  GetAllBidsBySaleId_fixedPriceSale_commitments_sale,
   GetAllBidsBySaleId_fixedPriceSale_commitments,
 } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { GET_ALL_BIDS_BY_SALE_ID } from 'src/subgraph/queries'
@@ -37,8 +36,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   } = useSelector(({ bids }) => bids)
 
   const { bids: allBids } = useReadBidEventFromBlockchain(saleId, saleType)
-  const bids = allBids.filter(bid => bid.user.address.toLowerCase() === account!.toLowerCase())
-  console.log(allBids)
+  const bids = allBids.filter(bid => bid.user.address.toLowerCase() === account?.toLowerCase()) || []
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -70,7 +68,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
         dispatch(initialBidFailure(error))
       }
     }
-  }, [account, library, chainId])
+  }, [account, library, chainId, data])
 
   return {
     allBids,

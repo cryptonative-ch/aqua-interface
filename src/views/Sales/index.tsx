@@ -81,8 +81,6 @@ export function SalesView() {
   const { saleIds, sales: userSales } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
   const { claims } = useSelector(({ claims }) => claims)
 
-  console.log(userSales)
-
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
   }

@@ -10,10 +10,7 @@ import { Sale, SaleType, FairSale, FixedPriceSale, SaleDetails } from 'src/inter
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumberish, BigNumber } from 'ethers'
-import {
-  GetAllBidsBySaleId_fixedPriceSale,
-  GetAllBidsBySaleId_fixedPriceSale_commitments_user,
-} from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import { GetAllBidsBySaleId_fixedPriceSale } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 // account is not optional
