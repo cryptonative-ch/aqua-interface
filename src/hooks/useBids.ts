@@ -38,6 +38,7 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
   const { bids: allBids } = useReadBidEventFromBlockchain(saleId, saleType)
   const bids = allBids.filter(bid => bid.user.address.toLowerCase() === account!.toLowerCase())
+  console.log(allBids)
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -49,8 +50,8 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
 
     //pull past bids from subgraph
 
+    console.log(data)
     if (data) {
-      console.log(data)
       dispatch(initialBidRequest(true))
       try {
         const { fixedPriceSale, fairSale } = data

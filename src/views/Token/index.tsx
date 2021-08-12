@@ -25,16 +25,12 @@ export function TokenView() {
 
   return (
     <GridListSection>
-      {claims.length ? (
-        claims.map((tokens, index) =>
-          tokens.amount === null ? null : (
-            <SaleSummaryWrapper to={`/sales/${tokens.sale.id}`} key={index}>
-              <TokenClaim key={index} amount={tokens.amount} sale={tokens.sale} />
-            </SaleSummaryWrapper>
-          )
+      {claims.map((tokens, index) =>
+        tokens.amount === null ? null : (
+          <SaleSummaryWrapper to={`/sales/${tokens.sale.id}`} key={index}>
+            <TokenClaim key={index} amount={tokens.amount} sale={tokens.sale} />
+          </SaleSummaryWrapper>
         )
-      ) : (
-        <h1>{t('texts.noTokens')}</h1>
       )}
     </GridListSection>
   )

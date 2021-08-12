@@ -205,6 +205,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
     case ActionTypes.UPDATE_BID_FAILURE:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
