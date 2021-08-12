@@ -50,13 +50,14 @@ export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
     //pull past bids from subgraph
 
     if (data) {
+      console.log(data)
       dispatch(initialBidRequest(true))
       try {
         const { fixedPriceSale, fairSale } = data
         const saleBids = fixedPriceSale ? fixedPriceSale.commitments : fairSale?.bids
         const sales = (saleBids as any)?.reduce(
-          (_: BidsBySaleId, x: GetAllBidsBySaleId_fixedPriceSale_commitments_sale) => ({
-            [x.id]: {
+          (_: BidsBySaleId, x: GetAllBidsBySaleId_fixedPriceSale_commitments) => ({
+            [x.sale.id]: {
               lastUpdated: Date.now(),
               bids: saleBids,
             },

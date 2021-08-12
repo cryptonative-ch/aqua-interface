@@ -95,7 +95,7 @@ export interface BidsState {
   bidsBySaleId: BidsBySaleId
 }
 
-const defaultState: BidsState = {
+export const defaultState: BidsState = {
   isLoading: true,
   error: null,
   bidsBySaleId: {},
@@ -181,6 +181,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       } = action.payload
       return {
         ...state,
+        isLoading: false,
         bidsBySaleId: {
           ...bidsBySaleId,
           [id]: bidsBySaleId[id]

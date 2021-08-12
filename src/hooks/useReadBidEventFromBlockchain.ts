@@ -29,6 +29,10 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
   } = useSelector(({ bids }) => bids)
 
   const totalPurchasesUser = bids.filter(bid => bid.user.address.toLowerCase() === account?.toLowerCase()).length
+  console.log('amount of purchases: ', totalPurchasesUser)
+  // totalpurchaseUser does not update after first purchase
+  // something wrong with state updates with bids
+  // inconsistent state updates
 
   useEffect(() => {
     if (!account || !library || !chainId) {
