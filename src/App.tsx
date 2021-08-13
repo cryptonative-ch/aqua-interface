@@ -4,7 +4,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import React, { Suspense, useEffect, useState, useCallback } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { ToastContainer } from 'react-toastify'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { CookiesProvider } from 'react-cookie'
 import Axios from 'axios'
@@ -84,7 +84,7 @@ export const App = () => {
               <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <Suspense fallback={<Center minHeight="100vh">LOADING</Center>}>
-                  <BrowserRouter>
+                  <HashRouter>
                     <Container>
                       <Header />
                       <AppRouter />
@@ -109,7 +109,7 @@ export const App = () => {
                       />
                       {!isMobile && <FeedbackOverlay />}
                     </Container>
-                  </BrowserRouter>
+                  </HashRouter>
                 </Suspense>
               </ThemeProvider>
             </SanctionContext.Provider>
