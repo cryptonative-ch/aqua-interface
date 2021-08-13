@@ -134,10 +134,12 @@ export function SalesView() {
         {filteredUserSales.length > 0 && (
           <>
             {saleStatus === SaleStatus.LIVE ? (
-              <DividerWithText color="#7B7F93">{t('texts.activeBids')}</DividerWithText>
+              <DividerWithText color="#7B7F93">{t('texts.activeSales')}</DividerWithText>
             ) : saleStatus === SaleStatus.CLOSED ? (
               <DividerWithText color="#7B7F93">{t('texts.bidsWon')}</DividerWithText>
-            ) : null}
+            ) : (
+              <DividerWithText color="#7B7F93">{t('texts.participatedSales')}</DividerWithText>
+            )}
 
             {saleStatus === SaleStatus.CLOSED ? (
               <TokenView />

@@ -28,8 +28,6 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
   } = useSelector(({ bids }) => bids)
 
-  const totalPurchasesUser = bids.filter(bid => bid.user.address.toLowerCase() === account?.toLowerCase()).length
-
   useEffect(() => {
     if (!account || !library || !chainId) {
       return
@@ -65,8 +63,11 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(saleId, library)
 
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
-      const bids: GetAllBidsBySaleId_fixedPriceSale_commitments = {
-        id: saleId + '/purchases/' + buyer + '/' + totalPurchasesUser,
+      const totalCommitmentsByUserAddress =
+        bids.filter(bid => bid.user.address.toLowerCase() === buyer.toLowerCase()).length + 1
+
+      const commitment: GetAllBidsBySaleId_fixedPriceSale_commitments = {
+        id: saleId + '/commitments/' + buyer + '/' + totalCommitmentsByUserAddress,
         __typename: 'FixedPriceSaleCommitment',
         user: {
           address: buyer,
@@ -82,7 +83,7 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
       }
       dispatch(updateBidRequest(true))
       try {
-        dispatch(updateBidSuccess(bids))
+        dispatch(updateBidSuccess(commitment))
       } catch (error) {
         console.error(error)
         toast.error(t('error.updatePurchase'))

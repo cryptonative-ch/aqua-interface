@@ -1,105 +1,336 @@
-// Externals
-import configureMockStore from 'redux-mock-store'
-import { mockServer } from 'graphql-tools'
-import thunk from 'redux-thunk'
-
-// mocks
-import { schemaString, mocks, preserveResolvers } from 'src/subgraph/mock'
-
-import { salesQuery } from 'src/subgraph/Sales'
 // Redux components
-import { ActionTypes, BidActionTypes, reducer, BidsState } from 'src/redux/bids/index'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import advanced from 'dayjs/plugin/advancedFormat'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import durationTime from 'dayjs/plugin/duration'
+import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-const store = mockStore({})
+//redux
+import {
+  ActionTypes,
+  reducer,
+  BidsState,
+  InitialBidSuccessAction,
+  InitialBidRequestAction,
+  InitialBidFailureAction,
+  UpdateBidRequestAction,
+  UpdateBidSuccessAction,
+  UpdateBidFailureAction,
+  defaultState,
+} from 'src/redux/bids'
 
-describe.skip('Async Bid Data Actions and Reducers', () => {
-  let server: any
-  let salesRequest: any
+// interface
+import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
-  const initialState: BidsState = {
-    bidsBySaleId: {},
-    error: null,
-    isLoading: false,
-  }
+// Extends dayjs
+dayjs.extend(DayjsRelativeTime)
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(advanced)
+dayjs.extend(relativeTime)
+dayjs.extend(durationTime)
 
-  beforeEach(async () => {
-    server = mockServer(schemaString, mocks, preserveResolvers)
-    salesRequest = await server.query(salesQuery)
-  })
-  afterEach(() => {
-    store.clearActions()
-  })
-
-  test.skip('should create INITIAL_BID_SUCCESS when fetching bid data is complete', async () => {
-    const sale = await getSalesData(salesRequest.data)
-    const id = sale[0].id //emulate params.id
-    const saleBidsRequest = await server.query(saleBidsQuery(id, selectSaletype(id, sale)))
-    const expectedActions = [
-      {
-        payload: true,
-        type: ActionTypes.INITIAL_BID_REQUEST,
-      },
-      {
+describe('Bid Reducer', () => {
+  describe('should handle INITIAL_BID_SUCCESS', () => {
+    test('should handle empty return from subgraph', async () => {
+      const emptyRequestFromSubgraph: InitialBidSuccessAction = {
         type: ActionTypes.INITIAL_BID_SUCCESS,
-        payload: expect.objectContaining({}),
-      },
-    ]
-
-    return store.dispatch(fetchSaleBids(id, selectSaletype(id, sale), saleBidsRequest.data)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions)
-    })
-  }),
-    test('reducer should handle INITIAL_BID_REQUEST', () => {
-      const startAction: BidActionTypes = {
-        type: ActionTypes.INITIAL_BID_REQUEST,
-        payload: true,
+        payload: {},
       }
-      expect(reducer(initialState, startAction)).toEqual({
-        bidsBySaleId: {},
-        isLoading: true,
-        error: null,
-      })
-    }),
-    test.skip('reducer should handle INITIAL_BID_SUCCESS', async () => {
-      const sale = await getSalesData(salesRequest.data)
-      const id = sale[0].id //emulate params.id
-      const saleBidsRequest = await server.query(saleBidsQuery(id, selectSaletype(id, sale)))
-      const expectedActions: BidActionTypes = {
-        type: ActionTypes.INITIAL_BID_SUCCESS,
-        payload: saleBidsRequest.data,
-      }
-      expect(reducer(initialState, expectedActions)).toEqual({
-        bidsBySaleId: expect.objectContaining({
-          fairSale: expect.objectContaining({
-            bids: expect.arrayContaining([
-              expect.objectContaining({
-                id: expect.any(String),
-              }),
-            ]),
-          }),
-        }),
+      expect(reducer(defaultState, emptyRequestFromSubgraph)).toEqual({
         isLoading: false,
         error: null,
+        bidsBySaleId: {},
       })
     }),
+      test('should handle data from subgraph after undefined', () => {
+        const expectedActions: InitialBidSuccessAction = {
+          type: ActionTypes.INITIAL_BID_SUCCESS,
+          payload: {
+            '0x141': {
+              updatedAt: dayjs.utc().unix(),
+              bids: [
+                {
+                  __typename: 'FixedPriceSaleCommitment',
+                  id: '0x141/commitments/1',
+                  status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                  amount: '150000000',
+                  sale: {
+                    __typename: 'FixedPriceSale',
+                    id: '0x141',
+                    tokenPrice: '10000000000000000000',
+                  },
+                  user: {
+                    __typename: 'FixedPriceSaleUser',
+                    address: '362873668463264',
+                  },
+                },
+              ],
+            },
+          },
+        }
+        expect(reducer(undefined, expectedActions)).toEqual({
+          isLoading: false,
+          error: null,
+          bidsBySaleId: {
+            '0x141': {
+              updatedAt: dayjs.utc().unix(),
+              bids: [
+                {
+                  __typename: 'FixedPriceSaleCommitment',
+                  id: '0x141/commitments/1',
+                  status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                  amount: '150000000',
+                  sale: {
+                    __typename: 'FixedPriceSale',
+                    id: '0x141',
+                    tokenPrice: '10000000000000000000',
+                  },
+                  user: {
+                    __typename: 'FixedPriceSaleUser',
+                    address: '362873668463264',
+                  },
+                },
+              ],
+            },
+          },
+        })
+      })
+  })
+  test('reducer should handle INITIAL_BID_REQUEST', () => {
+    const startAction: InitialBidRequestAction = {
+      type: ActionTypes.INITIAL_BID_REQUEST,
+      payload: true,
+    }
+    expect(reducer(undefined, startAction)).toEqual({
+      bidsBySaleId: {},
+      isLoading: true,
+      error: null,
+    })
+  }),
     test('reducer should handle INITIAL_BID_FAILURE', () => {
-      const startActions: BidActionTypes = {
+      const startActions: InitialBidFailureAction = {
         type: ActionTypes.INITIAL_BID_FAILURE,
         payload: expect.any(Error),
       }
-      expect(reducer(initialState, startActions)).toEqual({
+      expect(reducer(undefined, startActions)).toEqual({
         bidsBySaleId: {},
         error: expect.any(Error),
         isLoading: false,
       })
     })
-})
 
-/**
- * @todo test action creators
- * @todo test async action creators
- * @todo test reducers
- * @todo components that use redux
- */
+  describe('should handle UPDATE_BID_SUCCESS', () => {
+    test('should handle data from Blockchain after undefined', () => {
+      const expectedActions: UpdateBidSuccessAction = {
+        type: ActionTypes.UPDATE_BID_SUCCESS,
+        payload: {
+          __typename: 'FixedPriceSaleCommitment',
+          id: '0x141',
+          status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+          amount: '150000000',
+          sale: {
+            __typename: 'FixedPriceSale',
+            id: '0x141',
+            tokenPrice: '14342343242',
+          },
+          user: {
+            __typename: 'FixedPriceSaleUser',
+            address: '362873668463264',
+          },
+        },
+      }
+      expect(reducer(undefined, expectedActions)).toEqual({
+        isLoading: false,
+        error: null,
+        bidsBySaleId: {
+          '0x141': {
+            updatedAt: dayjs.utc().unix(),
+            bids: [
+              {
+                __typename: 'FixedPriceSaleCommitment',
+                id: '0x141',
+                status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                amount: '150000000',
+                sale: {
+                  __typename: 'FixedPriceSale',
+                  id: '0x141',
+                  tokenPrice: '14342343242',
+                },
+                user: {
+                  __typename: 'FixedPriceSaleUser',
+                  address: '362873668463264',
+                },
+              },
+            ],
+          },
+        },
+      })
+    }),
+      test('should handle data Update from Blockchain ', () => {
+        const undefinedOfBid: BidsState = {
+          isLoading: false,
+          error: null,
+          bidsBySaleId: {
+            '0x141': {
+              updatedAt: dayjs.utc().unix(),
+              bids: [
+                {
+                  __typename: 'FixedPriceSaleCommitment',
+                  id: '0x141/commitments/1',
+                  status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                  amount: '150000000',
+                  sale: {
+                    __typename: 'FixedPriceSale',
+                    id: '0x141',
+                    tokenPrice: '14342343242',
+                  },
+                  user: {
+                    __typename: 'FixedPriceSaleUser',
+                    address: '362873668463264',
+                  },
+                },
+              ],
+            },
+          },
+        }
+
+        const dataupdated: UpdateBidSuccessAction = {
+          type: ActionTypes.UPDATE_BID_SUCCESS,
+          payload: {
+            __typename: 'FixedPriceSaleCommitment',
+            id: '0x141/commitments/2',
+            status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+            amount: '150000000',
+            sale: {
+              __typename: 'FixedPriceSale',
+              id: '0x141',
+              tokenPrice: '14342343242',
+            },
+            user: {
+              __typename: 'FixedPriceSaleUser',
+              address: '362873668463264',
+            },
+          },
+        }
+        expect(reducer(undefinedOfBid, dataupdated)).toEqual({
+          isLoading: false,
+          error: null,
+          bidsBySaleId: {
+            '0x141': {
+              updatedAt: dayjs.utc().unix(),
+              bids: [
+                {
+                  __typename: 'FixedPriceSaleCommitment',
+                  id: '0x141/commitments/1',
+                  status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                  amount: '150000000',
+                  sale: {
+                    __typename: 'FixedPriceSale',
+                    id: '0x141',
+                    tokenPrice: '14342343242',
+                  },
+                  user: {
+                    __typename: 'FixedPriceSaleUser',
+                    address: '362873668463264',
+                  },
+                },
+
+                {
+                  __typename: 'FixedPriceSaleCommitment',
+                  id: '0x141/commitments/2',
+                  status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                  amount: '150000000',
+                  sale: {
+                    __typename: 'FixedPriceSale',
+                    id: '0x141',
+                    tokenPrice: '14342343242',
+                  },
+                  user: {
+                    __typename: 'FixedPriceSaleUser',
+                    address: '362873668463264',
+                  },
+                },
+              ],
+            },
+          },
+        })
+      })
+
+    test('should handle data duplication', () => {
+      const undefinedOfBid: BidsState = {
+        isLoading: false,
+        error: null,
+        bidsBySaleId: {
+          '0x141': {
+            updatedAt: 1585654141,
+            bids: [
+              {
+                __typename: 'FixedPriceSaleCommitment',
+                id: '0x141/commitments/1',
+                status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                amount: '150000000',
+                sale: {
+                  __typename: 'FixedPriceSale',
+                  id: '0x141',
+                  tokenPrice: '14342343242',
+                },
+                user: {
+                  __typename: 'FixedPriceSaleUser',
+                  address: '362873668463264',
+                },
+              },
+            ],
+          },
+        },
+      }
+
+      const dataupdated: UpdateBidSuccessAction = {
+        type: ActionTypes.UPDATE_BID_SUCCESS,
+        payload: {
+          __typename: 'FixedPriceSaleCommitment',
+          id: '0x141/commitments/1',
+          status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+          amount: '150000000',
+          sale: {
+            __typename: 'FixedPriceSale',
+            id: '0x141',
+            tokenPrice: '14342343242',
+          },
+          user: {
+            __typename: 'FixedPriceSaleUser',
+            address: '362873668463264',
+          },
+        },
+      }
+      expect(reducer(undefinedOfBid, dataupdated)).toEqual({
+        isLoading: false,
+        error: null,
+        bidsBySaleId: {
+          '0x141': {
+            updatedAt: 1585654141,
+            bids: [
+              {
+                __typename: 'FixedPriceSaleCommitment',
+                id: '0x141/commitments/1',
+                status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+                amount: '150000000',
+                sale: {
+                  __typename: 'FixedPriceSale',
+                  id: '0x141',
+                  tokenPrice: '14342343242',
+                },
+                user: {
+                  __typename: 'FixedPriceSaleUser',
+                  address: '362873668463264',
+                },
+              },
+            ],
+          },
+        },
+      })
+    })
+  })
+})

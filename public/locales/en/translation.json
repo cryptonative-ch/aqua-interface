@@ -27,7 +27,7 @@
     "yourBids": "Your Bids",
     "yourPurchase": "Your Purchase",
     "bidsWon": "Bids Won",
-    "activeBids": "Active Bids",
+    "activeSales": "Active Sales",
     "otherSales": "Other Sales",
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
@@ -60,7 +60,8 @@
     "confirmation": "Confirmation",
     "continuePurchase": "Continue Purchase",
     "haveFeedback": "Have feedback about Aqua?",
-    "noTokens": "No Tokens Available to Claim"
+    "noTokens": "No Tokens Available to Claim",
+    "participatedSales": "Participated Sales"
   },
   "buttons": {
     "back": "Back",

@@ -14,6 +14,7 @@ import { CardText } from 'src/components/CardText'
 import { Flex } from 'src/components/Flex'
 import { TokenIconFigure } from 'src/components/TokenIconFigure'
 import { Button } from 'src/components/Button'
+import { SaleSummaryWrapper } from 'src/views/Sales'
 
 // claims
 import { FailedClaim } from 'src/views/Token/components/FailedClaim'
@@ -68,12 +69,14 @@ export const TokenClaim = ({ sale, amount }: TokenClaimProps) => {
   return (
     <Card>
       <CardBody padding="32px 24px 16px 24px">
-        <Flex justifyContent="flex-start" alignItems="center" margin="0 0 16px 0">
-          <TokenIconFigure>
-            <Icon src={noToken} />
-          </TokenIconFigure>
-          <CardText fontSize="title">Claim {sale?.tokenOut.symbol}</CardText>
-        </Flex>
+        <SaleSummaryWrapper to={`/sales/${sale.id}`}>
+          <Flex justifyContent="flex-start" alignItems="center" margin="0 0 16px 0">
+            <TokenIconFigure>
+              <Icon src={noToken} />
+            </TokenIconFigure>
+            <CardText fontSize="title">Claim {sale?.tokenOut.symbol}</CardText>
+          </Flex>
+        </SaleSummaryWrapper>
         <Divider />
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex justifyContent="space-between" margin="4px 0">

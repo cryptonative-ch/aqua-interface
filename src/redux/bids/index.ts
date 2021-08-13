@@ -24,27 +24,27 @@ export interface BidsBySaleId {
   }
 }
 
-interface InitialBidRequestAction extends Action<ActionTypes.INITIAL_BID_REQUEST> {
+export interface InitialBidRequestAction extends Action<ActionTypes.INITIAL_BID_REQUEST> {
   payload: boolean
 }
 
-interface InitialBidSuccessAction extends Action<ActionTypes.INITIAL_BID_SUCCESS> {
+export interface InitialBidSuccessAction extends Action<ActionTypes.INITIAL_BID_SUCCESS> {
   payload: BidsBySaleId
 }
 
-interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE> {
+export interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE> {
   payload: Error
 }
 
-interface UpdateBidRequest extends Action<ActionTypes.UPDATE_BID_REQUEST> {
+export interface UpdateBidRequestAction extends Action<ActionTypes.UPDATE_BID_REQUEST> {
   payload: boolean
 }
 
-interface UpdateBidSuccess extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
+export interface UpdateBidSuccessAction extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
   payload: GetAllBidsBySaleId_fixedPriceSale_commitments
 }
 
-interface UpdateBidFailure extends Action<ActionTypes.UPDATE_BID_FAILURE> {
+export interface UpdateBidFailureAction extends Action<ActionTypes.UPDATE_BID_FAILURE> {
   payload: Error
 }
 
@@ -52,9 +52,9 @@ export type BidActionTypes =
   | InitialBidRequestAction
   | InitialBidSuccessAction
   | InitialBidFailureAction
-  | UpdateBidRequest
-  | UpdateBidSuccess
-  | UpdateBidFailure
+  | UpdateBidRequestAction
+  | UpdateBidSuccessAction
+  | UpdateBidFailureAction
 
 // initial fetch data from subgraph
 export const initialBidRequest = (payload: boolean) => ({
@@ -95,7 +95,7 @@ export interface BidsState {
   bidsBySaleId: BidsBySaleId
 }
 
-const defaultState: BidsState = {
+export const defaultState: BidsState = {
   isLoading: true,
   error: null,
   bidsBySaleId: {},
@@ -109,7 +109,6 @@ const eventExists = (
   events: GetAllBidsBySaleId_fixedPriceSale_commitments[],
   event: GetAllBidsBySaleId_fixedPriceSale_commitments[]
 ) => {
-  // check for empty state
   return events.some(e => e.id === event[0].id)
 }
 
@@ -142,7 +141,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
             ? action.payload
             : {
                 ...bidsBySaleId,
-                [id]: bidsBySaleId[id].bids
+                [id]: bidsBySaleId[id]
                   ? eventExists(bidsBySaleId[id].bids, action.payload[id].bids)
                     ? {
                         updatedAt: bidsBySaleId[id].updatedAt,
@@ -182,9 +181,10 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       } = action.payload
       return {
         ...state,
+        isLoading: false,
         bidsBySaleId: {
           ...bidsBySaleId,
-          [id]: bidsBySaleId.bids
+          [id]: bidsBySaleId[id]
             ? eventExists(bidsBySaleId[id]?.bids, [action.payload])
               ? {
                   updatedAt: bidsBySaleId[id].updatedAt,
@@ -205,6 +205,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
     case ActionTypes.UPDATE_BID_FAILURE:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
