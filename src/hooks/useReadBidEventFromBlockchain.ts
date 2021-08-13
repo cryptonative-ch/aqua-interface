@@ -62,7 +62,7 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
 
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(saleId, library)
 
-    fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
+    fixedPriceSaleContract.on('NewCommitment', async (buyer, amount) => {
       const totalCommitmentsByUserAddress =
         bids.filter(bid => bid.user.address.toLowerCase() === buyer.toLowerCase()).length + 1
 
