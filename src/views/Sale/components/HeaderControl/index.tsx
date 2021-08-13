@@ -137,7 +137,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" flex={1}>
           <FixedTitle>{status === 'closed' ? 'Tokens Sold' : 'Sale Progress'}</FixedTitle>
           <FixedDescription>
-            {numeral(totalAmountPurchased).format('0.[00]')}
+            {numeral(totalAmountPurchased).format('0.[0000000]')}
             <FixedDescription2>{`(${numeral(percentageSold).format('0.[00]')}%)`}</FixedDescription2>
             <FixedDescription3>
               / {numeral(totalSupply).format('0')} {sale.tokenOut.symbol}
