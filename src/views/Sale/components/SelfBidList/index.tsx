@@ -19,9 +19,13 @@ import { Table } from 'src/components/Table'
 // hooks
 import { useTokenClaim } from 'src/hooks/useTokenClaim'
 
+type SaleType = GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale | FairSale
+
+type BidType = FixedPriceSalePurchase | FixedPriceSalePurchase[] | FairSaleBid | FairSaleBid[]
+
 interface SelfBidListProps {
-  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale | FairSale
-  bids: FixedPriceSalePurchase | FixedPriceSalePurchase[] | FairSaleBid | FairSaleBid[]
+  sale: SaleType
+  bids: BidType
   clearingPrice?: FairBidPick
   status: string
   showGraph: boolean
@@ -48,13 +52,17 @@ export function SelfBidList({ sale, bids }: SelfBidListProps) {
                 purchases: {
                   value:
                     numeral(
-                      formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
-                        formatBigInt(bids.amount, sale.tokenOut.decimals)
+                      formatBigInt(
+                        (sale as GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale).tokenPrice,
+                        sale.tokenOut.decimals
+                      ) * formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)
                     ).format('0.[0000]') +
                     ' ' +
                     sale.tokenOut.symbol,
                   amount:
-                    numeral(formatBigInt(bids.amount, sale.tokenOut.decimals)).format('0.[0000]') +
+                    numeral(formatBigInt((bids as FixedPriceSalePurchase).amount, sale.tokenOut.decimals)).format(
+                      '0.[0000]'
+                    ) +
                     ' ' +
                     sale.tokenIn.symbol,
                   status: claim,
@@ -72,11 +80,13 @@ export function SelfBidList({ sale, bids }: SelfBidListProps) {
             {
               title: 'Buy Order',
               color: '#4B9E98',
-              purchases: bids.map(bid => ({
+              purchases: (bids as FixedPriceSalePurchase[]).map(bid => ({
                 amount:
                   numeral(
-                    formatBigInt(sale.tokenPrice, sale.tokenOut.decimals) *
-                      formatBigInt(bid.amount, sale.tokenOut.decimals)
+                    formatBigInt(
+                      (sale as GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale).tokenPrice,
+                      sale.tokenOut.decimals
+                    ) * formatBigInt(bid.amount, sale.tokenOut.decimals)
                   ).format('0.[0000]') +
                   ' ' +
                   sale.tokenOut.symbol,
@@ -104,7 +114,7 @@ export function SelfBidList({ sale, bids }: SelfBidListProps) {
             bodyData={
               [
                 {
-                  bids: bids.map(bid => ({
+                  bids: (bids as FairSaleBid[]).map(bid => ({
                     bidPrice:
                       numeral(
                         formatBigInt(bid.tokenIn, sale.tokenIn.decimals) /
@@ -141,7 +151,7 @@ export function SelfBidList({ sale, bids }: SelfBidListProps) {
           bodyData={
             [
               {
-                bids: bids.map(bid => ({
+                bids: (bids as FairSaleBid[]).map(bid => ({
                   bidPrice:
                     numeral(
                       formatBigInt(bid.tokenIn, sale.tokenIn.decimals) /
