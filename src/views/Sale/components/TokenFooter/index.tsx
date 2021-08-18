@@ -1,14 +1,18 @@
 // External
 import { layout, LayoutProps, space, SpaceProps, color, ColorProps, BorderProps, border } from 'styled-system'
 import styled from 'styled-components'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 // Hooks
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
+// Contexts
+import { Web3ConnectionContext } from 'src/contexts'
+
 // Component
 import { Flex } from 'src/components/Flex'
+import { ConnectorNames } from 'src/providers/web3'
 
 // Svg
 import ExternalLinkSVG from 'src/assets/svg/External-Link.svg'
@@ -114,6 +118,24 @@ const IconImg = styled.img<IconImgProps>(
   layout
 )
 
+const AddTokenButton = styled.button({
+  fontStyle: 'normal',
+  fontWeight: 500,
+  fontSize: '10px',
+  lineHeight: '14px',
+  color: '#7B7F93',
+  cursor: 'pointer',
+  userSelect: 'none',
+  textAlign: 'center',
+  padding: '4px',
+  width: '100%',
+  border: '1px solid #7B7F93',
+  '&:hover': {
+    color: '#304ffe',
+    borderColor: '#304ffe',
+  },
+})
+
 interface TokenFooterProps {
   onClick?: () => void
   sale: Sale
@@ -121,13 +143,16 @@ interface TokenFooterProps {
 }
 
 export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: TokenFooterProps) => {
-  const { chainId } = useWeb3React()
+  const { library, chainId } = useWeb3React()
   const {
     isMobile,
     windowSize: { width: windowWidth },
   } = useWindowSize()
+  const { activatedConnector } = useContext(Web3ConnectionContext)
 
-  const walletAddress = sale?.tokenOut.id ? `${sale.tokenOut.id.substr(0, 6)}...${sale.tokenOut.id.substr(-4)}` : ''
+  const truncatedTokenAddress = sale?.tokenOut.id
+    ? `${sale.tokenOut.id.substr(0, 6)}...${sale.tokenOut.id.substr(-4)}`
+    : ''
 
   const currentChainParams = chainId ? SUPPORTED_CHAINS[chainId as CHAIN_ID].parameters : null
 
@@ -136,6 +161,18 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: T
     mobileWrapper.margin = '32px 24px'
     mobileWrapper.padding = '24px 0 0'
     mobileWrapper.width = 'calc(100% - 48px)'
+  }
+
+  const addTokenToWallet = () => {
+    library?.send('wallet_watchAsset', {
+      type: 'ERC20',
+      options: {
+        address: sale?.tokenOut.id,
+        symbol: sale?.tokenOut.symbol,
+        decimals: sale?.tokenOut.decimals,
+        image: sale?.tokenOut.icon,
+      },
+    })
   }
 
   return (
@@ -155,11 +192,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: T
           ))}
         </FooterDescription>
       )}
-      <Row
-        flexDirection={isMobile ? 'column' : 'row'}
-        maxWidth={isMobile ? windowWidth - 48 : '578px'}
-        alignItems={isMobile ? 'flex-start' : 'center'}
-      >
+      <Row flexDirection={isMobile ? 'column' : 'row'} maxWidth={isMobile ? windowWidth - 48 : '578px'}>
         {isMobile && saleDetails?.socials && (
           <Flex paddingRight="40px" flexDirection="column">
             <Title marginBottom="8px">Socials</Title>
@@ -191,7 +224,7 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: T
             </a>
           </Flex>
         )}
-        {walletAddress && currentChainParams?.blockExplorerUrls?.length && (
+        {truncatedTokenAddress && currentChainParams?.blockExplorerUrls?.length && (
           <Flex paddingRight="40px" flexDirection="column" marginTop={isMobile ? '16px' : '0'}>
             <Title>Token Address</Title>
             <Link
@@ -202,11 +235,16 @@ export const TokenFooter: React.FC<TokenFooterProps> = ({ sale, saleDetails }: T
             >
               <Flex flexDirection="row" alignItems="center">
                 <Title color="#000629" margin="0 8px 0 0">
-                  {walletAddress}
+                  {truncatedTokenAddress}
                 </Title>
                 <IconImg src={ExternalLinkSVG} />
               </Flex>
             </Link>
+            {activatedConnector == ConnectorNames.Injected && (
+              <Flex margin="8px 8px 0 0">
+                <AddTokenButton onClick={addTokenToWallet}>Add to MetaMask +</AddTokenButton>
+              </Flex>
+            )}
           </Flex>
         )}
         {!isMobile && saleDetails?.socials && (
