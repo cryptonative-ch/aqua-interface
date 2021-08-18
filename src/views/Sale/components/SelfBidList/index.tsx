@@ -19,13 +19,9 @@ import { Table } from 'src/components/Table'
 // hooks
 import { useTokenClaim } from 'src/hooks/useTokenClaim'
 
-type SaleType = GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale | FairSale
-
-type BidType = FixedPriceSalePurchase | FixedPriceSalePurchase[] | FairSaleBid | FairSaleBid[]
-
 interface SelfBidListProps {
-  sale: SaleType
-  bids: BidType
+  sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale | FairSale
+  bids: FixedPriceSalePurchase | FixedPriceSalePurchase[] | FairSaleBid | FairSaleBid[]
   clearingPrice?: FairBidPick
   status: string
   showGraph: boolean
@@ -177,7 +173,7 @@ export function SelfBidList({ sale, bids }: SelfBidListProps) {
       )
     }
     default:
-      null
+      return null
   }
 }
 

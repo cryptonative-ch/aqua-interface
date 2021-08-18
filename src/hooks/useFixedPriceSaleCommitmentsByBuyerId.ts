@@ -12,7 +12,6 @@ import {
   GetFixedPriceSaleCommitmentsByUser,
   GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments,
   GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale,
-  GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user,
 } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
 import { ClaimState } from 'src/hooks/useTokenClaim'
@@ -22,12 +21,15 @@ import { aggregatePurchases } from 'src/utils'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'
+import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 export interface SummarySales {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
-  status: Pick<GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments, 'status'>
+  status: FixedPriceSaleCommitmentStatus
   amount: BigNumber
-  user: Pick<GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_user, 'address'>
+  user: {
+    address: string
+  }
 }
 
 interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
@@ -61,7 +63,6 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
     })
 
     const unixDateNow = dayjs(Date.now()).unix()
-    // @TODO fetch claims data from subgraph
     sales
       .filter(
         purchase =>
@@ -72,7 +73,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
         dispatch(
           setClaimStatus({
             sale: purchase.sale,
-            claimToken: ClaimState.UNCLAIMED,
+            claimToken: purchase.status as any,
             error: null,
             transaction: null,
             amount: purchase.amount,
