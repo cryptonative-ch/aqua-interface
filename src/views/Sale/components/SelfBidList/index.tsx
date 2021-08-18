@@ -32,7 +32,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   const { claim } = useTokenClaim(sale)
   const { isMobile } = useWindowSize()
 
-  const isFixedHeadData = [
+  const fixedHeadData = [
     { title: 'Type', flex: isMobile ? 3.5 : 3 },
     { title: 'Amount' },
     { title: 'Value' },
@@ -40,8 +40,8 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
   ]
 
   // purely from subgraph
-  const isFixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
-  const isFixedBodyData = isSaleClosed(sale)
+  const fixedHeadDataOpen = [{ title: 'Type' }, { title: 'Amount' }, { title: 'Value' }]
+  const fixedBodyData = isSaleClosed(sale)
     ? [
         {
           title: 'Withdraw',
@@ -65,7 +65,7 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
       ]
     : []
 
-  const isFixedBodyDataOpen = !isSaleClosed(sale)
+  const fixedBodyDataOpen = !isSaleClosed(sale)
     ? [
         {
           title: 'Buy Order',
@@ -123,11 +123,11 @@ export function SelfBidList({ sale, bids, isFixed }: SelfBidListProps) {
       ]
 
   if (isFixed && isSaleClosed(sale)) {
-    return <Table headData={isFixedHeadData} bodyData={isFixedBodyData} isClosed={true} />
+    return <Table headData={fixedHeadData} bodyData={fixedBodyData} isClosed={true} />
   }
 
   if (isFixed && isSaleOpen(sale)) {
-    return <Table headData={isFixedHeadDataOpen} bodyData={isFixedBodyDataOpen} />
+    return <Table headData={fixedHeadDataOpen} bodyData={fixedBodyDataOpen} />
   }
 
   if (isSaleOpen(sale) && !isFixed) {
