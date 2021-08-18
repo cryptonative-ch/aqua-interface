@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SaleStatus, FixedPriceSaleCommitmentStatus } from "./globalTypes";
+import { SaleStatus, FixedPriceSaleCommitmentStatus } from './globalTypes'
 
 // ====================================================
 // GraphQL fragment: fixedPriceSaleCommitments
@@ -50,15 +50,15 @@ export interface fixedPriceSaleCommitments_user_sale_tokenOut {
 }
 
 export interface fixedPriceSaleCommitments_user_sale_launchedTemplate {
-  __typename: "LaunchedSaleTemplate";
+  __typename: 'LaunchedSaleTemplate'
   /**
    * Address of the template
    */
-  id: string;
+  id: string
   /**
    * IPFS content hash
    */
-  metadataContentHash: string | null;
+  metadataContentHash: string | null
 }
 
 export interface fixedPriceSaleCommitments_user_sale {
@@ -74,7 +74,7 @@ export interface fixedPriceSaleCommitments_user_sale {
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: SaleStatus;
+  status: SaleStatus
   /**
    * The UTC timestamp at which the sale starts
    */
@@ -90,11 +90,11 @@ export interface fixedPriceSaleCommitments_user_sale {
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any;
+  sellAmount: any
   /**
    * Minimum raise threshold
    */
-  minRaise: any;
+  minRaise: any
   /**
    * Minimum token amount per commitment
    */
@@ -114,8 +114,8 @@ export interface fixedPriceSaleCommitments_user_sale {
   /**
    * Token investor get
    */
-  tokenOut: fixedPriceSaleCommitments_user_sale_tokenOut;
-  launchedTemplate: fixedPriceSaleCommitments_user_sale_launchedTemplate | null;
+  tokenOut: fixedPriceSaleCommitments_user_sale_tokenOut
+  launchedTemplate: fixedPriceSaleCommitments_user_sale_launchedTemplate | null
 }
 
 export interface fixedPriceSaleCommitments_user {
@@ -186,15 +186,15 @@ export interface fixedPriceSaleCommitments_sale_tokenOut {
 }
 
 export interface fixedPriceSaleCommitments_sale_launchedTemplate {
-  __typename: "LaunchedSaleTemplate";
+  __typename: 'LaunchedSaleTemplate'
   /**
    * Address of the template
    */
-  id: string;
+  id: string
   /**
    * IPFS content hash
    */
-  metadataContentHash: string | null;
+  metadataContentHash: string | null
 }
 
 export interface fixedPriceSaleCommitments_sale {
@@ -210,7 +210,7 @@ export interface fixedPriceSaleCommitments_sale {
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: SaleStatus;
+  status: SaleStatus
   /**
    * The UTC timestamp at which the sale starts
    */
@@ -226,11 +226,11 @@ export interface fixedPriceSaleCommitments_sale {
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any;
+  sellAmount: any
   /**
    * Minimum raise threshold
    */
-  minRaise: any;
+  minRaise: any
   /**
    * Minimum token amount per commitment
    */
@@ -250,8 +250,8 @@ export interface fixedPriceSaleCommitments_sale {
   /**
    * Token investor get
    */
-  tokenOut: fixedPriceSaleCommitments_sale_tokenOut;
-  launchedTemplate: fixedPriceSaleCommitments_sale_launchedTemplate | null;
+  tokenOut: fixedPriceSaleCommitments_sale_tokenOut
+  launchedTemplate: fixedPriceSaleCommitments_sale_launchedTemplate | null
 }
 
 export interface fixedPriceSaleCommitments {

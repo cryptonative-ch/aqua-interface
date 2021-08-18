@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SaleStatus } from "./globalTypes";
+import { SaleStatus } from './globalTypes'
 
 // ====================================================
 // GraphQL fragment: fairSaleResults
@@ -65,7 +65,7 @@ export interface fairSaleResults {
   /**
    * Sale status: open/ended/settled/upcoming
    */
-  status: SaleStatus;
+  status: SaleStatus
   /**
    * Date of the sale start
    */

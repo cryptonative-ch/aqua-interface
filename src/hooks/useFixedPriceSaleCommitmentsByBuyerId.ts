@@ -61,6 +61,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
     })
 
     const unixDateNow = dayjs(Date.now()).unix()
+    // @TODO fetch claims data from subgraph
     sales
       .filter(
         purchase =>
