@@ -31,7 +31,6 @@ import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
 
 // sales summary
 import { SaleClock } from 'src/views/Sales/components/SaleClock'
-import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 const Icon = styled.img<SpaceProps>(
   {

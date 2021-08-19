@@ -14,8 +14,6 @@ import {
   GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale,
 } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 
-import { ClaimState } from 'src/hooks/useTokenClaim'
-
 //helpers
 import { aggregatePurchases } from 'src/utils'
 
