@@ -78,7 +78,7 @@ export function SalesView() {
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
   const { account } = useWeb3React()
-  const { saleIds, sales: userSales } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
+  const { saleIds, sales: userSales, loading: userLoading } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -124,7 +124,7 @@ export function SalesView() {
         sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]
       )
     }
-  }, [saleStatus, loading])
+  }, [saleStatus, loading, userLoading])
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
