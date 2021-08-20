@@ -94,9 +94,16 @@ export const TokenClaim = ({ sale, amount }: TokenClaimProps) => {
             )} ${sale?.tokenIn.symbol}`}</CardText>
           </Flex>
           <SaleClock sale={sale} margin="4px 0 16px 0" />
-          <Button onClick={() => claimTokens(sale!.id)} width="90%">
-            {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
-          </Button>
+
+          {claim === ClaimState.PROCESSED ? (
+            <Button disabled width="90%">
+              {isMobile ? t('buttons.shortClaimed') : t('buttons.tokensClaimed')}
+            </Button>
+          ) : (
+            <Button onClick={() => claimTokens(sale!.id)} width="90%">
+              {isMobile ? t('buttons.shortClaim') : t('buttons.claimTokens')}
+            </Button>
+          )}
         </Flex>
       </CardBody>
     </Card>

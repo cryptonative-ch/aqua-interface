@@ -78,7 +78,9 @@
     "sendFeedback": "Send Feedback",
     "sendFeedbackDescription": "Use this form to send your feedback",
     "reportBug": "Report bug or enhancement",
-    "reportBugDescription": "Open a new issue on Github"
+    "reportBugDescription": "Open a new issue on Github",
+    "tokensClaimed": "Tokens Claimed",
+    "shortClaimed": "Claimed"
   },
   "errors": {
     "claim": "Failed to claim",

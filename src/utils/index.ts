@@ -112,7 +112,7 @@ const getFairSale = (): FairSale => ({
   },
   minBidAmount: formatDecimal('10.000000000000000000'),
   bids: [],
-  type: 'FairSale',
+  __typename: 'FairSale',
   minFundingThreshold: 100,
 })
 
@@ -125,7 +125,7 @@ export const getFixedPriceSales = (): FixedPriceSale => ({
   startDate: 1585654141,
   endDate: 1617193741,
   name: 'Omen',
-  type: 'FixedPriceSale',
+  __typename: 'FixedPriceSale',
   tokenPrice: BigNumber.from(100),
   sellAmount: BigNumber.from('0x2A'),
   soldAmount: BigNumber.from(5000),

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SaleStatus } from "./globalTypes";
+import { SaleStatus } from './globalTypes'
 
 // ====================================================
 // GraphQL fragment: fixedPriceSaleUsers
@@ -50,15 +50,15 @@ export interface fixedPriceSaleUsers_sale_tokenOut {
 }
 
 export interface fixedPriceSaleUsers_sale_launchedTemplate {
-  __typename: "LaunchedSaleTemplate";
+  __typename: 'LaunchedSaleTemplate'
   /**
    * Address of the template
    */
-  id: string;
+  id: string
   /**
    * IPFS content hash
    */
-  metadataContentHash: string | null;
+  metadataContentHash: string | null
 }
 
 export interface fixedPriceSaleUsers_sale {
@@ -74,7 +74,7 @@ export interface fixedPriceSaleUsers_sale {
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: SaleStatus;
+  status: SaleStatus
   /**
    * The UTC timestamp at which the sale starts
    */
@@ -90,11 +90,11 @@ export interface fixedPriceSaleUsers_sale {
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any;
+  sellAmount: any
   /**
    * Minimum raise threshold
    */
-  minRaise: any;
+  minRaise: any
   /**
    * Minimum token amount per commitment
    */
@@ -114,8 +114,8 @@ export interface fixedPriceSaleUsers_sale {
   /**
    * Token investor get
    */
-  tokenOut: fixedPriceSaleUsers_sale_tokenOut;
-  launchedTemplate: fixedPriceSaleUsers_sale_launchedTemplate | null;
+  tokenOut: fixedPriceSaleUsers_sale_tokenOut
+  launchedTemplate: fixedPriceSaleUsers_sale_launchedTemplate | null
 }
 
 export interface fixedPriceSaleUsers {

@@ -11,7 +11,8 @@ import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { Flex } from 'src/components/Flex'
 import { Spinner } from 'src/components/Spinner'
-import { FormButton, ButtonProps } from 'src/components/FormButton'
+import { ButtonProps } from 'src/components/FormButton'
+import { Button } from 'src/components/Button'
 
 // Aqua Utils
 import { isSaleClosed } from 'src/aqua/sale'
@@ -24,7 +25,7 @@ import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } fro
 import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
-const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
+const ClaimButtons = styled(Button)<ButtonProps>(props => ({
   height: '40px',
   fontWeight: '500' as Property.FontWeight,
   padding: '0 16px',
@@ -68,9 +69,13 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
               <ClaimButtons mr="16px" disabled={false} type="button">
                 {claimError?.message}
               </ClaimButtons>
+            ) : claim === ClaimState.PROCESSED ? (
+              <ClaimButtons disabled mr="16px" type="button">
+                {t('buttons.tokensClaimed')}
+              </ClaimButtons>
             ) : (
               <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(sale.id)}>
-                Claim Tokens
+                {t('buttons.claimTokens')}
               </ClaimButtons>
             )
           ) : claim === ClaimState.VERIFY ? (
@@ -79,7 +84,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
             </ClaimButtons>
           ) : (
             <ClaimButtons
-              disabled={claim === ClaimState.CLAIMED ? true : false}
+              disabled={claim === ClaimState.PROCESSED ? true : false}
               type="button"
               onClick={() => claimTokens(sale.id)}
               background="#7B7F93"

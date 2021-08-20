@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SaleStatus } from "./globalTypes";
+import { SaleStatus } from './globalTypes'
 
 // ====================================================
 // GraphQL query operation: GetSingleSale
@@ -50,15 +50,15 @@ export interface GetSingleSale_fixedPriceSale_tokenOut {
 }
 
 export interface GetSingleSale_fixedPriceSale_launchedTemplate {
-  __typename: "LaunchedSaleTemplate";
+  __typename: 'LaunchedSaleTemplate'
   /**
    * Address of the template
    */
-  id: string;
+  id: string
   /**
    * IPFS content hash
    */
-  metadataContentHash: string | null;
+  metadataContentHash: string | null
 }
 
 export interface GetSingleSale_fixedPriceSale {
@@ -74,7 +74,7 @@ export interface GetSingleSale_fixedPriceSale {
   /**
    * Sale status: open/ended/settled/upcoming/cancelled/failed
    */
-  status: SaleStatus;
+  status: SaleStatus
   /**
    * The UTC timestamp at which the sale starts
    */
@@ -90,11 +90,11 @@ export interface GetSingleSale_fixedPriceSale {
   /**
    * Amount of tokens to sell
    */
-  sellAmount: any;
+  sellAmount: any
   /**
    * Minimum raise threshold
    */
-  minRaise: any;
+  minRaise: any
   /**
    * Minimum token amount per commitment
    */
@@ -114,8 +114,8 @@ export interface GetSingleSale_fixedPriceSale {
   /**
    * Token investor get
    */
-  tokenOut: GetSingleSale_fixedPriceSale_tokenOut;
-  launchedTemplate: GetSingleSale_fixedPriceSale_launchedTemplate | null;
+  tokenOut: GetSingleSale_fixedPriceSale_tokenOut
+  launchedTemplate: GetSingleSale_fixedPriceSale_launchedTemplate | null
 }
 
 export interface GetSingleSale_fairSale_tokenIn {
@@ -174,7 +174,7 @@ export interface GetSingleSale_fairSale {
   /**
    * Sale status: open/ended/settled/upcoming
    */
-  status: SaleStatus;
+  status: SaleStatus
   /**
    * Date of the sale start
    */
