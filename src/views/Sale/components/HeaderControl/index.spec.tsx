@@ -42,7 +42,7 @@ const wrapper = (status: string) => {
 describe('HeaderControl', () => {
   test.skip('should display texts and logo img', () => {
     const { getByText, getByTestId } = wrapper('closed')
-    expect(getByText('Missed out on the sale? You can get ERT on')).toBeInTheDocument()
+    expect(getByText('Missed out on the sale? You can get DXD on')).toBeInTheDocument()
     expect(getByText('Go to Swapr')).toBeInTheDocument()
     expect(getByTestId('logo-img')).toBeInTheDocument()
   })

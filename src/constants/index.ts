@@ -19,6 +19,7 @@ export const SUPPORTED_CHAINS = {
       factory: '0xa1Bf3bfDbC86Fd6eC7E2d9707609d7fAc0d93EeF',
       saleLauncher: '0x6085eb96659B0e90bc59288750C8306eE390fA99',
       templateLauncher: '0x569DD258D95c8f558AAf6fe808a0cfC00D941565',
+      subgraph: 'https://api.thegraph.com/subgraphs/name/mprasanjith/aqua-rinkeby-next',
     },
     parameters: {
       chainId: '0x4',

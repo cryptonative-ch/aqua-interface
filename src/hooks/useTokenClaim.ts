@@ -25,6 +25,7 @@ export enum ClaimState {
 interface useTokenClaimReturns {
   claim: ClaimState | null
   claimTokens: (saleId: string) => void
+  closeSale: (saleId: string, handleClose: (closed: boolean) => void) => void
   transaction: ContractReceipt | null
   error: Error | null
 }
@@ -34,7 +35,12 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const { claimToken: claim, error, transaction, amount } = useSelector(
+  const {
+    claimToken: claim,
+    error,
+    transaction,
+    amount,
+  } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
         claimToken: ClaimState.UNCLAIMED,
@@ -53,17 +59,26 @@ export function useTokenClaim(
     }
   }, [account, chainId, library])
 
-  const claimTokens = (saleId: string) => {
+  const closeSale = (saleId: string, handleClose: (closed: boolean) => void) => {
     //take this out before production
     if (account) {
       FixedPriceSale__factory.connect(saleId, signer)
         .closeSale()
-        .then((tx: ContractTransaction) => {
-          return tx.wait(1)
+        .then(tx => tx.wait(1)) // wait one network confirmation
+        .then(() => {
+          toast.success(t('success.saleClosed'))
+          handleClose(true)
         })
         .catch((error: Error) => {
           console.error(error)
+          toast.error(t('errors.saleClose'))
         })
+    }
+  }
+
+  const claimTokens = (saleId: string) => {
+    //take this out before production
+    if (account) {
       // Withdraw tokens - withdraws investment or purchase depending on if successful
       FixedPriceSale__factory.connect(saleId, signer)
         .withdrawTokens(account)
@@ -109,6 +124,7 @@ export function useTokenClaim(
   return {
     claim,
     claimTokens,
+    closeSale,
     error,
     transaction,
   }

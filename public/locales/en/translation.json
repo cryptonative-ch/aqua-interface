@@ -61,7 +61,10 @@
     "continuePurchase": "Continue Purchase",
     "haveFeedback": "Have feedback about Aqua?",
     "noTokens": "No Tokens Available to Claim",
-    "participatedSales": "Participated Sales"
+    "participatedSales": "Participated Sales",
+    "closeSale": "Close Sale",
+    "saleNotClosedClaim": "This sale is finished but has not been closed yet. To claim tokens the sale must be closed.",
+    "closeOrWait": "You can do this yourself or wait until the sale creator closes the sale."
   },
   "buttons": {
     "back": "Back",
@@ -89,12 +92,14 @@
     "fetchSale": "Failed to fetch sales",
     "fetchBalance": "Failed to fetch token balance for user",
     "fetchTokens": "Failed to fetch tokens for user",
-    "purchase": "Failed to purchase tokens"
+    "purchase": "Failed to purchase tokens",
+    "closeSale": "Failed to close sale"
   },
   "success": {
     "claim": "Claimed tokens",
     "withdraw": "Withdrew tokens",
     "purchase": "Purchased tokens",
-    "approve": "Approved funds"
+    "approve": "Approved funds",
+    "saleClosed": "Sale closed"
   }
 }

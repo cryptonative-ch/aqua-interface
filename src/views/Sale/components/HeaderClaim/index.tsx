@@ -1,5 +1,5 @@
 // External
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ import { CardBody } from 'src/components/CardBody'
 import { Flex } from 'src/components/Flex'
 import { Spinner } from 'src/components/Spinner'
 import { FormButton, ButtonProps } from 'src/components/FormButton'
+import { Modal } from 'src/components/Modal'
 
 // Aqua Utils
 import { isSaleClosed } from 'src/aqua/sale'
@@ -23,6 +24,8 @@ import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } fro
 // Hooks
 import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { SaleStatus } from 'src/subgraph/__generated__/globalTypes'
+import { useModal } from 'src/hooks/useModal'
 
 const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
   height: '40px',
@@ -42,9 +45,19 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const { isMobile } = useWindowSize()
   const theme = useTheme()
   const [t] = useTranslation()
-  const { error: claimError, claim, claimTokens } = useTokenClaim(sale)
+  const [isSaleStatusClosed, setIsSaleStatusClosed] = useState<boolean>(sale.status === SaleStatus.CLOSED)
+  const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
+  const { claim, claimTokens, closeSale } = useTokenClaim(sale)
   const threshold = BigNumber.from(sale.minRaise)
   const tokensSold = BigNumber.from(sale.soldAmount)
+
+  const confirmationModalContent = (
+    <div>
+      <p>{t('texts.saleNotClosedClaim')}</p>
+      <p>{t('texts.closeOrWait')}</p>
+    </div>
+  )
+
   return (
     <CardBody
       display="flex"
@@ -59,37 +72,40 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
       <Flex flex={1} />
       {isSaleClosed(sale as FIX_LATER) && !isMobile && (
         <>
-          {tokensSold.gte(threshold) ? (
-            claim === ClaimState.VERIFY ? (
-              <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
-                <Spinner />
-              </ClaimButtons>
-            ) : claim === ClaimState.FAILED ? (
-              <ClaimButtons mr="16px" disabled={false} type="button">
-                {claimError?.message}
-              </ClaimButtons>
-            ) : (
-              <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(sale.id)}>
-                Claim Tokens
-              </ClaimButtons>
-            )
-          ) : claim === ClaimState.VERIFY ? (
-            <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
+          {claim === ClaimState.VERIFY ? (
+            <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
               <Spinner />
             </ClaimButtons>
           ) : (
             <ClaimButtons
-              disabled={claim === ClaimState.CLAIMED ? true : false}
+              disabled={false}
+              mr="16px"
               type="button"
-              onClick={() => claimTokens(sale.id)}
-              background="#7B7F93"
-              color="#fff"
+              onClick={() => {
+                if (isSaleStatusClosed) {
+                  claimTokens(sale.id)
+                } else {
+                  toggleConfirmation()
+                }
+              }}
             >
-              Withdraw Failed Bids
+              {tokensSold.gte(threshold) ? 'Claim Tokens' : 'Withdraw Failed Bids'}
             </ClaimButtons>
           )}
         </>
       )}
+
+      <Modal
+        isShown={isModalShown}
+        hide={toggleConfirmation}
+        modalContent={confirmationModalContent}
+        headerText={t('texts.closeSale')}
+        onConfirm={() => {
+          toggleConfirmation()
+          closeSale(sale.id, setIsSaleStatusClosed)
+        }}
+        confirmText={t('texts.closeSale')}
+      />
     </CardBody>
   )
 }
