@@ -14,6 +14,7 @@ import { setClaimStatus } from 'src/redux/claims'
 
 //interface
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
+import { ProviderRpcError } from 'src/interfaces/Error'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -92,7 +93,19 @@ export function useTokenClaim(
             })
           )
         })
-        .catch((error: Error) => {
+        .catch((error: ProviderRpcError) => {
+          if (error.code == 4001) {
+            return dispatch(
+              setClaimStatus({
+                sale: sale,
+                claimToken: ClaimState.UNCLAIMED,
+                error: error,
+                transaction: null,
+                amount: amount,
+              })
+            )
+          }
+
           console.error(error)
           toast.error(t('errors.claim'))
           return dispatch(
