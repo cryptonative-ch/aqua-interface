@@ -64,7 +64,7 @@ export function useTokenClaim(
     if (account) {
       FixedPriceSale__factory.connect(saleId, signer)
         .closeSale()
-        .then(tx => tx.wait(1)) // wait one network confirmation
+        .then(tx => tx.wait(1))
         .then(() => {
           toast.success(t('success.saleClosed'))
           handleClose(true)
@@ -77,7 +77,6 @@ export function useTokenClaim(
   }
 
   const claimTokens = (saleId: string) => {
-    //take this out before production
     if (account) {
       // Withdraw tokens - withdraws investment or purchase depending on if successful
       FixedPriceSale__factory.connect(saleId, signer)
