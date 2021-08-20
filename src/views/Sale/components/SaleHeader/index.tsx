@@ -104,18 +104,6 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
   const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(sale.startDate))
   const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(sale.endDate))
 
-  // setting state to update the timer more frequently than the bids
-  const [, setTime] = useState(0)
-
-  // re-renders component every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
-
   let format_time = ''
   if (isSaleUpcoming(sale)) {
     format_time = secondsTohms(time_diff_start)

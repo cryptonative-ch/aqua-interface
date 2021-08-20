@@ -5,7 +5,7 @@
 import { useTheme } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useParams } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { utils } from 'ethers'
 
@@ -76,6 +76,7 @@ export function FixedPriceSaleView() {
   const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
   const [t] = useTranslation()
   const { saleIds } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
+  const [_, setTime] = useState(0)
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -98,6 +99,14 @@ export function FixedPriceSaleView() {
   if (!sale) {
     return <NotFoundView />
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>
