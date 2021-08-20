@@ -76,12 +76,15 @@
     "backToSales": "Back to all sales",
     "claimTokens": "Claim Tokens",
     "shortClaim": "Claim",
+    "withdrawFailedCommitments": "Withdraw Failed Commitment",
     "done": "Done",
     "changetoxDaiNetwork": "Change to xDai Network",
     "sendFeedback": "Send Feedback",
     "sendFeedbackDescription": "Use this form to send your feedback",
     "reportBug": "Report bug or enhancement",
-    "reportBugDescription": "Open a new issue on Github"
+    "reportBugDescription": "Open a new issue on Github",
+    "tokensClaimed": "Tokens Claimed",
+    "shortClaimed": "Claimed"
   },
   "errors": {
     "claim": "Failed to claim",

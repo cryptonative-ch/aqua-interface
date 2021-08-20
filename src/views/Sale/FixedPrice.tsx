@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 
 // External
 import { useTheme } from 'styled-components'
@@ -48,7 +49,7 @@ import { useIpfsFile } from 'src/hooks/useIpfsFile'
 // Hooks
 import { useBids } from 'src/hooks/useBids'
 import { useTranslation } from 'react-i18next'
-
+import { useFixedPriceSaleCommitmentsByBuyerIdQuery } from 'src/hooks/useFixedPriceSaleCommitmentsByBuyerId'
 //helpers
 import { aggregatePurchases } from 'src/utils'
 
@@ -74,6 +75,7 @@ export function FixedPriceSaleView() {
   const { bids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
   const [t] = useTranslation()
+  const { saleIds } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {

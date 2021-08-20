@@ -11,7 +11,8 @@ import { CardTitle } from 'src/components/CardTitle'
 import { CardBody } from 'src/components/CardBody'
 import { Flex } from 'src/components/Flex'
 import { Spinner } from 'src/components/Spinner'
-import { FormButton, ButtonProps } from 'src/components/FormButton'
+import { ButtonProps } from 'src/components/FormButton'
+import { Button } from 'src/components/Button'
 import { Modal } from 'src/components/Modal'
 
 // Aqua Utils
@@ -27,7 +28,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { SaleStatus } from 'src/subgraph/__generated__/globalTypes'
 import { useModal } from 'src/hooks/useModal'
 
-const ClaimButtons = styled(FormButton)<ButtonProps>(props => ({
+const ClaimButtons = styled(Button)<ButtonProps>(props => ({
   height: '40px',
   fontWeight: '500' as Property.FontWeight,
   padding: '0 16px',
@@ -76,10 +77,12 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
             <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
               <Spinner />
             </ClaimButtons>
+          ) : claim === ClaimState.PROCESSED ? (
+            <ClaimButtons disabled mr="16px" type="button">
+              {t('buttons.tokensClaimed')}
+            </ClaimButtons>
           ) : (
             <ClaimButtons
-              disabled={false}
-              mr="16px"
               type="button"
               onClick={() => {
                 if (isSaleStatusClosed) {
@@ -89,7 +92,7 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
                 }
               }}
             >
-              {tokensSold.gte(threshold) ? 'Claim Tokens' : 'Withdraw Failed Bids'}
+              {tokensSold.gte(threshold) ? t('buttons.claimTokens') : t('buttons.withdrawFailedCommitments')}
             </ClaimButtons>
           )}
         </>

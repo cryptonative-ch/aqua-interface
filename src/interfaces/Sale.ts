@@ -9,7 +9,7 @@ interface BaseSale {
   status: string // open/ended/settled/upcoming
   startDate: number // Open timestamp
   endDate: number // Close timestamp
-  type: SaleType // sale type, i.e fairsale or fixedPriceSale
+  __typename: SaleType // sale type, i.e fairsale or fixedPriceSale
 }
 
 export interface Bid {
