@@ -1,6 +1,6 @@
 // Externals
 import configureMockStore from 'redux-mock-store'
-import { mockServer } from 'graphql-tools'
+import { mockServer } from '@graphql-tools/mock'
 import thunk from 'redux-thunk'
 
 //mocks

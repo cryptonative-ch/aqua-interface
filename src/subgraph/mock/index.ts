@@ -1,6 +1,10 @@
 // Externals
-import { MockList } from 'graphql-tools'
+import { IMockStore } from '@graphql-tools/mock'
 import casual from 'casual-browserify'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+
+dayjs.extend(advancedFormat)
 
 // schema
 
@@ -75,6 +79,7 @@ type FairSale implements EntityMetadata {
   minFundingThreshold: Int
   "List of bids"
   bids: [FairSaleBid!]
+  launchedTemplate: LaunchedSaleTemplate
 }
 
 # FairSaleUser
@@ -157,6 +162,7 @@ type FixedPriceSale implements EntityMetadata {
   users: [FixedPriceSaleUser!]
   "List of withdrawals"
   withdrawals: [FixedPriceSaleWithdrawal!]
+  launchedTemplate: LaunchedSaleTemplate
 }
 
 enum FixedPriceSaleCommitmentStatus {
@@ -272,15 +278,24 @@ type AquaLog {
 }
 
 type Query {
-  fairSales (id: ID): [FairSale]
-  fixedPriceSales (id: ID): [FixedPriceSale]
+  fairSales: [FairSale]
+  fixedPriceSales: [FixedPriceSale]
   fairSale (id: ID): FairSale
   fixedPriceSale (id: ID): FixedPriceSale
+  fixedPriceSaleCommitments: [FixedPriceSaleCommitment]
 }
 `
-const address = '0x###D####b########d###aA##e###c##eF##EE#c'
 
-const bigDecimal = '#####################'
+const address = '0x###D####b########d###aA##e###c##eF##EE#c'
+const fixedPriceSaleAddress = '0x257D5402b01056764d985aA44e154c07eF23EE6c'
+const fairSaleAddress = '0x092D3639b03826862d947aA58e031c79eF76EE9c'
+
+const bigDecimal = '#######00000000000000'
+
+const metadataContentHash = 'bafybeibozpgzagp4opgu5ugmja2hpwdnyh675ofi44xobizpyr5gzqrxnu'
+
+const oneDayAgo = dayjs().subtract(1, 'day').format("X");
+const oneDayLater = dayjs().add(1, 'day').format("X");
 
 export const preserveResolvers = false
 
@@ -290,92 +305,107 @@ export const mocks = {
   String: () => casual.name,
   Boolean: () => casual.boolean,
   FairSale: () => ({
-    id: () => '0x092D3639b03826862d947aA58e031c79eF76EE9c',
-    status: () => casual.random_element(['open', 'ended', 'upcoming', 'settled']),
-    name: () => casual.company_name,
-    createdAt: () => casual.unix_time,
-    updatedAt: () => casual.unix_time,
-    deletedAt: () => casual.unix_time,
-    startDate: () => casual.random_element([1621366543]),
-    endDate: () => casual.random_element([1621373743]),
-    tokensForSale: () => casual.numerify(bigDecimal),
-    minBidAmount: () => casual.numerify(bigDecimal),
-    tokenIn: () => ({
-      decimals: () => 18,
-    }),
-    tokenOut: () => ({
-      decimals: () => 18,
-    }),
-    minFundingThreshold: () => casual.integer(1, 1000),
-    bids: () => new MockList(1),
+    id: fairSaleAddress,
+    status: casual.random_element(['UPCOMING', 'FAILED', 'SETTLED', 'CLOSED', 'OPEN']),
+    name: casual.company_name,
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    startDate: oneDayAgo,
+    endDate: oneDayLater,
+    tokensForSale: casual.numerify(bigDecimal),
+    minBidAmount: casual.numerify(bigDecimal),
+    minFundingThreshold: casual.integer(1, 1000),
+    bids: [...new Array(1)],
   }),
   FixedPriceSale: () => ({
-    id: () => '0x257D5402b01056764d985aA44e154c07eF23EE6c',
-    name: () => casual.company_name,
-    createdAt: () => casual.unix_time,
-    updatedAt: () => casual.unix_time,
-    deletedAt: () => casual.unix_time,
-    startDate: () => casual.random_element([1621366543]),
-    endDate: () => casual.random_element([1623227147]),
-    sellAmount: () => casual.numerify(bigDecimal),
-    minRaise: () => casual.numerify(bigDecimal),
-    minCommitment: () => casual.numerify(bigDecimal),
-    maxCommitment: () => casual.numerify(bigDecimal),
-    tokenPrice: () => casual.numerify(bigDecimal),
-    soldAmount: () => casual.numerify(bigDecimal),
-    tokenIn: () => ({
-      decimals: () => 18,
-    }),
-    tokenOut: () => ({
-      decimals: () => 18,
-    }),
-    commitments: () => new MockList(1),
-    users: () => new MockList(1),
-    withdrawals: () => new MockList(1),
+    id: fixedPriceSaleAddress,
+    name: casual.company_name,
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    startDate: oneDayAgo,
+    endDate: oneDayLater,
+    sellAmount: casual.numerify(bigDecimal),
+    minRaise: casual.numerify(bigDecimal),
+    minCommitment: casual.numerify(bigDecimal),
+    maxCommitment: casual.numerify(bigDecimal),
+    tokenPrice: casual.numerify(bigDecimal),
+    soldAmount: casual.numerify(bigDecimal),
+    commitments: [...new Array(1)],
+    users: [...new Array(1)],
+    withdrawals: [...new Array(1)],
   }),
   FairSaleUser: () => ({
     createdAt: casual.unix_time,
     updatedAt: casual.unix_time,
     deletedAt: casual.unix_time,
     address: casual.numerify(address),
-    ownerId: () => casual.integer(1, 1000),
+    ownerId: casual.integer(1, 1000),
   }),
   FairSaleBid: () => ({
-    createdAt: () => casual.unix_time,
-    updatedAt: () => casual.unix_time,
-    deletedAt: () => casual.unix_time,
-    status: () => casual.random_element(['submitted', 'cancelled', 'settled', 'claimed']),
-    tokenInAmount: () => casual.numerify(bigDecimal),
-    tokenOutAmount: () => casual.numerify(bigDecimal),
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    status: casual.random_element(['submitted', 'cancelled', 'settled', 'claimed']),
+    tokenInAmount: casual.numerify(bigDecimal),
+    tokenOutAmount: casual.numerify(bigDecimal),
   }),
   FixedPriceSaleUser: () => ({
     createdAt: casual.unix_time,
     updatedAt: casual.unix_time,
     deletedAt: casual.unix_time,
-    totalCommitment: () => casual.integer(1, 10),
-    totalVolume: () => casual.numerify(bigDecimal),
+    totalCommitment: casual.integer(1, 10),
+    totalVolume: casual.numerify(bigDecimal),
     address: casual.numerify(address),
   }),
   FixedPriceSaleCommitment: () => ({
-    createdAt: () => casual.unix_time,
-    updatedAt: () => casual.unix_time,
-    deletedAt: () => casual.unix_time,
-    amount: () => casual.numerify(bigDecimal),
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    amount: casual.numerify(bigDecimal),
   }),
   FixedPriceSaleWithdrawal: () => ({
-    createdAt: () => casual.unix_time,
-    updatedAt: () => casual.unix_time,
-    deletedAt: () => casual.unix_time,
-    amount: () => casual.numerify(bigDecimal),
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    amount: casual.numerify(bigDecimal),
+  }),
+  LaunchedSaleTemplate: () => ({
+    createdAt: casual.unix_time,
+    updatedAt: casual.unix_time,
+    deletedAt: casual.unix_time,
+    address: casual.numerify(address),
+    metadataContentHash: metadataContentHash,
   }),
   Token: () => ({
-    id: () => casual.numerify(address),
-    name: () => casual.company_name,
-    symbol: () => casual.state_abbr,
-    decimals: () => casual.integer(1, 18),
+    id: casual.numerify(address),
+    name: casual.company_name,
+    symbol: casual.state_abbr,
+    decimals: casual.integer(1, 18),
   }),
   Query: () => ({
-    fairSales: () => new MockList(1),
-    fixedPriceSales: () => new MockList(1),
+    fairSales: [...new Array(1)],
+    fixedPriceSales: [...new Array(1)],
+    fixedPriceSaleCommitments: [...new Array(1)],
   }),
 }
+
+export const resolvers = (store: IMockStore) => ({
+  FairSale: {
+    tokenIn: () => store.get('Token', { decimals: 18 }),
+    tokenOut: () => store.get('Token', { decimals: 18 }),
+  },
+  FixedPriceSale: {
+    tokenIn: () => store.get('Token', { decimals: 18 }),
+    tokenOut: () => store.get('Token', { decimals: 18 })
+  },
+  Query: {
+    fixedPriceSale: (_: any, { id }: { id: string }) => {
+      return id == fixedPriceSaleAddress ? store.get('FixedPriceSale', id) : null
+    },
+    fairSale: (_: any, { id }: { id: string }) => {
+      return id == fairSaleAddress ? store.get('FairSale', id) : null
+    },
+  },
+})

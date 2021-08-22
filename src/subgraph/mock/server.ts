@@ -3,12 +3,12 @@
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from 'graphql'
-import { addMocksToSchema } from 'graphql-tools'
+import { addMocksToSchema } from '@graphql-tools/mock'
 import cors from 'cors'
 
 // mocks
 // eslint-disable-next-line no-restricted-imports
-import { schemaString, mocks } from './index'
+import { schemaString, mocks, resolvers, preserveResolvers } from './index'
 
 const app = express()
 
@@ -19,6 +19,8 @@ app.use(cors())
 const buildschema = addMocksToSchema({
   schema,
   mocks,
+  resolvers,
+  preserveResolvers
 })
 
 app.use(
