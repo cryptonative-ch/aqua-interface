@@ -1,7 +1,6 @@
 // External
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Property } from 'csstype'
 import { BigNumber } from '@ethersproject/bignumber'

@@ -15,7 +15,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Actions
 
 // Components
-import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
 import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
