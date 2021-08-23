@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // Externals
-import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useWeb3React } from '@web3-react/core'
+import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useTheme } from 'styled-components'
@@ -15,7 +13,6 @@ import { useElementWidth } from 'src/hooks/useElementWidth'
 import { useWindowSize } from 'src/hooks/useWindowSize'
 
 // Actions
-import { setPageTitle } from 'src/redux/page'
 
 // Components
 import { MobileFooter } from 'src/components/MobileFooter'
@@ -34,15 +31,14 @@ import { TokenFooter } from 'src/views/Sale/components/TokenFooter'
 import { HeaderItem } from 'src/views/Sale/components/HeaderItem'
 import { SaleHeader } from 'src/views/Sale/components/SaleHeader'
 import { BarChart } from 'src/views/Sale/components/BarChart'
+import { Center } from 'src/layouts/Center'
+import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Aqua Utils
 import { calculateClearingPrice } from 'src/aqua/price'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils'
-
-// Wallet Utils
-import { getRandomWallet } from 'src/utils/wallets'
 
 // Views
 import { NotFoundView } from 'src/views/NotFound'
@@ -51,8 +47,8 @@ import { NotFoundView } from 'src/views/NotFound'
 import { FairBidPick } from 'src/interfaces/Sale'
 
 // Hooks
-import { useSale } from 'src/hooks/useSale'
 import { FIX_LATER } from 'src/interfaces'
+import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -68,21 +64,20 @@ interface SaleViewParams {
 }
 
 export function FairSaleView() {
-  const { account } = useWeb3React()
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
-  const [userAddress, setUserAddress] = useState<string>('')
+  const [userAddress] = useState<string>('')
   const [clearingPrice] = useState<FairBidPick>()
   const ref = useRef<HTMLElement>()
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
   const params = useParams<SaleViewParams>()
-  const dispatch = useDispatch()
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const { sale } = useSale(params.saleId)
-  const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
+  const {  error, loading, sale } = useFairSaleQuery(params.saleId)
+  // const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
+  const bids: any[] = [];
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -90,13 +85,17 @@ export function FairSaleView() {
     }
   }
 
-  useEffect(() => {
-    if (!userAddress) {
-      setUserAddress(account || getRandomWallet().address)
-    }
+  if (loading) {
+    return <Center minHeight="100vh">loading</Center>
+  }
 
-    dispatch(setPageTitle(t(sale?.name as string)))
-  })
+  if (error) {
+    return (
+      <Center>
+        <ErrorMessage error={error} />
+      </Center>
+    )
+  }
 
   if (!sale) {
     return <NotFoundView />
@@ -106,7 +105,7 @@ export function FairSaleView() {
     <Container minHeight="100%" inner={false} noPadding={true}>
       <Container noPadding>
         {!isMobile && <BackButton />}
-        <SaleHeader sale={sale} />
+        <SaleHeader sale={sale as any} />
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="column" flex={1}>
             <Card border="none" marginX={isMobile ? '8px' : '0'}>
@@ -144,7 +143,7 @@ export function FairSaleView() {
                         description=""
                         textAlign="right"
                         saleLive={true}
-                        sale={sale}
+                        sale={sale as FIX_LATER}
                       />
                     )}
                   </Flex>
@@ -175,7 +174,7 @@ export function FairSaleView() {
                         description=""
                         textAlign="right"
                         saleLive={true}
-                        sale={sale}
+                        sale={sale as FIX_LATER}
                         flexAmount={1.3}
                       />
                     )}
@@ -184,13 +183,13 @@ export function FairSaleView() {
               </CardBody>
               {isSaleOpen(sale) && bids && bids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
-                  <HeaderControl sale={sale} showGraph={showGraph} toggleGraph={toggleGraph} />
+                  <HeaderControl sale={sale as FIX_LATER} showGraph={showGraph} toggleGraph={toggleGraph} />
                 </CardBody>
               )}
               {isSaleClosed(sale) && (!bids || bids.length === 0) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
-                    sale={sale}
+                    sale={sale as FIX_LATER}
                     showGraph={showGraph}
                     toggleGraph={toggleGraph}
                     status={isSaleClosed(sale) ? 'closed' : 'active'}
@@ -221,7 +220,7 @@ export function FairSaleView() {
                     data={bids}
                     userAddress={userAddress}
                     vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 0}
-                    sale={sale}
+                    sale={sale as FIX_LATER}
                   />
                 </CardBody>
               )}
@@ -274,7 +273,7 @@ export function FairSaleView() {
                 <SelfBidList sale={sale as FIX_LATER} clearingPrice={clearingPrice} bids={bids as any} />
               </Card>
             )}
-            <TokenFooter sale={sale} />
+            <TokenFooter sale={sale as FIX_LATER} />
           </Flex>
           {isSaleOpen(sale) && !isMobile && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
@@ -290,7 +289,7 @@ export function FairSaleView() {
                       {
                       }
                     }}
-                    sale={sale}
+                    sale={sale as FIX_LATER}
                     currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
                   />
                 </CardBody>
