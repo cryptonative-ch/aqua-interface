@@ -168,7 +168,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
           justifyContent={isMobile && status === 'closed' ? 'center' : 'flex-start'}
           flex={1}
         >
-          <ControlTitle>You can get ERT on</ControlTitle>
+          <ControlTitle>You can get {sale.tokenOut.symbol} on</ControlTitle>
           <LogoImg data-testid="logo-img" src={LogoSVG} />
         </Flex>
         <FormButton
@@ -200,7 +200,7 @@ export function HeaderControl({ status, showGraph, toggleGraph, isFixed, sale }:
       >
         <ControlTitle>
           {status === 'closed'
-            ? 'Missed out on the sale? You can get ERT on'
+            ? `Missed out on the sale? You can get ${sale.tokenOut.symbol}  on`
             : 'How is the Current Price (CP) calculated?'}
         </ControlTitle>
         {status === 'closed' && <LogoImg data-testid="logo-img" src={LogoSVG} />}

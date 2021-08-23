@@ -1,5 +1,5 @@
 // External
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useTheme } from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ import { Flex } from 'src/components/Flex'
 import { Spinner } from 'src/components/Spinner'
 import { ButtonProps } from 'src/components/FormButton'
 import { Button } from 'src/components/Button'
+import { Modal } from 'src/components/Modal'
 
 // Aqua Utils
 import { isSaleClosed } from 'src/aqua/sale'
@@ -24,6 +25,8 @@ import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } fro
 // Hooks
 import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
 import { useWindowSize } from 'src/hooks/useWindowSize'
+import { SaleStatus } from 'src/subgraph/__generated__/globalTypes'
+import { useModal } from 'src/hooks/useModal'
 
 const ClaimButtons = styled(Button)<ButtonProps>(props => ({
   height: '40px',
@@ -43,9 +46,19 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   const { isMobile } = useWindowSize()
   const theme = useTheme()
   const [t] = useTranslation()
-  const { error: claimError, claim, claimTokens } = useTokenClaim(sale)
+  const [isSaleStatusClosed, setIsSaleStatusClosed] = useState<boolean>(sale.status === SaleStatus.CLOSED)
+  const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
+  const { claim, claimTokens, closeSale } = useTokenClaim(sale)
   const threshold = BigNumber.from(sale.minRaise)
   const tokensSold = BigNumber.from(sale.soldAmount)
+
+  const confirmationModalContent = (
+    <div>
+      <p>{t('texts.saleNotClosedClaim')}</p>
+      <p>{t('texts.closeOrWait')}</p>
+    </div>
+  )
+
   return (
     <CardBody
       display="flex"
@@ -60,41 +73,42 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
       <Flex flex={1} />
       {isSaleClosed(sale as FIX_LATER) && !isMobile && (
         <>
-          {tokensSold.gte(threshold) ? (
-            claim === ClaimState.VERIFY ? (
-              <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
-                <Spinner />
-              </ClaimButtons>
-            ) : claim === ClaimState.FAILED ? (
-              <ClaimButtons mr="16px" disabled={false} type="button">
-                {claimError?.message}
-              </ClaimButtons>
-            ) : claim === ClaimState.PROCESSED ? (
-              <ClaimButtons disabled mr="16px" type="button">
-                {t('buttons.tokensClaimed')}
-              </ClaimButtons>
-            ) : (
-              <ClaimButtons disabled={false} mr="16px" type="button" onClick={() => claimTokens(sale.id)}>
-                {t('buttons.claimTokens')}
-              </ClaimButtons>
-            )
-          ) : claim === ClaimState.VERIFY ? (
-            <ClaimButtons disabled={true} type="button" background="#7B7F93" color="#fff">
+          {claim === ClaimState.VERIFY ? (
+            <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
               <Spinner />
+            </ClaimButtons>
+          ) : claim === ClaimState.PROCESSED ? (
+            <ClaimButtons disabled mr="16px" type="button">
+              {t('buttons.tokensClaimed')}
             </ClaimButtons>
           ) : (
             <ClaimButtons
-              disabled={claim === ClaimState.PROCESSED ? true : false}
               type="button"
-              onClick={() => claimTokens(sale.id)}
-              background="#7B7F93"
-              color="#fff"
+              onClick={() => {
+                if (isSaleStatusClosed) {
+                  claimTokens(sale.id)
+                } else {
+                  toggleConfirmation()
+                }
+              }}
             >
-              Withdraw Failed Bids
+              {tokensSold.gte(threshold) ? t('buttons.claimTokens') : t('buttons.withdrawFailedCommitments')}
             </ClaimButtons>
           )}
         </>
       )}
+
+      <Modal
+        isShown={isModalShown}
+        hide={toggleConfirmation}
+        modalContent={confirmationModalContent}
+        headerText={t('texts.closeSale')}
+        onConfirm={() => {
+          toggleConfirmation()
+          closeSale(sale.id, setIsSaleStatusClosed)
+        }}
+        confirmText={t('texts.closeSale')}
+      />
     </CardBody>
   )
 }
