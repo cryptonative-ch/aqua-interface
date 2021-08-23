@@ -66,7 +66,7 @@ interface SaleViewParams {
 export function FairSaleView() {
   const { isMobile } = useWindowSize()
   const [showGraph, setShowGraph] = useState<boolean>(false)
-  const [userAddress, setUserAddress] = useState<string>('')
+  const [userAddress] = useState<string>('')
   const [clearingPrice] = useState<FairBidPick>()
   const ref = useRef<HTMLElement>()
   const { width: containerWidth, setWidth } = useElementWidth(ref)
