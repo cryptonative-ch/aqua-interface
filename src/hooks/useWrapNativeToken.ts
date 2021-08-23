@@ -1,14 +1,25 @@
 // External
+import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import { BigNumber } from 'ethers'
 
 // hooks
 import { useCPK } from 'src/hooks/useCPK'
 
-export async function useWrapNativeToken(
+interface useWrapNativeTokenReturns {
+  transactionHash: string | null
+  loading: boolean
+  error: Error | null
+}
+
+export function useWrapNativeToken(
   tokenAddress: string,
   value: BigNumber | number | string
-): Promise<TransactionResult> {
-  const { account, library, chainId } = useWeb3React()
+): useWrapNativeTokenReturns {
+  const [transactionHash, setTransactionHash] = useState<string | null>(null)
+  const [loading, setLoading] = useState<booelan>(false)
+  const [error, setError] = useState<Error | null>(null)
+  const { library } = useWeb3React()
 
   const { cpk } = useCPK(library)
 
@@ -17,21 +28,35 @@ export async function useWrapNativeToken(
   // approve transfer of value from CPK contract
   // transfer value to Sale contract
 
-  if (cpk) {
-    const { transactionResponse, hash, safeTxHash } = await cpk.execTransactions([
-      // approve deposit into WETH/WXDAI contract
-      {
-        // deposit into WETH/WXDAI contract
-        to: tokenAddress,
-        data: ERC20Interface.interface.functions.transfer.encode(),
-        value: value,
-      },
-    ])
-  }
+  useEffect(() => {
+    if (cpk) {
+      const makeSwap = async () => {
+        try {
+          setLoading(true)
+          const { hash } = await cpk.execTransactions([
+            {
+              to: tokenAddress,
+              data: ERC20Interface.interface.functions.transfer.encode(),
+              value: value,
+            },
+          ])
+          if (hash) {
+            setLoading(false)
+            setTransactionHash(hash)
+          }
+        } catch (error) {
+          setLoading(false)
+          setError(error)
+          console.error(error)
+        }
+      }
+      makeSwap()
+    }
+  }, [cpk])
 
   return {
-    transactionResponse,
-    hash,
-    safeTxHash,
+    transactionHash,
+    loading,
+    error,
   }
 }
