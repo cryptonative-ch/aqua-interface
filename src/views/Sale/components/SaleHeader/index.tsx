@@ -1,6 +1,6 @@
 // External
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import dayjs from 'dayjs'
 
 //Interfaces
@@ -103,18 +103,6 @@ export const SaleHeader: React.FC<SaleHeaderProps> = ({ sale }) => {
   // calculating time difference between local persons time and the start and end block times
   const time_diff_start: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(sale.startDate))
   const time_diff_end: number = Math.abs(dayjs(Date.now()).unix() - convertUtcTimestampToLocal(sale.endDate))
-
-  // setting state to update the timer more frequently than the bids
-  const [, setTime] = useState(0)
-
-  // re-renders component every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(PrevTime => PrevTime + 1), 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
 
   let format_time = ''
   if (isSaleUpcoming(sale)) {
