@@ -75,9 +75,9 @@ export function FairSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const {  error, loading, sale } = useFairSaleQuery(params.saleId)
+  const { error, loading, sale } = useFairSaleQuery(params.saleId)
   // const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
-  const bids: any[] = [];
+  const bids: any[] = []
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -298,7 +298,7 @@ export function FairSaleView() {
           )}
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {/* {isMobile && <MobileFooter />} */}
     </Container>
   )
 }

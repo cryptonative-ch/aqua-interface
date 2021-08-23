@@ -7,8 +7,6 @@ import { Property } from 'csstype'
 import { BigNumber } from '@ethersproject/bignumber'
 
 // Components
-import { CardTitle } from 'src/components/CardTitle'
-import { CardBody } from 'src/components/CardBody'
 import { Flex } from 'src/components/Flex'
 import { Spinner } from 'src/components/Spinner'
 import { ButtonProps } from 'src/components/FormButton'
@@ -24,10 +22,8 @@ import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } fro
 
 // Hooks
 import { ClaimState, useTokenClaim } from 'src/hooks/useTokenClaim'
-import { useWindowSize } from 'src/hooks/useWindowSize'
 import { SaleStatus } from 'src/subgraph/__generated__/globalTypes'
 import { useModal } from 'src/hooks/useModal'
-import { ClaimButton } from 'src/views/Sale/components/HeaderClaim/button'
 
 const ClaimButtons = styled(Button)<ButtonProps>(props => ({
   height: '40px',
@@ -43,9 +39,7 @@ interface HeaderClaimProps {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
 }
 
-export function HeaderClaim({ sale }: HeaderClaimProps) {
-  const { isMobile } = useWindowSize()
-  const theme = useTheme()
+export function ClaimButton({ sale }: HeaderClaimProps) {
   const [t] = useTranslation()
   const [isSaleStatusClosed, setIsSaleStatusClosed] = useState<boolean>(sale.status === SaleStatus.CLOSED)
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
@@ -61,18 +55,34 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
   )
 
   return (
-    <CardBody
-      display="flex"
-      padding={isMobile ? '16px' : theme.space[4]}
-      border="none"
-      flexDirection="row"
-      alignItems="center"
-    >
-      <CardTitle fontSize="16px" lineHeight="19px" color="#000629" fontWeight="500">
-        {t('texts.yourActivity')}
-      </CardTitle>
+    <div>
       <Flex flex={1} />
-      {isSaleClosed(sale as FIX_LATER) && !isMobile && <ClaimButton sale={sale} />}
+      {isSaleClosed(sale as FIX_LATER) && (
+        <>
+          {claim === ClaimState.VERIFY ? (
+            <ClaimButtons mr="16px" disabled={false} type="button" background="#304FFE" color="#fff">
+              <Spinner />
+            </ClaimButtons>
+          ) : claim === ClaimState.PROCESSED ? (
+            <ClaimButtons disabled mr="16px" type="button">
+              {t('buttons.tokensClaimed')}
+            </ClaimButtons>
+          ) : (
+            <ClaimButtons
+              type="button"
+              onClick={() => {
+                if (isSaleStatusClosed) {
+                  claimTokens(sale.id)
+                } else {
+                  toggleConfirmation()
+                }
+              }}
+            >
+              {tokensSold.gte(threshold) ? t('buttons.claimTokens') : t('buttons.withdrawFailedCommitments')}
+            </ClaimButtons>
+          )}
+        </>
+      )}
 
       <Modal
         isShown={isModalShown}
@@ -85,6 +95,6 @@ export function HeaderClaim({ sale }: HeaderClaimProps) {
         }}
         confirmText={t('texts.closeSale')}
       />
-    </CardBody>
+    </div>
   )
 }

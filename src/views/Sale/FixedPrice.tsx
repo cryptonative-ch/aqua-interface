@@ -244,7 +244,11 @@ export function FixedPriceSaleView() {
           )}
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {((isMobile && isSaleOpen(sale as FIX_LATER)) || (isSaleClosed(sale as FIX_LATER) && bids.length > 0)) && (
+        <div style={{ marginTop: '60%' }}>
+          <MobileFooter sale={sale as FIX_LATER} />
+        </div>
+      )}
     </Container>
   )
 }

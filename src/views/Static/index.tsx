@@ -69,7 +69,7 @@ export function StaticView() {
           </Flex>
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {/* {isMobile && <MobileFooter />} */}
     </Container>
   )
 }
