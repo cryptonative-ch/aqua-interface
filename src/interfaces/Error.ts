@@ -1,8 +1,5 @@
-export interface MetaMaskError {
-  code: number
+export interface ProviderRpcError extends Error {
   message: string
-  data: {
-    code: string
-    message: string
-  }
+  code: number
+  data?: unknown
 }
