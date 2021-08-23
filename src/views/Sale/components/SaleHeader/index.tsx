@@ -1,6 +1,6 @@
 // External
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import dayjs from 'dayjs'
 
 //Interfaces
