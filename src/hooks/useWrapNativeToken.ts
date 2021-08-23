@@ -6,6 +6,10 @@ import { BigNumber } from 'ethers'
 // hooks
 import { useCPK } from 'src/hooks/useCPK'
 
+// contract interface
+import { WXDAI__factory, WETH__factory, FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
+import { NumberLike } from 'contract-proxy-kit/lib/cjs/utils/basicTypes'
+
 interface useWrapNativeTokenReturns {
   transactionHash: string | null
   loading: boolean
@@ -14,16 +18,22 @@ interface useWrapNativeTokenReturns {
 
 export function useWrapNativeToken(
   tokenAddress: string,
-  value: BigNumber | number | string
+  saleAddress: string,
+  value: NumberLike
 ): useWrapNativeTokenReturns {
-  const [transactionHash, setTransactionHash] = useState<string | null>(null)
-  const [loading, setLoading] = useState<booelan>(false)
-  const [error, setError] = useState<Error | null>(null)
   const { library } = useWeb3React()
-
   const { cpk } = useCPK(library)
 
-  // approve deposit into WETH/WXDAI contract
+  const [transactionHash, setTransactionHash] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | null>(null)
+
+  const WETH = WETH__factory.connect(tokenAddress, library.getSigner())
+  const WXDAI = WXDAI__factory.connect(tokenAddress, library.getSigner())
+
+  // @TODO: new UI required?
+
+  // fund proxy with  ETH/XDAI before executing transactions
   // deposit into WETH/WXDAI contract
   // approve transfer of value from CPK contract
   // transfer value to Sale contract
@@ -36,7 +46,17 @@ export function useWrapNativeToken(
           const { hash } = await cpk.execTransactions([
             {
               to: tokenAddress,
-              data: ERC20Interface.interface.functions.transfer.encode(),
+              data: WETH.encodeFunctionData('deposit', value),
+              value: value,
+            },
+            {
+              to: saleAddress,
+              data: WETH.encodeFunctionData('approve', (saleAddress, value)),
+              value: value,
+            },
+            {
+              to: saleAddress,
+              data: WETH.encodeFunctionData('transfer', (saleAddress, value)),
               value: value,
             },
           ])
