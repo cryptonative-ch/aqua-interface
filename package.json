@@ -34,6 +34,7 @@
     "babel-preset-react-app": "^10.0.0",
     "casual-browserify": "^1.5.19-2",
     "chart.js": "^2.9.4",
+    "contract-proxy-kit": "^3.0.0",
     "csstype": "^3.0.5",
     "d3": "^6.5.0",
     "dayjs": "^1.10.4",

@@ -37,12 +37,7 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const {
-    claimToken: claim,
-    error,
-    transaction,
-    amount,
-  } = useSelector(
+  const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
         claimToken: ClaimState.UNCLAIMED,

@@ -2,7 +2,7 @@
 import { IMockStore } from '@graphql-tools/mock'
 import casual from 'casual-browserify'
 import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat';
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 dayjs.extend(advancedFormat)
 
@@ -294,8 +294,8 @@ const bigDecimal = '#######00000000000000'
 
 const metadataContentHash = 'bafybeibozpgzagp4opgu5ugmja2hpwdnyh675ofi44xobizpyr5gzqrxnu'
 
-const oneDayAgo = dayjs().subtract(1, 'day').format("X");
-const oneDayLater = dayjs().add(1, 'day').format("X");
+const oneDayAgo = dayjs().subtract(1, 'day').format('X')
+const oneDayLater = dayjs().add(1, 'day').format('X')
 
 export const preserveResolvers = false
 
@@ -398,7 +398,7 @@ export const resolvers = (store: IMockStore) => ({
   },
   FixedPriceSale: {
     tokenIn: () => store.get('Token', { decimals: 18 }),
-    tokenOut: () => store.get('Token', { decimals: 18 })
+    tokenOut: () => store.get('Token', { decimals: 18 }),
   },
   Query: {
     fixedPriceSale: (_: any, { id }: { id: string }) => {
