@@ -7,7 +7,7 @@ import { PurchaseTokensForm } from 'src/views/Sale/components/PurchaseTokensForm
 import { Sale } from 'src/interfaces/Sale'
 import { isSaleOpen, isSaleClosed } from 'src/aqua/sale'
 import { FIX_LATER } from 'src/interfaces'
-import { ClaimButton } from 'src/views/Sale/components/HeaderClaim/button'
+import { ClaimButton } from 'src/views/Sale/components/HeaderClaim/ClaimButton'
 
 export interface MobileFooterProps {
   onClick?: () => void
