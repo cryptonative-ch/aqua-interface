@@ -27,11 +27,11 @@ export function NotFoundView() {
   })
 
   return (
-    <Center minHeight="100%">
-      <Title color="#7B7F93" fontSize={96} lineHeight={116} fontWeight={700} width={197}>
+    <Center minHeight="calc(100vh - 72px)">
+      <Title color="#7B7F93" fontSize={96} fontWeight={700}>
         404
       </Title>
-      <Title marginBottom={56} width={800}>
+      <Title height={88} marginBottom={56}>
         {t('texts.pageNotFound')}
       </Title>
       <Link to="/">

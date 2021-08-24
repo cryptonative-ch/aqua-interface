@@ -31,10 +31,12 @@ export function useSaleQuery<T = Sale>(saleId: string): UseSaleQueryResult<T> {
   if (data) {
     sale = Object.values(data).find(sale => sale != null)
 
-    // Add type fields
-    sale = {
-      ...sale,
-      type: sale.__typename,
+    if (sale) {
+      // Add type fields
+      sale = {
+        ...sale,
+        type: sale.__typename,
+      }
     }
   }
 
