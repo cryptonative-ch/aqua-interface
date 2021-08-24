@@ -1,7 +1,6 @@
 // External
-import { useState, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { BigNumber } from 'ethers'
 
 // hooks
 import { useCPK } from 'src/hooks/useCPK'
@@ -11,6 +10,7 @@ import { WXDAI__factory, WETH__factory, FixedPriceSale__factory, FairSale__facto
 import { NumberLike } from 'contract-proxy-kit/lib/cjs/utils/basicTypes'
 
 interface useWrapNativeTokenReturns {
+  wrap: () => void
   transactionHash: string | null
   loading: boolean
   error: Error | null
@@ -27,9 +27,12 @@ export function useWrapNativeToken(
   const [transactionHash, setTransactionHash] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
+  const signer = library.getSigner()
 
-  const WETH = WETH__factory.connect(tokenAddress, library.getSigner())
-  const WXDAI = WXDAI__factory.connect(tokenAddress, library.getSigner())
+  const WETH = WETH__factory.connect(tokenAddress, signer)
+  const WXDAI = WXDAI__factory.connect(tokenAddress, signer)
+  const fixedPriceSale = FixedPriceSale__factory.connect(saleAddress, signer)
+  const fairSale = FairSale__factory.connect(saleAddress, signer)
 
   // @TODO: new UI required?
 
@@ -37,44 +40,48 @@ export function useWrapNativeToken(
   // deposit into WETH/WXDAI contract
   // approve transfer of value from CPK contract
   // transfer value to Sale contract
+  const tx = [
+    {
+      to: tokenAddress,
+      data: WETH.encodeFunctionData('deposit', value),
+      value: value,
+    },
+    {
+      to: saleAddress,
+      data: WETH.encodeFunctionData('approve', saleAddress, value),
+      value: value,
+    },
+    {
+      to: saleAddress,
+      data: fixedPriceSale.encodeFunctionData('commitTokens', value),
+      value: value,
+    },
+  ]
 
-  useEffect(() => {
+  const wrap = useCallback(async () => {
     if (cpk) {
-      const makeSwap = async () => {
-        try {
-          setLoading(true)
-          const { hash } = await cpk.execTransactions([
-            {
-              to: tokenAddress,
-              data: WETH.encodeFunctionData('deposit', value),
-              value: value,
-            },
-            {
-              to: saleAddress,
-              data: WETH.encodeFunctionData('approve', (saleAddress, value)),
-              value: value,
-            },
-            {
-              to: saleAddress,
-              data: WETH.encodeFunctionData('transfer', (saleAddress, value)),
-              value: value,
-            },
-          ])
-          if (hash) {
-            setLoading(false)
-            setTransactionHash(hash)
-          }
-        } catch (error) {
+      try {
+        setLoading(true)
+        await signer.sendTransaction({
+          to: cpk.address,
+          value: value,
+        })
+        const { hash } = await cpk.execTransactions(tx)
+
+        if (hash) {
           setLoading(false)
-          setError(error)
-          console.error(error)
+          return setTransactionHash(hash)
         }
+      } catch (error) {
+        setLoading(false)
+        setError(error)
+        console.error(error)
       }
-      makeSwap()
     }
   }, [cpk])
 
   return {
+    wrap,
     transactionHash,
     loading,
     error,

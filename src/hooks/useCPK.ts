@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+// External
+import { useState, useEffect, useCallback } from 'react'
 import CPK, { EthersAdapter } from 'contract-proxy-kit'
 import { ethers, providers } from 'ethers'
 
@@ -9,15 +10,16 @@ interface useCPKReturns {
 export function useCPK(library: providers.Web3Provider): useCPKReturns {
   const [cpk, setCPK] = useState<CPK | null>(null)
 
-  useEffect(() => {
-    const makeCpk = async () => {
-      if (library) {
-        const signer = library.getSigner()
-        const ethLibAdapter = new EthersAdapter({ ethers, signer: signer })
-        const service = await CPK.create({ ethLibAdapter })
-        setCPK(service)
-      }
+  const makeCpk = useCallback(async () => {
+    if (library) {
+      const signer = library.getSigner()
+      const ethLibAdapter = new EthersAdapter({ ethers, signer: signer })
+      const service = await CPK.create({ ethLibAdapter })
+      setCPK(service)
     }
+  }, [library])
+
+  useEffect(() => {
     makeCpk()
   }, [library])
 
