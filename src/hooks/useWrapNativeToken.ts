@@ -1,5 +1,5 @@
 // External
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 // hooks
@@ -29,10 +29,10 @@ export function useWrapNativeToken(
   const [error, setError] = useState<Error | null>(null)
   const signer = library.getSigner()
 
-  const WETH = WETH__factory.connect(tokenAddress, signer)
-  const WXDAI = WXDAI__factory.connect(tokenAddress, signer)
-  const fixedPriceSale = FixedPriceSale__factory.connect(saleAddress, signer)
-  const fairSale = FairSale__factory.connect(saleAddress, signer)
+  const WETH = useMemo(() => WETH__factory.connect(tokenAddress, signer), [WETH__factory])
+  const WXDAI = useMemo(() => WXDAI__factory.connect(tokenAddress, signer), [WXDAI__factory])
+  const fixedPriceSale = useMemo(() => FixedPriceSale__factory.connect(saleAddress, signer), [FixedPriceSale__factory])
+  const fairSale = useMemo(() => FairSale__factory.connect(saleAddress, signer), [FairSale__factory])
 
   // @TODO: new UI required?
 
