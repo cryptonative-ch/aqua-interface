@@ -31,6 +31,8 @@
     "otherSales": "Other Sales",
     "placeBid": "Place Bid",
     "salesType": "Sales Type",
+    "fairSale": "Fair Sale",
+    "fixedPriceSale": "Fixed Price Sale",
     "currentPrice": "Current Price",
     "minPrice": "Minimum Price",
     "amountForSale": "Amount for Sale",
