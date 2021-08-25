@@ -34,7 +34,7 @@ export function useWrapNativeToken(
   const signer = library.getSigner()
 
   const WETH = useMemo(() => WETH__factory.connect(tokenAddress, signer).interface, [WETH__factory])
-  const WXDAI = useMemo(() => WXDAI__factory.connect(tokenAddress, signer).interface, [WXDAI__factory])
+  const WXDAI = useMemo(() => WXDAI__factory.connect(tokenAddress, signer), [WXDAI__factory])
   const fixedPriceSale = useMemo(() => FixedPriceSale__factory.connect(saleAddress, signer).interface, [
     FixedPriceSale__factory,
   ])
@@ -57,28 +57,27 @@ export function useWrapNativeToken(
       tx = [
         {
           to: tokenAddress,
-          data: WXDAI.encodeFunctionData('deposit'),
+          data: WETH.encodeFunctionData('deposit'),
           value: bignumberValue,
         },
         {
-          to: tokenAddress,
-          data: WXDAI.encodeFunctionData('approve', [saleAddress, value]),
+          to: saleAddress,
+          data: WETH.encodeFunctionData('approve', [saleAddress, value]),
+          value: bignumberValue,
         },
         {
           to: saleAddress,
           data: fixedPriceSale.encodeFunctionData('commitTokens', [value]),
+          value: bignumberValue,
         },
       ]
       try {
         setLoading(true)
-        const depositXDAI = await signer.sendTransaction({
-          to: cpk.address,
-          value: value,
-        })
-
-        await depositXDAI.wait(1)
-        const { hash, transactionResponse } = await cpk.execTransactions(tx)
-        console.log(transactionResponse)
+        // await signer.sendTransaction({
+        //   to: cpk.address,
+        //   value: value,
+        // })
+        const { hash } = await cpk.execTransactions(tx)
         console.log(hash)
 
         if (hash) {

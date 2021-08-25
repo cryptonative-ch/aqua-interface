@@ -25,6 +25,7 @@ import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
 import { useBids } from 'src/hooks/useBids'
+import { useWrapNativeToken } from 'src/hooks/useWrapNativeToken'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
@@ -147,6 +148,11 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [validationError, setValidationError] = useState<Error>()
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
+  const { wrap, transactionHash } = useWrapNativeToken(
+    sale?.tokenIn.id as string,
+    sale?.id as string,
+    purchaseValue as number
+  )
 
   const getMaxPurchase = () => {
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
@@ -240,19 +246,21 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     setTxPending(true)
     // Convert purchaseValue (number) to 18-decimal BigNumber
     // Sign and send transaction
-    fixedPriceSaleContract
-      .commitTokens(utils.parseEther(purchaseValue.toString()))
-      .then(tx => tx.wait(1)) // wait one network confirmation
-      .then(() => {
-        toast.success(t('success.purchase'))
-      })
-      .catch(error => {
-        console.error(error)
-        toast.error(t('errors.purchase'))
-      })
-      .then(() => {
-        setTxPending(false)
-      })
+    wrap()
+    console.log(transactionHash)
+    //  fixedPriceSaleContract
+    //    .commitTokens(utils.parseEther(purchaseValue.toString()))
+    //    .then(tx => tx.wait(1)) // wait one network confirmation
+    //    .then(() => {
+    //      toast.success(t('success.purchase'))
+    //    })
+    //    .catch(error => {
+    //      console.error(error)
+    //      toast.error(t('errors.purchase'))
+    //    })
+    //    .then(() => {
+    //      setTxPending(false)
+    //    })
   }, [account, library, sale, tokenQuantity, purchaseValue, t])
 
   /**
