@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 // interfaces
 import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 // Redux
-import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
+import { updateCommitmentRequest, updateCommitmentFailure, updateCommitmentSuccess } from 'src/redux/commitments'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 interface UseReadBidEventFromBlockchainReturns {
@@ -26,13 +26,13 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     isLoading,
     error,
     bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
-  } = useSelector(({ bids }) => bids)
+  } = useSelector(({ commitments }) => commitments)
 
   useEffect(() => {
     if (!account || !library || !chainId) {
       return
     }
-    if (saleType != 'FixedPriceSale') {
+    if (saleType == 'FairSale') {
       const fairSaleContract = FairSale__factory.connect(saleId, library)
 
       fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
@@ -50,12 +50,12 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
           deletedAt: null,
         }
 
-        dispatch(updateBidRequest(true))
+        dispatch(updateCommitmentRequest(true))
         try {
-          dispatch(updateBidSuccess(bids))
+          dispatch(updateCommitmentSuccess(bids))
         } catch (error) {
           console.error(error)
-          dispatch(updateBidFailure(error))
+          dispatch(updateCommitmentFailure(error))
         }
       })
     }
@@ -81,13 +81,13 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
         },
         status: FixedPriceSaleCommitmentStatus.SUBMITTED,
       }
-      dispatch(updateBidRequest(true))
+      dispatch(updateCommitmentRequest(true))
       try {
-        dispatch(updateBidSuccess(commitment))
+        dispatch(updateCommitmentSuccess(commitment))
       } catch (error) {
         console.error(error)
         toast.error(t('error.updatePurchase'))
-        dispatch(updateBidFailure(error))
+        dispatch(updateCommitmentFailure(error))
       }
     })
   }, [account, library, chainId])

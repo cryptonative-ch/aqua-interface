@@ -5,6 +5,7 @@ import Thunk, { ThunkAction } from 'redux-thunk'
 // Reducers
 import { reducer as sales } from 'src/redux/sales'
 import { reducer as bids } from 'src/redux/bids'
+import { reducer as commitments } from 'src/redux/commitments'
 import { reducer as page } from 'src/redux/page'
 import { reducer as network } from 'src/redux/network'
 import { reducer as claims } from 'src/redux/claims'
@@ -18,6 +19,7 @@ declare module 'react-redux' {
 const rootReducer = combineReducers({
   page,
   bids,
+  commitments,
   sales,
   network,
   claims,

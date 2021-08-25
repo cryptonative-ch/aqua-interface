@@ -49,6 +49,7 @@ import { FairBidPick } from 'src/interfaces/Sale'
 // Hooks
 import { FIX_LATER } from 'src/interfaces'
 import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
+import { useCommitments } from 'src/hooks/useBids'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -75,12 +76,14 @@ export function FairSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const {  error, loading, sale } = useFairSaleQuery(params.saleId)
+  const { error, loading, sale } = useFairSaleQuery(params.saleId)
+  // const { bids } = useCommitments(params.saleId, sale!.__typename)
   // const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
-  const bids: any[] = [];
+  const bid: any[] = []
+  const bids: any[] = []
 
   const toggleGraph = () => {
-    if (showGraph || (sale && bids && bids.length > 0)) {
+    if (showGraph || (sale && bid && bid.length > 0)) {
       setShowGraph(!showGraph)
     }
   }
@@ -217,7 +220,7 @@ export function FairSaleView() {
                   <BarChart
                     width={containerWidth}
                     height={400}
-                    data={bids}
+                    data={bid}
                     userAddress={userAddress}
                     vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 0}
                     sale={sale as FIX_LATER}
@@ -225,7 +228,7 @@ export function FairSaleView() {
                 </CardBody>
               )}
             </Card>
-            {bids && bids.length > 0 && (
+            {bid && bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
                 <CardBody
                   display="flex"
@@ -290,7 +293,7 @@ export function FairSaleView() {
                       }
                     }}
                     sale={sale as FIX_LATER}
-                    currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
+                    currentSettlementPrice={numeral(calculateClearingPrice(bid)).value()}
                   />
                 </CardBody>
               </Card>

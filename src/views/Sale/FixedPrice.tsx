@@ -47,7 +47,7 @@ import { FIX_LATER } from 'src/interfaces'
 import { useIpfsFile } from 'src/hooks/useIpfsFile'
 
 // Hooks
-import { useBids } from 'src/hooks/useBids'
+import { useCommitments } from 'src/hooks/useBids'
 import { useTranslation } from 'react-i18next'
 import { useFixedPriceSaleCommitmentsByBuyerIdQuery } from 'src/hooks/useFixedPriceSaleCommitmentsByBuyerId'
 //helpers
@@ -72,7 +72,7 @@ export function FixedPriceSaleView() {
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const theme = useTheme()
-  const { bids } = useBids(params.saleId, sale!.__typename)
+  const { bids } = useCommitments(params.saleId)
   const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
   const [t] = useTranslation()
   const { saleIds } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
