@@ -15,6 +15,7 @@ import { Modal } from 'src/components/Modal'
 
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
+import { Button } from 'src/components/Button'
 
 // Utils
 import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils'
@@ -129,6 +130,8 @@ const w: any = window
 w.utils = utils
 
 export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps) => {
+  const WXDAI_ADDRESS = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
+  const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   const [t] = useTranslation()
   const [txPending, setTxPending] = useState(false)
   const { account, library } = useWeb3React()
@@ -148,11 +151,17 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [validationError, setValidationError] = useState<Error>()
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
-  const { wrap, transactionHash } = useWrapNativeToken(
-    sale?.tokenIn.id as string,
-    sale?.id as string,
-    purchaseValue as number
-  )
+  const { wrap } = useWrapNativeToken(sale?.tokenIn.id as string, sale?.id as string, purchaseValue as number)
+
+  const isNativeToken = (tokenAddress: string) => {
+    if (
+      tokenAddress.toLowerCase() === WXDAI_ADDRESS.toLowerCase() ||
+      tokenAddress.toLowerCase() === WETH_ADDRESS.toLowerCase()
+    ) {
+      return true
+    }
+    return false
+  }
 
   const getMaxPurchase = () => {
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
@@ -246,21 +255,19 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     setTxPending(true)
     // Convert purchaseValue (number) to 18-decimal BigNumber
     // Sign and send transaction
-    wrap()
-    console.log(transactionHash)
-    //  fixedPriceSaleContract
-    //    .commitTokens(utils.parseEther(purchaseValue.toString()))
-    //    .then(tx => tx.wait(1)) // wait one network confirmation
-    //    .then(() => {
-    //      toast.success(t('success.purchase'))
-    //    })
-    //    .catch(error => {
-    //      console.error(error)
-    //      toast.error(t('errors.purchase'))
-    //    })
-    //    .then(() => {
-    //      setTxPending(false)
-    //    })
+    fixedPriceSaleContract
+      .commitTokens(utils.parseEther(purchaseValue.toString()))
+      .then(tx => tx.wait(1)) // wait one network confirmation
+      .then(() => {
+        toast.success(t('success.purchase'))
+      })
+      .catch(error => {
+        console.error(error)
+        toast.error(t('errors.purchase'))
+      })
+      .then(() => {
+        setTxPending(false)
+      })
   }, [account, library, sale, tokenQuantity, purchaseValue, t])
 
   /**
@@ -270,6 +277,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
+      if (isNativeToken(sale?.tokenIn.id as string)) {
+        wrap()
+        return
+      }
 
       if (!sale || !purchaseValue || !(approvalState === ApprovalState.APPROVED)) return null
 
@@ -366,27 +377,31 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           <SuccessMessage>{`You get ${tokenQuantity} ${sale.tokenOut.symbol}`}</SuccessMessage>
         )}
       </FormGroup>
-      <LinkedButtons
-        buttons={[
-          {
-            title: `${approvalState == ApprovalState.APPROVED ? 'Approved' : `Approve ${sale.tokenIn.symbol}`} `,
-            id: 'approve',
-            onClick: approve,
-          },
-          {
-            title: `Purchase ${sale.tokenOut.symbol}`,
-            id: 'purchase',
-            typeSubmit: true,
-            onClick: () => {
-              {
-              }
+      {isNativeToken(sale.tokenIn.id) ? (
+        <Button>{t('buttons.purchase')}</Button>
+      ) : (
+        <LinkedButtons
+          buttons={[
+            {
+              title: `${approvalState == ApprovalState.APPROVED ? 'Approved' : `Approve ${sale.tokenIn.symbol}`} `,
+              id: 'approve',
+              onClick: approve,
             },
-          },
-        ]}
-        active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
-        disabled={!!validationError}
-        loading={txPending || approvalState == ApprovalState.PENDING}
-      />
+            {
+              title: `Purchase ${sale.tokenOut.symbol}`,
+              id: 'purchase',
+              typeSubmit: true,
+              onClick: () => {
+                {
+                }
+              },
+            },
+          ]}
+          active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
+          disabled={!!validationError}
+          loading={txPending || approvalState == ApprovalState.PENDING}
+        />
+      )}
 
       <Modal
         isShown={isModalShown}

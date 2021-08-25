@@ -84,7 +84,9 @@
     "reportBug": "Report bug or enhancement",
     "reportBugDescription": "Open a new issue on Github",
     "tokensClaimed": "Tokens Claimed",
-    "shortClaimed": "Claimed"
+    "shortClaimed": "Claimed",
+    "purchase": "Purchase",
+    "approve": "Approve"
   },
   "errors": {
     "claim": "Failed to claim",

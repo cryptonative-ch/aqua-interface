@@ -6,6 +6,8 @@ import { NumberLike } from 'contract-proxy-kit/lib/cjs/utils/basicTypes'
 import { utils } from 'ethers'
 import { BigNumber as valueBigNumber } from 'ethers'
 import BigNumber from 'bignumber.js'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 // hooks
 import { useCPK } from 'src/hooks/useCPK'
@@ -25,6 +27,7 @@ export function useWrapNativeToken(
   saleAddress: string,
   purchaseValue: NumberLike | undefined
 ): useWrapNativeTokenReturns {
+  const [t] = useTranslation()
   const { library } = useWeb3React()
   const { cpk } = useCPK(library)
 
@@ -77,12 +80,11 @@ export function useWrapNativeToken(
         })
 
         await depositXDAI.wait(1)
-        const { hash, transactionResponse } = await cpk.execTransactions(tx)
-        console.log(transactionResponse)
-        console.log(hash)
+        const { hash } = await cpk.execTransactions(tx)
 
         if (hash) {
           setLoading(false)
+          toast.success(t('success.purchase'))
           return setTransactionHash(hash)
         }
       } catch (error) {
