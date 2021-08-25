@@ -15,7 +15,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Actions
 
 // Components
-import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
 import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
@@ -75,9 +74,9 @@ export function FairSaleView() {
   const [t] = useTranslation()
   const theme = useTheme()
 
-  const {  error, loading, sale } = useFairSaleQuery(params.saleId)
+  const { error, loading, sale } = useFairSaleQuery(params.saleId)
   // const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
-  const bids: any[] = [];
+  const bids: any[] = []
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -298,7 +297,7 @@ export function FairSaleView() {
           )}
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {/* {isMobile && <MobileFooter />} */}
     </Container>
   )
 }

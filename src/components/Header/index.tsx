@@ -26,6 +26,7 @@ import {
   MenuOption,
   MenuBorder,
   ColumnWrapper,
+  LinkNoDecoration,
 } from 'src/components/Header/style'
 import { Web3ConnectionContext } from 'src/contexts'
 
@@ -104,10 +105,12 @@ export const Header: React.FC = () => {
       <Wrapper padding="0 0 0 24px">
         <MobileMenu expanded={menuOpen}>
           <Wrapper padding="0 0 0 24px" backgroundColor="#F2F2F2">
-            <Flex flexDirection="column" flex={1}>
-              <Title>Aqua</Title>
-              <Description marginLeft="0">from DXdao</Description>
-            </Flex>
+            <LinkNoDecoration href="./">
+              <Flex flexDirection="column" flex={1}>
+                <Title>Aqua</Title>
+                <Description marginLeft="0">from DXdao</Description>
+              </Flex>
+            </LinkNoDecoration>
             <MenuIcon src={CloseImg} onClick={() => setMenuOpen(false)} />
           </Wrapper>
           {walletAddress.length > 0 ? (
@@ -175,8 +178,10 @@ export const Header: React.FC = () => {
           </Flex>
         </MobileMenu>
         <Flex flexDirection="column" flex={1}>
-          <Title>Aqua</Title>
-          <Description marginLeft="0">from DXdao</Description>
+          <LinkNoDecoration href="./">
+            <Title>Aqua</Title>
+            <Description marginLeft="0">from DXdao</Description>
+          </LinkNoDecoration>
         </Flex>
         {!account && !isConnecting && (
           <Button
@@ -215,10 +220,12 @@ export const Header: React.FC = () => {
         </Banner>
       )}
       <Wrapper padding="0 32px">
-        <Row>
-          <Title>Aqua</Title>
-          <Description>from DXdao</Description>
-        </Row>
+        <LinkNoDecoration href="./">
+          <Row>
+            <Title>Aqua</Title>
+            <Description>from DXdao</Description>
+          </Row>
+        </LinkNoDecoration>
         <Button
           onClick={() => (account ? setSwitcherOpen(!switcherOpen) : setIsModalShown(true))}
           backgroundColor={!account ? '#304FFE' : '#DDDDE3'}

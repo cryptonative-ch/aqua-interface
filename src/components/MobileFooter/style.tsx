@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
+  align-items: center;
 `
 
 export const Row = styled.div`
