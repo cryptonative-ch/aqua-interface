@@ -101,7 +101,7 @@ export function useTokenClaim(
       ]
       cpk
         .execTransactions(tx)
-        .then((tx: TransactionResult) => {
+        .then(async (tx: TransactionResult) => {
           dispatch(
             setClaimStatus({
               sale: sale,
@@ -111,7 +111,7 @@ export function useTokenClaim(
               amount: amount,
             })
           )
-          tx.transactionResponse?.wait(1)
+          await tx.transactionResponse?.wait(1)
           console.log(tx)
           toast.success(t('success.claim'))
           return dispatch(
