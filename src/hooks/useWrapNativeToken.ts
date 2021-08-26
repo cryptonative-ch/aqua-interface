@@ -34,7 +34,7 @@ export function useWrapNativeToken(
   const [transactionHash, setTransactionHash] = useState<Record<string, any> | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
-  const signer = library.getSigner()
+  const signer = library?.getSigner()
 
   const WETH = useMemo(() => WETH__factory.connect(tokenAddress, signer).interface, [WETH__factory])
   const WXDAI = useMemo(() => WXDAI__factory.connect(tokenAddress, signer).interface, [WXDAI__factory])
@@ -52,12 +52,6 @@ export function useWrapNativeToken(
     }
   }, [library])
 
-  // @TODO: new UI required?
-
-  // fund proxy with  ETH/XDAI before executing transactions
-  // deposit into WETH/WXDAI contract
-  // approve transfer of value from CPK contract
-  // transfer value to Sale contract
   const wrap = useCallback(async () => {
     if (cpk && purchaseValue) {
       value = utils.parseEther(purchaseValue.toString())
@@ -66,7 +60,7 @@ export function useWrapNativeToken(
       tx = [
         {
           to: tokenAddress,
-          value: bignumberValue,
+          value: value.toString(),
         },
         {
           to: tokenAddress,
@@ -79,19 +73,12 @@ export function useWrapNativeToken(
       ]
       try {
         setLoading(true)
-        const depositXDAI = await signer.sendTransaction({
-          to: cpk.address,
-          value: value,
-        })
 
-        await depositXDAI.wait(1)
         const { transactionResponse } = await cpk.execTransactions(tx)
 
         if (transactionResponse) {
-          transactionResponse?.wait(2)
           setLoading(false)
           toast.success(t('success.purchase'))
-          console.log(transactionResponse)
           return setTransactionHash(transactionResponse)
         }
       } catch (error) {

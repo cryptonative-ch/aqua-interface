@@ -80,7 +80,7 @@ export function useTokenClaim(
   }
 
   const claimTokens = async (saleId: string) => {
-    if (cpk) {
+    if (cpk?.isProxyDeployed) {
       const balance = await ERC20__factory.connect(sale.tokenOut.id, signer).balanceOf(cpk.address as string)
 
       const tx = [
