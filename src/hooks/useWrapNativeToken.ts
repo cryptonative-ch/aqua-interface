@@ -88,6 +88,7 @@ export function useWrapNativeToken(
         const { transactionResponse } = await cpk.execTransactions(tx)
 
         if (transactionResponse) {
+          transactionResponse?.wait(2)
           setLoading(false)
           toast.success(t('success.purchase'))
           console.log(transactionResponse)

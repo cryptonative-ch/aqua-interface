@@ -1,10 +1,11 @@
 // Externals
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ContractReceipt, ContractTransaction, Transaction } from 'ethers'
+import { BigNumber, ContractReceipt, ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { TransactionResult } from 'contract-proxy-kit'
 
 //hooks
 import { useCPK } from 'src/hooks/useCPK'
@@ -18,7 +19,7 @@ import { setClaimStatus } from 'src/redux/claims'
 //interface
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ProviderRpcError } from 'src/interfaces/Error'
-import { TransactionResult } from 'contract-proxy-kit'
+import { ERC20__factory } from 'src/contracts'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -54,6 +55,7 @@ export function useTokenClaim(
   )
   const [t] = useTranslation()
   const signer = library?.getSigner()
+  const erc20Token = ERC20__factory.connect(sale.tokenOut.id, signer).interface
 
   useEffect(() => {
     if (!chainId || !library || !account) {
@@ -62,7 +64,6 @@ export function useTokenClaim(
   }, [account, chainId, library])
 
   const closeSale = (saleId: string, handleClose: (closed: boolean) => void) => {
-    // check if cpk proxy contract has tokens
     if (account) {
       FixedPriceSale__factory.connect(saleId, signer)
         .closeSale()
@@ -78,14 +79,24 @@ export function useTokenClaim(
     }
   }
 
-  const claimTokens = (saleId: string) => {
+  const claimTokens = async (saleId: string) => {
     if (cpk) {
+      const balance = await ERC20__factory.connect(sale.tokenOut.id, signer).balanceOf(cpk.address as string)
+
       const tx = [
         {
           to: saleId,
           data: FixedPriceSale__factory.connect(saleId, signer).interface.encodeFunctionData('withdrawTokens', [
             cpk.address as string,
           ]),
+        },
+        {
+          to: sale.tokenOut.id,
+          data: erc20Token.encodeFunctionData('approve', [account as string, balance]),
+        },
+        {
+          to: sale.tokenOut.id,
+          data: erc20Token.encodeFunctionData('transfer', [account as string, balance]),
         },
       ]
       cpk
@@ -100,6 +111,7 @@ export function useTokenClaim(
               amount: amount,
             })
           )
+          tx.transactionResponse?.wait(1)
           console.log(tx)
           toast.success(t('success.claim'))
           return dispatch(
@@ -107,7 +119,7 @@ export function useTokenClaim(
               sale: sale,
               claimToken: ClaimState.CLAIMED,
               error: null,
-              transaction: null,
+              transaction: tx.transactionResponse as any,
               amount: amount,
             })
           )
