@@ -1,5 +1,5 @@
 // External
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Transaction } from 'contract-proxy-kit'
 import { NumberLike } from 'contract-proxy-kit/lib/cjs/utils/basicTypes'
@@ -17,7 +17,7 @@ import { WXDAI__factory, WETH__factory, FixedPriceSale__factory, FairSale__facto
 
 interface useWrapNativeTokenReturns {
   wrap: () => void
-  transactionHash: string | null
+  transactionHash: Record<string, any> | null
   loading: boolean
   error: Error | null
 }
@@ -31,7 +31,7 @@ export function useWrapNativeToken(
   const { library } = useWeb3React()
   const { cpk } = useCPK(library)
 
-  const [transactionHash, setTransactionHash] = useState<string | null>(null)
+  const [transactionHash, setTransactionHash] = useState<Record<string, any> | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
   const signer = library.getSigner()
@@ -45,6 +45,12 @@ export function useWrapNativeToken(
 
   let value: valueBigNumber
   let tx: Transaction[]
+
+  useEffect(() => {
+    if (!library) {
+      return
+    }
+  }, [library])
 
   // @TODO: new UI required?
 
@@ -60,7 +66,6 @@ export function useWrapNativeToken(
       tx = [
         {
           to: tokenAddress,
-          data: WXDAI.encodeFunctionData('deposit'),
           value: bignumberValue,
         },
         {
@@ -80,12 +85,13 @@ export function useWrapNativeToken(
         })
 
         await depositXDAI.wait(1)
-        const { hash } = await cpk.execTransactions(tx)
+        const { transactionResponse } = await cpk.execTransactions(tx)
 
-        if (hash) {
+        if (transactionResponse) {
           setLoading(false)
           toast.success(t('success.purchase'))
-          return setTransactionHash(hash)
+          console.log(transactionResponse)
+          return setTransactionHash(transactionResponse)
         }
       } catch (error) {
         setLoading(false)

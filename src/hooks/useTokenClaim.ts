@@ -1,10 +1,13 @@
 // Externals
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ContractReceipt, ContractTransaction } from 'ethers'
+import { ContractReceipt, ContractTransaction, Transaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+
+//hooks
+import { useCPK } from 'src/hooks/useCPK'
 
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
@@ -15,6 +18,7 @@ import { setClaimStatus } from 'src/redux/claims'
 //interface
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ProviderRpcError } from 'src/interfaces/Error'
+import { TransactionResult } from 'contract-proxy-kit'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -37,6 +41,7 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
+  const { cpk } = useCPK(library)
   const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
@@ -57,7 +62,7 @@ export function useTokenClaim(
   }, [account, chainId, library])
 
   const closeSale = (saleId: string, handleClose: (closed: boolean) => void) => {
-    //take this out before production
+    // check if cpk proxy contract has tokens
     if (account) {
       FixedPriceSale__factory.connect(saleId, signer)
         .closeSale()
@@ -74,6 +79,65 @@ export function useTokenClaim(
   }
 
   const claimTokens = (saleId: string) => {
+    if (cpk) {
+      const tx = [
+        {
+          to: saleId,
+          data: FixedPriceSale__factory.connect(saleId, signer).interface.encodeFunctionData('withdrawTokens', [
+            cpk.address as string,
+          ]),
+        },
+      ]
+      cpk
+        .execTransactions(tx)
+        .then((tx: TransactionResult) => {
+          dispatch(
+            setClaimStatus({
+              sale: sale,
+              claimToken: ClaimState.VERIFY,
+              error: null,
+              transaction: null,
+              amount: amount,
+            })
+          )
+          console.log(tx)
+          toast.success(t('success.claim'))
+          return dispatch(
+            setClaimStatus({
+              sale: sale,
+              claimToken: ClaimState.CLAIMED,
+              error: null,
+              transaction: null,
+              amount: amount,
+            })
+          )
+        })
+        .catch((error: ProviderRpcError) => {
+          if (error.code == 4001) {
+            toast.error(t('errors.claim'))
+            return dispatch(
+              setClaimStatus({
+                sale: sale,
+                claimToken: ClaimState.UNCLAIMED,
+                error: error,
+                transaction: null,
+                amount: amount,
+              })
+            )
+          }
+          console.error(error)
+          toast.error(t('errors.claim'))
+          return dispatch(
+            setClaimStatus({
+              sale: sale,
+              claimToken: ClaimState.FAILED,
+              error: error,
+              transaction: null,
+              amount: amount,
+            })
+          )
+        })
+    }
     if (account) {
       // Withdraw tokens - withdraws investment or purchase depending on if successful
       FixedPriceSale__factory.connect(saleId, signer)
