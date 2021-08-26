@@ -49,6 +49,18 @@ export interface fairSaleResults_tokenOut {
   decimals: any
 }
 
+export interface fairSaleResults_launchedTemplate {
+  __typename: 'LaunchedSaleTemplate'
+  /**
+   * Address of the template
+   */
+  id: string
+  /**
+   * IPFS content hash
+   */
+  metadataContentHash: string | null
+}
+
 export interface fairSaleResults {
   __typename: 'FairSale'
   /**
@@ -94,4 +106,5 @@ export interface fairSaleResults {
    * Auctioning token
    */
   tokenOut: fairSaleResults_tokenOut
+  launchedTemplate: fairSaleResults_launchedTemplate | null
 }

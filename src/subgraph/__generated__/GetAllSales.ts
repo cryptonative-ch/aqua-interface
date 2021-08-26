@@ -158,6 +158,18 @@ export interface GetAllSales_fairSales_tokenOut {
   decimals: any
 }
 
+export interface GetAllSales_fairSales_launchedTemplate {
+  __typename: 'LaunchedSaleTemplate'
+  /**
+   * Address of the template
+   */
+  id: string
+  /**
+   * IPFS content hash
+   */
+  metadataContentHash: string | null
+}
+
 export interface GetAllSales_fairSales {
   __typename: 'FairSale'
   /**
@@ -203,6 +215,7 @@ export interface GetAllSales_fairSales {
    * Auctioning token
    */
   tokenOut: GetAllSales_fairSales_tokenOut
+  launchedTemplate: GetAllSales_fairSales_launchedTemplate | null
 }
 
 export interface GetAllSales {
