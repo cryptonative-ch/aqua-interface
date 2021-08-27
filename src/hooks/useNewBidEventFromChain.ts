@@ -7,18 +7,75 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // interfaces
-import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import {
+  GetAllBidsBySaleId_fixedPriceSale_commitments,
+  GetAllBidsBySaleId_fairSale_bids,
+} from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 // Redux
 import { updateCommitmentRequest, updateCommitmentFailure, updateCommitmentSuccess } from 'src/redux/commitments'
+import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
-interface UseReadBidEventFromBlockchainReturns {
+interface useEventFromChainReturnsBase {
   loading: boolean
-  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
   error: Error | null
 }
 
-export function useReadBidEventFromBlockchain(saleId: string, saleType: string): UseReadBidEventFromBlockchainReturns {
+interface UseCommitmentEventFromChainReturns extends useEventFromChainReturnsBase {
+  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
+}
+
+interface UseBidEventFromChainReturns extends useEventFromChainReturnsBase {
+  bids: GetAllBidsBySaleId_fairSale_bids[]
+}
+
+export function useNewBidEventFromChain(saleId: string): UseBidEventFromChainReturns {
+  const dispatch = useDispatch()
+  const { account, library, chainId } = useWeb3React()
+  const [t] = useTranslation()
+  const {
+    isLoading,
+    error,
+    bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
+  } = useSelector(({ bids }) => bids)
+
+  useEffect(() => {
+    if (!account || !library || !chainId) {
+      return
+    }
+    const fairSaleContract = FairSale__factory.connect(saleId, library)
+
+    fairSaleContract.on('NewSellOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
+      const newBid: GetAllBidsBySaleId_fairSale_bids = {
+        __typename: 'FairSaleBid',
+        id: String(await (await library.getBlock(event.blockNumber)).timestamp),
+        owner: { ownerId },
+        tokenInAmount: orderTokenIn,
+        tokenOutAmount: orderTokenOut,
+        sale: {
+          __typename: 'FairSale',
+          id: saleId,
+        },
+      }
+
+      dispatch(updateBidRequest(true))
+      try {
+        dispatch(updateBidSuccess(newBid))
+      } catch (error) {
+        console.error(error)
+        toast.error(t('error.updatePurchase'))
+        dispatch(updateBidFailure(error))
+      }
+    })
+  }, [account, library, chainId])
+  return {
+    bids,
+    loading: isLoading,
+    error,
+  }
+}
+
+export function useNewCommitmentEventFromChain(saleId: string): UseCommitmentEventFromChainReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
@@ -32,34 +89,6 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     if (!account || !library || !chainId) {
       return
     }
-    if (saleType == 'FairSale') {
-      const fairSaleContract = FairSale__factory.connect(saleId, library)
-
-      fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
-        const bids: any = {
-          id: String(await (await library.getBlock(event.blockNumber)).timestamp),
-          address: ownerId,
-          tokenIn: orderTokenIn,
-          tokenOut: orderTokenOut,
-          baseSale: {
-            id: saleId,
-          },
-
-          createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
-          updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
-          deletedAt: null,
-        }
-
-        dispatch(updateCommitmentRequest(true))
-        try {
-          dispatch(updateCommitmentSuccess(bids))
-        } catch (error) {
-          console.error(error)
-          dispatch(updateCommitmentFailure(error))
-        }
-      })
-    }
-
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(saleId, library)
 
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount) => {

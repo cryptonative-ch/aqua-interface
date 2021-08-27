@@ -4,7 +4,9 @@
       {
         "args": [],
         "description": null,
-        "locations": ["OBJECT"],
+        "locations": [
+          "OBJECT"
+        ],
         "name": "entity"
       },
       {
@@ -21,7 +23,9 @@
           }
         ],
         "description": null,
-        "locations": ["FIELD_DEFINITION"],
+        "locations": [
+          "FIELD_DEFINITION"
+        ],
         "name": "derivedFrom"
       },
       {
@@ -38,7 +42,9 @@
           }
         ],
         "description": null,
-        "locations": ["OBJECT"],
+        "locations": [
+          "OBJECT"
+        ],
         "name": "subgraphId"
       }
     ],
@@ -12133,6 +12139,38 @@
               "name": "String",
               "ofType": null
             }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "Whether the template is initialized",
+            "isDeprecated": false,
+            "name": "initialized",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "Whether the sale contract is deployed",
+            "isDeprecated": false,
+            "name": "saleCreated",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            }
           }
         ],
         "inputFields": null,
@@ -13073,6 +13111,118 @@
               "name": "String",
               "ofType": null
             }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "initialized",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "initialized_not",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "initialized_in",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "initialized_not_in",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "saleCreated",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "saleCreated_not",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "saleCreated_in",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "saleCreated_not_in",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            }
           }
         ],
         "interfaces": null,
@@ -13130,6 +13280,18 @@
             "description": null,
             "isDeprecated": false,
             "name": "metadataContentHash"
+          },
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "initialized"
+          },
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "saleCreated"
           }
         ],
         "fields": null,

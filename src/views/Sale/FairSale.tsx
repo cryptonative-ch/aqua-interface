@@ -46,10 +46,13 @@ import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
 import { FairBidPick } from 'src/interfaces/Sale'
 
+import { GetAllBidsBySaleId_fairSale_bids } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+
 // Hooks
 import { FIX_LATER } from 'src/interfaces'
 import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
-import { useCommitments } from 'src/hooks/useBids'
+import { useBids } from 'src/hooks/useBids'
+import { useSelector } from 'react-redux'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -77,13 +80,15 @@ export function FairSaleView() {
   const theme = useTheme()
 
   const { error, loading, sale } = useFairSaleQuery(params.saleId)
-  // const { bids } = useCommitments(params.saleId, sale!.__typename)
-  // const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
-  const bid: any[] = []
+  useBids(params.saleId)
+  const allBids = useSelector(
+    ({ bids }) => bids.bidsBySaleId[params.saleId]?.bids || []
+  ) as GetAllBidsBySaleId_fairSale_bids[]
+  console.log({ allBids })
   const bids: any[] = []
 
   const toggleGraph = () => {
-    if (showGraph || (sale && bid && bid.length > 0)) {
+    if (showGraph || (sale && bids && bids.length > 0)) {
       setShowGraph(!showGraph)
     }
   }
@@ -220,7 +225,7 @@ export function FairSaleView() {
                   <BarChart
                     width={containerWidth}
                     height={400}
-                    data={bid}
+                    data={bids}
                     userAddress={userAddress}
                     vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 0}
                     sale={sale as FIX_LATER}
@@ -228,7 +233,7 @@ export function FairSaleView() {
                 </CardBody>
               )}
             </Card>
-            {bid && bids.length > 0 && (
+            {bids && bids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
                 <CardBody
                   display="flex"
@@ -293,7 +298,7 @@ export function FairSaleView() {
                       }
                     }}
                     sale={sale as FIX_LATER}
-                    currentSettlementPrice={numeral(calculateClearingPrice(bid)).value()}
+                    currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
                   />
                 </CardBody>
               </Card>

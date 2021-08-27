@@ -79,6 +79,7 @@ export interface GetAllBidsBySaleId_fairSale_bids {
    * Number of tokens the investor wants to buy
    */
   tokenOutAmount: any
+  owner: any
   /**
    * The FairSale the bid is associated with
    */
