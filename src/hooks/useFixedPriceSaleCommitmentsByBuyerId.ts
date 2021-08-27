@@ -1,4 +1,5 @@
 // External
+import { useCallback } from 'react'
 import { QueryResult, useQuery } from '@apollo/client'
 import { useDispatch } from 'react-redux'
 import dayjs from 'dayjs'
@@ -43,23 +44,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
   let sales: SummarySales[] = []
   let saleIds: string[] = []
 
-  if (data) {
-    purchases = data.fixedPriceSaleCommitments.filter(
-      commitment => commitment.user.address.toLowerCase() === buyerId?.toLowerCase()
-    )
-
-    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
-      a[c.sale.id] = a[c.sale.id] || []
-      a[c.sale.id].push(c)
-      return a
-    }, [])
-
-    saleIds = Object.keys(groupBy)
-
-    sales = saleIds.map((purchases: string) => {
-      return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
-    })
-
+  const setInitialClaimStatus = useCallback(() => {
     const unixDateNow = dayjs(Date.now()).unix()
     sales
       .filter(
@@ -78,6 +63,25 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
           })
         )
       )
+  }, [sales])
+
+  if (data) {
+    purchases = data.fixedPriceSaleCommitments.filter(
+      commitment => commitment.user.address.toLowerCase() === buyerId?.toLowerCase()
+    )
+
+    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
+      a[c.sale.id] = a[c.sale.id] || []
+      a[c.sale.id].push(c)
+      return a
+    }, [])
+
+    saleIds = Object.keys(groupBy)
+
+    sales = saleIds.map((purchases: string) => {
+      return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
+    })
+    setInitialClaimStatus()
   }
 
   return {

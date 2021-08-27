@@ -12,6 +12,9 @@ import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__ge
 import { updateBidRequest, updateBidFailure, updateBidSuccess } from 'src/redux/bids'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
+//hooks
+import { useCPK } from 'src/hooks/useCPK'
+
 interface UseReadBidEventFromBlockchainReturns {
   loading: boolean
   bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
@@ -22,6 +25,7 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
+  const { cpk } = useCPK(library)
   const {
     isLoading,
     error,
