@@ -1,8 +1,9 @@
 // External
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { QueryResult, useQuery } from '@apollo/client'
 import { useDispatch } from 'react-redux'
 import dayjs from 'dayjs'
+import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 
 // Query
@@ -22,6 +23,9 @@ import { aggregatePurchases } from 'src/utils'
 import { setClaimStatus } from 'src/redux/claims'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
+//hooks
+import { useCPK } from 'src/hooks/useCPK'
+
 export interface SummarySales {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   status: FixedPriceSaleCommitmentStatus
@@ -36,9 +40,11 @@ interface UseSalesQueryResult extends Omit<QueryResult, 'data'> {
   saleIds: string[]
 }
 
-export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | undefined | null): UseSalesQueryResult {
+export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResult {
   const dispatch = useDispatch()
+  const { account, library, chainId } = useWeb3React()
   const { data, ...rest } = useQuery<GetFixedPriceSaleCommitmentsByUser>(GET_FIXED_PRICE_SALE_COMMITMENTS_ALL)
+  const { cpk } = useCPK(library)
 
   let purchases: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[] = []
   let sales: SummarySales[] = []
@@ -65,24 +71,38 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
       )
   }, [sales])
 
-  if (data) {
-    purchases = data.fixedPriceSaleCommitments.filter(
-      commitment => commitment.user.address.toLowerCase() === buyerId?.toLowerCase()
-    )
+  useEffect(() => {
+    if (!chainId || !library || !account) {
+      return
+    }
 
-    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
-      a[c.sale.id] = a[c.sale.id] || []
-      a[c.sale.id].push(c)
-      return a
-    }, [])
+    if (data) {
+      purchases = data.fixedPriceSaleCommitments.filter(commitment => {
+        return (
+          commitment.user.address.toLowerCase() === account?.toLowerCase() ||
+          commitment.user.address.toLowerCase() === cpk?.address?.toLowerCase()
+        )
+      })
 
-    saleIds = Object.keys(groupBy)
+      const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
+        a[c.sale.id] = a[c.sale.id] || []
+        a[c.sale.id].push(c)
+        return a
+      }, [])
+      console.log(groupBy)
 
-    sales = saleIds.map((purchases: string) => {
-      return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
-    })
-    setInitialClaimStatus()
-  }
+      saleIds = Object.keys(groupBy)
+
+      sales = saleIds.map((purchases: string) => {
+        return aggregatePurchases(
+          groupBy[purchases],
+          { userAddress: account, cpkAddress: cpk?.address as string },
+          groupBy[purchases][0].sale
+        )
+      })
+      setInitialClaimStatus()
+    }
+  })
 
   return {
     sales,

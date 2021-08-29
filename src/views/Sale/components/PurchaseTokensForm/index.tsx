@@ -27,6 +27,7 @@ import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
 import { useBids } from 'src/hooks/useBids'
 import { useWrapNativeToken } from 'src/hooks/useWrapNativeToken'
+import { useCPK } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
@@ -151,6 +152,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [validationError, setValidationError] = useState<Error>()
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
+  const { cpk } = useCPK(library)
   const { wrap } = useWrapNativeToken(sale?.tokenIn.id as string, sale?.id as string, purchaseValue as number)
 
   const isNativeToken = (tokenAddress: string) => {
@@ -287,7 +289,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       if (sale.minRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
-        const totalAmountPurchased = aggregatePurchases(allBids, account).amount
+        const totalAmountPurchased = aggregatePurchases(allBids, {
+          userAddress: account! as string,
+          cpkAddress: cpk?.address as string,
+        }).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )

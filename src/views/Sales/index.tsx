@@ -35,7 +35,6 @@ import {
 // Layouts
 import { Center } from 'src/layouts/Center'
 import { DividerWithText } from 'src/components/Divider'
-import { useWeb3React } from '@web3-react/core'
 
 // sales page
 import { TokenView } from 'src/views/Token'
@@ -77,8 +76,8 @@ export function SalesView() {
   const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
-  const { account } = useWeb3React()
-  const { saleIds, sales: userSales, loading: userLoading } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
+  const { saleIds, sales: userSales, loading: userLoading } = useFixedPriceSaleCommitmentsByBuyerIdQuery()
+  console.log(saleIds)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))

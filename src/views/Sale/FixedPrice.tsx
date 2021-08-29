@@ -49,6 +49,7 @@ import { useIpfsFile } from 'src/hooks/useIpfsFile'
 // Hooks
 import { useBids } from 'src/hooks/useBids'
 import { useTranslation } from 'react-i18next'
+import { useCPK } from 'src/hooks/useCPK'
 import { useFixedPriceSaleCommitmentsByBuyerIdQuery } from 'src/hooks/useFixedPriceSaleCommitmentsByBuyerId'
 //helpers
 import { aggregatePurchases } from 'src/utils'
@@ -67,7 +68,7 @@ export interface FixedPriceSaleViewParams {
 
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
-  const { account } = useWeb3React()
+  const { account, library } = useWeb3React()
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
@@ -75,8 +76,9 @@ export function FixedPriceSaleView() {
   const { bids } = useBids(params.saleId, sale!.__typename)
   const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
   const [t] = useTranslation()
-  const { saleIds } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
+  const { saleIds } = useFixedPriceSaleCommitmentsByBuyerIdQuery()
   const [_, setTime] = useState(0)
+  const { cpk } = useCPK(library)
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
@@ -228,7 +230,14 @@ export function FixedPriceSaleView() {
                 <SelfBidList
                   sale={sale as FIX_LATER}
                   isFixed={true}
-                  bids={isSaleClosed(sale as FIX_LATER) ? (aggregatePurchases(bids, account) as any) : (bids as any)}
+                  bids={
+                    isSaleClosed(sale as FIX_LATER)
+                      ? (aggregatePurchases(bids, {
+                          userAddress: account as string,
+                          cpkAddress: cpk?.address as string,
+                        }) as any)
+                      : (bids as any)
+                  }
                 />
               </Card>
             )}

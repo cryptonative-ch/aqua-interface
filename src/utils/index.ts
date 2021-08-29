@@ -24,14 +24,23 @@ export function getProviderOrSigner(library: Web3Provider, account?: string | nu
 }
 
 /** sums up all the purchases of a single user from a single sale and returns the status, total amount and account string*/
-export const aggregatePurchases = (bids: any[], account: string | null | undefined, sale?: any) => {
+export const aggregatePurchases = (
+  bids: any[],
+  accounts: {
+    userAddress: string
+    cpkAddress: string
+  },
+  sale?: any
+) => {
+  const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'.toLowerCase()
+  const WXDAI = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'.toLowerCase()
   const reduceTotalAmount = bids.reduce((accumulator: BigNumber, purchases: any) => {
     return BigNumber.from(accumulator).add(purchases.amount)
   }, BigNumber.from(0))
 
   return {
     user: {
-      address: account!,
+      address: [WETH, WXDAI].includes(sale.tokenIn.id.toLowerCase()) ? accounts.cpkAddress : accounts.userAddress,
     },
     amount: reduceTotalAmount,
     status: bids.length > 0 ? bids[0].status : undefined,
