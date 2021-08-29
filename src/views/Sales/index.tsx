@@ -77,7 +77,6 @@ export function SalesView() {
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
   const { saleIds, sales: userSales, loading: userLoading } = useFixedPriceSaleCommitmentsByBuyerIdQuery()
-  console.log(saleIds)
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -124,6 +123,7 @@ export function SalesView() {
       )
     }
   }, [saleStatus, loading, userLoading])
+  console.log(filteredUserSales)
 
   return (
     <Container minHeight="100%" inner={false} noPadding={true}>

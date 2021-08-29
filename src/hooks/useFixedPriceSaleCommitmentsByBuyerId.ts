@@ -76,34 +76,32 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResul
       return
     }
 
-    if (data) {
-      purchases = data.fixedPriceSaleCommitments.filter(commitment => {
-        return (
-          commitment.user.address.toLowerCase() === account?.toLowerCase() ||
-          commitment.user.address.toLowerCase() === cpk?.address?.toLowerCase()
-        )
-      })
+    setInitialClaimStatus()
+  }, [data, library, chainId, account])
 
-      const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
-        a[c.sale.id] = a[c.sale.id] || []
-        a[c.sale.id].push(c)
-        return a
-      }, [])
-      console.log(groupBy)
+  if (data) {
+    purchases = data.fixedPriceSaleCommitments.filter(
+      commitment =>
+        commitment.user.address.toLowerCase() === account?.toLowerCase() ||
+        commitment.user.address.toLowerCase() === cpk?.address?.toLowerCase()
+    )
 
-      saleIds = Object.keys(groupBy)
+    const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
+      a[c.sale.id] = a[c.sale.id] || []
+      a[c.sale.id].push(c)
+      return a
+    }, [])
 
-      sales = saleIds.map((purchases: string) => {
-        return aggregatePurchases(
-          groupBy[purchases],
-          { userAddress: account, cpkAddress: cpk?.address as string },
-          groupBy[purchases][0].sale
-        )
-      })
-      setInitialClaimStatus()
-    }
-  })
+    saleIds = Object.keys(groupBy)
 
+    sales = saleIds.map((purchases: string) => {
+      return aggregatePurchases(
+        groupBy[purchases],
+        { userAddress: account! as string, cpkAddress: cpk?.address as string },
+        groupBy[purchases][0].sale
+      )
+    })
+  }
   return {
     sales,
     saleIds,
