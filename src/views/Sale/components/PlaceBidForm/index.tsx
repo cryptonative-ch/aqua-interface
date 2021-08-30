@@ -62,17 +62,6 @@ const FormText = styled.div({
   zIndex: 101,
 })
 
-const FixedTerm = styled.div({
-  border: '1px dashed #DDDDE3',
-  borderWidth: '1px 0 0 0',
-  padding: '16px 0 8px 0',
-  textAlign: 'center',
-  fontSize: '14px',
-  lineHeight: '21px',
-  color: '#7B7F93',
-  fontWeight: 400,
-})
-
 const MaxButton = styled.a({
   border: '1px solid #DDDDE3',
   padding: '0 4px',
@@ -108,22 +97,20 @@ const FormInput = styled.input({
 
 interface PlaceBidComponentProps {
   sale: Sale
-  onSubmit: (BidData: BidData) => void
   currentSettlementPrice?: number
-  isFixed?: boolean
 }
 
-export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }: PlaceBidComponentProps) => {
+export const PlaceBidForm = ({ sale, currentSettlementPrice }: PlaceBidComponentProps) => {
   const { isShown, result, toggleModal, setResult } = useContext(BidModalContext)
   const [formValid, setFormValid] = useState<boolean>(false)
-  const [tokenAmount, setTokenAmount] = useState<number>(0)
-  const [tokenPrice, setTokenPrice] = useState<number>(0)
+  const [tokenAmount, setTokenAmount] = useState<number | undefined>()
+  const [tokenPrice, setTokenPrice] = useState<number | undefined>()
   const [approve] = useState<boolean>(false)
 
-  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
+  const validateForm = (values: Array<number | undefined>) => setFormValid(values.every(value => !!value))
 
   const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
-    if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
+    if (currentSettlementPrice && tokenPrice && tokenPrice <= currentSettlementPrice * 0.7) {
       toggleModal()
       return false
     }
@@ -134,41 +121,51 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
 
   // Change handlers
   const onTokenPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const tokenPrice = parseInt(event.target.value || '0')
+    if (!event.target.value) {
+      return setTokenPrice(undefined)
+    }
+
+    const tokenPrice = parseInt(event.target.value)
     setTokenPrice(tokenPrice)
     validateForm([tokenPrice, tokenAmount])
   }
 
   const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const tokenAmount = parseInt(event.target.value || '0')
-    setTokenAmount(tokenAmount)
-    if (isFixed) {
-      validateForm([tokenAmount])
-    } else {
-      validateForm([tokenAmount, tokenPrice])
+    if (!event.target.value) {
+      return setTokenAmount(undefined)
     }
+
+    const tokenAmount = parseInt(event.target.value)
+    setTokenAmount(tokenAmount)
+      validateForm([tokenAmount, tokenPrice])
+    
+  }
+
+  const placeBid = (tokenAmount: number, tokenPrice: number) => {
+    // eslint-disable-next-line
+    console.log(tokenAmount, tokenPrice)
   }
 
   // Submission handler
   const onFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (!tokenAmount || !tokenPrice) return
+
     if ((await checkBidPrice(currentSettlementPrice)) === true) {
-      onSubmit({
-        tokenAmount,
-        tokenPrice,
-      })
+      placeBid(tokenAmount, tokenPrice)
     }
   }
+
   // Listen to the Context value changes to get the modal response
   useEffect(() => {
     if (!isShown && result === true) {
       setResult(false)
-      onSubmit({
-        tokenAmount,
-        tokenPrice,
-      })
+
+      if (!tokenAmount || !tokenPrice) return
+      placeBid(tokenAmount, tokenPrice)
     }
-  }, [isShown, onSubmit, result, setResult, tokenAmount, tokenPrice])
+  }, [isShown, placeBid, result, setResult, tokenAmount, tokenPrice])
 
   const isDisabled = !formValid || isSaleClosed(sale) || isSaleUpcoming(sale)
 
@@ -213,10 +210,7 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
           </FormDescription>
         </Flex>
       </FormGroup>
+      <ApproveButton isDisabled={isDisabled} isFixed={false} approve={approve}></ApproveButton>
     </FormFull>
   )
-}
-
-PlaceBidForm.defaultProps = {
-  isFixed: false,
 }
