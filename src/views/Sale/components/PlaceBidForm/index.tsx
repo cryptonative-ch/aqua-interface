@@ -92,6 +92,18 @@ const FormInput = styled.input({
   },
 })
 
+const TokenOutQuantityText = styled.div({
+  border: '1px dashed #DDDDE3',
+  borderWidth: '1px 0 0 0',
+  padding: '16px 0 8px 0',
+  textAlign: 'center',
+  fontSize: '14px',
+  lineHeight: '21px',
+  color: '#7B7F93',
+  fontWeight: 400,
+})
+
+
 interface PlaceBidComponentProps {
   sale: Sale
   currentSettlementPrice?: number
@@ -195,6 +207,7 @@ export const PlaceBidForm = ({ sale, currentSettlementPrice }: PlaceBidComponent
           </FormDescription>
         </Flex>
       </FormGroup>
+      <TokenOutQuantityText>You’ll bid for 0 XYZ</TokenOutQuantityText>
       <ApproveButton isDisabled={isDisabled} isFixed={false} approve={approve}></ApproveButton>
     </FormFull>
   )
