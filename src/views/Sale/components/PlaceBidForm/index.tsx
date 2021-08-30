@@ -9,9 +9,6 @@ import { Form } from 'src/components/Form'
 // Aqua Utils
 import { isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
 
-// Contexts
-import { BidModalContext } from 'src/contexts'
-
 // Interfaces
 import { Sale } from 'src/interfaces/Sale'
 import { Flex } from 'src/components/Flex'
@@ -101,7 +98,6 @@ interface PlaceBidComponentProps {
 }
 
 export const PlaceBidForm = ({ sale, currentSettlementPrice }: PlaceBidComponentProps) => {
-  const { isShown, result, toggleModal, setResult } = useContext(BidModalContext)
   const [formValid, setFormValid] = useState<boolean>(false)
   const [tokenAmount, setTokenAmount] = useState<number | undefined>()
   const [tokenPrice, setTokenPrice] = useState<number | undefined>()
@@ -111,7 +107,6 @@ export const PlaceBidForm = ({ sale, currentSettlementPrice }: PlaceBidComponent
 
   const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
     if (currentSettlementPrice && tokenPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      toggleModal()
       return false
     }
 
@@ -156,16 +151,6 @@ export const PlaceBidForm = ({ sale, currentSettlementPrice }: PlaceBidComponent
       placeBid(tokenAmount, tokenPrice)
     }
   }
-
-  // Listen to the Context value changes to get the modal response
-  useEffect(() => {
-    if (!isShown && result === true) {
-      setResult(false)
-
-      if (!tokenAmount || !tokenPrice) return
-      placeBid(tokenAmount, tokenPrice)
-    }
-  }, [isShown, placeBid, result, setResult, tokenAmount, tokenPrice])
 
   const isDisabled = !formValid || isSaleClosed(sale) || isSaleUpcoming(sale)
 
