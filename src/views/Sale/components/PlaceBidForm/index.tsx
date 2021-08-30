@@ -1,9 +1,10 @@
 // External
 import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
+import { Form } from 'src/components/Form'
 
 // Aqua Utils
 import { isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
@@ -16,9 +17,9 @@ import { Sale } from 'src/interfaces/Sale'
 import { Flex } from 'src/components/Flex'
 import { ApproveButton } from 'src/views/Sale/components/ApproveButton'
 
-const FormBody = styled.form({
-  flex: 1,
-})
+const FormFull = styled(Form)`
+  width: 100%;
+`
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -50,13 +51,15 @@ const FormContainer = styled.div({
 const FormText = styled.div({
   position: 'absolute',
   flex: 1,
-  background: 'transparent',
+  background: '#F2F2F2',
   border: 'none',
   color: '#7B7F93',
   fontSize: '14px',
   lineHeight: '48px',
-  margin: '0 16px',
+  padding: '0 16px',
   userSelect: 'none',
+  right: 0,
+  zIndex: 101,
 })
 
 const FixedTerm = styled.div({
@@ -70,42 +73,38 @@ const FixedTerm = styled.div({
   fontWeight: 400,
 })
 
-const MaxButton = styled.div({
+const MaxButton = styled.a({
   border: '1px solid #DDDDE3',
   padding: '0 4px',
   fontStyle: 'normal',
-  fontWeight: 500,
   fontSize: '14px',
   lineHeight: '21px',
   textAlign: 'center',
   color: '#7B7F93',
-  position: 'absolute',
-  right: '16px',
-  top: '13px',
+  marginRight: '16px',
   cursor: 'pointer',
-  zIndex: 200,
+
+  ':hover': {
+    borderColor: '#304FFE',
+    color: '#304FFE !important',
+  },
 })
 
 const FormInput = styled.input({
   flex: 1,
   height: 'unset',
-  background: 'transparent',
+  background: '#F2F2F2',
   border: 'none',
-  color: 'transparent',
+  color: '#7B7F93',
   padding: '0 16px',
   fontSize: '14px',
   lineHeight: '21px',
   zIndex: 100,
   ':focus': {
-    backgroundColor: 'transparent',
-    color: 'transparent',
+    background: '#F2F2F2',
+    color: '#7B7F93',
   },
 })
-
-interface BidData {
-  tokenAmount: number
-  tokenPrice: number
-}
 
 interface PlaceBidComponentProps {
   sale: Sale
@@ -120,7 +119,6 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
   const [tokenAmount, setTokenAmount] = useState<number>(0)
   const [tokenPrice, setTokenPrice] = useState<number>(0)
   const [approve] = useState<boolean>(false)
-  const theme = useTheme()
 
   const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
 
@@ -175,49 +173,47 @@ export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }
   const isDisabled = !formValid || isSaleClosed(sale) || isSaleUpcoming(sale)
 
   return (
-    <FormBody id="createBidForm" onSubmit={onFormSubmit}>
-      {!isFixed && (
-        <FormGroup theme={theme}>
+    <FormFull id="createBidForm" noValidate onSubmit={onFormSubmit}>
+        <FormGroup>
           <FormLabel>Token Price</FormLabel>
           <Flex flexDirection="column" flex={1}>
             <FormContainer>
-              <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
+              <FormText data-testid="price-value">DAI</FormText>
               <FormInput
                 aria-label="tokenPrice"
                 id="tokenPrice"
                 type="number"
-                value={Number(tokenPrice).toString()}
+                placeholder="0.0"
+                value={tokenPrice}
                 onChange={onTokenPriceChange}
               />
-              <MaxButton>Max</MaxButton>
             </FormContainer>
-            <FormDescription>
-              {isFixed
-                ? 'You have 123,456 DAI.'
-                : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
-            </FormDescription>
+            <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
           </Flex>
         </FormGroup>
-      )}
-      <FormGroup theme={theme}>
+      <FormGroup>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+            <FormText data-testid="amount-value">
+              <MaxButton>Max</MaxButton>
+              DAI
+            </FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
               type="number"
-              value={Number(tokenAmount).toString()}
+              placeholder="0.0"
+              value={tokenAmount}
               onChange={onTokenAmountChange}
             />
           </FormContainer>
-          <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
+          <FormDescription>
+            Enter the amount of DAI you would like to trade. You have 123,456 DAI.
+          </FormDescription>
         </Flex>
       </FormGroup>
-      {isFixed && <FixedTerm>{`You'll get 1,000 ${sale.tokenOut?.symbol}`}</FixedTerm>}
-      <ApproveButton isDisabled={isDisabled} isFixed={isFixed} approve={approve}></ApproveButton>
-    </FormBody>
+    </FormFull>
   )
 }
 
