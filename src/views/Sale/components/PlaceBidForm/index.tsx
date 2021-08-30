@@ -1,5 +1,5 @@
 // External
-import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
+import React, { useState, ChangeEvent, FormEvent } from 'react'
 import styled from 'styled-components'
 
 // Components
@@ -137,8 +137,8 @@ export const PlaceBidForm = ({ sale, currentSettlementPrice }: PlaceBidComponent
   }
 
   const placeBid = (tokenAmount: number, tokenPrice: number) => {
-    // eslint-disable-next-line
-    console.log(tokenAmount, tokenPrice)
+    // TODO: Actually place the bid.
+    alert({tokenAmount, tokenPrice})
   }
 
   // Submission handler
