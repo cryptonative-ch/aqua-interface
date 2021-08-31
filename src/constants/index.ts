@@ -16,9 +16,10 @@ export const SUPPORTED_CHAINS = {
     id: CHAIN_ID.RINKEBY,
     name: 'Rinkeby Testnet',
     contracts: {
-      factory: '0xa1Bf3bfDbC86Fd6eC7E2d9707609d7fAc0d93EeF',
-      saleLauncher: '0x6085eb96659B0e90bc59288750C8306eE390fA99',
-      templateLauncher: '0x569DD258D95c8f558AAf6fe808a0cfC00D941565',
+      factory: '0xA4bEdDf001392121a88192a2a2348c9102e8E6B3',
+      saleLauncher: '0x248617E4f69E86a727A4e03bA8d6e65A23d12e45',
+      templateLauncher: '0xC8Ab9E079D8207fB755953b0C464C8C5313FE83a',
+      subgraph: 'https://api.thegraph.com/subgraphs/name/mprasanjith/aqua-rinkeby-next',
     },
     parameters: {
       chainId: '0x4',
@@ -29,7 +30,7 @@ export const SUPPORTED_CHAINS = {
         decimals: 18,
       },
       rpcUrls: ['https://rinkeby.infura.io/v3'],
-      blockExplorerUrls: ['https://rinkeby.etherscan.com'],
+      blockExplorerUrls: ['https://rinkeby.etherscan.io'],
     },
   },
   [CHAIN_ID.XDAI]: {

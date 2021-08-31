@@ -26,7 +26,7 @@ import { Card } from 'src/components/Card'
 // View Components
 import { HeaderControl } from 'src/views/Sale/components/HeaderControl'
 import { PlaceBidForm } from 'src/views/Sale/components/PlaceBidForm'
-import { SelfBidList } from 'src/views/Sale/components/SelfBidList'
+// import { SelfBidList } from 'src/views/Sale/components/SelfBidList'
 import { TokenFooter } from 'src/views/Sale/components/TokenFooter'
 import { HeaderItem } from 'src/views/Sale/components/HeaderItem'
 import { SaleHeader } from 'src/views/Sale/components/SaleHeader'
@@ -35,7 +35,6 @@ import { Center } from 'src/layouts/Center'
 import { ErrorMessage } from 'src/components/ErrorMessage'
 
 // Aqua Utils
-import { calculateClearingPrice } from 'src/aqua/price'
 import { isSaleClosed, isSaleOpen, isSaleUpcoming } from 'src/aqua/sale'
 import { timeEnd } from 'src/views/Sale/components/Timer'
 import { formatBigInt } from 'src/utils'
@@ -43,16 +42,10 @@ import { formatBigInt } from 'src/utils'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 
-// Interfaces
-import { FairBidPick } from 'src/interfaces/Sale'
-
-import { GetAllBidsBySaleId_fairSale_bids } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
-
 // Hooks
 import { FIX_LATER } from 'src/interfaces'
 import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
 import { useBids } from 'src/hooks/useBids'
-import { useSelector } from 'react-redux'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -69,9 +62,8 @@ interface SaleViewParams {
 
 export function FairSaleView() {
   const { isMobile } = useWindowSize()
-  const [showGraph, setShowGraph] = useState<boolean>(false)
+  const [showGraph, setShowGraph] = useState<boolean>(true)
   const [userAddress] = useState<string>('')
-  const [clearingPrice] = useState<FairBidPick>()
   const ref = useRef<HTMLElement>()
   const { width: containerWidth, setWidth } = useElementWidth(ref)
 
@@ -80,15 +72,14 @@ export function FairSaleView() {
   const theme = useTheme()
 
   const { error, loading, sale } = useFairSaleQuery(params.saleId)
-  useBids(params.saleId)
-  const allBids = useSelector(
-    ({ bids }) => bids.bidsBySaleId[params.saleId]?.bids || []
-  ) as GetAllBidsBySaleId_fairSale_bids[]
-  console.log({ allBids })
-  const bids: any[] = []
+
+  const { allBids, clearingPrice, userBids } = useBids(
+    params.saleId,
+    formatBigInt(sale?.tokensForSale, sale?.tokenOut.decimals)
+  )
 
   const toggleGraph = () => {
-    if (showGraph || (sale && bids && bids.length > 0)) {
+    if (showGraph || (sale && allBids?.length > 0)) {
       setShowGraph(!showGraph)
     }
   }
@@ -128,7 +119,7 @@ export function FairSaleView() {
                       isMobile
                       title={isSaleUpcoming(sale) ? 'Min. Price' : isSaleOpen(sale) ? 'Current Price' : 'Final Price'}
                       description={`${(
-                        1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 1)
+                        1 / (clearingPrice ? formatBigInt(clearingPrice.price, sale.tokenIn.decimals) : 1)
                       ).toFixed(2)} ${sale.tokenIn?.symbol}/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
@@ -159,9 +150,9 @@ export function FairSaleView() {
                   <Flex flexDirection="row" alignItems="center" flex={1}>
                     <HeaderItem
                       title={isSaleUpcoming(sale) ? 'Min. Price' : isSaleOpen(sale) ? 'Current Price' : 'Final Price'}
-                      description={`${(
-                        1 / (clearingPrice ? formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 1)
-                      ).toFixed(2)} ${sale.tokenIn?.symbol}/${sale.tokenOut?.symbol}`}
+                      description={`${(1 / (clearingPrice ? clearingPrice.price : 1)).toFixed(2)} ${
+                        sale.tokenIn?.symbol
+                      }/${sale.tokenOut?.symbol}`}
                     />
                     <HeaderItem
                       title={isSaleClosed(sale) ? 'Amount Sold' : 'Amount for Sale'}
@@ -189,12 +180,12 @@ export function FairSaleView() {
                   </Flex>
                 )}
               </CardBody>
-              {isSaleOpen(sale) && bids && bids.length > 0 && (
+              {isSaleOpen(sale) && userBids && userBids.length > 0 && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl sale={sale as FIX_LATER} showGraph={showGraph} toggleGraph={toggleGraph} />
                 </CardBody>
               )}
-              {isSaleClosed(sale) && (!bids || bids.length === 0) && (
+              {isSaleClosed(sale) && (!userBids || userBids.length === 0) && (
                 <CardBody display="flex" padding={isMobile ? '16px' : theme.space[4]} border="none">
                   <HeaderControl
                     sale={sale as FIX_LATER}
@@ -225,15 +216,15 @@ export function FairSaleView() {
                   <BarChart
                     width={containerWidth}
                     height={400}
-                    data={bids}
+                    data={allBids}
                     userAddress={userAddress}
-                    vsp={clearingPrice ? 1 / formatBigInt(clearingPrice.tokenIn, sale.tokenIn.decimals) : 0}
+                    vsp={clearingPrice ? clearingPrice.price : 0}
                     sale={sale as FIX_LATER}
                   />
                 </CardBody>
               )}
             </Card>
-            {bids && bids.length > 0 && (
+            {userBids && userBids.length > 0 && (
               <Card mt={theme.space[4]} marginX={isMobile ? '8px' : ''} border="none">
                 <CardBody
                   display="flex"
@@ -278,7 +269,7 @@ export function FairSaleView() {
                     </>
                   )}
                 </CardBody>
-                <SelfBidList sale={sale as FIX_LATER} clearingPrice={clearingPrice} bids={bids as any} />
+                {/* <SelfBidList sale={sale as FIX_LATER} clearingPrice={clearingPrice} userBids={userBids as any} /> */}
               </Card>
             )}
             <TokenFooter sale={sale as FIX_LATER} />
@@ -298,7 +289,7 @@ export function FairSaleView() {
                       }
                     }}
                     sale={sale as FIX_LATER}
-                    currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
+                    currentSettlementPrice={2}
                   />
                 </CardBody>
               </Card>

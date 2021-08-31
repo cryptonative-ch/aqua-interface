@@ -49,7 +49,7 @@ export function useNewBidEventFromChain(saleId: string): UseBidEventFromChainRet
       const newBid: GetAllBidsBySaleId_fairSale_bids = {
         __typename: 'FairSaleBid',
         id: String(await (await library.getBlock(event.blockNumber)).timestamp),
-        owner: { ownerId },
+        owner: { __typename: 'FairSaleUser', id: ownerId, address: ownerId },
         tokenInAmount: orderTokenIn,
         tokenOutAmount: orderTokenOut,
         sale: {

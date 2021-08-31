@@ -8,13 +8,13 @@
 // ====================================================
 
 export interface launchedTemplateResults {
-  __typename: 'LaunchedSaleTemplate'
+  __typename: "LaunchedSaleTemplate";
   /**
    * Address of the template
    */
-  id: string
+  id: string;
   /**
    * IPFS content hash
    */
-  metadataContentHash: string | null
+  metadataContentHash: string | null;
 }

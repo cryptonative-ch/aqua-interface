@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers'
 
 // Interfaces
 import { FairSaleBid, FairBidPick } from 'src/interfaces/Sale'
+import { GetAllBidsBySaleId_fairSale_bids } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 
 /**
  * source: https://github.com/gnosis/ido-contracts/blob/main/src/priceCalculation.ts
