@@ -15,7 +15,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Actions
 
 // Components
-import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
 import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
@@ -44,11 +43,12 @@ import { formatBigInt } from 'src/utils'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { FairBidPick } from 'src/interfaces/Sale'
+import { FairBidPick, SaleDetails } from 'src/interfaces/Sale'
+import { FIX_LATER } from 'src/interfaces'
 
 // Hooks
-import { FIX_LATER } from 'src/interfaces'
 import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
+import { useIpfsFile } from 'src/hooks/useIpfsFile'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -76,6 +76,8 @@ export function FairSaleView() {
   const theme = useTheme()
 
   const { error, loading, sale } = useFairSaleQuery(params.saleId)
+  const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
+
   // const bids = useSelector(({ bids }) => bids.bidsBySaleId[params.saleId].bids || []) as any[]
   const bids: any[] = []
 
@@ -273,7 +275,7 @@ export function FairSaleView() {
                 <SelfBidList sale={sale as FIX_LATER} clearingPrice={clearingPrice} bids={bids as any} />
               </Card>
             )}
-            <TokenFooter sale={sale as FIX_LATER} />
+            <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
           </Flex>
           {isSaleOpen(sale) && !isMobile && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
@@ -298,7 +300,7 @@ export function FairSaleView() {
           )}
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {/* {isMobile && <MobileFooter />} */}
     </Container>
   )
 }

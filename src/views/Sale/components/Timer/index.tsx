@@ -36,8 +36,8 @@ export const secondsTohms = (seconds: number) => {
   return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
-export const timeEnd = (unixtmestamp: number, timezone?: string) => {
-  if (unixtmestamp < 0) {
+export const timeEnd = (unixTimestamp: number, timezone?: string) => {
+  if (unixTimestamp < 0) {
     throw new Error('unixtimestamp cannot be negative')
   }
 
@@ -46,14 +46,19 @@ export const timeEnd = (unixtmestamp: number, timezone?: string) => {
     timezone ? { timeZone: `${timezone}` } : undefined
   ).resolvedOptions().timeZone
 
-  const date = momentTimeZone
-    .unix(unixtmestamp)
-    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
-    .format('MMM D, H:mm')
+  const currentDate = dayjs.unix(unixTimestamp)
+  const startOfYear = dayjs().startOf('year')
+  const endOfYear = dayjs().endOf('year')
 
-  const timeZoneStamp = momentTimeZone
-    .tz(typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess())
-    .zoneAbbr()
+  let dateFormat = 'MMM D YYYY, H:mm'
+  if (startOfYear <= currentDate && currentDate <= endOfYear) {
+    dateFormat = 'MMM D, H:mm'
+  }
+
+  const timeZone = typeof timezone !== 'undefined' ? timeZoneGuess : momentTimeZone.tz.guess()
+
+  const date = momentTimeZone.unix(unixTimestamp).tz(timeZone).format(dateFormat)
+  const timeZoneStamp = momentTimeZone.tz(timeZone).zoneAbbr()
 
   return `${date} ${timeZoneStamp}`
 }

@@ -62,6 +62,10 @@ const FixedFormMax = styled.div({
   color: '#7B7F93',
 })
 
+const MobileSpacer = styled.div({
+  marginTop: '60%',
+})
+
 export interface FixedPriceSaleViewParams {
   saleId: string
 }
@@ -262,7 +266,11 @@ export function FixedPriceSaleView() {
           )}
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {((isMobile && isSaleOpen(sale as FIX_LATER)) || (isSaleClosed(sale as FIX_LATER) && bids.length > 0)) && (
+        <MobileSpacer>
+          <MobileFooter sale={sale as FIX_LATER} />
+        </MobileSpacer>
+      )}
     </Container>
   )
 }

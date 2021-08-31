@@ -13,7 +13,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 import { setPageTitle } from 'src/redux/page'
 
 // Components
-import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
 import { Container } from 'src/components/Container'
 import { CardBody } from 'src/components/CardBody'
@@ -69,7 +68,6 @@ export function StaticView() {
           </Flex>
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
     </Container>
   )
 }
