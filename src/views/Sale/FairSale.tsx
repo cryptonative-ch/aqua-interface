@@ -42,7 +42,7 @@ import { formatBigInt } from 'src/utils'
 import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { FairBidPick, SaleDetails } from 'src/interfaces/Sale'
+import { SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
 
 // Hooks
@@ -80,7 +80,7 @@ export function FairSaleView() {
     params.saleId,
     formatBigInt(sale?.tokensForSale, sale?.tokenOut.decimals)
   )
-  
+
   const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
 
   const toggleGraph = () => {
@@ -288,10 +288,7 @@ export function FairSaleView() {
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
-                  <PlaceBidForm
-                    sale={sale as FIX_LATER}
-                    currentSettlementPrice={2}
-                  />
+                  <PlaceBidForm sale={sale as FIX_LATER} currentSettlementPrice={2} />
                 </CardBody>
               </Card>
             </Flex>

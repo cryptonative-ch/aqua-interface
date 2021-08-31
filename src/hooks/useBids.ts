@@ -24,7 +24,7 @@ import {
 import { GET_ALL_BIDS_BY_SALE_ID } from 'src/subgraph/queries'
 
 // Blockchain websocket
-import { useNewCommitmentEventFromChain, useNewBidEventFromChain } from 'src/hooks/useNewBidEventFromChain'
+import { useNewCommitmentEventFromChain } from 'src/hooks/useNewBidEventFromChain'
 import { formatBigInt } from 'src/utils'
 
 interface ClearingPrice {
