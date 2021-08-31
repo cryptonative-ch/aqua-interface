@@ -33,6 +33,7 @@ interface SaleSummaryProps {
 export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
   const [t] = useTranslation()
   const amount = purchaseAmount ? utils.formatUnits(purchaseAmount, sale.tokenOut.decimals) : undefined
+  console.log(amount)
   return (
     <Card>
       <CardBody>

@@ -1,5 +1,5 @@
 // External
-import { useCallback, useMemo } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
@@ -19,6 +19,9 @@ interface UseReadBidEventFromBlockchainReturns {
   error: Error | null
 }
 
+// comp re-renders
+//
+
 export function useReadBidEventFromBlockchain(saleId: string, saleType: string): UseReadBidEventFromBlockchainReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
@@ -29,20 +32,48 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
   } = useSelector(({ bids }) => bids)
 
-  const fixedPriceSaleContract = useMemo(() => {
-    return FixedPriceSale__factory.connect(saleId, library)
-  }, [FixedPriceSale__factory])
+  console.log('useSelector: ', bids.length)
 
-  const fairSaleContract = useMemo(() => {
-    return FairSale__factory.connect(saleId, library)
-  }, [FairSale__factory])
+  const fixedPriceSaleContract = useMemo(() => FixedPriceSale__factory.connect(saleId, library), [
+    FixedPriceSale__factory,
+  ])
 
-  const monitorFixedPriceCommitments = useCallback(() => {
+  const fairSaleContract = FairSale__factory.connect(saleId, library)
+
+  useEffect(() => {
+    if (!account || !library || !chainId) {
+      return
+    }
+    if (saleType != 'FixedPriceSale') {
+      fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
+        const bids: any = {
+          id: String(await (await library.getBlock(event.blockNumber)).timestamp),
+          address: ownerId,
+          tokenIn: orderTokenIn,
+          tokenOut: orderTokenOut,
+          baseSale: {
+            id: saleId,
+          },
+
+          createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
+          updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
+          deletedAt: null,
+        }
+
+        dispatch(updateBidRequest(true))
+        try {
+          dispatch(updateBidSuccess(bids))
+        } catch (error) {
+          console.error(error)
+          dispatch(updateBidFailure(error))
+        }
+      })
+    }
+    let totalCommitmentsByUserAddress: number | undefined
     fixedPriceSaleContract.on('NewCommitment', async (buyer, amount) => {
-      const totalCommitmentsByUserAddress =
+      totalCommitmentsByUserAddress =
         [...bids].filter(bid => bid.user.address.toLowerCase() === buyer.toLowerCase()).length + 1
-      console.log('bids inside function: ', bids.length)
-      console.log(totalCommitmentsByUserAddress)
+      console.log('total Bids: ', totalCommitmentsByUserAddress)
 
       const commitment: GetAllBidsBySaleId_fixedPriceSale_commitments = {
         id: saleId + '/commitments/' + buyer + '/' + totalCommitmentsByUserAddress,
@@ -59,6 +90,7 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
         },
         status: FixedPriceSaleCommitmentStatus.SUBMITTED,
       }
+      console.log(commitment)
       dispatch(updateBidRequest(true))
       try {
         dispatch(updateBidSuccess(commitment))
@@ -68,42 +100,11 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
         dispatch(updateBidFailure(error))
       }
     })
-  }, [fixedPriceSaleContract])
 
-  const monitorFairSaleBids = useCallback(() => {
-    fairSaleContract.on('NewOrder', async (ownerId, orderTokenOut, orderTokenIn, event) => {
-      const bids: any = {
-        id: String(await (await library.getBlock(event.blockNumber)).timestamp),
-        address: ownerId,
-        tokenIn: orderTokenIn,
-        tokenOut: orderTokenOut,
-        baseSale: {
-          id: saleId,
-        },
-
-        createdAt: await (await library.getBlock(event.blockNumber)).timestamp,
-        updatedAt: await (await library.getBlock(event.blockNumber)).timestamp,
-        deletedAt: null,
-      }
-
-      dispatch(updateBidRequest(true))
-      try {
-        dispatch(updateBidSuccess(bids))
-      } catch (error) {
-        console.error(error)
-        dispatch(updateBidFailure(error))
-      }
-    })
-  }, [fairSaleContract])
-
-  useEffect(() => {
-    if (!account || !library || !chainId) {
-      return
+    return () => {
+      fixedPriceSaleContract.removeAllListeners()
+      fairSaleContract.removeAllListeners()
     }
-    if (saleType != 'FixedPriceSale') {
-      monitorFairSaleBids()
-    }
-    monitorFixedPriceCommitments()
   }, [account, library, chainId])
 
   return {

@@ -3,9 +3,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Transaction } from 'contract-proxy-kit'
 import { NumberLike } from 'contract-proxy-kit/lib/cjs/utils/basicTypes'
-import { utils } from 'ethers'
-import { BigNumber as valueBigNumber } from 'ethers'
-import BigNumber from 'bignumber.js'
+import { utils, BigNumber, BigNumberish } from 'ethers'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
@@ -43,7 +41,7 @@ export function useWrapNativeToken(
   ])
   const fairSale = useMemo(() => FairSale__factory.connect(saleAddress, signer), [FairSale__factory])
 
-  let value: valueBigNumber
+  let value: BigNumber
   let tx: Transaction[]
 
   useEffect(() => {
@@ -55,7 +53,6 @@ export function useWrapNativeToken(
   const wrap = useCallback(async () => {
     if (cpk && purchaseValue) {
       value = utils.parseEther(purchaseValue.toString())
-      const bignumberValue = new BigNumber(value.toString())
 
       tx = [
         {
@@ -73,6 +70,8 @@ export function useWrapNativeToken(
       ]
       try {
         setLoading(true)
+        const Dxdai = await signer.sendTransaction({ to: cpk?.address, value: value })
+        Dxdai.wait(1)
 
         const { transactionResponse } = await cpk.execTransactions(tx)
 

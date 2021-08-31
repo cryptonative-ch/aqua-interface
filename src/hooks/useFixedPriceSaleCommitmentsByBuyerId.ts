@@ -71,20 +71,13 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResul
       )
   }, [sales])
 
-  useEffect(() => {
-    if (!chainId || !library || !account) {
-      return
-    }
-
-    setInitialClaimStatus()
-  }, [data, library, chainId, account])
-
-  if (data) {
-    purchases = data.fixedPriceSaleCommitments.filter(
-      commitment =>
-        commitment.user.address.toLowerCase() === account?.toLowerCase() ||
-        commitment.user.address.toLowerCase() === cpk?.address?.toLowerCase()
-    )
+  if (data && account) {
+    purchases =
+      data.fixedPriceSaleCommitments.filter(
+        commitment =>
+          commitment.user.address.toLowerCase() === account?.toLowerCase() ||
+          commitment.user.address.toLowerCase() === cpk?.address?.toLowerCase()
+      ) || []
 
     const groupBy = purchases.reduce((a: any, c: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments) => {
       a[c.sale.id] = a[c.sale.id] || []
@@ -102,6 +95,15 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResul
       )
     })
   }
+
+  useEffect(() => {
+    if (!chainId || !library || !account) {
+      return
+    }
+
+    setInitialClaimStatus()
+  }, [data, library, chainId, account])
+
   return {
     sales,
     saleIds,
