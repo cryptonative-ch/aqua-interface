@@ -287,10 +287,6 @@ export function FairSaleView() {
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
                   <PlaceBidForm
-                    onSubmit={() => {
-                      {
-                      }
-                    }}
                     sale={sale as FIX_LATER}
                     currentSettlementPrice={numeral(calculateClearingPrice(bids)).value()}
                   />
