@@ -135,7 +135,6 @@ export function useBids(saleId: string, volume: number): UseBidsReturn {
     //pull past bids from subgraph
 
     if (data) {
-      console.log({ data })
       dispatch(initialBidRequest(true))
       try {
         const { fairSale } = data
