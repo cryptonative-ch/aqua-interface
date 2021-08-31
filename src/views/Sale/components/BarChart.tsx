@@ -2,15 +2,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as d3 from 'd3'
 import React, { useRef, useEffect } from 'react'
+import { Sale } from 'src/interfaces/Sale'
 
 // Interfaces
-import { Sale, FairSaleBid } from 'src/interfaces/Sale'
+import { GetAllBidsBySaleId_fairSale_bids } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { formatBigInt } from 'src/utils'
 
 interface BarChartComponentProps {
   width: number
   height: number
-  data: FairSaleBid[]
+  data: GetAllBidsBySaleId_fairSale_bids[]
   userAddress: string
   vsp: number
   sale: Sale
@@ -18,19 +19,20 @@ interface BarChartComponentProps {
 
 export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data, userAddress, vsp, sale }) => {
   const ref = useRef<SVGSVGElement>(null)
+  const shortenedCutoff = 50
 
-  const getBidPricePerShare = (bid: FairSaleBid) =>
-    formatBigInt(bid.tokenIn, sale.tokenIn.decimals) / formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
+  const getBidPricePerShare = (bid: GetAllBidsBySaleId_fairSale_bids) =>
+    formatBigInt(bid.tokenInAmount, sale.tokenIn.decimals) / formatBigInt(bid.tokenOutAmount, sale.tokenOut.decimals)
 
-  const getBidPriceText = (bid: FairSaleBid, fontSize: number) => {
+  const getBidPriceText = (bid: GetAllBidsBySaleId_fairSale_bids, smallVersion: boolean) => {
     return `${(
-      formatBigInt(bid.tokenIn, sale.tokenIn.decimals) / formatBigInt(bid.tokenOut, sale.tokenOut.decimals)
-    ).toFixed(2)}${formatBigInt(bid.tokenOut, sale.tokenOut.decimals) >= fontSize * 4 ? ' DAI/XYZ' : ''}`
+      formatBigInt(bid.tokenInAmount, sale.tokenIn.decimals) / formatBigInt(bid.tokenOutAmount, sale.tokenOut.decimals)
+    ).toFixed(2)}${!smallVersion ? `${sale.tokenIn.symbol}/${sale.tokenOut.symbol}` : ''}`
   }
 
-  const getBidAmountText = (bid: FairSaleBid, fontSize: number) => {
-    return `${formatBigInt(bid.tokenOut, sale.tokenOut.decimals).toFixed(0)}${
-      formatBigInt(bid.tokenOut, sale.tokenOut.decimals) >= fontSize * 3 ? ' XYZ' : ''
+  const getBidAmountText = (bid: GetAllBidsBySaleId_fairSale_bids, smallVersion: boolean) => {
+    return `${formatBigInt(bid.tokenOutAmount, sale.tokenOut.decimals).toFixed(0)}${
+      !smallVersion ? sale.tokenOut.symbol : ''
     }`
   }
 
@@ -41,12 +43,13 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
     const svg = d3.select(ref.current)
     const sortedData = data.sort(
       (first, second) =>
-        formatBigInt(second.tokenIn, sale.tokenIn.decimals) - formatBigInt(first.tokenIn, sale.tokenIn.decimals)
+        formatBigInt(second.tokenInAmount, sale.tokenIn.decimals) -
+        formatBigInt(first.tokenInAmount, sale.tokenIn.decimals)
     )
-    const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= 0.1)
-    const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < 0.1)
-    const activeChartData: any[] = activeBids.map(item => formatBigInt(item.tokenOut, sale.tokenOut.decimals))
-    const inactiveChartData: any[] = inactiveBids.map(item => formatBigInt(item.tokenOut, sale.tokenOut.decimals))
+    const activeBids = sortedData.filter(item => getBidPricePerShare(item) >= vsp)
+    const inactiveBids = sortedData.filter(item => getBidPricePerShare(item) < vsp)
+    const activeChartData: any[] = activeBids.map(item => formatBigInt(item.tokenOutAmount, sale.tokenOut.decimals))
+    const inactiveChartData: any[] = inactiveBids.map(item => formatBigInt(item.tokenOutAmount, sale.tokenOut.decimals))
 
     svg.selectAll('g').remove()
     const activeSelection = svg.append('g').attr('class', 'activeSelection').selectAll('rect').data(activeChartData)
@@ -81,7 +84,7 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       .attr('font-size', (d: number, i: number) => fontSize)
       .attr('dy', '.71em')
       .attr('text-anchor', 'start')
-      .text((d: number, i: number) => getBidPriceText(activeBids[i], fontSize))
+      .text((d: number, i: number) => getBidPriceText(activeBids[i], xScale(d) < shortenedCutoff))
 
     activeSelection
       .enter()
@@ -91,7 +94,7 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
       .attr('font-size', (d: number, i: number) => fontSize)
       .attr('dy', '.71em')
       .attr('text-anchor', 'end')
-      .text((d: number, i: number) => getBidAmountText(activeBids[i], fontSize))
+      .text((d: number, i: number) => getBidAmountText(activeBids[i], xScale(d) < shortenedCutoff))
 
     const lineContainer = svg.append('g')
     lineContainer
@@ -145,7 +148,7 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
         .attr('font-size', (d: number, i: number) => fontSize)
         .attr('dy', '.71em')
         .attr('text-anchor', 'start')
-        .text((d: number, i: number) => getBidPriceText(inactiveBids[i], fontSize))
+        .text((d: number, i: number) => getBidPriceText(inactiveBids[i], xScale(d) < shortenedCutoff))
 
       inactiveSelection
         .enter()
@@ -155,7 +158,7 @@ export const BarChart: React.FC<BarChartComponentProps> = ({ width, height, data
         .attr('font-size', (d: number, i: number) => fontSize)
         .attr('dy', '.71em')
         .attr('text-anchor', 'end')
-        .text((d: number, i: number) => getBidAmountText(inactiveBids[i], fontSize))
+        .text((d: number, i: number) => getBidAmountText(inactiveBids[i], xScale(d) < shortenedCutoff))
     }
   }
 

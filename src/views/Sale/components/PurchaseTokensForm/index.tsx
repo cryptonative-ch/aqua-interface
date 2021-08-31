@@ -24,7 +24,7 @@ import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
-import { useBids } from 'src/hooks/useBids'
+import { useCommitments } from 'src/hooks/useBids'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
@@ -137,7 +137,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     owner: account ?? undefined,
   })
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
-  const { allBids } = useBids(saleId, 'FixedPriceSale')
+  const { allBids } = useCommitments(saleId)
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
