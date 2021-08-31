@@ -1,5 +1,5 @@
 // External
-import { useCallback, useState, useMemo } from 'react'
+import { useCallback, useState, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
@@ -31,14 +31,43 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
     error,
     bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
   } = useSelector(({ bids }) => bids)
+  const [totalCommitmentsByUserAddress, setTotalCommimentsByUserAddress] = useState<number>(bids.length)
 
-  console.log('useSelector: ', bids.length)
-
-  const fixedPriceSaleContract = useMemo(() => FixedPriceSale__factory.connect(saleId, library), [
-    FixedPriceSale__factory,
-  ])
+  const fixedPriceSaleContract = useMemo(() => FixedPriceSale__factory.connect(saleId, library), [])
 
   const fairSaleContract = FairSale__factory.connect(saleId, library)
+  const MFA = useCallback(() => {
+    return fixedPriceSaleContract.on('NewCommitment', async (buyer, amount) => {
+      console.log('re-rendering')
+      // @TODO: fix Later
+      setTotalCommimentsByUserAddress(bids => bids + 1)
+
+      const commitment: GetAllBidsBySaleId_fixedPriceSale_commitments = {
+        id: saleId + '/commitments/' + buyer + '/' + totalCommitmentsByUserAddress,
+        __typename: 'FixedPriceSaleCommitment',
+        user: {
+          address: buyer,
+          __typename: 'FixedPriceSaleUser',
+        },
+        amount: amount.toString(),
+        sale: {
+          id: saleId,
+          tokenPrice: saleId,
+          __typename: 'FixedPriceSale',
+        },
+        status: FixedPriceSaleCommitmentStatus.SUBMITTED,
+      }
+      console.log(commitment)
+      dispatch(updateBidRequest(true))
+      try {
+        dispatch(updateBidSuccess(commitment))
+      } catch (error) {
+        console.error(error)
+        toast.error(t('error.updatePurchase'))
+        dispatch(updateBidFailure(error))
+      }
+    })
+  }, [])
 
   useEffect(() => {
     if (!account || !library || !chainId) {
@@ -69,37 +98,9 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
         }
       })
     }
-    let totalCommitmentsByUserAddress: number | undefined
-    fixedPriceSaleContract.on('NewCommitment', async (buyer, amount) => {
-      totalCommitmentsByUserAddress =
-        [...bids].filter(bid => bid.user.address.toLowerCase() === buyer.toLowerCase()).length + 1
-      console.log('total Bids: ', totalCommitmentsByUserAddress)
 
-      const commitment: GetAllBidsBySaleId_fixedPriceSale_commitments = {
-        id: saleId + '/commitments/' + buyer + '/' + totalCommitmentsByUserAddress,
-        __typename: 'FixedPriceSaleCommitment',
-        user: {
-          address: buyer,
-          __typename: 'FixedPriceSaleUser',
-        },
-        amount: amount.toString(),
-        sale: {
-          id: saleId,
-          tokenPrice: saleId,
-          __typename: 'FixedPriceSale',
-        },
-        status: FixedPriceSaleCommitmentStatus.SUBMITTED,
-      }
-      console.log(commitment)
-      dispatch(updateBidRequest(true))
-      try {
-        dispatch(updateBidSuccess(commitment))
-      } catch (error) {
-        console.error(error)
-        toast.error(t('error.updatePurchase'))
-        dispatch(updateBidFailure(error))
-      }
-    })
+    MFA()
+    console.log('re-rendering useEffect')
 
     return () => {
       fixedPriceSaleContract.removeAllListeners()
