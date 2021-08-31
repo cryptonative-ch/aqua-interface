@@ -3,41 +3,27 @@ import React from 'react'
 
 //Internal
 import { Wrapper } from 'src/components/MobileFooter/style'
-import { Button, ButtonText } from 'src/components/Header/style'
+import { PurchaseTokensForm } from 'src/views/Sale/components/PurchaseTokensForm'
+import { Sale } from 'src/interfaces/Sale'
+import { isSaleOpen, isSaleClosed } from 'src/aqua/sale'
+import { FIX_LATER } from 'src/interfaces'
+import { ClaimButton } from 'src/views/Sale/components/HeaderClaim/ClaimButton'
 
 export interface MobileFooterProps {
   onClick?: () => void
+  sale: Sale
 }
 
-export const MobileFooter: React.FC<MobileFooterProps> = ({}) => {
+export const MobileFooter: React.FC<MobileFooterProps> = ({ sale }) => {
   return (
     <Wrapper>
-      <Button
-        onClick={() => {
-          //
-        }}
-        backgroundColor="#304FFE"
-        textColor="white"
-        padding="0"
-        width="100%"
-        margin="0 0 8px 0"
-        justifyContent="center"
-      >
-        <ButtonText>Claim Tokens</ButtonText>
-      </Button>
-      <Button
-        onClick={() => {
-          //
-        }}
-        backgroundColor="#7B7F93"
-        textColor="white"
-        padding="0"
-        width="100%"
-        margin="0"
-        justifyContent="center"
-      >
-        <ButtonText>Withdraw Failed Bids</ButtonText>
-      </Button>
+      {isSaleOpen(sale as FIX_LATER) ? (
+        <PurchaseTokensForm saleId={sale.id} />
+      ) : isSaleClosed(sale as FIX_LATER) ? (
+        <ClaimButton sale={sale as FIX_LATER} />
+      ) : (
+        <div>Sale has not begun yet</div>
+      )}
     </Wrapper>
   )
 }

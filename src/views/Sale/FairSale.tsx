@@ -15,7 +15,6 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Actions
 
 // Components
-import { MobileFooter } from 'src/components/MobileFooter'
 import { BackButton } from 'src/components/BackButton'
 import { FormButton } from 'src/components/FormButton'
 import { Container } from 'src/components/Container'
@@ -42,10 +41,14 @@ import { formatBigInt } from 'src/utils'
 // Views
 import { NotFoundView } from 'src/views/NotFound'
 
-// Hooks
+// Interfaces
+import { FairBidPick, SaleDetails } from 'src/interfaces/Sale'
 import { FIX_LATER } from 'src/interfaces'
+
+// Hooks
 import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
 import { useBids } from 'src/hooks/useBids'
+import { useIpfsFile } from 'src/hooks/useIpfsFile'
 
 const ChartDescription = styled.div({
   fontStyle: 'normal',
@@ -77,6 +80,8 @@ export function FairSaleView() {
     params.saleId,
     formatBigInt(sale?.tokensForSale, sale?.tokenOut.decimals)
   )
+  
+  const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
 
   const toggleGraph = () => {
     if (showGraph || (sale && allBids?.length > 0)) {
@@ -272,7 +277,7 @@ export function FairSaleView() {
                 {/* <SelfBidList sale={sale as FIX_LATER} clearingPrice={clearingPrice} userBids={userBids as any} /> */}
               </Card>
             )}
-            <TokenFooter sale={sale as FIX_LATER} />
+            <TokenFooter sale={sale as FIX_LATER} saleDetails={saleDetails} />
           </Flex>
           {isSaleOpen(sale) && !isMobile && (
             <Flex flexDirection="column" width="377px" marginLeft="24px">
@@ -284,10 +289,6 @@ export function FairSaleView() {
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
                   <PlaceBidForm
-                    onSubmit={() => {
-                      {
-                      }
-                    }}
                     sale={sale as FIX_LATER}
                     currentSettlementPrice={2}
                   />
@@ -297,7 +298,7 @@ export function FairSaleView() {
           )}
         </Flex>
       </Container>
-      {isMobile && <MobileFooter />}
+      {/* {isMobile && <MobileFooter />} */}
     </Container>
   )
 }

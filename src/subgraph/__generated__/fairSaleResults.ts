@@ -61,6 +61,18 @@ export interface fairSaleResults_launchedTemplate {
   metadataContentHash: string | null;
 }
 
+export interface fairSaleResults_launchedTemplate {
+  __typename: 'LaunchedSaleTemplate'
+  /**
+   * Address of the template
+   */
+  id: string
+  /**
+   * IPFS content hash
+   */
+  metadataContentHash: string | null
+}
+
 export interface fairSaleResults {
   __typename: "FairSale";
   /**

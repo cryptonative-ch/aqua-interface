@@ -170,6 +170,18 @@ export interface GetSingleSale_fairSale_launchedTemplate {
   metadataContentHash: string | null;
 }
 
+export interface GetSingleSale_fairSale_launchedTemplate {
+  __typename: 'LaunchedSaleTemplate'
+  /**
+   * Address of the template
+   */
+  id: string
+  /**
+   * IPFS content hash
+   */
+  metadataContentHash: string | null
+}
+
 export interface GetSingleSale_fairSale {
   __typename: "FairSale";
   /**

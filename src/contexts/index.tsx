@@ -5,17 +5,6 @@ import { ConnectorNames } from 'src/providers/web3'
 
 export const SanctionContext = React.createContext<boolean>(false)
 
-export const BidModalContext = React.createContext({
-  isShown: false,
-  result: false,
-  setResult: (_: boolean) => {
-    //
-  },
-  toggleModal: () => {
-    //
-  },
-})
-
 interface Web3ConnectionContextProps {
   isConnecting: boolean
   activatingConnector?: ConnectorNames
