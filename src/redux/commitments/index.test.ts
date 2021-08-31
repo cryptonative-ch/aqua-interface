@@ -11,15 +11,15 @@ import DayjsRelativeTime from 'dayjs/plugin/relativeTime'
 import {
   ActionTypes,
   reducer,
-  BidsState,
-  InitialBidSuccessAction,
-  InitialBidRequestAction,
-  InitialBidFailureAction,
-  UpdateBidRequestAction,
-  UpdateBidSuccessAction,
-  UpdateBidFailureAction,
+  CommitmentsState,
+  InitialCommitmentSuccessAction,
+  InitialCommitmentRequestAction,
+  InitialCommitmentFailureAction,
+  UpdateCommitmentRequestAction,
+  UpdateCommitmentSuccessAction,
+  UpdateCommitmentFailureAction,
   defaultState,
-} from 'src/redux/bids'
+} from 'src/redux/commitments'
 
 // interface
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
@@ -32,11 +32,11 @@ dayjs.extend(advanced)
 dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
 
-describe('Bid Reducer', () => {
-  describe('should handle INITIAL_BID_SUCCESS', () => {
+describe('Commitment Reducer', () => {
+  describe('should handle INITIAL_COMMITMENT_SUCCESS', () => {
     test('should handle empty return from subgraph', async () => {
-      const emptyRequestFromSubgraph: InitialBidSuccessAction = {
-        type: ActionTypes.INITIAL_BID_SUCCESS,
+      const emptyRequestFromSubgraph: InitialCommitmentSuccessAction = {
+        type: ActionTypes.INITIAL_COMMITMENT_SUCCESS,
         payload: {},
       }
       expect(reducer(defaultState, emptyRequestFromSubgraph)).toEqual({
@@ -46,8 +46,8 @@ describe('Bid Reducer', () => {
       })
     }),
       test('should handle data from subgraph after undefined', () => {
-        const expectedActions: InitialBidSuccessAction = {
-          type: ActionTypes.INITIAL_BID_SUCCESS,
+        const expectedActions: InitialCommitmentSuccessAction = {
+          type: ActionTypes.INITIAL_COMMITMENT_SUCCESS,
           payload: {
             '0x141': {
               updatedAt: dayjs.utc().unix(),
@@ -99,9 +99,9 @@ describe('Bid Reducer', () => {
         })
       })
   })
-  test('reducer should handle INITIAL_BID_REQUEST', () => {
-    const startAction: InitialBidRequestAction = {
-      type: ActionTypes.INITIAL_BID_REQUEST,
+  test('reducer should handle INITIAL_COMMITMENT_REQUEST', () => {
+    const startAction: InitialCommitmentRequestAction = {
+      type: ActionTypes.INITIAL_COMMITMENT_REQUEST,
       payload: true,
     }
     expect(reducer(undefined, startAction)).toEqual({
@@ -110,9 +110,9 @@ describe('Bid Reducer', () => {
       error: null,
     })
   }),
-    test('reducer should handle INITIAL_BID_FAILURE', () => {
-      const startActions: InitialBidFailureAction = {
-        type: ActionTypes.INITIAL_BID_FAILURE,
+    test('reducer should handle INITIAL_COMMITMENT_FAILURE', () => {
+      const startActions: InitialCommitmentFailureAction = {
+        type: ActionTypes.INITIAL_COMMITMENT_FAILURE,
         payload: expect.any(Error),
       }
       expect(reducer(undefined, startActions)).toEqual({
@@ -122,10 +122,10 @@ describe('Bid Reducer', () => {
       })
     })
 
-  describe('should handle UPDATE_BID_SUCCESS', () => {
+  describe('should handle UPDATE_COMMITMENT_SUCCESS', () => {
     test('should handle data from Blockchain after undefined', () => {
-      const expectedActions: UpdateBidSuccessAction = {
-        type: ActionTypes.UPDATE_BID_SUCCESS,
+      const expectedActions: UpdateCommitmentSuccessAction = {
+        type: ActionTypes.UPDATE_COMMITMENT_SUCCESS,
         payload: {
           __typename: 'FixedPriceSaleCommitment',
           id: '0x141',
@@ -170,7 +170,7 @@ describe('Bid Reducer', () => {
       })
     }),
       test('should handle data Update from Blockchain ', () => {
-        const undefinedOfBid: BidsState = {
+        const undefinedOfCommitment: CommitmentsState = {
           isLoading: false,
           error: null,
           bidsBySaleId: {
@@ -197,8 +197,8 @@ describe('Bid Reducer', () => {
           },
         }
 
-        const dataupdated: UpdateBidSuccessAction = {
-          type: ActionTypes.UPDATE_BID_SUCCESS,
+        const dataupdated: UpdateCommitmentSuccessAction = {
+          type: ActionTypes.UPDATE_COMMITMENT_SUCCESS,
           payload: {
             __typename: 'FixedPriceSaleCommitment',
             id: '0x141/commitments/2',
@@ -215,7 +215,7 @@ describe('Bid Reducer', () => {
             },
           },
         }
-        expect(reducer(undefinedOfBid, dataupdated)).toEqual({
+        expect(reducer(undefinedOfCommitment, dataupdated)).toEqual({
           isLoading: false,
           error: null,
           bidsBySaleId: {
@@ -260,7 +260,7 @@ describe('Bid Reducer', () => {
       })
 
     test('should handle data duplication', () => {
-      const undefinedOfBid: BidsState = {
+      const undefinedOfCommitment: CommitmentsState = {
         isLoading: false,
         error: null,
         bidsBySaleId: {
@@ -287,8 +287,8 @@ describe('Bid Reducer', () => {
         },
       }
 
-      const dataupdated: UpdateBidSuccessAction = {
-        type: ActionTypes.UPDATE_BID_SUCCESS,
+      const dataupdated: UpdateCommitmentSuccessAction = {
+        type: ActionTypes.UPDATE_COMMITMENT_SUCCESS,
         payload: {
           __typename: 'FixedPriceSaleCommitment',
           id: '0x141/commitments/1',
@@ -305,7 +305,7 @@ describe('Bid Reducer', () => {
           },
         },
       }
-      expect(reducer(undefinedOfBid, dataupdated)).toEqual({
+      expect(reducer(undefinedOfCommitment, dataupdated)).toEqual({
         isLoading: false,
         error: null,
         bidsBySaleId: {
