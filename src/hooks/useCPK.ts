@@ -11,15 +11,16 @@ export function useCPK(library: providers.Web3Provider): useCPKReturns {
   const [cpk, setCPK] = useState<CPK | null>(null)
 
   const makeCpk = useCallback(async () => {
-    if (library) {
-      const signer = library.getSigner()
-      const ethLibAdapter = new EthersAdapter({ ethers, signer: signer })
-      const service = await CPK.create({ ethLibAdapter })
-      setCPK(service)
-    }
+    const signer = library.getSigner()
+    const ethLibAdapter = new EthersAdapter({ ethers, signer: signer })
+    const service = await CPK.create({ ethLibAdapter })
+    setCPK(service)
   }, [library])
 
   useEffect(() => {
+    if (!library) {
+      return
+    }
     makeCpk()
   }, [library])
 

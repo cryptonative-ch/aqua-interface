@@ -20,6 +20,13 @@ export const SUPPORTED_CHAINS = {
       saleLauncher: '0x6085eb96659B0e90bc59288750C8306eE390fA99',
       templateLauncher: '0x569DD258D95c8f558AAf6fe808a0cfC00D941565',
     },
+    cpk: {
+      masterCopyAddress: '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F',
+      proxyFactoryAddress: '0x336c19296d3989e9e0c2561ef21c964068657c38',
+      multiSendAddress: '0x82CFd05a033e202E980Bc99eA50A4C6BB91CE0d7',
+      fallbackHandlerAddress: '0x40A930851BD2e590Bd5A5C981b436de25742E980',
+      targetSafeImplementation: '0xcb05C7D28766e4fFB71ccbdAf6Ae1Cec555D61f8',
+    },
     parameters: {
       chainId: '0x4',
       chainName: 'Ethereum',
@@ -39,6 +46,13 @@ export const SUPPORTED_CHAINS = {
       factory: '0x0f1997E82cd484a54551b54009DdcE39deaE973f',
       saleLauncher: '0xC28c613f0f0b85C745AC58BA78071816Cb52B43A',
       templateLauncher: '0x58c67b46c47f69d63aa09d5f822ede377c479d5f',
+    },
+    cpk: {
+      masterCopyAddress: '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
+      proxyFactoryAddress: '0x3049b84bbC3EB2C375547CAc0D77da032d3d1981',
+      multiSendAddress: '0x035000FC773f4a0e39FcdeD08A46aBBDBF196fd3',
+      fallbackHandlerAddress: '0x602DF5F404f86469459D5e604CDa43A2cdFb7580',
+      targetSafeImplementation: '0x9C75A217AEA76663a9A37687606f099945eb0742',
     },
     parameters: {
       chainId: '0x64',

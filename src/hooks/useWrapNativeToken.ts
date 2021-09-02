@@ -10,21 +10,19 @@ import { useTranslation } from 'react-i18next'
 // hooks
 import { useCPK } from 'src/hooks/useCPK'
 
-// contract interface
-import { WXDAI__factory, WETH__factory, FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
-
-interface useWrapNativeTokenReturns {
-  wrap: () => void
+interface useCPKexecTransactionsReturns {
   transactionHash: Record<string, any> | null
   loading: boolean
   error: Error | null
 }
 
-export function useWrapNativeToken(
-  tokenAddress: string,
-  saleAddress: string,
+interface useCPKexecTransactionsParams {
+  tokenAddress: string
+  saleAddress: string
   purchaseValue: NumberLike | undefined
-): useWrapNativeTokenReturns {
+}
+
+export function useCPKexecTransactions(params: useCPKexecTransactionsParams): useCPKexecTransactionsReturns {
   const [t] = useTranslation()
   const { library } = useWeb3React()
   const { cpk } = useCPK(library)
@@ -34,46 +32,22 @@ export function useWrapNativeToken(
   const [error, setError] = useState<Error | null>(null)
   const signer = library?.getSigner()
 
-  const WETH = useMemo(() => WETH__factory.connect(tokenAddress, signer).interface, [WETH__factory])
-  const WXDAI = useMemo(() => WXDAI__factory.connect(tokenAddress, signer).interface, [WXDAI__factory])
-  const fixedPriceSale = useMemo(() => FixedPriceSale__factory.connect(saleAddress, signer).interface, [
-    FixedPriceSale__factory,
-  ])
-  const fairSale = useMemo(() => FairSale__factory.connect(saleAddress, signer), [FairSale__factory])
-
   let value: BigNumber
-  let tx: Transaction[]
+  let transactions: Transaction[]
 
   useEffect(() => {
-    if (!library) {
+    if (!library || !cpk) {
       return
     }
-  }, [library])
-
-  const wrap = useCallback(async () => {
-    if (cpk && purchaseValue) {
-      value = utils.parseEther(purchaseValue.toString())
-
-      tx = [
-        {
-          to: tokenAddress,
-          value: value.toString(),
-        },
-        {
-          to: tokenAddress,
-          data: WXDAI.encodeFunctionData('approve', [saleAddress, value]),
-        },
-        {
-          to: saleAddress,
-          data: fixedPriceSale.encodeFunctionData('commitTokens', [value]),
-        },
-      ]
+  }, [library, cpk])
+  ;async () => {
+    if (cpk) {
       try {
         setLoading(true)
         const Dxdai = await signer.sendTransaction({ to: cpk?.address, value: value })
         Dxdai.wait(1)
 
-        const { transactionResponse } = await cpk.execTransactions(tx)
+        const { transactionResponse } = await cpk.execTransactions(transactions)
 
         if (transactionResponse) {
           await transactionResponse.wait(1)
@@ -87,10 +61,8 @@ export function useWrapNativeToken(
         console.error(error)
       }
     }
-  }, [cpk, purchaseValue])
-
+  }
   return {
-    wrap,
     transactionHash,
     loading,
     error,
