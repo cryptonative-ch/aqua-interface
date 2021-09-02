@@ -1,12 +1,19 @@
 // External
 import CPK, { Transaction } from 'contract-proxy-kit'
-import { Contract, providers, BigNumberish } from 'ethers'
+import { providers, BigNumberish } from 'ethers'
+
+/**
+ * @Todo TEST PIPES
+ */
 
 // Constants
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
 
 // general helpers
 import { pipe } from 'src/utils'
+
+// contract Interfaces
+import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory } from 'src/contracts'
 
 /**
  * interfaces
@@ -19,7 +26,6 @@ export interface TransactionOptions {
 }
 export interface ContractInstanceParams {
   contractAddress: string
-  abi: string
   provider: providers.Web3Provider
 }
 
@@ -50,13 +56,10 @@ export interface CpkCommitTokenParams {
   saleAddress: string
 }
 
-const contractInstance = ({ contractAddress, abi, provider }: ContractInstanceParams) => {
-  return new Contract(contractAddress, abi, provider).connect(provider.getSigner())
-}
 export const encodeChangeMasterCopy = (params: EncodeChangeMasterCopyParams): string => {
-  const { targetImplementation, contractAddress, abi, provider } = params
-  const safe = contractInstance({ contractAddress, abi, provider }).interface
-  return safe.encodeFunctionData('changeMasterCopy', [targetImplementation])
+  const { targetImplementation, contractAddress, provider } = params
+  const safeInterface = GnosisSafe__factory.connect(contractAddress, provider)
+  return safeInterface.encodeFunctionData('changeMasterCopy', [targetImplementation])
 }
 
 export const validChainId = (chainId: number): boolean => {
@@ -89,29 +92,29 @@ export const wrap = async (params: WrapParams) => {
 }
 
 export const tokenApproval = (params: tokenApprovalParams) => {
-  const { transactions, tokenAddress, purchaseValue, saleAddress, abi, provider } = params
-  const erc20 = contractInstance({ contractAddress: tokenAddress, abi, provider }).interface
+  const { transactions, tokenAddress, purchaseValue, saleAddress, provider } = params
+  const erc20Interface = ERC20__factory.connect(tokenAddress, provider).interface
   transactions.push({
     to: tokenAddress,
-    data: erc20.encodeFunctionData('approve', [saleAddress, purchaseValue]),
+    data: erc20Interface.encodeFunctionData('approve', [saleAddress, purchaseValue]),
   })
 
   return params
 }
 
 export const commitToken = (params: tokenApprovalParams) => {
-  const { transactions, purchaseValue, saleAddress, abi, provider } = params
-  const fixedPriceSale = contractInstance({ contractAddress: saleAddress, abi, provider }).interface
+  const { transactions, purchaseValue, saleAddress, provider } = params
+  const fixedPriceSaleInterface = FixedPriceSale__factory.connect(saleAddress, provider).interface
   transactions.push({
     to: saleAddress,
-    data: fixedPriceSale.encodeFunctionData('commitTokens', [purchaseValue]),
+    data: fixedPriceSaleInterface.encodeFunctionData('commitTokens', [purchaseValue]),
   })
 
   return params
 }
 
 export const upgradeProxy = async (params: UpgradeProxyParams) => {
-  const { provider, networkId, cpk, transactions, contractAddress, abi } = params
+  const { provider, networkId, cpk, transactions, contractAddress } = params
   const targetGnosisSafeImplementation = getTargetSafeImplementation(networkId)
 
   if (!(await isContract(provider, targetGnosisSafeImplementation))) {
@@ -123,7 +126,6 @@ export const upgradeProxy = async (params: UpgradeProxyParams) => {
       to: cpk?.address as string,
       data: encodeChangeMasterCopy({
         contractAddress,
-        abi,
         provider,
         targetImplementation: targetGnosisSafeImplementation,
       }),
