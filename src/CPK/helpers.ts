@@ -1,48 +1,53 @@
 // External
 import CPK, { Transaction } from 'contract-proxy-kit'
-import { Contract, providers } from 'ethers'
+import { Contract, providers, BigNumberish } from 'ethers'
 
 // Constants
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
+
+// general helpers
+import { pipe } from 'src/utils'
 
 /**
  * interfaces
  *
  */
 
-interface ContractInstanceParams {
+export interface TransactionOptions {
+  value?: BigNumberish
+  gas?: number
+}
+export interface ContractInstanceParams {
   contractAddress: string
   abi: string
   provider: providers.Web3Provider
 }
 
-interface EncodeChangeMasterCopyParams extends ContractInstanceParams {
+export interface EncodeChangeMasterCopyParams extends ContractInstanceParams {
   targetImplementation: string
 }
-interface UpgradeProxyParams extends ContractInstanceParams {
+export interface UpgradeProxyParams extends ContractInstanceParams {
   networkId: number
   transactions: Transaction[]
   cpk: CPK
 }
 
-interface WrapParams {
+export interface WrapParams {
   transactions: Transaction[]
   purchaseValue: string
   tokenAddress: string
 }
 
-interface cpkPurchaseFixedPriceSaleTokensParams extends ContractInstanceParams {
+export interface tokenApprovalParams extends ContractInstanceParams {
   transactions: Transaction[]
   tokenAddress: string
-  purchaseValue: string
   saleAddress: string
+  purchaseValue: string
 }
-
-interface tokenApprovalParams extends ContractInstanceParams {
+export interface CpkCommitTokenParams {
   transactions: Transaction[]
   tokenAddress: string
   saleAddress: string
-  purchaseValue: string
 }
 
 const contractInstance = ({ contractAddress, abi, provider }: ContractInstanceParams) => {
@@ -83,7 +88,7 @@ export const wrap = async (params: WrapParams) => {
   return params
 }
 
-export const tokenApprovals = (params: tokenApprovalParams) => {
+export const tokenApproval = (params: tokenApprovalParams) => {
   const { transactions, tokenAddress, purchaseValue, saleAddress, abi, provider } = params
   const erc20 = contractInstance({ contractAddress: tokenAddress, abi, provider }).interface
   transactions.push({
@@ -94,7 +99,7 @@ export const tokenApprovals = (params: tokenApprovalParams) => {
   return params
 }
 
-export const cpkPurchaseFixedPriceSaleTokens = (params: cpkPurchaseFixedPriceSaleTokensParams) => {
+export const commitToken = (params: tokenApprovalParams) => {
   const { transactions, purchaseValue, saleAddress, abi, provider } = params
   const fixedPriceSale = contractInstance({ contractAddress: saleAddress, abi, provider }).interface
   transactions.push({
@@ -126,4 +131,26 @@ export const upgradeProxy = async (params: UpgradeProxyParams) => {
   }
 
   return params
+}
+
+const cpkCommitToken = (params: CpkCommitTokenParams) => {
+  const { transactions } = pipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
+  return transactions
+}
+
+interface SetupParams {
+  account: string
+  library: providers.Web3Provider
+  chainId: number
+  cpk: CPK
+}
+
+export const setup = (params: SetupParams) => {
+  // cpk empty transaction array
+  const transactions: Transaction[] = []
+
+  // cpk empty transaction options
+  const txOptions: TransactionOptions = {}
+
+  return { ...params, transactions, txOptions }
 }

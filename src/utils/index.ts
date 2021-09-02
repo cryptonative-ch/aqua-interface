@@ -13,17 +13,45 @@ import { BigNumberish, BigNumber } from 'ethers'
 import { GetAllBidsBySaleId_fixedPriceSale } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
-// account is not optional
+/**
+ *
+ * account is not optional
+ * @param library
+ * @param account
+ * @returns
+ */
 export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked()
 }
-
-// account is optional
+/**
+ *
+ * account is optional
+ * @param library
+ * @param account
+ * @returns
+ */
 export function getProviderOrSigner(library: Web3Provider, account?: string | null): Web3Provider | JsonRpcSigner {
   return account ? getSigner(library, account) : library
 }
 
-/** sums up all the purchases of a single user from a single sale and returns the status, total amount and account string*/
+/**
+ * pipe function that combines n functions from left to right /
+ * and reduces it into a final value
+ * @param functions
+ * @returns
+ */
+export const pipe = (...functions: any[]) => (value: any) =>
+  functions.reduce((currentValue, currentFunction) => currentValue.then(currentFunction), Promise.resolve(value))
+
+/**
+ *
+ * sums up all the purchases of a single user from a single sale \
+ * and returns the status, total amount and account string
+ * @param bids
+ * @param accounts
+ * @param sale
+ * @returns
+ */
 export const aggregatePurchases = (
   bids: any[],
   accounts: {
@@ -62,9 +90,6 @@ export const getZeros = (decimals: number) => {
 }
 
 export const fromBigDecimalToBigInt = (input: string, decimal = 18): string => {
-  // regex split the string between decimals and exponential
-  // reform into BigInt string
-
   const number = String(input)
 
   const fraction = number.match(/(?<=\.)(.*)/)
