@@ -2,6 +2,17 @@
 import { useState, useEffect, useCallback } from 'react'
 import CPK, { EthersAdapter } from 'contract-proxy-kit'
 import { ethers, providers } from 'ethers'
+import { useWeb3React } from '@web3-react/core'
+import { Transaction } from 'contract-proxy-kit'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
+
+// helpers
+import { pipe } from 'src/utils'
+import { setup } from 'src/CPK/helpers'
+
+//interfaces
+import { TransactionOptions } from 'src/CPK/helpers'
 
 interface useCPKReturns {
   cpk: CPK | null
@@ -25,4 +36,58 @@ export function useCPK(library: providers.Web3Provider): useCPKReturns {
   }, [library])
 
   return { cpk }
+}
+
+interface useCPKexecTransactionsReturns {
+  CPKpipe: (functions: any[]) => void
+  transactionHash: Record<string, any> | null
+  loading: boolean
+  error: Error | null
+}
+
+export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
+  const [t] = useTranslation()
+  const { account, library, chainId } = useWeb3React()
+  const { cpk } = useCPK(library)
+
+  const [transactionHash, setTransactionHash] = useState<Record<string, any> | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | null>(null)
+
+  const CPKexecuteTransaction = async (transactions: Transaction[], txOptions: TransactionOptions) => {
+    if (cpk) {
+      try {
+        setLoading(true)
+
+        const { transactionResponse } = await cpk.execTransactions(transactions, txOptions)
+
+        if (transactionResponse) {
+          await transactionResponse.wait(1)
+          setLoading(false)
+          toast.success(t('success.purchase'))
+          return setTransactionHash(transactionResponse)
+        }
+      } catch (error) {
+        setLoading(false)
+        setError(error)
+        console.error(error)
+        toast.success(t('fail.purchase'))
+      }
+    }
+  }
+
+  const CPKpipe = (...functions: any[]) => (params?: any) => pipe(setup, ...functions, CPKexecuteTransaction)(params)
+
+  useEffect(() => {
+    if (!account || !chainId || !library || !cpk) {
+      return
+    }
+  }, [account, chainId, library, cpk])
+
+  return {
+    CPKpipe,
+    transactionHash,
+    loading,
+    error,
+  }
 }
