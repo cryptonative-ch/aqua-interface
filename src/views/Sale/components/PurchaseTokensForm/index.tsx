@@ -26,17 +26,19 @@ import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
 import { useBids } from 'src/hooks/useBids'
-import { useWrapNativeToken } from 'src/hooks/useWrapNativeToken'
-import { useCPK } from 'src/hooks/useCPK'
+import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
+import { upgradeProxy, wrap, tokenApproval, commitToken, cpkCommitTokenParams } from 'src/CPK/helpers'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
+import { SUPPORTED_CHAINS, CHAIN_ID } from 'src/constants'
+import { Transaction } from 'contract-proxy-kit'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -135,7 +137,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   const [t] = useTranslation()
   const [txPending, setTxPending] = useState(false)
-  const { account, library } = useWeb3React()
+  const { account, library, chainId } = useWeb3React()
   const { loading, sale, error } = useFixedPriceSaleQuery(saleId)
   const tokenBalance = useTokenBalance({
     tokenAddress: sale?.tokenIn.id,
@@ -153,7 +155,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
   const { cpk } = useCPK(library)
-  const { wrap } = useWrapNativeToken(sale?.tokenIn.id as string, sale?.id as string, purchaseValue as number)
+  const { CPKpipe } = useCPKexecTransactions()
 
   const isNativeToken = (tokenAddress: string) => {
     if (
@@ -163,6 +165,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       return true
     }
     return false
+  }
+
+  const cpkCommitToken = (params: cpkCommitTokenParams) => {
+    return CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
   }
 
   const getMaxPurchase = () => {
@@ -202,7 +208,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         } / ${utils.formatUnits(sale?.minCommitment)} ${sale?.tokenIn.symbol}`
       )
     }
-    if (purchaseMaximumCommitment < value) {
+    if (purchaseMaximumCommitment < value && !cpk) {
       newValidationError = new Error(
         `${parsedTokenBalance < value ? '\nInsufficient funds to process purchase: ' : ''} Maximum is ${fixRounding(
           purchaseMaximumCommitment / tokenPrice,
@@ -211,7 +217,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       )
     }
     // // Purchase value is greater than user's tokeIn balance
-    else if (parsedTokenBalance < value) {
+    else if (parsedTokenBalance < value && !cpk) {
       newValidationError = new Error('Insufficient funds to process purchase')
     }
 
@@ -243,7 +249,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       return console.error('no sale')
     }
 
-    if (!account || !library) {
+    if (!account || !library || !chainId) {
       return console.error('no connected signer')
     }
 
@@ -270,7 +276,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       .then(() => {
         setTxPending(false)
       })
-  }, [account, library, sale, tokenQuantity, purchaseValue, t])
+  }, [account, library, chainId, sale, tokenQuantity, purchaseValue, t])
 
   /**
    * Handles the form submission
@@ -279,8 +285,24 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
-      if (isNativeToken(sale?.tokenIn.id as string)) {
-        wrap()
+      if (isNativeToken(sale?.tokenIn.id as string) && cpk && account && chainId && purchaseValue) {
+        const txOption = { value: purchaseValue }
+        const transactions: Transaction[] = []
+        const value = utils.parseEther(purchaseValue.toString()).toString()
+        const params = {
+          cpk,
+          tokenAddress: sale?.tokenIn.id as string,
+          saleAddress: sale?.id as string,
+          account: account as string,
+          provider: library,
+          chainId: chainId as number,
+          contractAddress: SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk.masterCopyAddress,
+          purchaseValue: value,
+          txOption,
+          transactions,
+        }
+
+        cpkCommitToken(params)
         return
       }
 

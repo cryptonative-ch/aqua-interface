@@ -2,15 +2,8 @@
 import CPK, { Transaction } from 'contract-proxy-kit'
 import { providers, BigNumberish } from 'ethers'
 
-/**
- * @Todo TEST PIPES
- */
-
 // Constants
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
-
-// general helpers
-import { pipe } from 'src/utils'
 
 // contract Interfaces
 import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory } from 'src/contracts'
@@ -20,6 +13,14 @@ import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory } from 'sr
  *
  */
 
+export interface cpkCommitTokenParams extends SetupParams, tokenApprovalParams {
+  txOption: TransactionOptions
+}
+export interface SetupParams {
+  account: string
+  chainId: number
+  cpk: CPK
+}
 export interface TransactionOptions {
   value?: BigNumberish
   gas?: number
@@ -33,7 +34,7 @@ export interface EncodeChangeMasterCopyParams extends ContractInstanceParams {
   targetImplementation: string
 }
 export interface UpgradeProxyParams extends ContractInstanceParams {
-  networkId: number
+  chainId: number
   transactions: Transaction[]
   cpk: CPK
 }
@@ -50,15 +51,10 @@ export interface tokenApprovalParams extends ContractInstanceParams {
   saleAddress: string
   purchaseValue: string
 }
-export interface CpkCommitTokenParams {
-  transactions: Transaction[]
-  tokenAddress: string
-  saleAddress: string
-}
 
 export const encodeChangeMasterCopy = (params: EncodeChangeMasterCopyParams): string => {
   const { targetImplementation, contractAddress, provider } = params
-  const safeInterface = GnosisSafe__factory.connect(contractAddress, provider)
+  const safeInterface = GnosisSafe__factory.connect(contractAddress, provider).interface
   return safeInterface.encodeFunctionData('changeMasterCopy', [targetImplementation])
 }
 
@@ -91,7 +87,7 @@ export const wrap = async (params: WrapParams) => {
   return params
 }
 
-export const tokenApproval = (params: tokenApprovalParams) => {
+export const tokenApproval = async (params: tokenApprovalParams) => {
   const { transactions, tokenAddress, purchaseValue, saleAddress, provider } = params
   const erc20Interface = ERC20__factory.connect(tokenAddress, provider).interface
   transactions.push({
@@ -102,7 +98,7 @@ export const tokenApproval = (params: tokenApprovalParams) => {
   return params
 }
 
-export const commitToken = (params: tokenApprovalParams) => {
+export const commitToken = async (params: tokenApprovalParams) => {
   const { transactions, purchaseValue, saleAddress, provider } = params
   const fixedPriceSaleInterface = FixedPriceSale__factory.connect(saleAddress, provider).interface
   transactions.push({
@@ -114,8 +110,8 @@ export const commitToken = (params: tokenApprovalParams) => {
 }
 
 export const upgradeProxy = async (params: UpgradeProxyParams) => {
-  const { provider, networkId, cpk, transactions, contractAddress } = params
-  const targetGnosisSafeImplementation = getTargetSafeImplementation(networkId)
+  const { provider, chainId, cpk, transactions, contractAddress } = params
+  const targetGnosisSafeImplementation = getTargetSafeImplementation(chainId)
 
   if (!(await isContract(provider, targetGnosisSafeImplementation))) {
     throw new Error('Target safe implementation does not exist')
@@ -133,18 +129,6 @@ export const upgradeProxy = async (params: UpgradeProxyParams) => {
   }
 
   return params
-}
-
-const cpkCommitToken = (params: CpkCommitTokenParams) => {
-  const { transactions } = pipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
-  return transactions
-}
-
-interface SetupParams {
-  account: string
-  library: providers.Web3Provider
-  chainId: number
-  cpk: CPK
 }
 
 export const setup = (params: SetupParams) => {

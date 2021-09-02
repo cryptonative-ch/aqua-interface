@@ -39,7 +39,7 @@ export function useCPK(library: providers.Web3Provider): useCPKReturns {
 }
 
 interface useCPKexecTransactionsReturns {
-  CPKpipe: (functions: any[]) => void
+  CPKpipe: (...functions: any[]) => (params?: any) => void
   transactionHash: Record<string, any> | null
   loading: boolean
   error: Error | null
@@ -58,7 +58,7 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
     if (cpk) {
       try {
         setLoading(true)
-
+        console.log(transactions)
         const { transactionResponse } = await cpk.execTransactions(transactions, txOptions)
 
         if (transactionResponse) {
@@ -71,7 +71,7 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
         setLoading(false)
         setError(error)
         console.error(error)
-        toast.success(t('fail.purchase'))
+        return toast.success(t('fail.purchase'))
       }
     }
   }
