@@ -1,6 +1,6 @@
 // External
 import { useState, useEffect, useCallback } from 'react'
-import CPK, { EthersAdapter } from 'contract-proxy-kit'
+import CPK, { EthersAdapter, TransactionResult } from 'contract-proxy-kit'
 import { ethers, providers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { Transaction } from 'contract-proxy-kit'
@@ -47,6 +47,11 @@ interface useCPKexecTransactionsReturns {
   error: Error | null
 }
 
+interface CPKexecuteTransactionParams {
+  transactions: Transaction[]
+  txOptions: TransactionOptions
+}
+
 export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
   const [t] = useTranslation()
   const { account, library, chainId } = useWeb3React()
@@ -56,7 +61,8 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
 
-  const CPKexecuteTransaction = async (transactions: Transaction[], txOptions: TransactionOptions) => {
+  const CPKexecuteTransaction = async (params: CPKexecuteTransactionParams) => {
+    const { transactions, txOptions } = params
     if (cpk) {
       try {
         setLoading(true)
@@ -67,7 +73,6 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
           setLoading(false)
           toast.success(t('success.purchase'))
           setTransactionHash(transactionResponse)
-          return console.log(transactions)
         }
       } catch (error) {
         setLoading(false)

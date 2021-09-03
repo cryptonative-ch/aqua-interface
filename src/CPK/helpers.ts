@@ -14,8 +14,6 @@ import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory } from 'sr
  */
 
 export interface cpkCommitTokenParams extends SetupParams {
-  txOption: TransactionOptions
-  contractAddress: string
   tokenAddress: string
   saleAddress: string
 }
@@ -41,7 +39,6 @@ export interface UpgradeProxyParams {
   transactions: Transaction[]
   cpk: CPK
   library: providers.Web3Provider
-  contractAddress: string
   signer: providers.JsonRpcSigner
 }
 
@@ -49,6 +46,7 @@ export interface WrapParams {
   transactions: Transaction[]
   purchaseValue: string
   tokenAddress: string
+  txOptions: TransactionOptions
 }
 
 export interface tokenApprovalParams {
@@ -85,7 +83,8 @@ export const isContract = async (provider: providers.Web3Provider, address: stri
 }
 
 export const wrap = async (params: WrapParams) => {
-  const { transactions, tokenAddress, purchaseValue } = params
+  const { transactions, tokenAddress, purchaseValue, txOptions } = params
+  txOptions.value = purchaseValue
   transactions.push({
     to: tokenAddress,
     value: purchaseValue,
@@ -117,8 +116,9 @@ export const commitToken = async (params: tokenApprovalParams) => {
 }
 
 export const upgradeProxy = async (params: UpgradeProxyParams) => {
-  const { library, chainId, cpk, transactions, contractAddress, signer } = params
+  const { library, chainId, cpk, transactions, signer } = params
   const targetGnosisSafeImplementation = getTargetSafeImplementation(chainId)
+  const contractAddress = SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk.masterCopyAddress
 
   if (!(await isContract(library, targetGnosisSafeImplementation))) {
     throw new Error('Target safe implementation does not exist')
@@ -133,7 +133,6 @@ export const upgradeProxy = async (params: UpgradeProxyParams) => {
       }),
     })
   }
-
   return params
 }
 

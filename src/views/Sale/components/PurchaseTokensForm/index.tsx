@@ -30,7 +30,15 @@ import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
-import { upgradeProxy, wrap, tokenApproval, commitToken, cpkCommitTokenParams } from 'src/CPK/helpers'
+import {
+  setup,
+  upgradeProxy,
+  wrap,
+  tokenApproval,
+  commitToken,
+  cpkCommitTokenParams,
+  UpgradeProxyParams,
+} from 'src/CPK/helpers'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -295,11 +303,10 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           account: account as string,
           chainId: chainId as number,
           library,
-          contractAddress: SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk.masterCopyAddress,
           purchaseValue: value,
-          txOption,
         }
 
+        //setup(params).then(txs => upgradeProxy(txs as any).then((tx:UpgradeProxyParams) => wrap(tx as any).then(wraptx => tokenApproval(wraptx as any).then(apptx => commitToken(apptx as any).then(committx => console.log(committx))))))
         cpkCommitToken(params)
         return
       }
