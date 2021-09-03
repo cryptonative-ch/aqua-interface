@@ -154,7 +154,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [validationError, setValidationError] = useState<Error>()
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
-  const { cpk } = useCPK(library)
+  const { cpk } = useCPK(library, chainId)
   const { CPKpipe } = useCPKexecTransactions()
 
   const isNativeToken = (tokenAddress: string) => {
@@ -287,19 +287,17 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       event.preventDefault()
       if (isNativeToken(sale?.tokenIn.id as string) && cpk && account && chainId && purchaseValue) {
         const txOption = { value: purchaseValue }
-        const transactions: Transaction[] = []
         const value = utils.parseEther(purchaseValue.toString()).toString()
         const params = {
           cpk,
           tokenAddress: sale?.tokenIn.id as string,
           saleAddress: sale?.id as string,
           account: account as string,
-          provider: library,
           chainId: chainId as number,
+          library,
           contractAddress: SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk.masterCopyAddress,
           purchaseValue: value,
           txOption,
-          transactions,
         }
 
         cpkCommitToken(params)

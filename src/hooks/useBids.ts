@@ -30,7 +30,7 @@ interface UseBidsReturn extends Omit<QueryResult, 'data'> {
 
 export function useBids(saleId: string, saleType: SaleType): UseBidsReturn {
   const { account, library, chainId } = useWeb3React()
-  const { cpk } = useCPK(library)
+  const { cpk } = useCPK(library, chainId)
   const dispatch = useDispatch()
   const { data, ...rest } = useQuery<GetAllBidsBySaleId, GetAllBidsBySaleIdVariables>(GET_ALL_BIDS_BY_SALE_ID, {
     variables: { saleId },

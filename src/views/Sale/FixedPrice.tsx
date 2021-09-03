@@ -72,7 +72,7 @@ export interface FixedPriceSaleViewParams {
 
 export function FixedPriceSaleView() {
   const { isMobile } = useWindowSize()
-  const { account, library } = useWeb3React()
+  const { account, library, chainId } = useWeb3React()
   const [showGraph, setShowGraph] = useState<boolean>(false)
   const params = useParams<FixedPriceSaleViewParams>()
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
@@ -82,7 +82,7 @@ export function FixedPriceSaleView() {
   const [t] = useTranslation()
   const { saleIds } = useFixedPriceSaleCommitmentsByBuyerIdQuery()
   const [_, setTime] = useState(0)
-  const { cpk } = useCPK(library)
+  const { cpk } = useCPK(library, chainId)
 
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {

@@ -44,7 +44,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResul
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const { data, ...rest } = useQuery<GetFixedPriceSaleCommitmentsByUser>(GET_FIXED_PRICE_SALE_COMMITMENTS_ALL)
-  const { cpk } = useCPK(library)
+  const { cpk } = useCPK(library, chainId)
 
   let purchases: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments[] = []
   let sales: SummarySales[] = []

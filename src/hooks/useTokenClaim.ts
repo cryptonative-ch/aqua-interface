@@ -42,7 +42,7 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const { cpk } = useCPK(library)
+  const { cpk } = useCPK(library, chainId)
   const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {

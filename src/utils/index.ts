@@ -40,8 +40,13 @@ export function getProviderOrSigner(library: Web3Provider, account?: string | nu
  * @param functions
  * @returns
  */
-export const pipe = (...functions: any[]) => (value: any) =>
-  functions.reduce((currentValue, currentFunction) => currentValue.then(currentFunction), Promise.resolve(value))
+export const pipe = (...functions: any[]) => (value: any) => {
+  debugger
+  return functions.reduce((currentValue, currentFunction) => {
+    debugger
+    return currentValue.then(currentFunction)
+  }, Promise.resolve(value))
+}
 
 /**
  *

@@ -13,27 +13,29 @@ import { setup } from 'src/CPK/helpers'
 
 //interfaces
 import { TransactionOptions } from 'src/CPK/helpers'
+import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
 
 interface useCPKReturns {
   cpk: CPK | null
 }
 
-export function useCPK(library: providers.Web3Provider): useCPKReturns {
+export function useCPK(library: providers.Web3Provider, chainId: number | undefined): useCPKReturns {
   const [cpk, setCPK] = useState<CPK | null>(null)
 
   const makeCpk = useCallback(async () => {
+    const networks = { [SUPPORTED_CHAINS[chainId as CHAIN_ID].id]: SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk }
     const signer = library.getSigner()
     const ethLibAdapter = new EthersAdapter({ ethers, signer: signer })
-    const service = await CPK.create({ ethLibAdapter })
+    const service = await CPK.create({ ethLibAdapter, networks })
     setCPK(service)
   }, [library])
 
   useEffect(() => {
-    if (!library) {
+    if (!library || !chainId) {
       return
     }
     makeCpk()
-  }, [library])
+  }, [library, chainId])
 
   return { cpk }
 }
@@ -48,7 +50,7 @@ interface useCPKexecTransactionsReturns {
 export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
   const [t] = useTranslation()
   const { account, library, chainId } = useWeb3React()
-  const { cpk } = useCPK(library)
+  const { cpk } = useCPK(library, chainId)
 
   const [transactionHash, setTransactionHash] = useState<Record<string, any> | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
@@ -58,20 +60,20 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
     if (cpk) {
       try {
         setLoading(true)
-        console.log(transactions)
         const { transactionResponse } = await cpk.execTransactions(transactions, txOptions)
 
         if (transactionResponse) {
           await transactionResponse.wait(1)
           setLoading(false)
           toast.success(t('success.purchase'))
-          return setTransactionHash(transactionResponse)
+          setTransactionHash(transactionResponse)
+          return console.log(transactions)
         }
       } catch (error) {
         setLoading(false)
         setError(error)
         console.error(error)
-        return toast.success(t('fail.purchase'))
+        toast.success(t('fail.purchase'))
       }
     }
   }
