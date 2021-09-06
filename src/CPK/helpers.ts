@@ -1,5 +1,5 @@
 // External
-import CPK, { Transaction } from 'contract-proxy-kit'
+import CPK, { CpkTransactionManager, Transaction } from 'contract-proxy-kit'
 import { providers, BigNumberish } from 'ethers'
 
 // Constants
@@ -44,16 +44,17 @@ export interface UpgradeProxyParams {
 
 export interface WrapParams {
   transactions: Transaction[]
-  purchaseValue: string
+  purchaseValue: BigNumberish
   tokenAddress: string
   txOptions: TransactionOptions
+  cpk: CPK
 }
 
 export interface tokenApprovalParams {
   transactions: Transaction[]
   tokenAddress: string
   saleAddress: string
-  purchaseValue: string
+  purchaseValue: BigNumberish
   signer: providers.JsonRpcSigner
 }
 
@@ -61,6 +62,12 @@ export const encodeChangeMasterCopy = (params: EncodeChangeMasterCopyParams) => 
   const { targetImplementation, contractAddress, signer } = params
   const safeInterface = GnosisSafe__factory.connect(contractAddress, signer).interface
   return safeInterface.encodeFunctionData('changeMasterCopy', [targetImplementation])
+}
+
+export const checkMasterCopyAddress = async (params: EncodeChangeMasterCopyParams) => {
+  const { targetImplementation, contractAddress, signer } = params
+  const safeInterface = GnosisSafe__factory.connect(contractAddress, signer).masterCopy()
+  return (await safeInterface).toLowerCase() === targetImplementation
 }
 
 export const validChainId = (chainId: number): boolean => {
@@ -83,11 +90,13 @@ export const isContract = async (provider: providers.Web3Provider, address: stri
 }
 
 export const wrap = async (params: WrapParams) => {
-  const { transactions, tokenAddress, purchaseValue, txOptions } = params
-  txOptions.value = purchaseValue
+  const { cpk, transactions, tokenAddress, purchaseValue, txOptions } = params
+  if (!cpk.isConnectedToSafe) {
+    txOptions.value = purchaseValue
+  }
   transactions.push({
     to: tokenAddress,
-    value: purchaseValue,
+    value: purchaseValue.toString(),
   })
 
   return params
@@ -118,14 +127,18 @@ export const commitToken = async (params: tokenApprovalParams) => {
 export const upgradeProxy = async (params: UpgradeProxyParams) => {
   const { library, chainId, cpk, transactions, signer } = params
   const targetGnosisSafeImplementation = getTargetSafeImplementation(chainId)
-  const contractAddress = SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk.masterCopyAddress
+
+  const contractAddress = cpk.address as string
+  if (checkMasterCopyAddress({ contractAddress, signer, targetImplementation: targetGnosisSafeImplementation })) {
+    return params
+  }
 
   if (!(await isContract(library, targetGnosisSafeImplementation))) {
     throw new Error('Target safe implementation does not exist')
   }
   if (cpk.isProxyDeployed()) {
     transactions.push({
-      to: cpk?.address as string,
+      to: contractAddress,
       data: encodeChangeMasterCopy({
         contractAddress,
         signer,

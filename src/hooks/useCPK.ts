@@ -78,7 +78,7 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
         setLoading(false)
         setError(error)
         console.error(error)
-        toast.success(t('fail.purchase'))
+        toast.error(t('errors.purchase'))
       }
     }
   }

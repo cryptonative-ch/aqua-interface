@@ -294,8 +294,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       if (isNativeToken(sale?.tokenIn.id as string) && cpk && account && chainId && purchaseValue) {
-        const txOption = { value: purchaseValue }
-        const value = utils.parseEther(purchaseValue.toString()).toString()
+        const value = utils.parseEther(purchaseValue.toString())
         const params = {
           cpk,
           tokenAddress: sale?.tokenIn.id as string,
@@ -305,9 +304,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           library,
           purchaseValue: value,
         }
-
-        //setup(params).then(txs => upgradeProxy(txs as any).then((tx:UpgradeProxyParams) => wrap(tx as any).then(wraptx => tokenApproval(wraptx as any).then(apptx => commitToken(apptx as any).then(committx => console.log(committx))))))
-        cpkCommitToken(params)
+        await cpkCommitToken(params)
         return
       }
 
