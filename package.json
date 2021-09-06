@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "@apollo/client": "^3.3.19",
-    "@dxdao/aqua": "^0.1.4",
+    "@dxdao/aqua": "^0.1.5",
     "@ethersproject/providers": "^5.0.13",
     "@ethersproject/units": "^5.0.6",
     "@graphql-tools/mock": "^8.2.2",
@@ -74,7 +74,7 @@
   },
   "scripts": {
     "start": "dotenv -e .env.development.xdai react-scripts start",
-    "start:mock": "dotenv -e .env.mock react-scripts start",  
+    "start:mock": "dotenv -e .env.mock react-scripts start",
     "build:xdai": "dotenv -e .env.production.xdai react-scripts build",
     "subgraph-server": "ts-node --project src/subgraph/mock/tsconfig.commonjs.json src/subgraph/mock/server.ts",
     "test": "dotenv -e .env.mock react-scripts test",
