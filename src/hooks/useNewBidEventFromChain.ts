@@ -21,10 +21,6 @@ interface useEventFromChainReturnsBase {
   error: Error | null
 }
 
-interface UseCommitmentEventFromChainReturns extends useEventFromChainReturnsBase {
-  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
-}
-
 interface UseBidEventFromChainReturns extends useEventFromChainReturnsBase {
   bids: GetAllBidsBySaleId_fairSale_bids[]
 }
@@ -75,28 +71,21 @@ export function useNewBidEventFromChain(saleId: string): UseBidEventFromChainRet
   }
 }
 
-export function useNewCommitmentEventFromChain(saleId: string): UseCommitmentEventFromChainReturns {
+export function useNewCommitmentEventFromChain(saleId: string) {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const [t] = useTranslation()
-  const {
-    isLoading,
-    error,
-    bidsBySaleId: { [saleId]: { bids } = { bids: [] } },
-  } = useSelector(({ commitments }) => commitments)
 
   useEffect(() => {
     if (!account || !library || !chainId) {
       return
     }
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(saleId, library)
-
-    fixedPriceSaleContract.on('NewCommitment', async (buyer, amount) => {
-      const totalCommitmentsByUserAddress =
-        bids.filter(bid => bid.user.address.toLowerCase() === buyer.toLowerCase()).length + 1
-
+    fixedPriceSaleContract.removeAllListeners('NewCommitment')
+    fixedPriceSaleContract.on('NewCommitment', async (buyer, amount, event) => {
       const commitment: GetAllBidsBySaleId_fixedPriceSale_commitments = {
-        id: saleId + '/commitments/' + buyer + '/' + totalCommitmentsByUserAddress,
+        id:
+          saleId + '/commitments/' + buyer + '/' + String(await (await library.getBlock(event.blockNumber)).timestamp),
         __typename: 'FixedPriceSaleCommitment',
         user: {
           address: buyer,
@@ -120,9 +109,4 @@ export function useNewCommitmentEventFromChain(saleId: string): UseCommitmentEve
       }
     })
   }, [account, library, chainId])
-  return {
-    bids,
-    loading: isLoading,
-    error,
-  }
 }

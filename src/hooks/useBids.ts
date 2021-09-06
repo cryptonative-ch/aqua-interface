@@ -12,6 +12,7 @@ import {
   initialCommitmentFailure,
   initialCommitmentRequest,
   CommitmentsBySaleId,
+  CommitmentsState,
 } from 'src/redux/commitments'
 
 // Interfaces
@@ -165,16 +166,21 @@ export function useBids(saleId: string, volume: number): UseBidsReturn {
 }
 export function useCommitments(saleId: string): UseCommitmentsReturn {
   const dispatch = useDispatch()
+  const { account, library, chainId } = useWeb3React()
+
+  useNewCommitmentEventFromChain(saleId)
+
+  const {
+    bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
+  } = useSelector(({ commitments }) => commitments as CommitmentsState)
+
+  const allBids = useSelector(({ commitments }) => (commitments as CommitmentsState).bidsBySaleId[saleId]?.bids)
+
+  const bids = allBids?.filter(bid => bid.user.address.toLowerCase() === account?.toLowerCase()) || []
+
   const { data, ...rest } = useQuery<GetAllBidsBySaleId, GetAllBidsBySaleIdVariables>(GET_ALL_BIDS_BY_SALE_ID, {
     variables: { saleId },
   })
-  const { account, library, chainId } = useWeb3React()
-  const {
-    bidsBySaleId: { [saleId]: { updatedAt } = { updatedAt: 0 } },
-  } = useSelector(({ bids }) => bids)
-
-  const { bids: allBids } = useNewCommitmentEventFromChain(saleId)
-  const bids = allBids.filter(bid => bid.user.address.toLowerCase() === account?.toLowerCase()) || []
 
   useEffect(() => {
     // only request new bids if the delta between Date.now and saleId.updatedAt is more than 30 seconds
@@ -185,7 +191,6 @@ export function useCommitments(saleId: string): UseCommitmentsReturn {
     }
 
     //pull past bids from subgraph
-
     if (data) {
       dispatch(initialCommitmentRequest(true))
       try {

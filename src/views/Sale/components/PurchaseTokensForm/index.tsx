@@ -24,7 +24,6 @@ import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
-import { useCommitments } from 'src/hooks/useBids'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
@@ -34,6 +33,8 @@ import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
+import { useSelector } from 'react-redux'
+import { CommitmentsState } from 'src/redux/commitments'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -137,7 +138,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     owner: account ?? undefined,
   })
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
-  const { allBids } = useCommitments(saleId)
+  const allBids = useSelector(({ commitments }) => (commitments as CommitmentsState).bidsBySaleId[saleId]?.bids)
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,
@@ -268,7 +269,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       if (sale.minRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
-        const totalAmountPurchased = aggregatePurchases(allBids, account).amount
+        const totalAmountPurchased = aggregatePurchases(allBids ? allBids : [], account).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )
