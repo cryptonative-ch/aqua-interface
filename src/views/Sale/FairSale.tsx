@@ -288,7 +288,7 @@ export function FairSaleView() {
                   </Flex>
                 </CardBody>
                 <CardBody display="flex" padding={theme.space[4]}>
-                  <PlaceBidForm sale={sale as FIX_LATER} currentSettlementPrice={2} />
+                  <PlaceBidForm saleId={sale.id} />
                 </CardBody>
               </Card>
             </Flex>
