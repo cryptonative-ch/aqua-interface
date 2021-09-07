@@ -19,8 +19,8 @@ export const SUPPORTED_CHAINS = {
       factory: '0xA4bEdDf001392121a88192a2a2348c9102e8E6B3',
       saleLauncher: '0x248617E4f69E86a727A4e03bA8d6e65A23d12e45',
       templateLauncher: '0xC8Ab9E079D8207fB755953b0C464C8C5313FE83a',
-      subgraph: 'https://api.thegraph.com/subgraphs/name/mprasanjith/aqua-rinkeby-next',
     },
+    subgraph: 'https://api.thegraph.com/subgraphs/name/mprasanjith/aqua-rinkeby-next',
     parameters: {
       chainId: '0x4',
       chainName: 'Ethereum',
@@ -41,6 +41,7 @@ export const SUPPORTED_CHAINS = {
       saleLauncher: '0xC28c613f0f0b85C745AC58BA78071816Cb52B43A',
       templateLauncher: '0x58c67b46c47f69d63aa09d5f822ede377c479d5f',
     },
+    subgraph: 'https://api.thegraph.com/subgraphs/name/adamazad/aqua-xdai-next',
     parameters: {
       chainId: '0x64',
       chainName: 'xDai',
