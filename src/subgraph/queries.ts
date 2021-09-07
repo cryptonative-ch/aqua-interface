@@ -12,9 +12,6 @@ export const GET_ALL_SALES = gql`
     fixedPriceSales {
       ...fixedPriceSaleResults
     }
-    fairSales {
-      ...fairSaleResults
-    }
   }
   ${FIXED_PRICE_SALE_FIELDS}
   ${FAIR_PRICE_SALE_FIELDS}

@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // contracts
-import { FixedPriceSale__factory } from 'src/contracts'
+import { FixedPriceSale__factory } from '@dxdao/aqua'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'
