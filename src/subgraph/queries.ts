@@ -22,9 +22,6 @@ export const GET_SINGLE_SALE = gql`
     fixedPriceSale(id: $saleId) {
       ...fixedPriceSaleResults
     }
-    fairSale(id: $saleId) {
-      ...fairSaleResults
-    }
   }
   ${FIXED_PRICE_SALE_FIELDS}
   ${FAIR_PRICE_SALE_FIELDS}
