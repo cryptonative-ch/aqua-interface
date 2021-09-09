@@ -12,6 +12,7 @@ import {
   Contract,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   CallOverrides,
 } from 'ethers'
 import { BytesLike } from '@ethersproject/bytes'
@@ -21,7 +22,6 @@ import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
 
 interface GnosisSafeInterface extends ethers.utils.Interface {
   functions: {
-    'masterCopy()': FunctionFragment
     'NAME()': FunctionFragment
     'VERSION()': FunctionFragment
     'addOwnerWithThreshold(address,uint256)': FunctionFragment
@@ -42,6 +42,7 @@ interface GnosisSafeInterface extends ethers.utils.Interface {
     'getOwners()': FunctionFragment
     'getThreshold()': FunctionFragment
     'getTransactionHash(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,uint256)': FunctionFragment
+    'isModuleEnabled(address)': FunctionFragment
     'isOwner(address)': FunctionFragment
     'isValidSignature(bytes,bytes)': FunctionFragment
     'nonce()': FunctionFragment
@@ -54,7 +55,6 @@ interface GnosisSafeInterface extends ethers.utils.Interface {
     'swapOwner(address,address,address)': FunctionFragment
   }
 
-  encodeFunctionData(functionFragment: 'masterCopy', values?: undefined): string
   encodeFunctionData(functionFragment: 'NAME', values?: undefined): string
   encodeFunctionData(functionFragment: 'VERSION', values?: undefined): string
   encodeFunctionData(functionFragment: 'addOwnerWithThreshold', values: [string, BigNumberish]): string
@@ -123,6 +123,7 @@ interface GnosisSafeInterface extends ethers.utils.Interface {
       BigNumberish
     ]
   ): string
+  encodeFunctionData(functionFragment: 'isModuleEnabled', values: [string]): string
   encodeFunctionData(functionFragment: 'isOwner', values: [string]): string
   encodeFunctionData(functionFragment: 'isValidSignature', values: [BytesLike, BytesLike]): string
   encodeFunctionData(functionFragment: 'nonce', values?: undefined): string
@@ -137,7 +138,6 @@ interface GnosisSafeInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'signedMessages', values: [BytesLike]): string
   encodeFunctionData(functionFragment: 'swapOwner', values: [string, string, string]): string
 
-  decodeFunctionResult(functionFragment: 'masterCopy', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'NAME', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'VERSION', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'addOwnerWithThreshold', data: BytesLike): Result
@@ -158,6 +158,7 @@ interface GnosisSafeInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'getOwners', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getThreshold', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getTransactionHash', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'isModuleEnabled', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'isOwner', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'isValidSignature', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'nonce', data: BytesLike): Result
@@ -242,10 +243,6 @@ export class GnosisSafe extends Contract {
   interface: GnosisSafeInterface
 
   functions: {
-    masterCopy(overrides?: CallOverrides): Promise<[string]>
-
-    'masterCopy()'(overrides?: CallOverrides): Promise<[string]>
-
     NAME(overrides?: CallOverrides): Promise<[string]>
 
     'NAME()'(overrides?: CallOverrides): Promise<[string]>
@@ -365,7 +362,7 @@ export class GnosisSafe extends Contract {
       gasToken: string,
       refundReceiver: string,
       signatures: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>
 
     'execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)'(
@@ -379,7 +376,7 @@ export class GnosisSafe extends Contract {
       gasToken: string,
       refundReceiver: string,
       signatures: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>
 
     execTransactionFromModule(
@@ -469,6 +466,10 @@ export class GnosisSafe extends Contract {
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>
+
+    isModuleEnabled(module: string, overrides?: CallOverrides): Promise<[boolean]>
+
+    'isModuleEnabled(address)'(module: string, overrides?: CallOverrides): Promise<[boolean]>
 
     isOwner(owner: string, overrides?: CallOverrides): Promise<[boolean]>
 
@@ -582,10 +583,6 @@ export class GnosisSafe extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>
   }
-
-  masterCopy(overrides?: CallOverrides): Promise<string>
-
-  'masterCopy()'(overrides?: CallOverrides): Promise<string>
 
   NAME(overrides?: CallOverrides): Promise<string>
 
@@ -706,7 +703,7 @@ export class GnosisSafe extends Contract {
     gasToken: string,
     refundReceiver: string,
     signatures: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>
 
   'execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)'(
@@ -720,7 +717,7 @@ export class GnosisSafe extends Contract {
     gasToken: string,
     refundReceiver: string,
     signatures: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>
 
   execTransactionFromModule(
@@ -810,6 +807,10 @@ export class GnosisSafe extends Contract {
     _nonce: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>
+
+  isModuleEnabled(module: string, overrides?: CallOverrides): Promise<boolean>
+
+  'isModuleEnabled(address)'(module: string, overrides?: CallOverrides): Promise<boolean>
 
   isOwner(owner: string, overrides?: CallOverrides): Promise<boolean>
 
@@ -924,10 +925,6 @@ export class GnosisSafe extends Contract {
   ): Promise<ContractTransaction>
 
   callStatic: {
-    masterCopy(overrides?: CallOverrides): Promise<string>
-
-    'masterCopy()'(overrides?: CallOverrides): Promise<string>
-
     NAME(overrides?: CallOverrides): Promise<string>
 
     'NAME()'(overrides?: CallOverrides): Promise<string>
@@ -1116,6 +1113,10 @@ export class GnosisSafe extends Contract {
       overrides?: CallOverrides
     ): Promise<string>
 
+    isModuleEnabled(module: string, overrides?: CallOverrides): Promise<boolean>
+
+    'isModuleEnabled(address)'(module: string, overrides?: CallOverrides): Promise<boolean>
+
     isOwner(owner: string, overrides?: CallOverrides): Promise<boolean>
 
     'isOwner(address)'(owner: string, overrides?: CallOverrides): Promise<boolean>
@@ -1235,10 +1236,6 @@ export class GnosisSafe extends Contract {
   }
 
   estimateGas: {
-    masterCopy(overrides?: CallOverrides): Promise<BigNumber>
-
-    'masterCopy()'(overrides?: CallOverrides): Promise<BigNumber>
-
     NAME(overrides?: CallOverrides): Promise<BigNumber>
 
     'NAME()'(overrides?: CallOverrides): Promise<BigNumber>
@@ -1355,7 +1352,7 @@ export class GnosisSafe extends Contract {
       gasToken: string,
       refundReceiver: string,
       signatures: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>
 
     'execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)'(
@@ -1369,7 +1366,7 @@ export class GnosisSafe extends Contract {
       gasToken: string,
       refundReceiver: string,
       signatures: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>
 
     execTransactionFromModule(
@@ -1455,6 +1452,10 @@ export class GnosisSafe extends Contract {
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>
+
+    isModuleEnabled(module: string, overrides?: CallOverrides): Promise<BigNumber>
+
+    'isModuleEnabled(address)'(module: string, overrides?: CallOverrides): Promise<BigNumber>
 
     isOwner(owner: string, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -1564,10 +1565,6 @@ export class GnosisSafe extends Contract {
   }
 
   populateTransaction: {
-    masterCopy(overrides?: CallOverrides): Promise<PopulatedTransaction>
-
-    'masterCopy()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
-
     NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'NAME()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
@@ -1691,7 +1688,7 @@ export class GnosisSafe extends Contract {
       gasToken: string,
       refundReceiver: string,
       signatures: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>
 
     'execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)'(
@@ -1705,7 +1702,7 @@ export class GnosisSafe extends Contract {
       gasToken: string,
       refundReceiver: string,
       signatures: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>
 
     execTransactionFromModule(
@@ -1791,6 +1788,10 @@ export class GnosisSafe extends Contract {
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>
+
+    isModuleEnabled(module: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'isModuleEnabled(address)'(module: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     isOwner(owner: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
 

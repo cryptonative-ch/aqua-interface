@@ -5,7 +5,7 @@ import { BigNumber, ContractReceipt, ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
-import { TransactionResult } from 'contract-proxy-kit'
+import { TransactionResult } from 'dxdao-contract-proxy-kit'
 
 //hooks
 import { useCPK } from 'src/hooks/useCPK'

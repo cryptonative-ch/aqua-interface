@@ -1,15 +1,15 @@
 // External
 import { useState, useEffect, useCallback } from 'react'
-import CPK, { EthersAdapter, TransactionResult } from 'contract-proxy-kit'
+import CPK, { EthersAdapter, TransactionResult } from 'dxdao-contract-proxy-kit'
 import { ethers, providers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
-import { Transaction } from 'contract-proxy-kit'
+import { Transaction } from 'dxdao-contract-proxy-kit'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 // helpers
 import { pipe } from 'src/utils'
-import { setup } from 'src/CPK/helpers'
+import { setup, getTargetSafeImplementation } from 'src/CPK/helpers'
 
 //interfaces
 import { TransactionOptions } from 'src/CPK/helpers'
@@ -23,11 +23,19 @@ export function useCPK(library: providers.Web3Provider, chainId: number | undefi
   const [cpk, setCPK] = useState<CPK | null>(null)
 
   const makeCpk = useCallback(async () => {
+    const deployed = await cpk?.isProxyDeployed()
     const networks = { [SUPPORTED_CHAINS[chainId as CHAIN_ID].id]: SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk }
     const signer = library.getSigner()
     const ethLibAdapter = new EthersAdapter({ ethers, signer: signer })
+    if (!deployed && cpk && chainId) {
+      SUPPORTED_CHAINS[chainId as CHAIN_ID].cpk.masterCopyAddress = getTargetSafeImplementation(chainId)
+      const service = await CPK.create({ ethLibAdapter, networks })
+      await service.init()
+      return setCPK(service)
+    }
     const service = await CPK.create({ ethLibAdapter, networks })
-    setCPK(service)
+    await service.init()
+    return setCPK(service)
   }, [library])
 
   useEffect(() => {
@@ -49,7 +57,7 @@ interface useCPKexecTransactionsReturns {
 
 interface CPKexecuteTransactionParams {
   transactions: Transaction[]
-  txOptions: TransactionOptions
+  overrides: TransactionOptions
 }
 
 export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
@@ -62,11 +70,11 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
   const [error, setError] = useState<Error | null>(null)
 
   const CPKexecuteTransaction = async (params: CPKexecuteTransactionParams) => {
-    const { transactions, txOptions } = params
+    const { transactions, overrides } = params
     if (cpk) {
       try {
         setLoading(true)
-        const { transactionResponse } = await cpk.execTransactions(transactions, txOptions)
+        const { transactionResponse } = await cpk.execTransactions(transactions, overrides as any)
 
         if (transactionResponse) {
           await transactionResponse.wait(1)

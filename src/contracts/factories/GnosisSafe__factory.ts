@@ -15,994 +15,1001 @@ export class GnosisSafe__factory {
 
 const _abi = [
   {
-    inputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
     type: 'constructor',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'masterCopy',
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-      },
-    ],
+    stateMutability: 'nonpayable',
     payable: false,
-    stateMutability: 'view',
-    type: 'function',
+    inputs: [],
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-    ],
+    type: 'event',
     name: 'AddedOwner',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'approvedHash',
-        type: 'bytes32',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'owner',
         type: 'address',
+        name: 'owner',
+        internalType: 'address',
+        indexed: false,
       },
     ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'ApproveHash',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'masterCopy',
+        type: 'bytes32',
+        name: 'approvedHash',
+        internalType: 'bytes32',
+        indexed: true,
+      },
+      {
         type: 'address',
+        name: 'owner',
+        internalType: 'address',
+        indexed: true,
       },
     ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'ChangedMasterCopy',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
+        type: 'address',
+        name: 'masterCopy',
+        internalType: 'address',
         indexed: false,
-        internalType: 'uint256',
-        name: 'threshold',
-        type: 'uint256',
       },
     ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'ChangedThreshold',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
+        type: 'uint256',
+        name: 'threshold',
+        internalType: 'uint256',
         indexed: false,
-        internalType: 'contract Module',
-        name: 'module',
-        type: 'address',
       },
     ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'DisabledModule',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
-        indexed: false,
+        type: 'address',
+        name: 'module',
         internalType: 'contract Module',
-        name: 'module',
-        type: 'address',
+        indexed: false,
       },
     ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'EnabledModule',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
+        type: 'address',
+        name: 'module',
+        internalType: 'contract Module',
         indexed: false,
-        internalType: 'bytes32',
-        name: 'txHash',
-        type: 'bytes32',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'payment',
-        type: 'uint256',
       },
     ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'ExecutionFailure',
-    type: 'event',
-  },
-  {
-    anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'module',
-        type: 'address',
-      },
-    ],
-    name: 'ExecutionFromModuleFailure',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'module',
-        type: 'address',
-      },
-    ],
-    name: 'ExecutionFromModuleSuccess',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'bytes32',
+        type: 'bytes32',
         name: 'txHash',
-        type: 'bytes32',
+        internalType: 'bytes32',
+        indexed: false,
       },
       {
-        indexed: false,
-        internalType: 'uint256',
+        type: 'uint256',
         name: 'payment',
-        type: 'uint256',
-      },
-    ],
-    name: 'ExecutionSuccess',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-    ],
-    name: 'RemovedOwner',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'msgHash',
-        type: 'bytes32',
-      },
-    ],
-    name: 'SignMsg',
-    type: 'event',
-  },
-  {
-    payable: true,
-    stateMutability: 'payable',
-    type: 'fallback',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'NAME',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'VERSION',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
         internalType: 'uint256',
-        name: '_threshold',
-        type: 'uint256',
+        indexed: false,
       },
     ],
-    name: 'addOwnerWithThreshold',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
+    anonymous: false,
   },
   {
-    constant: false,
+    type: 'event',
+    name: 'ExecutionFromModuleFailure',
     inputs: [
       {
-        internalType: 'bytes32',
-        name: 'hashToApprove',
-        type: 'bytes32',
-      },
-    ],
-    name: 'approveHash',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
         type: 'address',
+        name: 'module',
+        internalType: 'address',
+        indexed: true,
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ExecutionFromModuleSuccess',
+    inputs: [
+      {
+        type: 'address',
+        name: 'module',
+        internalType: 'address',
+        indexed: true,
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ExecutionSuccess',
+    inputs: [
+      {
+        type: 'bytes32',
+        name: 'txHash',
+        internalType: 'bytes32',
+        indexed: false,
       },
       {
-        internalType: 'bytes32',
-        name: '',
+        type: 'uint256',
+        name: 'payment',
+        internalType: 'uint256',
+        indexed: false,
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RemovedOwner',
+    inputs: [
+      {
+        type: 'address',
+        name: 'owner',
+        internalType: 'address',
+        indexed: false,
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SignMsg',
+    inputs: [
+      {
         type: 'bytes32',
+        name: 'msgHash',
+        internalType: 'bytes32',
+        indexed: true,
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'fallback',
+    stateMutability: 'payable',
+    payable: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'string',
+        name: '',
+        internalType: 'string',
+      },
+    ],
+    name: 'NAME',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'string',
+        name: '',
+        internalType: 'string',
+      },
+    ],
+    name: 'VERSION',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'addOwnerWithThreshold',
+    inputs: [
+      {
+        type: 'address',
+        name: 'owner',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: '_threshold',
+        internalType: 'uint256',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'approveHash',
+    inputs: [
+      {
+        type: 'bytes32',
+        name: 'hashToApprove',
+        internalType: 'bytes32',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'uint256',
+        name: '',
+        internalType: 'uint256',
       },
     ],
     name: 'approvedHashes',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
+        type: 'address',
+        name: '',
         internalType: 'address',
-        name: '_masterCopy',
-        type: 'address',
-      },
-    ],
-    name: 'changeMasterCopy',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_threshold',
-        type: 'uint256',
-      },
-    ],
-    name: 'changeThreshold',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'contract Module',
-        name: 'prevModule',
-        type: 'address',
       },
       {
-        internalType: 'contract Module',
-        name: 'module',
-        type: 'address',
-      },
-    ],
-    name: 'disableModule',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'domainSeparator',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
         type: 'bytes32',
+        name: '',
+        internalType: 'bytes32',
       },
     ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'contract Module',
-        name: 'module',
-        type: 'address',
-      },
-    ],
-    name: 'enableModule',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'changeMasterCopy',
     inputs: [
       {
-        internalType: 'address',
-        name: 'to',
         type: 'address',
+        name: '_masterCopy',
+        internalType: 'address',
       },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'changeThreshold',
+    inputs: [
       {
-        internalType: 'uint256',
-        name: 'value',
         type: 'uint256',
+        name: '_threshold',
+        internalType: 'uint256',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'disableModule',
+    inputs: [
+      {
+        type: 'address',
+        name: 'prevModule',
+        internalType: 'contract Module',
       },
       {
-        internalType: 'bytes',
-        name: 'data',
+        type: 'address',
+        name: 'module',
+        internalType: 'contract Module',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'bytes32',
+        name: '',
+        internalType: 'bytes32',
+      },
+    ],
+    name: 'domainSeparator',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'enableModule',
+    inputs: [
+      {
+        type: 'address',
+        name: 'module',
+        internalType: 'contract Module',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
         type: 'bytes',
-      },
-      {
-        internalType: 'enum Enum.Operation',
-        name: 'operation',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint256',
-        name: 'safeTxGas',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'baseGas',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'gasPrice',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'gasToken',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'refundReceiver',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_nonce',
-        type: 'uint256',
+        name: '',
+        internalType: 'bytes',
       },
     ],
     name: 'encodeTransactionData',
-    outputs: [
-      {
-        internalType: 'bytes',
-        name: '',
-        type: 'bytes',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
-        internalType: 'address',
+        type: 'address',
         name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-      {
-        internalType: 'enum Enum.Operation',
-        name: 'operation',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint256',
-        name: 'safeTxGas',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'baseGas',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'gasPrice',
-        type: 'uint256',
-      },
-      {
         internalType: 'address',
-        name: 'gasToken',
-        type: 'address',
       },
       {
-        internalType: 'address payable',
-        name: 'refundReceiver',
-        type: 'address',
+        type: 'uint256',
+        name: 'value',
+        internalType: 'uint256',
       },
       {
-        internalType: 'bytes',
-        name: 'signatures',
         type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
+      },
+      {
+        type: 'uint8',
+        name: 'operation',
+        internalType: 'enum Enum.Operation',
+      },
+      {
+        type: 'uint256',
+        name: 'safeTxGas',
+        internalType: 'uint256',
+      },
+      {
+        type: 'uint256',
+        name: 'baseGas',
+        internalType: 'uint256',
+      },
+      {
+        type: 'uint256',
+        name: 'gasPrice',
+        internalType: 'uint256',
+      },
+      {
+        type: 'address',
+        name: 'gasToken',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'refundReceiver',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: '_nonce',
+        internalType: 'uint256',
+      },
+    ],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'payable',
+    payable: true,
+    outputs: [
+      {
+        type: 'bool',
+        name: 'success',
+        internalType: 'bool',
       },
     ],
     name: 'execTransaction',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: 'success',
-        type: 'bool',
-      },
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
-        internalType: 'address',
-        name: 'to',
         type: 'address',
+        name: 'to',
+        internalType: 'address',
       },
       {
-        internalType: 'uint256',
-        name: 'value',
         type: 'uint256',
+        name: 'value',
+        internalType: 'uint256',
       },
       {
-        internalType: 'bytes',
-        name: 'data',
         type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
       },
       {
-        internalType: 'enum Enum.Operation',
-        name: 'operation',
         type: 'uint8',
+        name: 'operation',
+        internalType: 'enum Enum.Operation',
+      },
+      {
+        type: 'uint256',
+        name: 'safeTxGas',
+        internalType: 'uint256',
+      },
+      {
+        type: 'uint256',
+        name: 'baseGas',
+        internalType: 'uint256',
+      },
+      {
+        type: 'uint256',
+        name: 'gasPrice',
+        internalType: 'uint256',
+      },
+      {
+        type: 'address',
+        name: 'gasToken',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'refundReceiver',
+        internalType: 'address payable',
+      },
+      {
+        type: 'bytes',
+        name: 'signatures',
+        internalType: 'bytes',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [
+      {
+        type: 'bool',
+        name: 'success',
+        internalType: 'bool',
       },
     ],
     name: 'execTransactionFromModule',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: 'success',
-        type: 'bool',
-      },
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
-        internalType: 'address',
-        name: 'to',
         type: 'address',
+        name: 'to',
+        internalType: 'address',
       },
       {
-        internalType: 'uint256',
-        name: 'value',
         type: 'uint256',
+        name: 'value',
+        internalType: 'uint256',
       },
       {
-        internalType: 'bytes',
-        name: 'data',
         type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
       },
       {
-        internalType: 'enum Enum.Operation',
-        name: 'operation',
         type: 'uint8',
+        name: 'operation',
+        internalType: 'enum Enum.Operation',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [
+      {
+        type: 'bool',
+        name: 'success',
+        internalType: 'bool',
+      },
+      {
+        type: 'bytes',
+        name: 'returnData',
+        internalType: 'bytes',
       },
     ],
     name: 'execTransactionFromModuleReturnData',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: 'success',
-        type: 'bool',
-      },
-      {
-        internalType: 'bytes',
-        name: 'returnData',
-        type: 'bytes',
-      },
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: true,
     inputs: [
       {
-        internalType: 'bytes',
-        name: 'message',
+        type: 'address',
+        name: 'to',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: 'value',
+        internalType: 'uint256',
+      },
+      {
         type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
+      },
+      {
+        type: 'uint8',
+        name: 'operation',
+        internalType: 'enum Enum.Operation',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'bytes32',
+        name: '',
+        internalType: 'bytes32',
       },
     ],
     name: 'getMessageHash',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'getModules',
-    outputs: [
-      {
-        internalType: 'address[]',
-        name: '',
-        type: 'address[]',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
     inputs: [
       {
-        internalType: 'address',
-        name: 'start',
-        type: 'address',
+        type: 'bytes',
+        name: 'message',
+        internalType: 'bytes',
+      },
+    ],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'address[]',
+        name: '',
+        internalType: 'address[]',
+      },
+    ],
+    name: 'getModules',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'address[]',
+        name: 'array',
+        internalType: 'address[]',
       },
       {
-        internalType: 'uint256',
-        name: 'pageSize',
-        type: 'uint256',
+        type: 'address',
+        name: 'next',
+        internalType: 'address',
       },
     ],
     name: 'getModulesPaginated',
-    outputs: [
-      {
-        internalType: 'address[]',
-        name: 'array',
-        type: 'address[]',
-      },
-      {
-        internalType: 'address',
-        name: 'next',
-        type: 'address',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'getOwners',
-    outputs: [
-      {
-        internalType: 'address[]',
-        name: '',
-        type: 'address[]',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'getThreshold',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
     inputs: [
       {
-        internalType: 'address',
-        name: 'to',
         type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-      {
-        internalType: 'enum Enum.Operation',
-        name: 'operation',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint256',
-        name: 'safeTxGas',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'baseGas',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'gasPrice',
-        type: 'uint256',
-      },
-      {
+        name: 'start',
         internalType: 'address',
-        name: 'gasToken',
-        type: 'address',
       },
       {
-        internalType: 'address',
-        name: 'refundReceiver',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_nonce',
         type: 'uint256',
+        name: 'pageSize',
+        internalType: 'uint256',
+      },
+    ],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'address[]',
+        name: '',
+        internalType: 'address[]',
+      },
+    ],
+    name: 'getOwners',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'uint256',
+        name: '',
+        internalType: 'uint256',
+      },
+    ],
+    name: 'getThreshold',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'bytes32',
+        name: '',
+        internalType: 'bytes32',
       },
     ],
     name: 'getTransactionHash',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: true,
     inputs: [
       {
-        internalType: 'address',
-        name: 'owner',
         type: 'address',
+        name: 'to',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: 'value',
+        internalType: 'uint256',
+      },
+      {
+        type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
+      },
+      {
+        type: 'uint8',
+        name: 'operation',
+        internalType: 'enum Enum.Operation',
+      },
+      {
+        type: 'uint256',
+        name: 'safeTxGas',
+        internalType: 'uint256',
+      },
+      {
+        type: 'uint256',
+        name: 'baseGas',
+        internalType: 'uint256',
+      },
+      {
+        type: 'uint256',
+        name: 'gasPrice',
+        internalType: 'uint256',
+      },
+      {
+        type: 'address',
+        name: 'gasToken',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'refundReceiver',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: '_nonce',
+        internalType: 'uint256',
+      },
+    ],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'bool',
+        name: '',
+        internalType: 'bool',
+      },
+    ],
+    name: 'isModuleEnabled',
+    inputs: [
+      {
+        type: 'address',
+        name: 'module',
+        internalType: 'contract Module',
+      },
+    ],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'bool',
+        name: '',
+        internalType: 'bool',
       },
     ],
     name: 'isOwner',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
-        internalType: 'bytes',
-        name: '_data',
-        type: 'bytes',
+        type: 'address',
+        name: 'owner',
+        internalType: 'address',
       },
+    ],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [
       {
-        internalType: 'bytes',
-        name: '_signature',
-        type: 'bytes',
+        type: 'bytes4',
+        name: '',
+        internalType: 'bytes4',
       },
     ],
     name: 'isValidSignature',
-    outputs: [
-      {
-        internalType: 'bytes4',
-        name: '',
-        type: 'bytes4',
-      },
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'nonce',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
-        internalType: 'address',
-        name: 'prevOwner',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_threshold',
-        type: 'uint256',
-      },
-    ],
-    name: 'removeOwner',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
         type: 'bytes',
+        name: '_data',
+        internalType: 'bytes',
       },
       {
-        internalType: 'enum Enum.Operation',
-        name: 'operation',
-        type: 'uint8',
+        type: 'bytes',
+        name: '_signature',
+        internalType: 'bytes',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
+    outputs: [
+      {
+        type: 'uint256',
+        name: '',
+        internalType: 'uint256',
+      },
+    ],
+    name: 'nonce',
+    inputs: [],
+    constant: true,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'removeOwner',
+    inputs: [
+      {
+        type: 'address',
+        name: 'prevOwner',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'owner',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: '_threshold',
+        internalType: 'uint256',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [
+      {
+        type: 'uint256',
+        name: '',
+        internalType: 'uint256',
       },
     ],
     name: 'requiredTxGas',
+    inputs: [
+      {
+        type: 'address',
+        name: 'to',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: 'value',
+        internalType: 'uint256',
+      },
+      {
+        type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
+      },
+      {
+        type: 'uint8',
+        name: 'operation',
+        internalType: 'enum Enum.Operation',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'setFallbackHandler',
+    inputs: [
+      {
+        type: 'address',
+        name: 'handler',
+        internalType: 'address',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'setup',
+    inputs: [
+      {
+        type: 'address[]',
+        name: '_owners',
+        internalType: 'address[]',
+      },
+      {
+        type: 'uint256',
+        name: '_threshold',
+        internalType: 'uint256',
+      },
+      {
+        type: 'address',
+        name: 'to',
+        internalType: 'address',
+      },
+      {
+        type: 'bytes',
+        name: 'data',
+        internalType: 'bytes',
+      },
+      {
+        type: 'address',
+        name: 'fallbackHandler',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'paymentToken',
+        internalType: 'address',
+      },
+      {
+        type: 'uint256',
+        name: 'payment',
+        internalType: 'uint256',
+      },
+      {
+        type: 'address',
+        name: 'paymentReceiver',
+        internalType: 'address payable',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'signMessage',
+    inputs: [
+      {
+        type: 'bytes',
+        name: '_data',
+        internalType: 'bytes',
+      },
+    ],
+    constant: false,
+  },
+  {
+    type: 'function',
+    stateMutability: 'view',
+    payable: false,
     outputs: [
       {
-        internalType: 'uint256',
+        type: 'uint256',
         name: '',
-        type: 'uint256',
-      },
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'handler',
-        type: 'address',
-      },
-    ],
-    name: 'setFallbackHandler',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'address[]',
-        name: '_owners',
-        type: 'address[]',
-      },
-      {
         internalType: 'uint256',
-        name: '_threshold',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-      {
-        internalType: 'address',
-        name: 'fallbackHandler',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'paymentToken',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'payment',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address payable',
-        name: 'paymentReceiver',
-        type: 'address',
-      },
-    ],
-    name: 'setup',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        internalType: 'bytes',
-        name: '_data',
-        type: 'bytes',
-      },
-    ],
-    name: 'signMessage',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    constant: true,
-    inputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
       },
     ],
     name: 'signedMessages',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    constant: false,
     inputs: [
       {
-        internalType: 'address',
-        name: 'prevOwner',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'oldOwner',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
+        type: 'bytes32',
+        name: '',
+        internalType: 'bytes32',
       },
     ],
-    name: 'swapOwner',
-    outputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
+    constant: true,
+  },
+  {
     type: 'function',
+    stateMutability: 'nonpayable',
+    payable: false,
+    outputs: [],
+    name: 'swapOwner',
+    inputs: [
+      {
+        type: 'address',
+        name: 'prevOwner',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'oldOwner',
+        internalType: 'address',
+      },
+      {
+        type: 'address',
+        name: 'newOwner',
+        internalType: 'address',
+      },
+    ],
+    constant: false,
   },
 ]

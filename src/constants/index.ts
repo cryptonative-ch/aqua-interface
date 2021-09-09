@@ -48,8 +48,10 @@ export const SUPPORTED_CHAINS = {
       templateLauncher: '0x58c67b46c47f69d63aa09d5f822ede377c479d5f',
     },
     cpk: {
-      masterCopyAddress: '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-      proxyFactoryAddress: '0x3049b84bbC3EB2C375547CAc0D77da032d3d1981',
+      masterCopyAddress: '0x9C75A217AEA76663a9A37687606f099945eb0742',
+      //masterCopyAddress: '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
+      proxyFactoryAddress: '0x6B836809A42938cbB9ee911FC3F6b9763DE96477',
+      //proxyFactoryAddress: '0x3049b84bbC3EB2C375547CAc0D77da032d3d1981',
       multiSendAddress: '0x035000FC773f4a0e39FcdeD08A46aBBDBF196fd3',
       fallbackHandlerAddress: '0x602DF5F404f86469459D5e604CDa43A2cdFb7580',
       targetSafeImplementation: '0x9C75A217AEA76663a9A37687606f099945eb0742',

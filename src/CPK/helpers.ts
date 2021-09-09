@@ -1,6 +1,6 @@
 // External
-import CPK, { CpkTransactionManager, Transaction } from 'contract-proxy-kit'
-import { providers, BigNumberish } from 'ethers'
+import CPK, { Transaction } from 'dxdao-contract-proxy-kit'
+import { providers, BigNumberish, ethers, BytesLike } from 'ethers'
 
 // Constants
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
@@ -31,8 +31,13 @@ export interface ContractInstanceParams {
 
 export interface EncodeChangeMasterCopyParams {
   targetImplementation: string
-  signer: providers.JsonRpcSigner
   contractAddress: string
+  signer: providers.JsonRpcSigner
+}
+
+export interface checkMasterCopyAddressParams {
+  targetImplementation: string
+  cpk: CPK
 }
 export interface UpgradeProxyParams {
   chainId: number
@@ -46,7 +51,7 @@ export interface WrapParams {
   transactions: Transaction[]
   purchaseValue: BigNumberish
   tokenAddress: string
-  txOptions: TransactionOptions
+  overrides: TransactionOptions
   cpk: CPK
 }
 
@@ -63,11 +68,36 @@ export const encodeChangeMasterCopy = (params: EncodeChangeMasterCopyParams) => 
   const safeInterface = GnosisSafe__factory.connect(contractAddress, signer).interface
   return safeInterface.encodeFunctionData('changeMasterCopy', [targetImplementation])
 }
+export const checkPayable = (cpk: CPK, account: string, library: providers.Web3Provider) => {
+  const autoApprovedSignature = cpk.ethLibAdapter?.abiEncodePacked(
+    { type: 'uint256', value: account }, // r
+    { type: 'uint256', value: 0 }, // s
+    { type: 'uint8', value: 1 } // v
+  )
+  const signer = library.getSigner()
+  const zeroAddress = `0x${'0'.repeat(40)}`
+  const value = ethers.utils.parseEther('0.00001')
+  const sendOptions = { value: value, from: account }
+  const safeInterface = GnosisSafe__factory.connect(cpk?.address as string, signer).execTransaction(
+    '0x4572A3689b9Ba4fCE09101d13B8c92C6A4ca7568',
+    value,
+    '0x',
+    '0',
+    0,
+    0,
+    0,
+    zeroAddress,
+    zeroAddress,
+    autoApprovedSignature as BytesLike,
+    sendOptions
+  )
+  return safeInterface
+}
 
-export const checkMasterCopyAddress = async (params: EncodeChangeMasterCopyParams) => {
-  const { targetImplementation, contractAddress, signer } = params
-  const safeInterface = GnosisSafe__factory.connect(contractAddress, signer).masterCopy()
-  return (await safeInterface).toLowerCase() === targetImplementation
+export const checkMasterCopyAddress = (params: checkMasterCopyAddressParams) => {
+  const { targetImplementation, cpk } = params
+  const safeInterface = cpk.contractManager?.contract?.address
+  return safeInterface?.toLowerCase() === targetImplementation
 }
 
 export const validChainId = (chainId: number): boolean => {
@@ -90,9 +120,9 @@ export const isContract = async (provider: providers.Web3Provider, address: stri
 }
 
 export const wrap = async (params: WrapParams) => {
-  const { cpk, transactions, tokenAddress, purchaseValue, txOptions } = params
+  const { cpk, transactions, tokenAddress, purchaseValue, overrides } = params
   if (!cpk.isConnectedToSafe) {
-    txOptions.value = purchaseValue
+    overrides.value = purchaseValue
   }
   transactions.push({
     to: tokenAddress,
@@ -129,14 +159,14 @@ export const upgradeProxy = async (params: UpgradeProxyParams) => {
   const targetGnosisSafeImplementation = getTargetSafeImplementation(chainId)
 
   const contractAddress = cpk.address as string
-  if (checkMasterCopyAddress({ contractAddress, signer, targetImplementation: targetGnosisSafeImplementation })) {
-    return params
-  }
-
   if (!(await isContract(library, targetGnosisSafeImplementation))) {
     throw new Error('Target safe implementation does not exist')
   }
+
   if (cpk.isProxyDeployed()) {
+    if (checkMasterCopyAddress({ cpk, targetImplementation: targetGnosisSafeImplementation })) {
+      return params
+    }
     transactions.push({
       to: contractAddress,
       data: encodeChangeMasterCopy({
@@ -155,9 +185,9 @@ export const setup = async (params: SetupParams) => {
   const transactions: Transaction[] = []
 
   // cpk empty transaction options
-  const txOptions: TransactionOptions = {}
+  const overrides: TransactionOptions = {}
 
   const signer = library.getSigner()
 
-  return { ...params, transactions, txOptions, signer }
+  return { ...params, transactions, overrides, signer }
 }

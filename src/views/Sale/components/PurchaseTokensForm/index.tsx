@@ -38,6 +38,7 @@ import {
   commitToken,
   cpkCommitTokenParams,
   UpgradeProxyParams,
+  checkPayable,
 } from 'src/CPK/helpers'
 
 // Layouts
@@ -45,8 +46,6 @@ import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
-import { SUPPORTED_CHAINS, CHAIN_ID } from 'src/constants'
-import { Transaction } from 'contract-proxy-kit'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -304,6 +303,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           library,
           purchaseValue: value,
         }
+        //checkPayable(cpk, account, library)
         await cpkCommitToken(params)
         return
       }
