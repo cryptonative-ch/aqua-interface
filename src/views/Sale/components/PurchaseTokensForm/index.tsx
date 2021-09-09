@@ -29,7 +29,7 @@ import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
-import { upgradeProxy, wrap, tokenApproval, commitToken, cpkCommitTokenParams } from 'src/CPK/helpers'
+import { upgradeProxy, wrap, tokenApproval, commitToken, cpkCommitTokenParams } from 'src/CPK'
 
 // Layouts
 import { Center } from 'src/layouts/Center'

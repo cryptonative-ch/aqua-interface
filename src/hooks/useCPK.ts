@@ -9,10 +9,9 @@ import { useTranslation } from 'react-i18next'
 
 // helpers
 import { pipe } from 'src/utils'
-import { setup, getTargetSafeImplementation } from 'src/CPK/helpers'
+import { setup, getTargetSafeImplementation, TransactionOptions } from 'src/CPK'
 
 //interfaces
-import { TransactionOptions } from 'src/CPK/helpers'
 import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
 
 interface useCPKReturns {
