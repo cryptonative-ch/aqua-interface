@@ -85,8 +85,6 @@ export function FixedPriceSaleView() {
   const [_, setTime] = useState(0)
   const { cpk } = useCPK(library, chainId)
 
-  console.log(bids)
-
   const toggleGraph = () => {
     if (showGraph || (sale && bids && bids.length > 0)) {
       setShowGraph(!showGraph)

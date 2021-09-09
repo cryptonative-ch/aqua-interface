@@ -13,6 +13,20 @@ import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory } from 'sr
  *
  */
 
+export interface WithdrawCommitmentParams {
+  transactions: Transaction[]
+  saleAddress: string
+  signer: providers.JsonRpcSigner
+  cpk: CPK
+}
+export interface TransferERC20Params {
+  account: string
+  saleTokenOutAddress: string
+  transactions: Transaction[]
+  saleAddress: string
+  signer: providers.JsonRpcSigner
+  cpk: CPK
+}
 export interface cpkCommitTokenParams extends SetupParams {
   tokenAddress: string
   saleAddress: string
@@ -63,35 +77,15 @@ export interface tokenApprovalParams {
   signer: providers.JsonRpcSigner
 }
 
+/**
+ * Functions
+ *
+ */
+
 export const encodeChangeMasterCopy = (params: EncodeChangeMasterCopyParams) => {
   const { targetImplementation, contractAddress, signer } = params
   const safeInterface = GnosisSafe__factory.connect(contractAddress, signer).interface
   return safeInterface.encodeFunctionData('changeMasterCopy', [targetImplementation])
-}
-export const checkPayable = (cpk: CPK, account: string, library: providers.Web3Provider) => {
-  const autoApprovedSignature = cpk.ethLibAdapter?.abiEncodePacked(
-    { type: 'uint256', value: account }, // r
-    { type: 'uint256', value: 0 }, // s
-    { type: 'uint8', value: 1 } // v
-  )
-  const signer = library.getSigner()
-  const zeroAddress = `0x${'0'.repeat(40)}`
-  const value = ethers.utils.parseEther('0.00001')
-  const sendOptions = { value: value, from: account }
-  const safeInterface = GnosisSafe__factory.connect(cpk?.address as string, signer).execTransaction(
-    '0x4572A3689b9Ba4fCE09101d13B8c92C6A4ca7568',
-    value,
-    '0x',
-    '0',
-    0,
-    0,
-    0,
-    zeroAddress,
-    zeroAddress,
-    autoApprovedSignature as BytesLike,
-    sendOptions
-  )
-  return safeInterface
 }
 
 export const checkMasterCopyAddress = (params: checkMasterCopyAddressParams) => {
@@ -190,4 +184,29 @@ export const setup = async (params: SetupParams) => {
   const signer = library.getSigner()
 
   return { ...params, transactions, overrides, signer }
+}
+
+export const withdrawCommitment = (params: WithdrawCommitmentParams) => {
+  const { transactions, saleAddress, signer, cpk } = params
+
+  transactions.push({
+    to: saleAddress,
+    data: FixedPriceSale__factory.connect(saleAddress, signer).interface.encodeFunctionData('withdrawTokens', [
+      cpk.address as string,
+    ]),
+  })
+
+  return params
+}
+
+export const transferERC20 = async (params: TransferERC20Params) => {
+  const { transactions, saleTokenOutAddress, signer, cpk, account } = params
+  const erc20Token = ERC20__factory.connect(saleTokenOutAddress, signer)
+  const balance = await erc20Token.balanceOf(cpk.address as string)
+  transactions.push({
+    to: saleTokenOutAddress,
+    data: erc20Token.encodeFunctionData('transfer', [account as string, balance]),
+  })
+
+  return params
 }

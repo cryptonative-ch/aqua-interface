@@ -5,10 +5,9 @@ import { ContractReceipt, ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
-import { TransactionResult } from 'dxdao-contract-proxy-kit'
 
 //hooks
-import { useCPK } from 'src/hooks/useCPK'
+import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 // contracts
 import { FixedPriceSale__factory } from 'src/contracts'
@@ -19,7 +18,7 @@ import { setClaimStatus } from 'src/redux/claims'
 //interface
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ProviderRpcError } from 'src/interfaces/Error'
-import { ERC20__factory } from 'src/contracts'
+import { tokenApproval, transferERC20, withdrawCommitment } from 'src/CPK'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -43,6 +42,7 @@ export function useTokenClaim(
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
   const { cpk } = useCPK(library, chainId)
+  const { CPKpipe } = useCPKexecTransactions()
   const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
@@ -55,7 +55,6 @@ export function useTokenClaim(
   )
   const [t] = useTranslation()
   const signer = library?.getSigner()
-  const erc20Token = ERC20__factory.connect(sale.tokenOut.id, signer).interface
 
   useEffect(() => {
     if (!chainId || !library || !account) {
@@ -80,28 +79,19 @@ export function useTokenClaim(
   }
 
   const claimTokens = async (saleId: string) => {
-    if (cpk?.isProxyDeployed) {
-      const balance = await ERC20__factory.connect(sale.tokenOut.id, signer).balanceOf(cpk.address as string)
+    if (cpk?.isProxyDeployed()) {
+      const params = {
+        saleAddress: saleId,
+        cpk,
+        saleTokenOutAddress: sale.tokenOut.id,
+        account,
+        library,
+        chainId,
+      }
 
-      const tx = [
-        {
-          to: saleId,
-          data: FixedPriceSale__factory.connect(saleId, signer).interface.encodeFunctionData('withdrawTokens', [
-            cpk.address as string,
-          ]),
-        },
-        {
-          to: sale.tokenOut.id,
-          data: erc20Token.encodeFunctionData('approve', [account as string, balance]),
-        },
-        {
-          to: sale.tokenOut.id,
-          data: erc20Token.encodeFunctionData('transfer', [account as string, balance]),
-        },
-      ]
-      cpk
-        .execTransactions(tx)
-        .then(async (tx: TransactionResult) => {
+      try {
+        const { transactionResult, loading } = CPKpipe(withdrawCommitment, tokenApproval, transferERC20)(params)
+        if (loading)
           dispatch(
             setClaimStatus({
               sale: sale,
@@ -111,43 +101,42 @@ export function useTokenClaim(
               amount: amount,
             })
           )
-          await tx.transactionResponse?.wait(1)
-          toast.success(t('success.claim'))
-          return dispatch(
-            setClaimStatus({
-              sale: sale,
-              claimToken: ClaimState.CLAIMED,
-              error: null,
-              transaction: tx.transactionResponse as any,
-              amount: amount,
-            })
-          )
-        })
-        .catch((error: ProviderRpcError) => {
-          if (error.code == 4001) {
-            toast.error(t('errors.claim'))
-            return dispatch(
-              setClaimStatus({
-                sale: sale,
-                claimToken: ClaimState.UNCLAIMED,
-                error: error,
-                transaction: null,
-                amount: amount,
-              })
-            )
-          }
-          console.error(error)
+
+        toast.success(t('success.claim'))
+        return dispatch(
+          setClaimStatus({
+            sale: sale,
+            claimToken: ClaimState.CLAIMED,
+            error: null,
+            transaction: transactionResult?.transactionResponse as any,
+            amount: amount,
+          })
+        )
+      } catch (error: any) {
+        if (error.code == 4001) {
           toast.error(t('errors.claim'))
           return dispatch(
             setClaimStatus({
               sale: sale,
-              claimToken: ClaimState.FAILED,
+              claimToken: ClaimState.UNCLAIMED,
               error: error,
               transaction: null,
               amount: amount,
             })
           )
-        })
+        }
+        console.error(error)
+        toast.error(t('errors.claim'))
+        return dispatch(
+          setClaimStatus({
+            sale: sale,
+            claimToken: ClaimState.FAILED,
+            error: error,
+            transaction: null,
+            amount: amount,
+          })
+        )
+      }
     }
     if (account) {
       // Withdraw tokens - withdraws investment or purchase depending on if successful
