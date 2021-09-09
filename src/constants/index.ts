@@ -16,9 +16,9 @@ export const SUPPORTED_CHAINS = {
     id: CHAIN_ID.RINKEBY,
     name: 'Rinkeby Testnet',
     contracts: {
-      factory: '0xa1Bf3bfDbC86Fd6eC7E2d9707609d7fAc0d93EeF',
-      saleLauncher: '0x6085eb96659B0e90bc59288750C8306eE390fA99',
-      templateLauncher: '0x569DD258D95c8f558AAf6fe808a0cfC00D941565',
+      factory: '0xA4bEdDf001392121a88192a2a2348c9102e8E6B3',
+      saleLauncher: '0x248617E4f69E86a727A4e03bA8d6e65A23d12e45',
+      templateLauncher: '0xC8Ab9E079D8207fB755953b0C464C8C5313FE83a',
     },
     cpk: {
       masterCopyAddress: '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F',
@@ -27,6 +27,7 @@ export const SUPPORTED_CHAINS = {
       fallbackHandlerAddress: '0x40A930851BD2e590Bd5A5C981b436de25742E980',
       targetSafeImplementation: '0xcb05C7D28766e4fFB71ccbdAf6Ae1Cec555D61f8',
     },
+    subgraph: 'https://api.thegraph.com/subgraphs/name/mprasanjith/aqua-rinkeby-next',
     parameters: {
       chainId: '0x4',
       chainName: 'Ethereum',
@@ -36,7 +37,7 @@ export const SUPPORTED_CHAINS = {
         decimals: 18,
       },
       rpcUrls: ['https://rinkeby.infura.io/v3'],
-      blockExplorerUrls: ['https://rinkeby.etherscan.com'],
+      blockExplorerUrls: ['https://rinkeby.etherscan.io'],
     },
   },
   [CHAIN_ID.XDAI]: {
@@ -49,13 +50,12 @@ export const SUPPORTED_CHAINS = {
     },
     cpk: {
       masterCopyAddress: '0x9C75A217AEA76663a9A37687606f099945eb0742',
-      //masterCopyAddress: '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
       proxyFactoryAddress: '0x6B836809A42938cbB9ee911FC3F6b9763DE96477',
-      //proxyFactoryAddress: '0x3049b84bbC3EB2C375547CAc0D77da032d3d1981',
       multiSendAddress: '0x035000FC773f4a0e39FcdeD08A46aBBDBF196fd3',
       fallbackHandlerAddress: '0x602DF5F404f86469459D5e604CDa43A2cdFb7580',
       targetSafeImplementation: '0x9C75A217AEA76663a9A37687606f099945eb0742',
     },
+    subgraph: 'https://api.thegraph.com/subgraphs/name/adamazad/aqua-xdai-next',
     parameters: {
       chainId: '0x64',
       chainName: 'xDai',

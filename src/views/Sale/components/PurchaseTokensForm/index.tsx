@@ -46,6 +46,8 @@ import { Center } from 'src/layouts/Center'
 import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
+import { useSelector } from 'react-redux'
+import { CommitmentsState } from 'src/redux/commitments'
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -151,7 +153,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     owner: account ?? undefined,
   })
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
-  const { allBids } = useBids(saleId, 'FixedPriceSale')
+  const allBids = useSelector(({ commitments }) => (commitments as CommitmentsState).bidsBySaleId[saleId]?.bids)
 
   const [approvalState, approve] = useApproveCallback({
     spender: sale?.id as string,

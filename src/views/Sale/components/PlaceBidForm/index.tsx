@@ -1,24 +1,31 @@
 // External
-import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from 'react'
-import styled, { useTheme } from 'styled-components'
+import React, { useState, ChangeEvent, FormEvent, useCallback } from 'react'
+import styled from 'styled-components'
+import { BigNumber, utils } from 'ethers'
+import { toast } from 'react-toastify'
 
 // Components
 import { FormGroup } from 'src/components/FormGroup'
-
-// Aqua Utils
-import { isSaleClosed, isSaleUpcoming } from 'src/aqua/sale'
-
-// Contexts
-import { BidModalContext } from 'src/contexts'
+import { Form } from 'src/components/Form'
+import { Center } from 'src/layouts/Center'
+import { ErrorMessage } from 'src/components/ErrorMessage'
+import { NotFoundView } from 'src/views/NotFound'
 
 // Interfaces
-import { Sale } from 'src/interfaces/Sale'
 import { Flex } from 'src/components/Flex'
-import { ApproveButton } from 'src/views/Sale/components/ApproveButton'
+import { useWeb3React } from '@web3-react/core'
+import { FairSale__factory } from 'src/contracts'
 
-const FormBody = styled.form({
-  flex: 1,
-})
+// Hooks
+import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
+import { useFairSaleQuery } from 'src/hooks/useSaleQuery'
+import { useTokenBalance } from 'src/hooks/useTokenBalance'
+import { fixRounding, getProviderOrSigner } from 'src/utils'
+import { LinkedButtons } from 'src/components/LinkedButtons'
+
+const FormFull = styled(Form)`
+  width: 100%;
+`
 
 const FormLabel = styled.div({
   fontStyle: 'normal',
@@ -50,16 +57,51 @@ const FormContainer = styled.div({
 const FormText = styled.div({
   position: 'absolute',
   flex: 1,
-  background: 'transparent',
+  background: '#F2F2F2',
   border: 'none',
   color: '#7B7F93',
   fontSize: '14px',
   lineHeight: '48px',
-  margin: '0 16px',
+  padding: '0 16px',
   userSelect: 'none',
+  right: 0,
+  zIndex: 101,
 })
 
-const FixedTerm = styled.div({
+const MaxButton = styled.a({
+  border: '1px solid #DDDDE3',
+  padding: '0 4px',
+  fontStyle: 'normal',
+  fontSize: '14px',
+  lineHeight: '21px',
+  textAlign: 'center',
+  color: '#7B7F93',
+  marginRight: '16px',
+  cursor: 'pointer',
+
+  ':hover': {
+    borderColor: '#304FFE',
+    color: '#304FFE !important',
+  },
+})
+
+const FormInput = styled.input({
+  flex: 1,
+  height: 'unset',
+  background: '#F2F2F2',
+  border: 'none',
+  color: '#7B7F93',
+  padding: '0 16px',
+  fontSize: '14px',
+  lineHeight: '21px',
+  zIndex: 100,
+  ':focus': {
+    background: '#F2F2F2',
+    color: '#7B7F93',
+  },
+})
+
+const TokenOutQuantityText = styled.div({
   border: '1px dashed #DDDDE3',
   borderWidth: '1px 0 0 0',
   padding: '16px 0 8px 0',
@@ -68,159 +110,242 @@ const FixedTerm = styled.div({
   lineHeight: '21px',
   color: '#7B7F93',
   fontWeight: 400,
+  margin: '8px 0',
 })
 
-const MaxButton = styled.div({
-  border: '1px solid #DDDDE3',
-  padding: '0 4px',
-  fontStyle: 'normal',
-  fontWeight: 500,
-  fontSize: '14px',
-  lineHeight: '21px',
-  textAlign: 'center',
-  color: '#7B7F93',
-  position: 'absolute',
-  right: '16px',
-  top: '13px',
-  cursor: 'pointer',
-  zIndex: 200,
+const Message = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  alignSelf: 'center',
+  margin: '10px auto',
 })
 
-const FormInput = styled.input({
-  flex: 1,
-  height: 'unset',
-  background: 'transparent',
-  border: 'none',
-  color: 'transparent',
-  padding: '0 16px',
-  fontSize: '14px',
-  lineHeight: '21px',
-  zIndex: 100,
-  ':focus': {
-    backgroundColor: 'transparent',
-    color: 'transparent',
-  },
+const SuccessMessage = styled(Message)({
+  color: '#4B9E98',
 })
 
-interface BidData {
-  tokenAmount: number
-  tokenPrice: number
-}
+const PurchaseErrorMessage = styled(Message)({
+  color: '#E15F5F',
+})
 
 interface PlaceBidComponentProps {
-  sale: Sale
-  onSubmit: (BidData: BidData) => void
+  saleId: string
   currentSettlementPrice?: number
-  isFixed?: boolean
 }
 
-export const PlaceBidForm = ({ sale, onSubmit, currentSettlementPrice, isFixed }: PlaceBidComponentProps) => {
-  const { isShown, result, toggleModal, setResult } = useContext(BidModalContext)
-  const [formValid, setFormValid] = useState<boolean>(false)
-  const [tokenAmount, setTokenAmount] = useState<number>(0)
-  const [tokenPrice, setTokenPrice] = useState<number>(0)
-  const [approve] = useState<boolean>(false)
-  const theme = useTheme()
+export const PlaceBidForm = ({ saleId, currentSettlementPrice }: PlaceBidComponentProps) => {
+  const { account, library } = useWeb3React()
+  const { loading, sale, error } = useFairSaleQuery(saleId)
+  const [txPending, setTxPending] = useState(false)
+  const [validationError, setValidationError] = useState<Error>()
+  const [tokenInAmount, setTokenInAmount] = useState<number | undefined>()
+  const [tokenOutPrice, setTokenOutPrice] = useState<number | undefined>()
+  const tokenBalance = useTokenBalance({
+    tokenAddress: sale?.tokenIn.id,
+    owner: account ?? undefined,
+  })
+  const [approvalState, approve] = useApproveCallback({
+    spender: sale?.id as string,
+    tokenAddress: sale?.tokenIn.id as string,
+  })
 
-  const validateForm = (values: number[]) => setFormValid(values.every(value => value > 0))
+  const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
 
-  const checkBidPrice = async (currentSettlementPrice: number | undefined) => {
-    if (currentSettlementPrice && tokenPrice <= currentSettlementPrice * 0.7) {
-      toggleModal()
-      return false
+  const validateForm = (tokenOutPrice: number | undefined, tokenInAmount: number | undefined) => {
+    if (!tokenOutPrice || !tokenInAmount) return
+
+    // TODO: Update validations
+    let newValidationError = undefined
+    const purchaseMinimumBid = parseFloat(utils.formatUnits(BigNumber.from(sale?.minBidAmount)))
+    const currentBid = tokenInAmount / tokenOutPrice
+
+    if (purchaseMinimumBid > currentBid) {
+      newValidationError = new Error(
+        `Minimum is ${fixRounding(purchaseMinimumBid, 8)} ${
+          sale?.tokenOut.symbol
+        }. Current bid would only be ${fixRounding(currentBid, 8)} ${sale?.tokenOut.symbol}.`
+      )
     }
 
-    // Proceed to continue
-    return true
+    setValidationError(newValidationError)
   }
 
   // Change handlers
   const onTokenPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const tokenPrice = parseInt(event.target.value || '0')
-    setTokenPrice(tokenPrice)
-    validateForm([tokenPrice, tokenAmount])
+    if (!event.target.value) {
+      return setTokenOutPrice(undefined)
+    }
+
+    const tokenPrice = parseInt(event.target.value)
+    setTokenOutPrice(tokenPrice)
+    validateForm(tokenPrice, tokenInAmount)
   }
 
   const onTokenAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const tokenAmount = parseInt(event.target.value || '0')
-    setTokenAmount(tokenAmount)
-    if (isFixed) {
-      validateForm([tokenAmount])
-    } else {
-      validateForm([tokenAmount, tokenPrice])
+    if (!event.target.value) {
+      return setTokenInAmount(undefined)
     }
+
+    const tokenAmount = parseInt(event.target.value)
+    setTokenInAmount(tokenAmount)
+    validateForm(tokenOutPrice, tokenAmount)
   }
+
+  const placeBid = useCallback(() => {
+    if (!sale) {
+      return console.error('no sale')
+    }
+
+    if (!account || !library) {
+      return console.error('no connected signer')
+    }
+
+    if (!tokenInAmount || !tokenOutPrice) {
+      return console.error('purchase amount or price == null')
+    }
+
+    const fairSaleContract = FairSale__factory.connect(sale.id, getProviderOrSigner(library, account))
+
+    setTxPending(true)
+
+    // TODO: Use the correct startPosition
+    const startPosition = '0x0000000000000000000000000000000000000000000000000000000000000001'
+
+    // TODO: Verify if these are the correct parameters.
+    fairSaleContract
+      .placeSellOrders(
+        [utils.parseEther(tokenOutPrice.toString())],
+        [utils.parseEther(tokenInAmount.toString())],
+        [startPosition]
+      )
+      .then(tx => tx.wait(1)) // wait one network confirmation
+      .then(() => {
+        toast.success('Placed bid!')
+      })
+      .catch(error => {
+        console.error(error)
+        toast.error('Failed to place bid!')
+      })
+      .then(() => {
+        setTxPending(false)
+      })
+  }, [account, library, sale, tokenOutPrice, tokenInAmount])
 
   // Submission handler
-  const onFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if ((await checkBidPrice(currentSettlementPrice)) === true) {
-      onSubmit({
-        tokenAmount,
-        tokenPrice,
-      })
-    }
-  }
-  // Listen to the Context value changes to get the modal response
-  useEffect(() => {
-    if (!isShown && result === true) {
-      setResult(false)
-      onSubmit({
-        tokenAmount,
-        tokenPrice,
-      })
-    }
-  }, [isShown, onSubmit, result, setResult, tokenAmount, tokenPrice])
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
 
-  const isDisabled = !formValid || isSaleClosed(sale) || isSaleUpcoming(sale)
+      if (!sale || !tokenInAmount || !tokenOutPrice || approvalState !== ApprovalState.APPROVED) return
+      if (currentSettlementPrice && tokenOutPrice <= currentSettlementPrice * 0.7) return
+
+      placeBid()
+    },
+    [sale, tokenInAmount, tokenOutPrice, approvalState, currentSettlementPrice]
+  )
+
+  const getMaxPurchase = () => {
+    const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
+
+    // TODO: Consider remaining tokens
+
+    const maxPurchase = parsedTokenBalance
+    return maxPurchase
+  }
+
+  const onMaxButtonClick = () => {
+    const maxPurchase = getMaxPurchase()
+    setTokenInAmount(fixRounding(maxPurchase, 8))
+  }
+
+  if (loading) {
+    return <Center minHeight="100vh">loading</Center>
+  }
+
+  if (error) {
+    return (
+      <Center>
+        <ErrorMessage error={error} />
+      </Center>
+    )
+  }
+
+  if (!sale) {
+    return <NotFoundView />
+  }
 
   return (
-    <FormBody id="createBidForm" onSubmit={onFormSubmit}>
-      {!isFixed && (
-        <FormGroup theme={theme}>
-          <FormLabel>Token Price</FormLabel>
-          <Flex flexDirection="column" flex={1}>
-            <FormContainer>
-              <FormText data-testid="price-value">{`${tokenPrice.toString()} DAI`}</FormText>
-              <FormInput
-                aria-label="tokenPrice"
-                id="tokenPrice"
-                type="number"
-                value={Number(tokenPrice).toString()}
-                onChange={onTokenPriceChange}
-              />
-              <MaxButton>Max</MaxButton>
-            </FormContainer>
-            <FormDescription>
-              {isFixed
-                ? 'You have 123,456 DAI.'
-                : 'Enter the amount of DAI you would like to trade. You have 123,456 DAI.'}
-            </FormDescription>
-          </Flex>
-        </FormGroup>
-      )}
-      <FormGroup theme={theme}>
+    <FormFull id="createBidForm" noValidate onSubmit={onSubmit}>
+      <FormGroup>
+        <FormLabel>Token Price</FormLabel>
+        <Flex flexDirection="column" flex={1}>
+          <FormContainer>
+            <FormText data-testid="price-value">{sale.tokenIn?.symbol}</FormText>
+            <FormInput
+              aria-label="tokenPrice"
+              id="tokenPrice"
+              type="number"
+              placeholder="0.0"
+              value={tokenOutPrice}
+              onChange={onTokenPriceChange}
+            />
+          </FormContainer>
+          <FormDescription>Enter the price you would pay per {sale.tokenOut?.symbol} token.</FormDescription>
+        </Flex>
+      </FormGroup>
+      <FormGroup>
         <FormLabel>Amount</FormLabel>
         <Flex flexDirection="column" flex={1}>
           <FormContainer>
-            <FormText data-testid="amount-value">{`${tokenAmount.toString()} DAI`}</FormText>
+            <FormText data-testid="amount-value">
+              <MaxButton onClick={onMaxButtonClick}>Max</MaxButton>
+              {sale.tokenIn?.symbol}
+            </FormText>
             <FormInput
               aria-label="tokenAmount"
               id="tokenAmount"
               type="number"
-              value={Number(tokenAmount).toString()}
+              placeholder="0.0"
+              value={tokenInAmount}
               onChange={onTokenAmountChange}
             />
           </FormContainer>
-          <FormDescription>Enter the price you would pay per XYZ token.</FormDescription>
+          <FormDescription>
+            Enter the amount of {sale.tokenIn?.symbol} you would like to trade. You have {parsedTokenBalance}{' '}
+            {sale.tokenIn?.symbol}.
+          </FormDescription>
         </Flex>
       </FormGroup>
-      {isFixed && <FixedTerm>{`You'll get 1,000 ${sale.tokenOut?.symbol}`}</FixedTerm>}
-      <ApproveButton isDisabled={isDisabled} isFixed={isFixed} approve={approve}></ApproveButton>
-    </FormBody>
+      <TokenOutQuantityText>
+        {validationError ? (
+          <PurchaseErrorMessage>{validationError.message}</PurchaseErrorMessage>
+        ) : (
+          <SuccessMessage>
+            You’ll bid for {tokenInAmount && tokenOutPrice ? tokenInAmount / tokenOutPrice : 0} {sale.tokenOut?.symbol}
+          </SuccessMessage>
+        )}
+      </TokenOutQuantityText>
+      <LinkedButtons
+        buttons={[
+          {
+            title: `${approvalState == ApprovalState.APPROVED ? 'Approved' : `Approve ${sale.tokenIn.symbol}`} `,
+            id: 'approve',
+            onClick: approve,
+          },
+          {
+            title: `Place Bid`,
+            id: 'purchase',
+            typeSubmit: true,
+            onClick: () => {
+              {
+              }
+            },
+          },
+        ]}
+        active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
+        disabled={!!validationError}
+        loading={txPending || approvalState == ApprovalState.PENDING}
+      />
+    </FormFull>
   )
-}
-
-PlaceBidForm.defaultProps = {
-  isFixed: false,
 }

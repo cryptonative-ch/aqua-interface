@@ -15,7 +15,7 @@ import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globa
 
 interface UseReadBidEventFromBlockchainReturns {
   loading: boolean
-  bids: GetAllBidsBySaleId_fixedPriceSale_commitments[]
+  bids: any[]
   error: Error | null
 }
 
@@ -60,7 +60,7 @@ export function useReadBidEventFromBlockchain(saleId: string, saleType: string):
       console.log(commitment)
       dispatch(updateBidRequest(true))
       try {
-        dispatch(updateBidSuccess(commitment))
+        // dispatch(updateBidSuccess(commitment))
       } catch (error) {
         console.error(error)
         toast.error(t('error.updatePurchase'))

@@ -3,109 +3,112 @@ import { Action } from 'redux'
 import dayjs from 'dayjs'
 
 // interface
-import { GetAllBidsBySaleId_fairSale_bids } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import { GetAllBidsBySaleId_fixedPriceSale_commitments } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 
 // ACTION
 export enum ActionTypes {
-  INITIAL_BID_REQUEST = 'INITIAL_BID_REQUEST',
-  INITIAL_BID_SUCCESS = 'INITIAL_BID_SUCCESS',
-  INITIAL_BID_FAILURE = 'INITIAL_BID_FAILURE',
-  UPDATE_BID_REQUEST = 'UPDATE_BID_REQUEST',
-  UPDATE_BID_SUCCESS = 'UPDATE_BID_SUCCESS',
-  UPDATE_BID_FAILURE = 'UPDATE_BID_FAILURE',
+  INITIAL_COMMITMENT_REQUEST = 'INITIAL_COMMITMENT_REQUEST',
+  INITIAL_COMMITMENT_SUCCESS = 'INITIAL_COMMITMENT_SUCCESS',
+  INITIAL_COMMITMENT_FAILURE = 'INITIAL_COMMITMENT_FAILURE',
+  UPDATE_COMMITMENT_REQUEST = 'UPDATE_COMMITMENT_REQUEST',
+  UPDATE_COMMITMENT_SUCCESS = 'UPDATE_COMMITMENT_SUCCESS',
+  UPDATE_COMMITMENT_FAILURE = 'UPDATE_COMMITMENT_FAILURE',
 }
 
 // indexable type
-export interface BidsBySaleId {
+export interface CommitmentsBySaleId {
   // "ox223123nlda": {"lastupdated", "bids: []"}
   [saleId: string]: {
     updatedAt: number // UTC timestamp
-    bids: GetAllBidsBySaleId_fairSale_bids[] // bids
+    bids: GetAllBidsBySaleId_fixedPriceSale_commitments[] // bids
   }
 }
 
-export interface InitialBidRequestAction extends Action<ActionTypes.INITIAL_BID_REQUEST> {
+export interface InitialCommitmentRequestAction extends Action<ActionTypes.INITIAL_COMMITMENT_REQUEST> {
   payload: boolean
 }
 
-export interface InitialBidSuccessAction extends Action<ActionTypes.INITIAL_BID_SUCCESS> {
-  payload: BidsBySaleId
+export interface InitialCommitmentSuccessAction extends Action<ActionTypes.INITIAL_COMMITMENT_SUCCESS> {
+  payload: CommitmentsBySaleId
 }
 
-export interface InitialBidFailureAction extends Action<ActionTypes.INITIAL_BID_FAILURE> {
+export interface InitialCommitmentFailureAction extends Action<ActionTypes.INITIAL_COMMITMENT_FAILURE> {
   payload: Error
 }
 
-export interface UpdateBidRequestAction extends Action<ActionTypes.UPDATE_BID_REQUEST> {
+export interface UpdateCommitmentRequestAction extends Action<ActionTypes.UPDATE_COMMITMENT_REQUEST> {
   payload: boolean
 }
 
-export interface UpdateBidSuccessAction extends Action<ActionTypes.UPDATE_BID_SUCCESS> {
-  payload: GetAllBidsBySaleId_fairSale_bids
+export interface UpdateCommitmentSuccessAction extends Action<ActionTypes.UPDATE_COMMITMENT_SUCCESS> {
+  payload: GetAllBidsBySaleId_fixedPriceSale_commitments
 }
 
-export interface UpdateBidFailureAction extends Action<ActionTypes.UPDATE_BID_FAILURE> {
+export interface UpdateCommitmentFailureAction extends Action<ActionTypes.UPDATE_COMMITMENT_FAILURE> {
   payload: Error
 }
 
-export type BidActionTypes =
-  | InitialBidRequestAction
-  | InitialBidSuccessAction
-  | InitialBidFailureAction
-  | UpdateBidRequestAction
-  | UpdateBidSuccessAction
-  | UpdateBidFailureAction
+export type CommitmentActionTypes =
+  | InitialCommitmentRequestAction
+  | InitialCommitmentSuccessAction
+  | InitialCommitmentFailureAction
+  | UpdateCommitmentRequestAction
+  | UpdateCommitmentSuccessAction
+  | UpdateCommitmentFailureAction
 
 // initial fetch data from subgraph
-export const initialBidRequest = (payload: boolean) => ({
+export const initialCommitmentRequest = (payload: boolean) => ({
   payload,
-  type: ActionTypes.INITIAL_BID_REQUEST,
+  type: ActionTypes.INITIAL_COMMITMENT_REQUEST,
 })
 
-export const initialBidSuccess = (payload: BidsBySaleId) => ({
+export const initialCommitmentSuccess = (payload: CommitmentsBySaleId) => ({
   payload,
-  type: ActionTypes.INITIAL_BID_SUCCESS,
+  type: ActionTypes.INITIAL_COMMITMENT_SUCCESS,
 })
 
-export const initialBidFailure = (payload: Error) => ({
+export const initialCommitmentFailure = (payload: Error) => ({
   payload,
-  type: ActionTypes.INITIAL_BID_FAILURE,
+  type: ActionTypes.INITIAL_COMMITMENT_FAILURE,
 })
 
 // fetch data from chain
-export const updateBidRequest = (payload: boolean) => ({
+export const updateCommitmentRequest = (payload: boolean) => ({
   payload,
-  type: ActionTypes.UPDATE_BID_REQUEST,
+  type: ActionTypes.UPDATE_COMMITMENT_REQUEST,
 })
 
-export const updateBidSuccess = (payload: GetAllBidsBySaleId_fairSale_bids) => ({
+export const updateCommitmentSuccess = (payload: GetAllBidsBySaleId_fixedPriceSale_commitments) => ({
   payload,
-  type: ActionTypes.UPDATE_BID_SUCCESS,
+  type: ActionTypes.UPDATE_COMMITMENT_SUCCESS,
 })
 
-export const updateBidFailure = (payload: Error) => ({
+export const updateCommitmentFailure = (payload: Error) => ({
   payload,
-  type: ActionTypes.UPDATE_BID_FAILURE,
+  type: ActionTypes.UPDATE_COMMITMENT_FAILURE,
 })
 
 // State
-export interface BidsState {
+export interface CommitmentsState {
   isLoading: boolean
   error: Error | null
-  bidsBySaleId: BidsBySaleId
+  bidsBySaleId: CommitmentsBySaleId
 }
 
-export const defaultState: BidsState = {
+export const defaultState: CommitmentsState = {
   isLoading: true,
   error: null,
   bidsBySaleId: {},
 }
 
-const keyFinder = (object: BidsBySaleId) => {
+const keyFinder = (object: CommitmentsBySaleId) => {
   return String(Object.getOwnPropertyNames(object)[0])
 }
 
-const eventExists = (events: GetAllBidsBySaleId_fairSale_bids[], event: GetAllBidsBySaleId_fairSale_bids[]) => {
+const eventExists = (
+  events: GetAllBidsBySaleId_fixedPriceSale_commitments[],
+  event: GetAllBidsBySaleId_fixedPriceSale_commitments[]
+) => {
   return events.some(e => e.id === event[0].id)
 }
 
@@ -114,14 +117,14 @@ const eventExists = (events: GetAllBidsBySaleId_fairSale_bids[], event: GetAllBi
  * @param state
  * @param action @returns
  */
-export function reducer(state: BidsState = defaultState, action: BidActionTypes): BidsState {
+export function reducer(state: CommitmentsState = defaultState, action: CommitmentActionTypes): CommitmentsState {
   switch (action.type) {
-    case ActionTypes.INITIAL_BID_REQUEST:
+    case ActionTypes.INITIAL_COMMITMENT_REQUEST:
       return {
         ...state,
         isLoading: action.payload,
       }
-    case ActionTypes.INITIAL_BID_SUCCESS: {
+    case ActionTypes.INITIAL_COMMITMENT_SUCCESS: {
       // Extract the saleid
 
       // get bidsBySaleId from previous state
@@ -156,18 +159,18 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       }
     }
 
-    case ActionTypes.INITIAL_BID_FAILURE:
+    case ActionTypes.INITIAL_COMMITMENT_FAILURE:
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       }
-    case ActionTypes.UPDATE_BID_REQUEST:
+    case ActionTypes.UPDATE_COMMITMENT_REQUEST:
       return {
         ...state,
         isLoading: true,
       }
-    case ActionTypes.UPDATE_BID_SUCCESS: {
+    case ActionTypes.UPDATE_COMMITMENT_SUCCESS: {
       // create a cache timestamp
       const updatedAt = dayjs.utc().unix()
       // get bidsBySaleId from previous state
@@ -199,7 +202,7 @@ export function reducer(state: BidsState = defaultState, action: BidActionTypes)
       }
     }
 
-    case ActionTypes.UPDATE_BID_FAILURE:
+    case ActionTypes.UPDATE_COMMITMENT_FAILURE:
       return {
         ...state,
         isLoading: false,

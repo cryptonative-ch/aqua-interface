@@ -82,6 +82,10 @@ export const GET_ALL_BIDS_BY_SALE_ID = gql`
         id
         tokenInAmount
         tokenOutAmount
+        owner {
+          id
+          address
+        }
         sale {
           id
         }

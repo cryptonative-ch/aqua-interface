@@ -171,6 +171,12 @@ export const MenuIcon = styled.img({
   margin: '0',
 })
 
+export const LogoImage = styled.img({
+  width: '72px',
+  height: '24px',
+  margin: '2px 0 0 0',
+})
+
 export const LinkNoDecoration = styled.a({
   textDecoration: 'none !important',
 })

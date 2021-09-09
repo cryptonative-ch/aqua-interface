@@ -60,6 +60,15 @@ export interface GetAllBidsBySaleId_fixedPriceSale {
   commitments: GetAllBidsBySaleId_fixedPriceSale_commitments[] | null
 }
 
+export interface GetAllBidsBySaleId_fairSale_bids_owner {
+  __typename: 'FairSaleUser'
+  /**
+   * Time at which the User was registered is the ID
+   */
+  id: string
+  address: any
+}
+
 export interface GetAllBidsBySaleId_fairSale_bids_sale {
   __typename: 'FairSale'
   /**
@@ -79,6 +88,10 @@ export interface GetAllBidsBySaleId_fairSale_bids {
    * Number of tokens the investor wants to buy
    */
   tokenOutAmount: any
+  /**
+   * The owner of the Bid
+   */
+  owner: GetAllBidsBySaleId_fairSale_bids_owner
   /**
    * The FairSale the bid is associated with
    */

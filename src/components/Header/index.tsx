@@ -11,6 +11,7 @@ import { useWindowSize } from 'src/hooks/useWindowSize'
 // Svg
 import MenuImg from 'src/assets/svg/Menu-Icon.svg'
 import CloseImg from 'src/assets/svg/Close.svg'
+import Logo from 'src/assets/svg/Logo-Text.svg'
 
 // Internal
 import {
@@ -27,6 +28,7 @@ import {
   MenuBorder,
   ColumnWrapper,
   LinkNoDecoration,
+  LogoImage,
 } from 'src/components/Header/style'
 import { Web3ConnectionContext } from 'src/contexts'
 
@@ -179,7 +181,7 @@ export const Header: React.FC = () => {
         </MobileMenu>
         <Flex flexDirection="column" flex={1}>
           <LinkNoDecoration href="./">
-            <Title>Aqua</Title>
+            <LogoImage src={Logo} />
             <Description marginLeft="0">from DXdao</Description>
           </LinkNoDecoration>
         </Flex>
@@ -222,7 +224,7 @@ export const Header: React.FC = () => {
       <Wrapper padding="0 32px">
         <LinkNoDecoration href="./">
           <Row>
-            <Title>Aqua</Title>
+            <LogoImage src={Logo} />
             <Description>from DXdao</Description>
           </Row>
         </LinkNoDecoration>
