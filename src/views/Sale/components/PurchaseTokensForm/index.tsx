@@ -25,21 +25,11 @@ import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
-import { useBids } from 'src/hooks/useBids'
 import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
-import {
-  setup,
-  upgradeProxy,
-  wrap,
-  tokenApproval,
-  commitToken,
-  cpkCommitTokenParams,
-  UpgradeProxyParams,
-  checkPayable,
-} from 'src/CPK/helpers'
+import { upgradeProxy, wrap, tokenApproval, commitToken, cpkCommitTokenParams } from 'src/CPK/helpers'
 
 // Layouts
 import { Center } from 'src/layouts/Center'

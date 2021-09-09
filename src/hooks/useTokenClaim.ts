@@ -1,7 +1,7 @@
 // Externals
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { BigNumber, ContractReceipt, ContractTransaction } from 'ethers'
+import { ContractReceipt, ContractTransaction } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
@@ -112,7 +112,6 @@ export function useTokenClaim(
             })
           )
           await tx.transactionResponse?.wait(1)
-          console.log(tx)
           toast.success(t('success.claim'))
           return dispatch(
             setClaimStatus({

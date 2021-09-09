@@ -28,7 +28,7 @@ import {
 import { GET_ALL_BIDS_BY_SALE_ID } from 'src/subgraph/queries'
 
 // Blockchain websocket
-import { useNewCommitmentEventFromChain } from 'src/hooks/useNewBidEventFromChain'
+import { useNewBidEventFromChain, useNewCommitmentEventFromChain } from 'src/hooks/useNewBidEventFromChain'
 import { formatBigInt } from 'src/utils'
 
 interface ClearingPrice {
@@ -84,46 +84,12 @@ export function useBids(saleId: string, volume: number): UseBidsReturn {
   const { account, library, chainId } = useWeb3React()
   const { cpk } = useCPK(library, chainId)
 
-  // const { bids: allBids } = useNewBidEventFromChain(saleId)
-  // const bids = allBids.filter(bid => bid.owner.address.toLowerCase() === account?.toLowerCase()) || []
-  const userBids: GetAllBidsBySaleId_fairSale_bids[] = []
-
-  // Temporary mock data
-  const allBids: GetAllBidsBySaleId_fairSale_bids[] = [
-    {
-      __typename: 'FairSaleBid',
-      id: 'test',
-      owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
-      tokenInAmount: '657229100000000000000',
-      tokenOutAmount: '65229100000000000000',
-      sale: {
-        __typename: 'FairSale',
-        id: 'saleId',
-      },
-    },
-    {
-      __typename: 'FairSaleBid',
-      id: 'test',
-      owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
-      tokenInAmount: '257229100000000000000',
-      tokenOutAmount: '607229100000000000000',
-      sale: {
-        __typename: 'FairSale',
-        id: 'saleId',
-      },
-    },
-    {
-      __typename: 'FairSaleBid',
-      id: 'test',
-      owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
-      tokenInAmount: '657229100000000000000',
-      tokenOutAmount: '67229100000000000000',
-      sale: {
-        __typename: 'FairSale',
-        id: 'saleId',
-      },
-    },
-  ]
+  const { bids: allBids } = useNewBidEventFromChain(saleId)
+  const userBids =
+    allBids.filter(
+      bid =>
+        bid.owner.address.toLowerCase() === account?.toLowerCase() || bid.owner.address.toLowerCase() === cpk?.address
+    ) || []
 
   allBids.sort((a, b) => formatBigInt(a.tokenInAmount) - formatBigInt(b.tokenInAmount))
 

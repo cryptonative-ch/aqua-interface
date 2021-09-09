@@ -1,6 +1,6 @@
 // External
 import { useState, useEffect, useCallback } from 'react'
-import CPK, { EthersAdapter, TransactionResult } from 'dxdao-contract-proxy-kit'
+import CPK, { EthersAdapter } from 'dxdao-contract-proxy-kit'
 import { ethers, providers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { Transaction } from 'dxdao-contract-proxy-kit'

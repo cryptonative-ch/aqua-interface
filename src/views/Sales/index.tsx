@@ -114,7 +114,6 @@ export function SalesView() {
       return unsortedSale.sort((a: SummarySales, b: SummarySales) => b.sale.endDate - a.sale.endDate)
     }
   }
-  console.log(loading)
 
   useEffect(() => {
     setFilteredUserSales(

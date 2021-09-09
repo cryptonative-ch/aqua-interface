@@ -78,7 +78,6 @@ export function FixedPriceSaleView() {
   const { error, loading, sale } = useFixedPriceSaleQuery(params.saleId)
   const theme = useTheme()
   const { bids } = useCommitments(params.saleId)
-  console.log(bids)
 
   const saleDetails = useIpfsFile(sale?.launchedTemplate?.metadataContentHash, true) as SaleDetails
   const [t] = useTranslation()

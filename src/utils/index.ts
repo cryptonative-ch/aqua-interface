@@ -10,7 +10,10 @@ import { Sale, SaleType, FairSale, FixedPriceSale, SaleDetails } from 'src/inter
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumberish, BigNumber } from 'ethers'
-import { GetAllBidsBySaleId_fixedPriceSale } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import {
+  GetAllBidsBySaleId_fairSale_bids,
+  GetAllBidsBySaleId_fixedPriceSale,
+} from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
 /**
@@ -313,3 +316,40 @@ export const fixRounding = (value: number, precision: number): number => {
 export const convertToBuyerPrice = (price: number): number => {
   return 1 / price
 }
+
+// Temporary mock data
+export const tempBids: GetAllBidsBySaleId_fairSale_bids[] = [
+  {
+    __typename: 'FairSaleBid',
+    id: 'test',
+    owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
+    tokenInAmount: '657229100000000000000',
+    tokenOutAmount: '65229100000000000000',
+    sale: {
+      __typename: 'FairSale',
+      id: 'saleId',
+    },
+  },
+  {
+    __typename: 'FairSaleBid',
+    id: 'test',
+    owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
+    tokenInAmount: '257229100000000000000',
+    tokenOutAmount: '607229100000000000000',
+    sale: {
+      __typename: 'FairSale',
+      id: 'saleId',
+    },
+  },
+  {
+    __typename: 'FairSaleBid',
+    id: 'test',
+    owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
+    tokenInAmount: '657229100000000000000',
+    tokenOutAmount: '67229100000000000000',
+    sale: {
+      __typename: 'FairSale',
+      id: 'saleId',
+    },
+  },
+]
