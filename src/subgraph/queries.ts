@@ -70,20 +70,5 @@ export const GET_ALL_BIDS_BY_SALE_ID = gql`
         }
       }
     }
-    fairSale(id: $saleId) {
-      id
-      bids {
-        id
-        tokenInAmount
-        tokenOutAmount
-        owner {
-          id
-          address
-        }
-        sale {
-          id
-        }
-      }
-    }
   }
 `
