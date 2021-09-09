@@ -18,7 +18,7 @@ import { ErrorMessage } from 'src/components/ErrorMessage'
 import { Button } from 'src/components/Button'
 
 // Utils
-import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils'
+import { convertToBuyerPrice, fixRounding, formatBigInt, isNativeToken } from 'src/utils'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
@@ -29,7 +29,7 @@ import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
-import { upgradeProxy, wrap, tokenApproval, commitToken, cpkCommitTokenParams } from 'src/CPK'
+import { upgradeProxy, wrap, tokenApproval, commitToken, purchaseTokensCPKParams } from 'src/CPK'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -132,8 +132,6 @@ const w: any = window
 w.utils = utils
 
 export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps) => {
-  const WXDAI_ADDRESS = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
-  const WETH_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
   const [t] = useTranslation()
   const [txPending, setTxPending] = useState(false)
   const { account, library, chainId } = useWeb3React()
@@ -156,18 +154,18 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const { cpk } = useCPK(library, chainId)
   const { CPKpipe } = useCPKexecTransactions()
 
-  const isNativeToken = (tokenAddress: string) => {
-    if (
-      tokenAddress.toLowerCase() === WXDAI_ADDRESS.toLowerCase() ||
-      tokenAddress.toLowerCase() === WETH_ADDRESS.toLowerCase()
-    ) {
-      return true
+  const purchaseTokensCPK = (params: purchaseTokensCPKParams) => {
+    try {
+      setTxPending(true)
+      const { transactionResult } = CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
+      setTxPending(false)
+      toast.success(t('success.purchase'))
+      return transactionResult
+    } catch (error) {
+      setTxPending(false)
+      console.error(error)
+      toast.error(t('errors.purchase'))
     }
-    return false
-  }
-
-  const cpkCommitToken = (params: cpkCommitTokenParams) => {
-    return CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
   }
 
   const getMaxPurchase = () => {
@@ -255,6 +253,19 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     if (!purchaseValue || !tokenQuantity) {
       return console.error('purchase amount == null')
     }
+    if (isNativeToken(sale?.tokenIn.id as string, chainId as number) && cpk && account && chainId && purchaseValue) {
+      const value = utils.parseEther(purchaseValue.toString())
+      const params = {
+        cpk,
+        tokenAddress: sale?.tokenIn.id as string,
+        saleAddress: sale?.id as string,
+        account: account as string,
+        chainId: chainId as number,
+        library,
+        purchaseValue: value,
+      }
+      return purchaseTokensCPK(params)
+    }
 
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
 
@@ -284,21 +295,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
-      if (isNativeToken(sale?.tokenIn.id as string) && cpk && account && chainId && purchaseValue) {
-        const value = utils.parseEther(purchaseValue.toString())
-        const params = {
-          cpk,
-          tokenAddress: sale?.tokenIn.id as string,
-          saleAddress: sale?.id as string,
-          account: account as string,
-          chainId: chainId as number,
-          library,
-          purchaseValue: value,
-        }
-        //checkPayable(cpk, account, library)
-        await cpkCommitToken(params)
-        return
-      }
 
       if (!sale || !purchaseValue || !(approvalState === ApprovalState.APPROVED)) return null
 
@@ -402,7 +398,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           <SuccessMessage>{`You get ${tokenQuantity} ${sale.tokenOut.symbol}`}</SuccessMessage>
         )}
       </FormGroup>
-      {isNativeToken(sale.tokenIn.id) ? (
+      {isNativeToken(sale.tokenIn.id, chainId as number) ? (
         <Button>{t('buttons.purchase')}</Button>
       ) : (
         <LinkedButtons

@@ -358,3 +358,10 @@ export const tempBids: GetAllBidsBySaleId_fairSale_bids[] = [
     },
   },
 ]
+
+export const isNativeToken = (tokenAddress: string, chainId: number) => {
+  if (tokenAddress.toLowerCase() === SUPPORTED_CHAINS[chainId as CHAIN_ID].parameters.ERC20.address.toLowerCase()) {
+    return true
+  }
+  return false
+}

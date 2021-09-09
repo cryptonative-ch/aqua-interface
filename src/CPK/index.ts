@@ -27,7 +27,7 @@ export interface TransferERC20Params {
   signer: providers.JsonRpcSigner
   cpk: CPK
 }
-export interface cpkCommitTokenParams extends SetupParams {
+export interface purchaseTokensCPKParams extends SetupParams {
   tokenAddress: string
   saleAddress: string
 }
