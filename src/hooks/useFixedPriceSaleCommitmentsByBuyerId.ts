@@ -60,24 +60,17 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
       return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
     })
 
-    const unixDateNow = dayjs(Date.now()).unix()
-    sales
-      .filter(
-        purchase =>
-          BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minRaise) &&
-          unixDateNow >= purchase.sale.endDate
+    sales.map(purchase =>
+      dispatch(
+        setClaimStatus({
+          sale: purchase.sale,
+          claimToken: purchase.status as any,
+          error: null,
+          transaction: null,
+          amount: purchase.amount,
+        })
       )
-      .map(purchase =>
-        dispatch(
-          setClaimStatus({
-            sale: purchase.sale,
-            claimToken: purchase.status as any,
-            error: null,
-            transaction: null,
-            amount: purchase.amount,
-          })
-        )
-      )
+    )
   }
 
   return {
