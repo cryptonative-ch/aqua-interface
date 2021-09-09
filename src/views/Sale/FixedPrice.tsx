@@ -239,10 +239,14 @@ export function FixedPriceSaleView() {
                   isFixed={true}
                   bids={
                     isSaleClosed(sale as FIX_LATER)
-                      ? (aggregatePurchases(bids, {
-                          userAddress: account as string,
-                          cpkAddress: cpk?.address as string,
-                        }) as any)
+                      ? (aggregatePurchases(
+                          bids,
+                          {
+                            userAddress: account as string,
+                            cpkAddress: cpk?.address as string,
+                          },
+                          chainId as number
+                        ) as any)
                       : (bids as any)
                   }
                 />

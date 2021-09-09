@@ -31,6 +31,12 @@ export const SUPPORTED_CHAINS = {
     parameters: {
       chainId: '0x4',
       chainName: 'Ethereum',
+      ERC20: {
+        name: 'Wrapped Ethereum',
+        symbol: 'WETH',
+        decimals: 18,
+        address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      },
       nativeCurrency: {
         name: 'Ethereum',
         symbol: 'ETH',
@@ -59,6 +65,12 @@ export const SUPPORTED_CHAINS = {
     parameters: {
       chainId: '0x64',
       chainName: 'xDai',
+      ERC20: {
+        name: 'Wrapped xdai',
+        symbol: 'WXDAI',
+        decimals: 18,
+        address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+      },
       nativeCurrency: {
         name: 'xDai',
         symbol: 'xDai',

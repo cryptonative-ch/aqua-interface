@@ -91,6 +91,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResul
       return aggregatePurchases(
         groupBy[purchases],
         { userAddress: account! as string, cpkAddress: cpk?.address as string },
+        chainId as number,
         groupBy[purchases][0].sale
       )
     })

@@ -16,6 +16,9 @@ import {
 } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
+//constants
+import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
+
 /**
  *
  * account is not optional
@@ -64,17 +67,19 @@ export const aggregatePurchases = (
     userAddress: string
     cpkAddress: string
   },
+  chainId: number,
   sale?: any
 ) => {
-  const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'.toLowerCase()
-  const WXDAI = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'.toLowerCase()
   const reduceTotalAmount = bids.reduce((accumulator: BigNumber, purchases: any) => {
     return BigNumber.from(accumulator).add(purchases.amount)
   }, BigNumber.from(0))
 
   return {
     user: {
-      address: [WETH, WXDAI].includes(sale.tokenIn.id.toLowerCase()) ? accounts.cpkAddress : accounts.userAddress,
+      address:
+        SUPPORTED_CHAINS[chainId as CHAIN_ID].parameters.ERC20.address.toLowerCase() === sale?.tokenIn.id.toLowerCase()
+          ? accounts.cpkAddress
+          : accounts.userAddress,
     },
     amount: reduceTotalAmount,
     status: bids.length > 0 ? bids[0].status : undefined,
