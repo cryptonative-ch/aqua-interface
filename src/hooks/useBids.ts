@@ -88,7 +88,8 @@ export function useBids(saleId: string, volume: number): UseBidsReturn {
   const userBids =
     allBids.filter(
       bid =>
-        bid.owner.address.toLowerCase() === account?.toLowerCase() || bid.owner.address.toLowerCase() === cpk?.address
+        bid.owner.address.toLowerCase() === account?.toLowerCase() ||
+        bid.owner.address.toLowerCase() === cpk?.address?.toLowerCase()
     ) || []
 
   allBids.sort((a, b) => formatBigInt(a.tokenInAmount) - formatBigInt(b.tokenInAmount))
@@ -150,7 +151,8 @@ export function useCommitments(saleId: string): UseCommitmentsReturn {
   const bids =
     allBids?.filter(
       bid =>
-        bid.user.address.toLowerCase() === account?.toLowerCase() || bid.user.address.toLowerCase() === cpk?.address
+        bid.user.address.toLowerCase() === account?.toLowerCase() ||
+        bid.user.address.toLowerCase() === cpk?.address?.toLowerCase()
     ) || []
 
   const { data, ...rest } = useQuery<GetAllBidsBySaleId, GetAllBidsBySaleIdVariables>(GET_ALL_BIDS_BY_SALE_ID, {
