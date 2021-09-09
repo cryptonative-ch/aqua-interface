@@ -1,7 +1,6 @@
 // External
 import { QueryResult, useQuery } from '@apollo/client'
 import { useDispatch } from 'react-redux'
-import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
 
 // Query
