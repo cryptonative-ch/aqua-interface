@@ -154,20 +154,20 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const { cpk } = useCPK(library, chainId)
   const { CPKpipe } = useCPKexecTransactions()
 
-  const purchaseTokensCPK = (params: purchaseTokensCPKParams) => {
+  const purchaseTokensCPK = async (params: purchaseTokensCPKParams) => {
     try {
       setTxPending(true)
-      const { transactionResult } = CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
+      const { transactionResult } = await CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
       if (transactionResult) {
         console.log('transaction Result: ', +transactionResult)
-        transactionResult?.transactionResponse.wait(1)
+        transactionResult?.wait(1)
         setTxPending(false)
         return toast.success(t('success.purchase'))
       }
     } catch (error) {
       setTxPending(false)
       console.error(error)
-      toast.error(t('errors.purchase'))
+      return toast.error(t('errors.purchase'))
     }
   }
 
