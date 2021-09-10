@@ -158,9 +158,12 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     try {
       setTxPending(true)
       const { transactionResult } = CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
-      setTxPending(false)
-      toast.success(t('success.purchase'))
-      return transactionResult
+      if (transactionResult) {
+        console.log('transaction Result: ', +transactionResult)
+        transactionResult?.transactionResponse.wait(1)
+        setTxPending(false)
+        return toast.success(t('success.purchase'))
+      }
     } catch (error) {
       setTxPending(false)
       console.error(error)
@@ -286,7 +289,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       .then(() => {
         setTxPending(false)
       })
-  }, [account, library, chainId, sale, tokenQuantity, purchaseValue, t])
+  }, [account, library, chainId, sale, tokenQuantity, purchaseValue, t, cpk])
 
   /**
    * Handles the form submission
@@ -296,7 +299,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      if (!sale || !purchaseValue || !(approvalState === ApprovalState.APPROVED)) return null
+      if (!sale || !purchaseValue || (!(approvalState === ApprovalState.APPROVED) && !cpk)) return null
 
       if (sale.minRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
@@ -399,7 +402,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         )}
       </FormGroup>
       {isNativeToken(sale.tokenIn.id, chainId as number) ? (
-        <Button>{t('buttons.purchase')}</Button>
+        <Button disabled={!!validationError}>{t('buttons.purchase') + ' ' + sale.tokenOut.symbol}</Button>
       ) : (
         <LinkedButtons
           buttons={[

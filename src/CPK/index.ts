@@ -33,10 +33,12 @@ export interface purchaseTokensCPKParams extends SetupParams {
 }
 export interface SetupParams {
   library: providers.Web3Provider
+  account: string
 }
 export interface TransactionOptions {
   value?: BigNumberish
   gas?: number
+  from: string
 }
 export interface ContractInstanceParams {
   contractAddress: string
@@ -174,12 +176,12 @@ export const upgradeProxy = async (params: UpgradeProxyParams) => {
 }
 
 export const setup = async (params: SetupParams) => {
-  const { library } = params
+  const { library, account } = params
   // cpk empty transaction array
   const transactions: Transaction[] = []
 
   // cpk empty transaction options
-  const overrides: TransactionOptions = {}
+  const overrides: TransactionOptions = { from: account }
 
   const signer = library.getSigner()
 
