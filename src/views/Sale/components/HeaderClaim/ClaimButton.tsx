@@ -40,7 +40,9 @@ interface HeaderClaimProps {
 
 export function ClaimButton({ sale }: HeaderClaimProps) {
   const [t] = useTranslation()
-  const [isSaleStatusClosed, setIsSaleStatusClosed] = useState<boolean>(sale.status === SaleStatus.CLOSED)
+  const [isSaleStatusClosed, setIsSaleStatusClosed] = useState<boolean>(
+    sale.status === SaleStatus.CLOSED || sale.status === SaleStatus.SETTLED
+  )
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
   const { claim, claimTokens, closeSale } = useTokenClaim(sale)
   const threshold = BigNumber.from(sale.minRaise)

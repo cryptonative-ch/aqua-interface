@@ -1,6 +1,7 @@
 // External
 import { QueryResult, useQuery } from '@apollo/client'
 import { useDispatch } from 'react-redux'
+import dayjs from 'dayjs'
 import { BigNumber } from 'ethers'
 
 // Query
@@ -59,17 +60,20 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
       return aggregatePurchases(groupBy[purchases], buyerId, groupBy[purchases][0].sale)
     })
 
-    sales.map(purchase =>
-      dispatch(
-        setClaimStatus({
-          sale: purchase.sale,
-          claimToken: purchase.status as any,
-          error: null,
-          transaction: null,
-          amount: purchase.amount,
-        })
+    const unixDateNow = dayjs(Date.now()).unix()
+    sales
+      .filter(purchase => unixDateNow >= purchase.sale.endDate)
+      .map(purchase =>
+        dispatch(
+          setClaimStatus({
+            sale: purchase.sale,
+            claimToken: purchase.status as any,
+            error: null,
+            transaction: null,
+            amount: purchase.amount,
+          })
+        )
       )
-    )
   }
 
   return {
