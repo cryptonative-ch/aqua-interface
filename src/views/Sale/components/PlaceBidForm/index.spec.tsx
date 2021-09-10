@@ -30,7 +30,7 @@ dayjs.extend(relativeTime)
 dayjs.extend(durationTime)
 
 describe('PlaceBidForm', () => {
-  test('should display texts', () => {
+  test.skip('should display texts', () => {
     i18n.init({
       fallbackLng: 'en',
       react: {
