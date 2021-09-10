@@ -6,7 +6,7 @@ import { providers, BigNumberish, ethers, BytesLike } from 'ethers'
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
 
 // contract Interfaces
-import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory } from 'src/contracts'
+import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory, ERC20 } from 'src/contracts'
 
 /**
  * interfaces
@@ -21,11 +21,11 @@ export interface WithdrawCommitmentParams {
 }
 export interface TransferERC20Params {
   account: string
-  saleTokenOutAddress: string
+  tokenAddress: string
   transactions: Transaction[]
   saleAddress: string
-  signer: providers.JsonRpcSigner
-  cpk: CPK
+  erc20: ERC20
+  purchaseValue: BigNumberish
 }
 export interface purchaseTokensCPKParams extends SetupParams {
   tokenAddress: string
@@ -77,6 +77,7 @@ export interface tokenApprovalParams {
   saleAddress: string
   purchaseValue: BigNumberish
   signer: providers.JsonRpcSigner
+  cpk: CPK | null
 }
 
 /**
@@ -129,14 +130,18 @@ export const wrap = async (params: WrapParams) => {
 }
 
 export const tokenApproval = async (params: tokenApprovalParams) => {
-  const { transactions, tokenAddress, purchaseValue, saleAddress, signer } = params
-  const erc20Interface = ERC20__factory.connect(tokenAddress, signer).interface
+  const { transactions, tokenAddress, saleAddress, signer, cpk } = params
+  let { purchaseValue } = params
+  const erc20 = ERC20__factory.connect(tokenAddress, signer)
+  if (!purchaseValue) {
+    purchaseValue = await erc20.balanceOf(cpk?.address as string)
+  }
   transactions.push({
     to: tokenAddress,
-    data: erc20Interface.encodeFunctionData('approve', [saleAddress, purchaseValue]),
+    data: erc20.interface.encodeFunctionData('approve', [saleAddress, purchaseValue]),
   })
 
-  return params
+  return { ...params, erc20, purchaseValue }
 }
 
 export const commitToken = async (params: tokenApprovalParams) => {
@@ -202,12 +207,10 @@ export const withdrawCommitment = (params: WithdrawCommitmentParams) => {
 }
 
 export const transferERC20 = async (params: TransferERC20Params) => {
-  const { transactions, saleTokenOutAddress, signer, cpk, account } = params
-  const erc20Token = ERC20__factory.connect(saleTokenOutAddress, signer)
-  const balance = await erc20Token.balanceOf(cpk.address as string)
+  const { transactions, tokenAddress, account, erc20, purchaseValue } = params
   transactions.push({
-    to: saleTokenOutAddress,
-    data: erc20Token.encodeFunctionData('transfer', [account as string, balance]),
+    to: tokenAddress,
+    data: erc20.interface.encodeFunctionData('transfer', [account as string, purchaseValue]),
   })
 
   return params

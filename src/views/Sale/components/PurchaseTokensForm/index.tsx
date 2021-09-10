@@ -159,7 +159,6 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       setTxPending(true)
       const { transactionResult } = await CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
       if (transactionResult) {
-        console.log('transaction Result: ', +transactionResult)
         transactionResult?.wait(1)
         setTxPending(false)
         return toast.success(t('success.purchase'))

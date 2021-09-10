@@ -19,6 +19,7 @@ import { setClaimStatus } from 'src/redux/claims'
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ProviderRpcError } from 'src/interfaces/Error'
 import { tokenApproval, transferERC20, withdrawCommitment } from 'src/CPK'
+import { SUPPORTED_CHAINS } from 'src/constants'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -83,14 +84,14 @@ export function useTokenClaim(
       const params = {
         saleAddress: saleId,
         cpk,
-        saleTokenOutAddress: sale.tokenOut.id,
         account,
         library,
         chainId,
+        tokenAddress: sale.tokenOut.id,
       }
 
       try {
-        const { transactionResult, loading } = CPKpipe(withdrawCommitment, tokenApproval, transferERC20)(params)
+        const { transactionResult, loading } = await CPKpipe(withdrawCommitment, tokenApproval, transferERC20)(params)
         if (loading)
           dispatch(
             setClaimStatus({
@@ -108,7 +109,7 @@ export function useTokenClaim(
             sale: sale,
             claimToken: ClaimState.CLAIMED,
             error: null,
-            transaction: transactionResult?.transactionResponse as any,
+            transaction: transactionResult as any,
             amount: amount,
           })
         )
