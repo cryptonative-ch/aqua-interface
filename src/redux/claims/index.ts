@@ -1,13 +1,13 @@
 // External
 import { BigNumberish, ContractReceipt } from 'ethers'
 
-// Interface
+// redux
 import { Action } from 'redux'
 
 // interface
-
 import { ClaimState } from 'src/hooks/useTokenClaim'
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
+import { TransactionResult } from 'src/hooks/useCPK'
 
 export enum ActionTypes {
   SET_CLAIM_STATUS = 'SET_CLAIM_STATUS',
@@ -16,7 +16,7 @@ export enum ActionTypes {
 export interface ClaimStatePerSale {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   claimToken: ClaimState
-  transaction: ContractReceipt | null
+  transaction: TransactionResult | null
   error: Error | null
   amount: BigNumberish | null
 }

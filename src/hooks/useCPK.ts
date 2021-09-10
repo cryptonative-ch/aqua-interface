@@ -1,7 +1,7 @@
 // External
 import { useState, useEffect, useCallback } from 'react'
 import CPK, { EthersAdapter } from 'dxdao-contract-proxy-kit'
-import { ethers, providers } from 'ethers'
+import { ContractReceipt, ethers, providers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { Transaction } from 'dxdao-contract-proxy-kit'
 
@@ -11,6 +11,7 @@ import { setup, getTargetSafeImplementation, TransactionOptions } from 'src/CPK'
 
 //interfaces
 import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
+import { TransactionReceipt } from '@ethersproject/abstract-provider'
 
 /**
  *
@@ -29,8 +30,13 @@ interface CPKexecuteTransactionParams {
   overrides: TransactionOptions
 }
 
+export interface TransactionResult extends Partial<ContractReceipt> {
+  hash?: string
+  safeTxHash?: string
+}
+
 interface CPKexecutetransactionReturns {
-  transactionResult: Record<string, any> | null
+  transactionResult: TransactionResult | null
   loading: boolean
   error: null | Error
 }
@@ -86,6 +92,7 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
       try {
         setLoading(true)
         const { transactionResponse } = await cpk.execTransactions(transactions, overrides as any)
+        console.log(transactionResponse)
 
         if (transactionResponse) {
           await transactionResponse.wait(1)

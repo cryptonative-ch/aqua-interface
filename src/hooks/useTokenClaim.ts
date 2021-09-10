@@ -19,7 +19,7 @@ import { setClaimStatus } from 'src/redux/claims'
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ProviderRpcError } from 'src/interfaces/Error'
 import { tokenApproval, transferERC20, withdrawCommitment } from 'src/CPK'
-import { SUPPORTED_CHAINS } from 'src/constants'
+import { TransactionResult } from 'src/hooks/useCPK'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -33,7 +33,7 @@ interface useTokenClaimReturns {
   claim: ClaimState | null
   claimTokens: (saleId: string) => void
   closeSale: (saleId: string, handleClose: (closed: boolean) => void) => void
-  transaction: ContractReceipt | null
+  transaction: TransactionResult | null
   error: Error | null
 }
 
@@ -109,7 +109,7 @@ export function useTokenClaim(
             sale: sale,
             claimToken: ClaimState.CLAIMED,
             error: null,
-            transaction: transactionResult as any,
+            transaction: transactionResult,
             amount: amount,
           })
         )

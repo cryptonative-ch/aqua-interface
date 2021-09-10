@@ -55,7 +55,7 @@ const Icon = styled.img<SpaceProps>(
 interface SuccessfulClaimProps {
   sale: GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale
   amount: BigNumberish
-  tx: string
+  tx: string | undefined
 }
 
 export const SuccessfulClaim = ({ amount, sale, tx }: SuccessfulClaimProps) => {
@@ -75,10 +75,12 @@ export const SuccessfulClaim = ({ amount, sale, tx }: SuccessfulClaimProps) => {
           <CardText color="grey">
             {`${formatBigInt(amount, sale.tokenOut.decimals)} ${sale.tokenOut.symbol} has been sent to your address.`}
           </CardText>
-          <Link margin="24px 0 16px 0" href={blockExplorerUrl}>
-            See this transaction on block explorer
-            <StyledSVG src={link} color="#304FFE" />
-          </Link>
+          {tx ? (
+            <Link margin="24px 0 16px 0" href={blockExplorerUrl}>
+              See this transaction on block explorer
+              <StyledSVG src={link} color="#304FFE" />
+            </Link>
+          ) : null}
           <Button variant="secondary" width="90%">
             {t('buttons.done')}
           </Button>
