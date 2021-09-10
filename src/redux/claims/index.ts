@@ -1,5 +1,5 @@
 // External
-import { BigNumberish, ContractReceipt } from 'ethers'
+import { BigNumberish } from 'ethers'
 
 // redux
 import { Action } from 'redux'

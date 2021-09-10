@@ -11,7 +11,6 @@ import { setup, getTargetSafeImplementation, TransactionOptions } from 'src/CPK'
 
 //interfaces
 import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
-import { TransactionReceipt } from '@ethersproject/abstract-provider'
 
 /**
  *
@@ -92,7 +91,6 @@ export function useCPKexecTransactions(): useCPKexecTransactionsReturns {
       try {
         setLoading(true)
         const { transactionResponse } = await cpk.execTransactions(transactions, overrides as any)
-        console.log(transactionResponse)
 
         if (transactionResponse) {
           await transactionResponse.wait(1)

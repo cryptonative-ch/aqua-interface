@@ -1,6 +1,6 @@
 // External
 import CPK, { Transaction } from 'dxdao-contract-proxy-kit'
-import { providers, BigNumberish, ethers, BytesLike } from 'ethers'
+import { providers, BigNumberish } from 'ethers'
 
 // Constants
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
