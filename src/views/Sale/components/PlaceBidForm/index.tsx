@@ -14,7 +14,7 @@ import { NotFoundView } from 'src/views/NotFound'
 // Interfaces
 import { Flex } from 'src/components/Flex'
 import { useWeb3React } from '@web3-react/core'
-import { FairSale__factory } from '@dxdao/aqua'
+import { FairSale__factory } from 'src/contracts'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'

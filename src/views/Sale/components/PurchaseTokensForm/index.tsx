@@ -30,7 +30,7 @@ import { aggregatePurchases } from 'src/utils'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
-import { FixedPriceSale__factory } from '@dxdao/aqua'
+import { FixedPriceSale__factory } from 'src/contracts'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
 import { useSelector } from 'react-redux'
