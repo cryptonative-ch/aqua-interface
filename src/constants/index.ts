@@ -41,7 +41,7 @@ export const SUPPORTED_CHAINS = {
       saleLauncher: '0xC28c613f0f0b85C745AC58BA78071816Cb52B43A',
       templateLauncher: '0x58c67b46c47f69d63aa09d5f822ede377c479d5f',
     },
-    subgraph: 'https://api.thegraph.com/subgraphs/name/adamazad/aqua-xdai-next',
+    subgraph: 'https://api.thegraph.com/subgraphs/name/dxgraphs/aqua-xdai',
     parameters: {
       chainId: '0x64',
       chainName: 'xDai',
