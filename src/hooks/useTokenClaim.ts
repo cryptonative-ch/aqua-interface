@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 // contracts
-import { FixedPriceSale__factory } from 'src/contracts'
+import { FixedPriceSale__factory } from '@dxdao/aqua'
 
 //redux
 import { setClaimStatus } from 'src/redux/claims'
@@ -27,6 +27,7 @@ export enum ClaimState {
   FAILED = 'FAILED',
   CLAIMED = 'CLAIMED',
   PROCESSED = 'PROCESSED',
+  RELEASED = 'RELEASED',
 }
 
 interface useTokenClaimReturns {

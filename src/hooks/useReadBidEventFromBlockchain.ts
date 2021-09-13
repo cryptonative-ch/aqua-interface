@@ -3,7 +3,7 @@ import { useCallback, useState, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
-import { FixedPriceSale__factory, FairSale__factory } from 'src/contracts'
+import { FixedPriceSale__factory, FairSale__factory } from '@dxdao/aqua'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 

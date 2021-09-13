@@ -61,7 +61,7 @@ export const SUPPORTED_CHAINS = {
       fallbackHandlerAddress: '0x602DF5F404f86469459D5e604CDa43A2cdFb7580',
       targetSafeImplementation: '0x9C75A217AEA76663a9A37687606f099945eb0742',
     },
-    subgraph: 'https://api.thegraph.com/subgraphs/name/adamazad/aqua-xdai-next',
+    subgraph: 'https://api.thegraph.com/subgraphs/name/dxgraphs/aqua-xdai',
     parameters: {
       chainId: '0x64',
       chainName: 'xDai',

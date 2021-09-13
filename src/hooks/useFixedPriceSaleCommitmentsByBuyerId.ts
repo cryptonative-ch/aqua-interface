@@ -53,11 +53,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(): UseSalesQueryResul
   const setInitialClaimStatus = useCallback(() => {
     const unixDateNow = dayjs(Date.now()).unix()
     sales
-      .filter(
-        purchase =>
-          BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minRaise) &&
-          unixDateNow >= purchase.sale.endDate
-      )
+      .filter(purchase => unixDateNow >= purchase.sale.endDate)
       .map(purchase =>
         dispatch(
           setClaimStatus({

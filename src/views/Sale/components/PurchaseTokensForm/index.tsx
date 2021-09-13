@@ -33,7 +33,7 @@ import { upgradeProxy, wrap, tokenApproval, commitToken, purchaseTokensCPKParams
 
 // Layouts
 import { Center } from 'src/layouts/Center'
-import { FixedPriceSale__factory } from 'src/contracts'
+import { FixedPriceSale__factory } from '@dxdao/aqua'
 import { getProviderOrSigner } from 'src/utils'
 import { LinkedButtons } from 'src/components/LinkedButtons'
 import { useSelector } from 'react-redux'

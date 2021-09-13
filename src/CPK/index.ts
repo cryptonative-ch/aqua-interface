@@ -6,7 +6,8 @@ import { providers, BigNumberish } from 'ethers'
 import { SUPPORTED_CHAINS, CHAIN_ID, SUPPORTED_CHAIN_IDS } from 'src/constants'
 
 // contract Interfaces
-import { ERC20__factory, GnosisSafe__factory, FixedPriceSale__factory, ERC20 } from 'src/contracts'
+import { FixedPriceSale__factory } from '@dxdao/aqua'
+import { ERC20__factory, GnosisSafe__factory, ERC20 } from 'src/contracts'
 
 /**
  * interfaces

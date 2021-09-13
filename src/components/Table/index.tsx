@@ -79,7 +79,7 @@ const TableRows = <T extends StatusWise>({ purchases, color, title, isClosed, is
         })}
       {isClosed ? (
         <Flex flex={isMobile ? 1 : 2.5} justifyContent="center">
-          {purchases.status === ClaimState.CLAIMED || purchases.status === FixedPriceSaleCommitmentStatus.PROCESSED ? (
+          {purchases.status === ClaimState.CLAIMED || purchases.status === FixedPriceSaleCommitmentStatus.PROCESSED || purchases.status === ClaimState.RELEASED? (
             <>
               <IconImg src={Tick} color="#4B9E98" margin={isMobile ? '4px 32px 4px 0px' : '4px 4px 4px 8px'} />
               {!isMobile && (
