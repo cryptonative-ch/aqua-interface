@@ -19,7 +19,6 @@ import { useSaleQuery } from 'src/hooks/useSaleQuery'
 import { NotFoundView } from 'src/views/NotFound'
 // Sub Views
 import { FixedPriceSaleView } from 'src/views/Sale/FixedPrice'
-import { FairSaleView } from 'src/views/Sale/FairSale'
 
 interface SaleViewParams {
   saleId: string
@@ -53,9 +52,6 @@ export function SaleView() {
   // Pass the sale down to the appropriate
   if (sale.__typename === 'FixedPriceSale') {
     return <FixedPriceSaleView />
-  }
-  if (sale.__typename === 'FairSale') {
-    return <FairSaleView />
   }
   // Sale not found
   return <NotFoundView />

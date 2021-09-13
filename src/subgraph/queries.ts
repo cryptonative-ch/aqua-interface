@@ -12,9 +12,6 @@ export const GET_ALL_SALES = gql`
     fixedPriceSales {
       ...fixedPriceSaleResults
     }
-    fairSales {
-      ...fairSaleResults
-    }
   }
   ${FIXED_PRICE_SALE_FIELDS}
   ${FAIR_PRICE_SALE_FIELDS}
@@ -24,9 +21,6 @@ export const GET_SINGLE_SALE = gql`
   query GetSingleSale($saleId: ID!) {
     fixedPriceSale(id: $saleId) {
       ...fixedPriceSaleResults
-    }
-    fairSale(id: $saleId) {
-      ...fairSaleResults
     }
   }
   ${FIXED_PRICE_SALE_FIELDS}
@@ -73,21 +67,6 @@ export const GET_ALL_BIDS_BY_SALE_ID = gql`
         sale {
           id
           tokenPrice
-        }
-      }
-    }
-    fairSale(id: $saleId) {
-      id
-      bids {
-        id
-        tokenInAmount
-        tokenOutAmount
-        owner {
-          id
-          address
-        }
-        sale {
-          id
         }
       }
     }
