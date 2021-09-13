@@ -41,7 +41,7 @@ interface HeaderClaimProps {
 export function ClaimButton({ sale }: HeaderClaimProps) {
   const [t] = useTranslation()
   const [isSaleStatusClosed, setIsSaleStatusClosed] = useState<boolean>(
-    sale.status === SaleStatus.CLOSED || sale.status === SaleStatus.SETTLED
+    sale.status === SaleStatus.CLOSED || sale.status === SaleStatus.SETTLED || sale.status === SaleStatus.FAILED
   )
   const { isShown: isModalShown, toggle: toggleConfirmation } = useModal()
   const { claim, claimTokens, closeSale } = useTokenClaim(sale)

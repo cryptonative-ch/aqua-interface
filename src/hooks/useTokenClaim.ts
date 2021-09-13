@@ -22,6 +22,7 @@ export enum ClaimState {
   FAILED = 'FAILED',
   CLAIMED = 'CLAIMED',
   PROCESSED = 'PROCESSED',
+  RELEASED = 'RELEASED',
 }
 
 interface useTokenClaimReturns {
