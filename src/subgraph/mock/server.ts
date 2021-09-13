@@ -20,7 +20,7 @@ const buildschema = addMocksToSchema({
   schema,
   mocks,
   resolvers,
-  preserveResolvers
+  preserveResolvers,
 })
 
 app.use(

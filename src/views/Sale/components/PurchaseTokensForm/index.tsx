@@ -15,18 +15,21 @@ import { Modal } from 'src/components/Modal'
 
 // Components
 import { ErrorMessage } from 'src/components/ErrorMessage'
+import { Button } from 'src/components/Button'
 
 // Utils
-import { convertToBuyerPrice, fixRounding, formatBigInt } from 'src/utils'
+import { convertToBuyerPrice, fixRounding, formatBigInt, isNativeToken } from 'src/utils'
 
 // Hooks
 import { ApprovalState, useApproveCallback } from 'src/hooks/useApprovalCallback'
 import { useFixedPriceSaleQuery } from 'src/hooks/useSaleQuery'
 import { useTokenBalance } from 'src/hooks/useTokenBalance'
 import { useModal } from 'src/hooks/useModal'
+import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
 
 //helpers
 import { aggregatePurchases } from 'src/utils'
+import { upgradeProxy, wrap, tokenApproval, commitToken, purchaseTokensCPKParams } from 'src/CPK'
 
 // Layouts
 import { Center } from 'src/layouts/Center'
@@ -131,7 +134,7 @@ w.utils = utils
 export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps) => {
   const [t] = useTranslation()
   const [txPending, setTxPending] = useState(false)
-  const { account, library } = useWeb3React()
+  const { account, library, chainId } = useWeb3React()
   const { loading, sale, error } = useFixedPriceSaleQuery(saleId)
   const tokenBalance = useTokenBalance({
     tokenAddress: sale?.tokenIn.id,
@@ -148,6 +151,23 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
   const [validationError, setValidationError] = useState<Error>()
   const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
   const [tokenQuantity, setTokenQuantity] = useState<number>(0)
+  const { cpk } = useCPK(library, chainId)
+  const { CPKpipe } = useCPKexecTransactions()
+
+  const purchaseTokensCPK = async (params: purchaseTokensCPKParams) => {
+    try {
+      setTxPending(true)
+      const { transactionResult } = await CPKpipe(upgradeProxy, wrap, tokenApproval, commitToken)(params)
+      if (transactionResult) {
+        setTxPending(false)
+        return toast.success(t('success.purchase'))
+      }
+    } catch (error) {
+      setTxPending(false)
+      console.error(error)
+      return toast.error(t('errors.purchase'))
+    }
+  }
 
   const getMaxPurchase = () => {
     const parsedTokenBalance = parseFloat(utils.formatUnits(tokenBalance))
@@ -186,7 +206,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
         } / ${utils.formatUnits(sale?.minCommitment)} ${sale?.tokenIn.symbol}`
       )
     }
-    if (purchaseMaximumCommitment < value) {
+    if (purchaseMaximumCommitment < value && !cpk) {
       newValidationError = new Error(
         `${parsedTokenBalance < value ? '\nInsufficient funds to process purchase: ' : ''} Maximum is ${fixRounding(
           purchaseMaximumCommitment / tokenPrice,
@@ -195,7 +215,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       )
     }
     // // Purchase value is greater than user's tokeIn balance
-    else if (parsedTokenBalance < value) {
+    else if (parsedTokenBalance < value && !cpk) {
       newValidationError = new Error('Insufficient funds to process purchase')
     }
 
@@ -227,12 +247,25 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       return console.error('no sale')
     }
 
-    if (!account || !library) {
+    if (!account || !library || !chainId) {
       return console.error('no connected signer')
     }
 
     if (!purchaseValue || !tokenQuantity) {
       return console.error('purchase amount == null')
+    }
+    if (isNativeToken(sale?.tokenIn.id as string, chainId as number) && cpk && account && chainId && purchaseValue) {
+      const value = utils.parseEther(purchaseValue.toString())
+      const params = {
+        cpk,
+        tokenAddress: sale?.tokenIn.id as string,
+        saleAddress: sale?.id as string,
+        account: account as string,
+        chainId: chainId as number,
+        library,
+        purchaseValue: value,
+      }
+      return purchaseTokensCPK(params)
     }
 
     const fixedPriceSaleContract = FixedPriceSale__factory.connect(sale.id, getProviderOrSigner(library, account))
@@ -254,7 +287,7 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
       .then(() => {
         setTxPending(false)
       })
-  }, [account, library, sale, tokenQuantity, purchaseValue, t])
+  }, [account, library, chainId, sale, tokenQuantity, purchaseValue, t, cpk])
 
   /**
    * Handles the form submission
@@ -264,12 +297,19 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      if (!sale || !purchaseValue || !(approvalState === ApprovalState.APPROVED)) return null
+      if (!sale || !purchaseValue || (!(approvalState === ApprovalState.APPROVED) && !cpk)) return null
 
       if (sale.minRaise > BigNumber.from(0)) {
         const totalSupply = formatBigInt(sale.sellAmount, sale.tokenOut.decimals)
         const threshold = (formatBigInt(sale.minRaise) * 100) / totalSupply
-        const totalAmountPurchased = aggregatePurchases(allBids ? allBids : [], account).amount
+        const totalAmountPurchased = aggregatePurchases(
+          allBids,
+          {
+            userAddress: account! as string,
+            cpkAddress: cpk?.address as string,
+          },
+          chainId as number
+        ).amount
         const amountDisplayed = Number(
           ethers.utils.formatUnits(totalAmountPurchased, sale.tokenOut.decimals).slice(0, 5)
         )
@@ -359,27 +399,31 @@ export const PurchaseTokensForm = ({ saleId }: PurchaseTokensFormComponentProps)
           <SuccessMessage>{`You get ${tokenQuantity} ${sale.tokenOut.symbol}`}</SuccessMessage>
         )}
       </FormGroup>
-      <LinkedButtons
-        buttons={[
-          {
-            title: `${approvalState == ApprovalState.APPROVED ? 'Approved' : `Approve ${sale.tokenIn.symbol}`} `,
-            id: 'approve',
-            onClick: approve,
-          },
-          {
-            title: `Purchase ${sale.tokenOut.symbol}`,
-            id: 'purchase',
-            typeSubmit: true,
-            onClick: () => {
-              {
-              }
+      {isNativeToken(sale.tokenIn.id, chainId as number) ? (
+        <Button disabled={!!validationError}>{t('buttons.purchase') + ' ' + sale.tokenOut.symbol}</Button>
+      ) : (
+        <LinkedButtons
+          buttons={[
+            {
+              title: `${approvalState == ApprovalState.APPROVED ? 'Approved' : `Approve ${sale.tokenIn.symbol}`} `,
+              id: 'approve',
+              onClick: approve,
             },
-          },
-        ]}
-        active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
-        disabled={!!validationError}
-        loading={txPending || approvalState == ApprovalState.PENDING}
-      />
+            {
+              title: `Purchase ${sale.tokenOut.symbol}`,
+              id: 'purchase',
+              typeSubmit: true,
+              onClick: () => {
+                {
+                }
+              },
+            },
+          ]}
+          active={approvalState == ApprovalState.APPROVED ? 'purchase' : 'approve'}
+          disabled={!!validationError}
+          loading={txPending || approvalState == ApprovalState.PENDING}
+        />
+      )}
 
       <Modal
         isShown={isModalShown}

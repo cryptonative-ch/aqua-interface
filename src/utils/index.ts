@@ -10,28 +10,76 @@ import { Sale, SaleType, FairSale, FixedPriceSale, SaleDetails } from 'src/inter
 import Omen from 'src/assets/svg/Omen.svg'
 import Dai from 'src/assets/svg/DAI.svg'
 import { BigNumberish, BigNumber } from 'ethers'
-import { GetAllBidsBySaleId_fixedPriceSale } from 'src/subgraph/__generated__/GetAllBidsBySaleId'
+import {
+  GetAllBidsBySaleId_fairSale_bids,
+  GetAllBidsBySaleId_fixedPriceSale,
+} from 'src/subgraph/__generated__/GetAllBidsBySaleId'
 import { FixedPriceSaleCommitmentStatus } from 'src/subgraph/__generated__/globalTypes'
 
-// account is not optional
+//constants
+import { CHAIN_ID, SUPPORTED_CHAINS } from 'src/constants'
+
+/**
+ *
+ * account is not optional
+ * @param library
+ * @param account
+ * @returns
+ */
 export function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked()
 }
-
-// account is optional
+/**
+ *
+ * account is optional
+ * @param library
+ * @param account
+ * @returns
+ */
 export function getProviderOrSigner(library: Web3Provider, account?: string | null): Web3Provider | JsonRpcSigner {
   return account ? getSigner(library, account) : library
 }
 
-/** sums up all the purchases of a single user from a single sale and returns the status, total amount and account string*/
-export const aggregatePurchases = (bids: any[], account: string | null | undefined, sale?: any) => {
+/**
+ * pipe function that combines n functions from left to right /
+ * and reduces it into a final value
+ * @param functions
+ * @returns
+ */
+export const pipe = (...functions: any[]) => (value: any) => {
+  return functions.reduce((currentValue, currentFunction) => {
+    return currentValue.then(currentFunction)
+  }, Promise.resolve(value))
+}
+
+/**
+ *
+ * sums up all the purchases of a single user from a single sale \
+ * and returns the status, total amount and account string
+ * @param bids
+ * @param accounts
+ * @param sale
+ * @returns
+ */
+export const aggregatePurchases = (
+  bids: any[],
+  accounts: {
+    userAddress: string
+    cpkAddress: string
+  },
+  chainId: number,
+  sale?: any
+) => {
   const reduceTotalAmount = bids.reduce((accumulator: BigNumber, purchases: any) => {
     return BigNumber.from(accumulator).add(purchases.amount)
   }, BigNumber.from(0))
 
   return {
     user: {
-      address: account!,
+      address:
+        SUPPORTED_CHAINS[chainId as CHAIN_ID].parameters.ERC20.address.toLowerCase() === sale?.tokenIn.id.toLowerCase()
+          ? accounts.cpkAddress
+          : accounts.userAddress,
     },
     amount: reduceTotalAmount,
     status: bids.length > 0 ? bids[0].status : undefined,
@@ -53,9 +101,6 @@ export const getZeros = (decimals: number) => {
 }
 
 export const fromBigDecimalToBigInt = (input: string, decimal = 18): string => {
-  // regex split the string between decimals and exponential
-  // reform into BigInt string
-
   const number = String(input)
 
   const fraction = number.match(/(?<=\.)(.*)/)
@@ -275,4 +320,48 @@ export const fixRounding = (value: number, precision: number): number => {
 // More understandable price = amount of tokenIn for 1 tokenOut
 export const convertToBuyerPrice = (price: number): number => {
   return 1 / price
+}
+
+// Temporary mock data
+export const tempBids: GetAllBidsBySaleId_fairSale_bids[] = [
+  {
+    __typename: 'FairSaleBid',
+    id: 'test',
+    owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
+    tokenInAmount: '657229100000000000000',
+    tokenOutAmount: '65229100000000000000',
+    sale: {
+      __typename: 'FairSale',
+      id: 'saleId',
+    },
+  },
+  {
+    __typename: 'FairSaleBid',
+    id: 'test',
+    owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
+    tokenInAmount: '257229100000000000000',
+    tokenOutAmount: '607229100000000000000',
+    sale: {
+      __typename: 'FairSale',
+      id: 'saleId',
+    },
+  },
+  {
+    __typename: 'FairSaleBid',
+    id: 'test',
+    owner: { __typename: 'FairSaleUser', id: 'test', address: 'ownerId' },
+    tokenInAmount: '657229100000000000000',
+    tokenOutAmount: '67229100000000000000',
+    sale: {
+      __typename: 'FairSale',
+      id: 'saleId',
+    },
+  },
+]
+
+export const isNativeToken = (tokenAddress: string, chainId: number) => {
+  if (tokenAddress.toLowerCase() === SUPPORTED_CHAINS[chainId as CHAIN_ID].parameters.ERC20.address.toLowerCase()) {
+    return true
+  }
+  return false
 }

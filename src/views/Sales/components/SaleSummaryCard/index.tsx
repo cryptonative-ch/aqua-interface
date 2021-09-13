@@ -51,7 +51,9 @@ export function SaleSummaryCard({ sale, purchaseAmount }: SaleSummaryProps) {
         <Flex flexDirection="column" justifyContent="space-evenly" height="75%" margin="12px 0 0 0">
           <Flex flexDirection="row" justifyContent="space-between">
             <CardText color="grey">{t('texts.salesType')}</CardText>
-            <CardText>{sale?.__typename == "FixedPriceSale" ? t('texts.fixedPriceSale') : t('texts.fairSale')}</CardText>
+            <CardText>
+              {sale?.__typename == 'FixedPriceSale' ? t('texts.fixedPriceSale') : t('texts.fairSale')}
+            </CardText>
           </Flex>
           {isSaleClosed(sale) ? (
             <Flex flexDirection="row" justifyContent="space-between">

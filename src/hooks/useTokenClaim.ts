@@ -6,6 +6,9 @@ import { useWeb3React } from '@web3-react/core'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
+//hooks
+import { useCPK, useCPKexecTransactions } from 'src/hooks/useCPK'
+
 // contracts
 import { FixedPriceSale__factory } from '@dxdao/aqua'
 
@@ -15,6 +18,8 @@ import { setClaimStatus } from 'src/redux/claims'
 //interface
 import { GetFixedPriceSaleCommitmentsByUser_fixedPriceSaleCommitments_sale } from 'src/subgraph/__generated__/GetFixedPriceSaleCommitmentsByUser'
 import { ProviderRpcError } from 'src/interfaces/Error'
+import { tokenApproval, transferERC20, withdrawCommitment } from 'src/CPK'
+import { TransactionResult } from 'src/hooks/useCPK'
 
 export enum ClaimState {
   UNCLAIMED = 'UNCLAIMED',
@@ -29,7 +34,7 @@ interface useTokenClaimReturns {
   claim: ClaimState | null
   claimTokens: (saleId: string) => void
   closeSale: (saleId: string, handleClose: (closed: boolean) => void) => void
-  transaction: ContractReceipt | null
+  transaction: TransactionResult | null
   error: Error | null
 }
 
@@ -38,12 +43,9 @@ export function useTokenClaim(
 ): useTokenClaimReturns {
   const dispatch = useDispatch()
   const { account, library, chainId } = useWeb3React()
-  const {
-    claimToken: claim,
-    error,
-    transaction,
-    amount,
-  } = useSelector(
+  const { cpk } = useCPK(library, chainId)
+  const { CPKpipe } = useCPKexecTransactions()
+  const { claimToken: claim, error, transaction, amount } = useSelector(
     ({ claims }) =>
       claims.claims.find(claim => claim.sale.id === sale.id) || {
         claimToken: ClaimState.UNCLAIMED,
@@ -63,7 +65,6 @@ export function useTokenClaim(
   }, [account, chainId, library])
 
   const closeSale = (saleId: string, handleClose: (closed: boolean) => void) => {
-    //take this out before production
     if (account) {
       FixedPriceSale__factory.connect(saleId, signer)
         .closeSale()
@@ -79,7 +80,66 @@ export function useTokenClaim(
     }
   }
 
-  const claimTokens = (saleId: string) => {
+  const claimTokens = async (saleId: string) => {
+    if (cpk?.isProxyDeployed()) {
+      const params = {
+        saleAddress: saleId,
+        cpk,
+        account,
+        library,
+        chainId,
+        tokenAddress: sale.tokenOut.id,
+      }
+
+      try {
+        const { transactionResult, loading } = await CPKpipe(withdrawCommitment, tokenApproval, transferERC20)(params)
+        if (loading)
+          dispatch(
+            setClaimStatus({
+              sale: sale,
+              claimToken: ClaimState.VERIFY,
+              error: null,
+              transaction: null,
+              amount: amount,
+            })
+          )
+
+        toast.success(t('success.claim'))
+        return dispatch(
+          setClaimStatus({
+            sale: sale,
+            claimToken: ClaimState.CLAIMED,
+            error: null,
+            transaction: transactionResult,
+            amount: amount,
+          })
+        )
+      } catch (error: any) {
+        if (error.code == 4001) {
+          toast.error(t('errors.claim'))
+          return dispatch(
+            setClaimStatus({
+              sale: sale,
+              claimToken: ClaimState.UNCLAIMED,
+              error: error,
+              transaction: null,
+              amount: amount,
+            })
+          )
+        }
+        console.error(error)
+        toast.error(t('errors.claim'))
+        return dispatch(
+          setClaimStatus({
+            sale: sale,
+            claimToken: ClaimState.FAILED,
+            error: error,
+            transaction: null,
+            amount: amount,
+          })
+        )
+      }
+    }
     if (account) {
       // Withdraw tokens - withdraws investment or purchase depending on if successful
       FixedPriceSale__factory.connect(saleId, signer)

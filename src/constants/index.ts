@@ -20,10 +20,23 @@ export const SUPPORTED_CHAINS = {
       saleLauncher: '0x248617E4f69E86a727A4e03bA8d6e65A23d12e45',
       templateLauncher: '0xC8Ab9E079D8207fB755953b0C464C8C5313FE83a',
     },
+    cpk: {
+      masterCopyAddress: '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F',
+      proxyFactoryAddress: '0x336c19296d3989e9e0c2561ef21c964068657c38',
+      multiSendAddress: '0x82CFd05a033e202E980Bc99eA50A4C6BB91CE0d7',
+      fallbackHandlerAddress: '0x40A930851BD2e590Bd5A5C981b436de25742E980',
+      targetSafeImplementation: '0xcb05C7D28766e4fFB71ccbdAf6Ae1Cec555D61f8',
+    },
     subgraph: 'https://api.thegraph.com/subgraphs/name/mprasanjith/aqua-rinkeby-next',
     parameters: {
       chainId: '0x4',
       chainName: 'Ethereum',
+      ERC20: {
+        name: 'Wrapped Ethereum',
+        symbol: 'WETH',
+        decimals: 18,
+        address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      },
       nativeCurrency: {
         name: 'Ethereum',
         symbol: 'ETH',
@@ -41,10 +54,23 @@ export const SUPPORTED_CHAINS = {
       saleLauncher: '0xC28c613f0f0b85C745AC58BA78071816Cb52B43A',
       templateLauncher: '0x58c67b46c47f69d63aa09d5f822ede377c479d5f',
     },
+    cpk: {
+      masterCopyAddress: '0x9C75A217AEA76663a9A37687606f099945eb0742',
+      proxyFactoryAddress: '0x6B836809A42938cbB9ee911FC3F6b9763DE96477',
+      multiSendAddress: '0x035000FC773f4a0e39FcdeD08A46aBBDBF196fd3',
+      fallbackHandlerAddress: '0x602DF5F404f86469459D5e604CDa43A2cdFb7580',
+      targetSafeImplementation: '0x9C75A217AEA76663a9A37687606f099945eb0742',
+    },
     subgraph: 'https://api.thegraph.com/subgraphs/name/dxgraphs/aqua-xdai',
     parameters: {
       chainId: '0x64',
       chainName: 'xDai',
+      ERC20: {
+        name: 'Wrapped xdai',
+        symbol: 'WXDAI',
+        decimals: 18,
+        address: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+      },
       nativeCurrency: {
         name: 'xDai',
         symbol: 'xDai',

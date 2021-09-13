@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 
 // Redux
 import { setPageTitle, setSelectedSaleStatus } from 'src/redux/page'
@@ -35,7 +36,6 @@ import {
 // Layouts
 import { Center } from 'src/layouts/Center'
 import { DividerWithText } from 'src/components/Divider'
-import { useWeb3React } from '@web3-react/core'
 
 // sales page
 import { TokenView } from 'src/views/Token'
@@ -73,12 +73,12 @@ const saleFilterMap = {
 export function SalesView() {
   const dispatch = useDispatch()
   const [t] = useTranslation()
+  const { account } = useWeb3React()
   const saleStatus = useSelector(({ page }) => page.selectedSaleStatus)
   const [filteredSales, setFilteredSales] = useState<SaleDate[]>([])
   const [filteredUserSales, setFilteredUserSales] = useState<SummarySales[]>([])
   const { loading, sales, error } = useSalesQuery()
-  const { account } = useWeb3React()
-  const { saleIds, sales: userSales, loading: userLoading } = useFixedPriceSaleCommitmentsByBuyerIdQuery(account)
+  const { saleIds, sales: userSales, loading: userLoading } = useFixedPriceSaleCommitmentsByBuyerIdQuery()
 
   const setStatus = (status: SaleStatus) => {
     dispatch(setSelectedSaleStatus(status))
@@ -116,14 +116,12 @@ export function SalesView() {
   }
 
   useEffect(() => {
-    if (sales && userSales) {
-      setFilteredUserSales(
-        sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale as FIX_LATER))) as SummarySales[]
-      )
-      setFilteredSales(
-        sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]
-      )
-    }
+    setFilteredUserSales(
+      sortByStatus([...userSales].filter(x => saleFilterMap[saleStatus](x.sale as FIX_LATER))) as SummarySales[]
+    )
+    setFilteredSales(
+      sortByStatus([...sales].filter(saleFilterMap[saleStatus]).filter(x => !saleIds.includes(x.id))) as SaleDate[]
+    )
   }, [saleStatus, loading, userLoading])
 
   return (
@@ -131,7 +129,7 @@ export function SalesView() {
       <Container>
         <Title>Token Sales</Title>
         <SaleNavBar state={saleStatus} setStatus={setStatus} />
-        {filteredUserSales.length > 0 && (
+        {filteredUserSales.length > 0 && account && (
           <>
             {saleStatus === SaleStatus.LIVE ? (
               <DividerWithText color="#7B7F93">{t('texts.activeSales')}</DividerWithText>
@@ -154,8 +152,7 @@ export function SalesView() {
             )}
           </>
         )}
-
-        {filteredUserSales.length > 0 && filteredSales.length > 0 && (
+        {filteredUserSales.length > 0 && filteredSales.length > 0 && account && (
           <DividerWithText color="#7B7F93">{t('texts.otherSales')}</DividerWithText>
         )}
         <GridListSection>

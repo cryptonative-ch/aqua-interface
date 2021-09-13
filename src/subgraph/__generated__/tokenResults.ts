@@ -8,21 +8,21 @@
 // ====================================================
 
 export interface tokenResults {
-  __typename: "Token";
+  __typename: 'Token'
   /**
    * Token address
    */
-  id: string;
+  id: string
   /**
    * Token name, from the smart contract ERC20.name()
    */
-  name: string | null;
+  name: string | null
   /**
    * The token symbol from ERC20.symbol()
    */
-  symbol: string | null;
+  symbol: string | null
   /**
    * The token decimals, from ERC.decimals()
    */
-  decimals: any;
+  decimals: any
 }

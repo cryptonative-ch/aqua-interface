@@ -39,6 +39,7 @@
     "dayjs": "^1.10.4",
     "dotenv": "^8.1.0",
     "dotenv-cli": "^4.0.0",
+    "dxdao-contract-proxy-kit": "0.0.3",
     "ethers": "^5.0.24",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
