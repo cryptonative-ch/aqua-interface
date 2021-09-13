@@ -62,11 +62,7 @@ export function useFixedPriceSaleCommitmentsByBuyerIdQuery(buyerId: string | und
 
     const unixDateNow = dayjs(Date.now()).unix()
     sales
-      .filter(
-        purchase =>
-          BigNumber.from(purchase.sale.soldAmount) >= BigNumber.from(purchase.sale.minRaise) &&
-          unixDateNow >= purchase.sale.endDate
-      )
+      .filter(purchase => unixDateNow >= purchase.sale.endDate)
       .map(purchase =>
         dispatch(
           setClaimStatus({
