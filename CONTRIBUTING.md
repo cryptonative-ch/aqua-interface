@@ -1,14 +1,15 @@
-# Aqua Contribution Guideline
+# Aqua Contribution Guidelines
 
 # Abstract
 
-Aqua is an open-source project, including but not limited to the Front End interface and Solidity Smart Contracts. As such, a Contribution Guideline shall facilitate the foundation for a collaborative ground for every contributor working on Aqua codebase(s).
+Aqua is an open-source project, including but not limited to the Front-end interface and Solidity Smart Contracts. As such, the Contribution Guidelines should facilitate the creation of a collaborative ground for every contributor working on the Aqua code base(s).
+
 
 # Tickets
 
-We use zenhub.com, if logged in with our Github account, the dashboard should be visible. Zenhub is basicly a agile project management which is tightly integrated with github.
+We use zenhub.com, if logged in with our Github account, the dashboard should be visible. Zenhub is basically a agile project management which is tightly integrated with Github.
 
-- Every task needs have an estimated ticket
+- Every task needs to have an estimated ticket
 - If you see something during work which is out of scope of the ticket:
   1. make a new ticket or reopen a ticket
   2. finish the old ticket first!
@@ -106,7 +107,7 @@ At DXdao, everyone thrives to write high-quality code. And such as every Worker 
 
 ## Code Indentation
 
-Use two space to intend code. Lint code using Prettier. Configurations are stored in `.prettierrc` IDE of choice should be able to format file upon saving file.
+Use two spaces to intend code. Lint code using Prettier. Configurations are stored in `.prettierrc` IDE of choice should be able to format file upon saving file.
 
 ## No Default Export
 
